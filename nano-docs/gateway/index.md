@@ -1,115 +1,109 @@
 ---
-summary: "NanoSolana Gateway runbook — startup, operations, and trading relay"
+summary: "NanoSolana gateway runbook for the current runtime"
 title: "Gateway Runbook"
 ---
 
 # Gateway runbook
 
-Use this page for day-1 startup and day-2 operations of the NanoSolana Gateway.
+This page documents the gateway that ships in `nano-core`.
 
-## 5-minute local startup
+Important: the current CLI does **not** expose a standalone `nanosolana gateway ...`
+subtree. In this checkout, the gateway is started in one of these ways:
 
-### Step 1: Initialize
+- `nanosolana run`
+- `nanosolana go`
+- `npm run gateway` inside `nano-core/`
 
-```bash
-nanosolana init
-nanosolana birth    # Generates wallet + TamaGOchi egg
-```
+## What the gateway does
 
-### Step 2: Start the Gateway
+The gateway in [`nano-core/src/gateway/server.ts`](../../nano-core/src/gateway/server.ts):
 
-```bash
-nanosolana gateway run --port 18789
-# verbose mode
-nanosolana gateway run --port 18789 --verbose
-# force-kill existing listener
-nanosolana gateway run --force
-```
+- exposes HTTP endpoints such as `/health`, `/api/status`, `/api/framework`, and `/api/memory`
+- accepts authenticated WebSocket clients for mesh-style coordination
+- relays memory updates and runtime status
+- fronts the local runtime for UI, automation, and peer communication
 
-### Step 3: Verify health
+## Default bind and port
 
-```bash
-nanosolana gateway status
-nanosolana status
-nanosolana logs --follow
-```
+Current defaults come from [`nano-core/src/config/vault.ts`](../../nano-core/src/config/vault.ts):
 
-Healthy baseline: `Runtime: running`, `Wallet: active`, `Trading: standby`.
+| Setting | Default |
+|--------|---------|
+| Host | `0.0.0.0` |
+| Port | `18790` |
+| Secret env | `NANO_GATEWAY_SECRET` |
 
-### Step 4: Validate channels
+## Local startup
 
-```bash
-nanosolana channels status --probe
-```
-
-## Runtime model
-
-- One always-on process for routing, trading signals, and channel connections.
-- Single multiplexed port for:
-  - WebSocket control/RPC (agent mesh)
-  - HTTP APIs (`/health`, `/api/status`, `/api/framework`, `/api/memory`)
-  - Trading signal relay
-  - Memory synchronization
-- Default bind: `loopback` (127.0.0.1).
-- Auth required: HMAC-SHA256 via `NANO_GATEWAY_SECRET`.
-
-### Port and bind
-
-| Setting | Resolution order |
-|---------|-----------------|
-| Port | `--port` → `NANO_GATEWAY_PORT` → `gateway.port` → `18789` |
-| Bind | CLI → `gateway.host` → `127.0.0.1` |
-| Secret | `--secret` → `NANO_GATEWAY_SECRET` → `gateway.secret` → auto-generated |
-
-## Operator command set
+### One-shot runtime
 
 ```bash
-nanosolana gateway status           # Gateway health
-nanosolana gateway status --deep    # Full probe
-nanosolana gateway status --json    # Machine-readable
-nanosolana status                   # Full agent status
-nanosolana status --all             # Everything (pasteable)
-nanosolana health                   # Quick health check
-nanosolana logs --follow            # Tail logs
-nanosolana doctor                   # Diagnostics
+npx nanosolana go
 ```
 
-## Remote access (Tailscale mesh)
+This is the easiest end-to-end path. It initializes secrets, births the wallet,
+starts ClawVault, starts trading, and then starts the gateway.
 
-Preferred: Tailscale VPN for agent-to-agent mesh.
+### Manual runtime
 
 ```bash
-# SSH tunnel fallback
-ssh -N -L 18789:127.0.0.1:18789 user@gateway-host
+npx nanosolana init
+npx nanosolana birth
+npx nanosolana run
 ```
 
-> **Warning**: Gateway auth (HMAC-SHA256) still required over tunnels.
+### Gateway-only development
 
-## Trading relay
+```bash
+cd nano-core
+npm install
+npm run gateway
+```
 
-The gateway automatically relays trading events:
+## Quick verification
 
-| Event | Source | Broadcast |
-|-------|--------|-----------|
-| `trade:signal` | Strategy engine | All mesh nodes |
-| `market:price` | Helius/Birdeye WSS | All mesh nodes |
-| `memory:lesson` | ClawVault | All mesh nodes |
-| `agent:heartbeat` | Wallet | All mesh nodes |
+### Runtime status
 
-## Common failure signatures
+```bash
+npx nanosolana status
+```
 
-| Signature | Likely issue |
-|-----------|-------------|
-| `Invalid signature` | HMAC secret mismatch |
-| `Rate limited` | >100 msgs/min from one agent |
-| `Auth timeout` | Client didn't send auth within 5s |
-| `EADDRINUSE` | Port conflict (another gateway) |
-| `Unauthorized` (HTTP) | Missing `X-NanoSolana-Secret` header |
+### Gateway health
 
-## Safety guarantees
+```bash
+curl http://127.0.0.1:18790/health
+```
 
-- Gateway rejects unsigned first frames (hard close).
-- Rate limiter prevents flood attacks (10 connections/min per IP).
-- Trading signals are atomic — no partial execution broadcasts.
-- Graceful shutdown closes all WebSocket connections cleanly.
-- Memory sync is eventually consistent across mesh.
+### Protected status endpoint
+
+```bash
+curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+  http://127.0.0.1:18790/api/status
+```
+
+## Auth model
+
+- WebSocket auth: HMAC-SHA256 signature on the initial auth frame
+- HTTP auth: `X-NanoSolana-Secret` or `Authorization: Bearer ...`
+- Comparison: timing-safe comparison in the gateway implementation
+- Default limits: `10` connections/minute and `100` messages/minute
+
+## Operator notes
+
+- `nanosolana status` reports the configured gateway host and port.
+- `nanosolana send` uses the configured gateway secret for local or mesh delivery.
+- `nanosolana nodes` and `nanosolana bots` are the current operator-facing mesh views.
+- `nanosolana docs` now indexes both `nano-docs/` and `pump/docs/`, so the gateway
+  can surface both NanoSolana and Pump material through one searchable corpus.
+
+## Remote access
+
+Preferred: use Tailscale and keep the gateway private to the tailnet.
+
+Tunnel fallback:
+
+```bash
+ssh -N -L 18790:127.0.0.1:18790 user@gateway-host
+```
+
+Keep HMAC auth enabled even when tunneling.

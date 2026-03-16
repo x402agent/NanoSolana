@@ -1,93 +1,52 @@
 ---
-summary: "NanoSolana gateway security — authentication, encryption, and access control"
+summary: "NanoSolana gateway security for the current runtime"
 title: "Gateway Security"
 ---
 
 # Gateway security
 
-## Authentication methods
+## Current auth methods
 
-### HMAC-SHA256 (WebSocket)
+### WebSocket
 
-All WebSocket connections are authenticated using HMAC-SHA256:
+- HMAC-SHA256 on the initial auth frame
+- timing-safe comparison on the gateway side
 
-1. Agent computes signature: `HMAC(secret, JSON.stringify({ type, from, timestamp }))`.
-2. Gateway verifies using `crypto.timingSafeEqual` (constant-time comparison).
-3. Invalid signatures result in immediate connection close (`4003`).
+### HTTP
 
-### Secret header (HTTP API)
+- `X-NanoSolana-Secret`
+- `Authorization: Bearer ...`
 
-HTTP API endpoints accept authentication via:
+## Current defaults
 
-- `X-NanoSolana-Secret: <secret>` header.
-- `Authorization: Bearer <secret>` header.
+| Setting | Value |
+|--------|-------|
+| Host | `0.0.0.0` |
+| Port | `18790` |
+| Rate limit: connections | `10/min` |
+| Rate limit: messages | `100/min` |
 
-Both are checked using timing-safe comparison.
+## At-rest protection
 
-### Rate limiting
+- vault path: `~/.nanosolana/vault.enc`
+- cipher: `AES-256-GCM`
+- current key derivation in code: SHA-256 over password and salt
 
-| Scope | Limit | Window | Action |
-|-------|-------|--------|--------|
-| Connections per IP | 10 | 60s | Connection refused |
-| Messages per agent | 100 | 60s | Messages dropped |
+## Operational checks
 
-## Encryption
+There is no shipped `nanosolana security audit` command yet.
 
-### At rest
-
-- **Vault** (`~/.nanosolana/vault.enc`): AES-256-GCM with PBKDF2 key derivation.
-- **Memory files**: `0600` permissions (owner read/write only).
-- **Config directory**: `0700` permissions.
-
-### In transit
-
-- WebSocket: plaintext on loopback; TLS recommended for remote via Tailscale.
-- HTTP: same as WebSocket (shares the same port).
-
-## Trust boundaries
-
-```
-┌─────────────────────────────────────────────┐
-│  Host machine (trusted)                      │
-│  ┌───────────────────┐  ┌────────────────┐  │
-│  │  NanoSolana Agent  │  │  Vault (enc)   │  │
-│  │  ┌─────────────┐  │  │  ├─ API keys   │  │
-│  │  │ Trading Eng. │  │  │  ├─ Wallet key │  │
-│  │  │ Memory Eng.  │  │  │  └─ Gateway sec│  │
-│  │  │ AI Provider  │  │  └────────────────┘  │
-│  │  │ Gateway      │  │                      │
-│  │  └─────────────┘  │                      │
-│  └───────────────────┘                      │
-└─────────────────────────────────────────────┘
-         │ HMAC-SHA256      │ Tailscale VPN
-         ▼                  ▼
-┌──────────────┐    ┌──────────────┐
-│  Mesh Node   │    │  Mesh Node   │
-│  (trusted)   │    │  (trusted)   │
-└──────────────┘    └──────────────┘
-         │
-         ▼ (untrusted)
-┌──────────────────────────────────┐
-│  External APIs (Helius, Birdeye) │
-│  Channel APIs (Telegram, Discord)│
-└──────────────────────────────────┘
-```
-
-## Security checklist
+Use:
 
 ```bash
-nanosolana security audit          # Run all checks
-nanosolana security audit --deep   # Include live probes
-nanosolana security audit --fix    # Auto-fix safe issues
+npx nanosolana config
+npx nanosolana status
+curl http://127.0.0.1:18790/health
+curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+  http://127.0.0.1:18790/api/status
 ```
 
-| Check | Description |
-|-------|-------------|
-| `vault-permissions` | vault.enc is `0600` |
-| `config-permissions` | ~/.nanosolana is `0700` |
-| `gateway-auth` | HMAC secret is configured |
-| `rate-limiting` | Rate limits are active |
-| `no-plaintext-keys` | No API keys in .env |
-| `wallet-vault-only` | Private key only in vault |
-| `tailscale-mesh` | Tailscale configured for remote |
-| `git-no-secrets` | No secrets in git history |
+## Compatibility note
+
+If you see `18789`, `nanosolana gateway run`, or `nanosolana security audit` in
+older notes, treat them as stale docs rather than the current runtime surface.

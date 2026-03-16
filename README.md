@@ -226,7 +226,7 @@ The standalone UI under [`ui/`](ui/) now includes your new operator surfaces:
 - [`ui/src/ui/views/personas.ts`](ui/src/ui/views/personas.ts) adds the personas browser view
 - [`ui/src/styles/swarm-personas.css`](ui/src/styles/swarm-personas.css) contains the shared styling
 
-Known issue from your latest validation: the UI build is currently blocked by an unresolved import in [`ui/src/ui/assistant-identity.ts`](ui/src/ui/assistant-identity.ts) pointing at `../../../src/shared/assistant-identity-values.js`. That needs to be fixed before the standalone UI can be shipped cleanly.
+Validation note: `npx vite build` in [`ui/`](ui/) now completes successfully with the `swarm` and `personas` additions in place.
 
 ## Development
 

@@ -1,174 +1,66 @@
 ---
-summary: "NanoSolana gateway configuration reference"
+summary: "Gateway configuration for the current NanoSolana runtime"
 title: "Gateway Configuration"
 ---
 
 # Gateway configuration
 
-NanoSolana Gateway configuration lives in `~/.nanosolana/config.json`
-(or `NANOSOLANA_CONFIG_PATH`).
+The current runtime loads gateway settings from environment variables plus the
+encrypted vault-backed config resolver in
+[`nano-core/src/config/vault.ts`](../../nano-core/src/config/vault.ts).
 
-## Configuration file
+## Effective gateway settings
 
-```json5
-{
-  // Gateway server
-  gateway: {
-    host: "127.0.0.1",        // Bind address
-    port: 18789,               // WebSocket + HTTP port
-    secret: "env:NANO_GATEWAY_SECRET",  // HMAC secret (encrypted in vault)
-    rateLimit: {
-      connections: 10,         // Max connections per IP per minute
-      messages: 100,           // Max messages per agent per minute
-    }
-  },
+| Setting | Source | Default |
+|--------|--------|---------|
+| Host | `NANO_GATEWAY_HOST` | `0.0.0.0` |
+| Port | `NANO_GATEWAY_PORT` | `18790` |
+| Secret | `NANO_GATEWAY_SECRET` | optional |
 
-  // AI provider
-  ai: {
-    provider: "openrouter",
-    baseUrl: "https://openrouter.ai/api/v1",
-    model: "openrouter/healer-alpha",
-    apiKey: "env:OPENROUTER_API_KEY",
-  },
+If the secret is not provided explicitly, the runtime still starts, but anything
+depending on authenticated gateway access should set it.
 
-  // Solana infrastructure
-  solana: {
-    helius: {
-      rpcUrl: "env:HELIUS_RPC_URL",
-      apiKey: "env:HELIUS_API_KEY",
-      wssUrl: "env:HELIUS_WSS_URL",
-    },
-    birdeye: {
-      apiKey: "env:BIRDEYE_API_KEY",
-      wssUrl: "env:BIRDEYE_WSS_URL",
-    },
-    jupiter: {
-      apiKey: "env:JUPITER_API_KEY",
-    },
-  },
+## Related runtime variables
 
-  // Trading engine
-  trading: {
-    strategy: {
-      rsiPeriod: 14,
-      rsiBuyThreshold: 30,
-      rsiSellThreshold: 70,
-      emaFastPeriod: 12,
-      emaSlowPeriod: 26,
-      atrPeriod: 14,
-      confidenceThreshold: 0.7,
-      slippageBps: 100,
-      maxPositionPct: 50,
-      stopLossPct: 2,
-      takeProfitPct: 5,
-    },
-    execution: {
-      enabled: false,          // Manual approval by default
-      autoExecute: false,      // Autonomous trading (opt-in)
-    }
-  },
+| Variable | Purpose |
+|---------|---------|
+| `HELIUS_RPC_URL` | Solana RPC used by the runtime |
+| `HELIUS_API_KEY` | Helius enhanced APIs |
+| `HELIUS_WSS_URL` | Realtime subscriptions |
+| `BIRDEYE_API_KEY` | Market data |
+| `JUPITER_API_KEY` | Swap API |
+| `TAILSCALE_AUTH_KEY` | Mesh networking |
+| `NANO_HUB_URL` | Local/remote NanoHub URL |
 
-  // Memory
-  memory: {
-    clawvault: {
-      path: "~/.nanosolana/clawvault",
-      knownTTL: 60000,
-      learnedTTL: 604800000,
-      inferredTTL: 259200000,
-    },
-    telegram: {
-      path: "~/.nanosolana/telegram",
-      maxHistoryPerChat: 200,
-      persistInterval: 30000,
-    }
-  },
+## Example `.env`
 
-  // Agent
-  agents: {
-    defaults: {
-      heartbeat: {
-        every: "30m",
-        target: "none",
-        lightContext: false,
-      },
-      timeoutSeconds: 600,
-    }
-  },
+```env
+NANO_GATEWAY_HOST=0.0.0.0
+NANO_GATEWAY_PORT=18790
+NANO_GATEWAY_SECRET=change-me
 
-  // Channels
-  channels: {
-    telegram: {
-      enabled: true,
-      botToken: "env:TELEGRAM_BOT_TOKEN",
-    },
-    discord: {
-      enabled: false,
-      botToken: "env:DISCORD_BOT_TOKEN",
-    },
-  },
-
-  // Plugins
-  plugins: {
-    entries: {
-      "memory-core": { enabled: true },
-      "lobster": { enabled: true },
-    },
-    load: {
-      paths: ["./extensions"]
-    }
-  },
-
-  // Mesh networking
-  mesh: {
-    tailscale: {
-      authKey: "env:TAILSCALE_AUTH_KEY",
-      domain: "env:TAILSCALE_DOMAIN",
-    }
-  }
-}
+HELIUS_RPC_URL=https://...
+HELIUS_API_KEY=...
+HELIUS_WSS_URL=wss://...
+OPENROUTER_API_KEY=...
 ```
 
-## Environment variables
+## What `nanosolana init` writes
 
-All `env:*` values resolve from environment variables. They can also be stored
-in the encrypted vault (`nanosolana vault set KEY VALUE`).
+`nanosolana init` stores secrets in `~/.nanosolana/vault.enc` and creates a local
+`.env` with non-sensitive defaults such as:
 
-## Config validation
-
-```bash
-nanosolana config validate          # Check schema validity
-nanosolana config validate --json   # Machine-readable output
+```env
+NANO_AGENT_NAME=nano-alpha
+NANO_GATEWAY_PORT=18790
+AI_PROVIDER=gemini
+AI_MODEL=gemini-2.5-pro
+NANO_LOG_LEVEL=info
 ```
 
-## Hot reload
+## Current limitation
 
-The gateway watches the config file for changes:
-
-| Change type | Behavior |
-|-------------|----------|
-| Channel enable/disable | Hot-applied |
-| Trading parameters | Hot-applied |
-| Gateway port/bind | Requires restart |
-| AI provider change | Hot-applied |
-| Memory settings | Hot-applied |
-
-## Per-agent overrides
-
-```json5
-{
-  agents: {
-    list: [
-      {
-        id: "main",
-        default: true,
-        heartbeat: { every: "30m", target: "telegram" }
-      },
-      {
-        id: "research",
-        heartbeat: { every: "1h", target: "none" },
-        trading: { execution: { enabled: false } }
-      }
-    ]
-  }
-}
-```
+Older docs referenced `~/.nanosolana/config.json` as the main source of truth.
+In the current checkout, the actively used configuration path is the environment
+plus the encrypted vault loader. Treat any `config.json` examples as conceptual,
+not authoritative.

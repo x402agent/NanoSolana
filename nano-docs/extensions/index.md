@@ -1,192 +1,56 @@
 ---
-summary: "NanoSolana extension system — plugin development and integration"
+summary: "NanoSolana extension system — repo reality and integration points"
 title: "Extensions"
 ---
 
 # Extensions
 
-NanoSolana uses a plugin architecture to extend channel support, AI tools, and
-trading capabilities. Each extension is a self-contained package with a
-`nanosolana-plugin.json` manifest.
+The repo currently contains **41** extension directories under `extensions/`.
 
-## Plugin manifest
+Not all of them are exposed through a first-class `nanosolana plugins ...` CLI yet.
+Today, extensions are best understood as repo packages and runtime integration
+points rather than a finished package manager surface.
 
-Every extension requires a `nanosolana-plugin.json`:
+## What exists today
 
-```json
-{
-  "id": "my-plugin",
-  "name": "My Plugin",
-  "description": "What this plugin does",
-  "channels": ["telegram"],
-  "configSchema": {
-    "type": "object",
-    "additionalProperties": false,
-    "properties": {
-      "apiKey": { "type": "string", "description": "API key for service" }
-    }
-  }
-}
-```
+- manifest-based runtime plugins in extension directories
+- extension metadata indexed by `nanosolana docs`
+- tool registration hooks used by several extensions
+- channel packages for Telegram, Discord, Slack, Matrix, WhatsApp, Nostr, and more
 
-## Built-in extensions
+## Representative extensions
 
-### Channel plugins
+| Path | Role |
+|------|------|
+| `extensions/pumpfun` | Pump.fun extension scaffold |
+| `extensions/telegram` | Telegram integration |
+| `extensions/discord` | Discord integration |
+| `extensions/whatsapp` | WhatsApp integration |
+| `extensions/lobster` | Workflow tooling |
+| `extensions/llm-task` | Multi-step task tooling |
+| `extensions/memory-core` | Memory tools |
+| `extensions/memory-lancedb` | Memory/vector tooling |
 
-| Extension | ID | Description |
-|-----------|----|-------------|
-| **Telegram** | `telegram` | Persistent conversations with ClawVault memory |
-| **Discord** | `discord` | Trading signals, alerts, and TamaGOchi status |
-| **Nostr** | `nostr` | Decentralized trading signal relay |
-| **iMessage** | `imessage` | Apple Messages trading alerts |
-| **Google Chat** | `googlechat` | Team trading notifications |
-| **BlueBubbles** | `bluebubbles` | iMessage via BlueBubbles server |
+## Tool and hook surface
 
-### AI & workflow plugins
+Several extensions register tools or lifecycle hooks in code. Examples in this repo include:
 
-| Extension | ID | Description |
-|-----------|----|-------------|
-| **Lobster** | `lobster` | Typed workflow pipelines with resumable approvals |
-| **LLM Task** | `llm-task` | Autonomous multi-step research and trading |
-| **Google Gemini CLI Auth** | `google-gemini-cli-auth` | Gemini CLI authentication bridge |
-| **MiniMax Portal Auth** | `minimax-portal-auth` | MiniMax portal authentication |
+- `registerTool(...)`
+- `before_prompt_build`
+- `agent_end`
+- `message_received`
+- `message_sending`
 
-### Memory plugins
+That makes the extension layer part of the runtime API surface even when the top-level
+CLI does not have dedicated plugin-management commands.
 
-| Extension | ID | Description |
-|-----------|----|-------------|
-| **Memory Core** | `memory-core` | ClawVault 3-tier epistemological memory |
-| **Memory LanceDB** | `memory-lancedb` | Vector semantic search with LanceDB |
+## Current operator reality
 
-### Device plugins
+Use:
 
-| Extension | ID | Description |
-|-----------|----|-------------|
-| **Device Pair** | `device-pair` | TamaGOchi hardware bridge (I2C/serial) |
-| **Phone Control** | `phone-control` | Remote agent management via phone |
+- `nanosolana docs`
+- direct workspace/package commands inside an extension directory
+- the standalone UI and runtime integrations
 
-## Plugin lifecycle
-
-```
-1. Discovery:  nanosolana scans extensions/ for nanosolana-plugin.json
-2. Validation: Schema validated against NanoSolanaPluginSchema
-3. Loading:    Plugin module loaded via dynamic import
-4. Registration: Plugin calls api.registerChannel() or api.registerTool()
-5. Runtime:    Plugin receives events via registered hooks
-```
-
-## Creating a plugin
-
-### Directory structure
-
-```
-extensions/my-plugin/
-├── nanosolana-plugin.json    # Plugin manifest
-├── package.json              # NPM package config
-├── index.ts                  # Entry point
-└── src/
-    └── handler.ts            # Plugin logic
-```
-
-### Entry point
-
-```typescript
-import type { NanoSolanaPluginApi } from "nanosolana/plugin-sdk";
-
-const plugin = {
-  id: "my-plugin",
-  name: "My Plugin",
-  description: "Custom trading indicator plugin",
-  register(api: NanoSolanaPluginApi) {
-    // Register a custom tool
-    api.registerTool({
-      name: "my_indicator",
-      description: "Calculate custom trading indicator",
-      parameters: { token: { type: "string" } },
-      execute: async ({ token }) => {
-        // Your logic here
-        return { indicator: 42.5, signal: "BUY" };
-      },
-    });
-  },
-};
-
-export default plugin;
-```
-
-### Plugin hooks
-
-Plugins can hook into the agent lifecycle:
-
-| Hook | Phase | Description |
-|------|-------|-------------|
-| `before_model_resolve` | Pre-session | Override AI model |
-| `before_prompt_build` | Pre-inference | Inject context |
-| `agent_end` | Post-inference | Inspect results |
-| `before_tool_call` | Pre-tool | Intercept params |
-| `after_tool_call` | Post-tool | Transform results |
-| `message_received` | Inbound | Process incoming messages |
-| `message_sending` | Outbound | Modify outgoing messages |
-| `trade_signal` | Trading | React to trading signals |
-| `trade_execute` | Trading | Pre/post trade execution |
-
-## CLI commands
-
-```bash
-nanosolana plugins list              # List available plugins
-nanosolana plugins info <id>         # Show plugin details
-nanosolana plugins install <path>    # Install a plugin
-nanosolana plugins enable <id>       # Enable a plugin
-nanosolana plugins disable <id>      # Disable a plugin
-```
-
-## Configuration
-
-Per-plugin config lives in the main NanoSolana config:
-
-```json5
-{
-  plugins: {
-    entries: {
-      "telegram": { enabled: true },
-      "discord": { enabled: true },
-      "lobster": { enabled: true },
-      "memory-core": { enabled: true },
-    },
-    load: {
-      paths: ["./extensions"]    // Plugin search paths
-    }
-  }
-}
-```
-
-## Telegram plugin (with persistence)
-
-The Telegram plugin includes built-in conversation persistence:
-
-```json
-{
-  "id": "telegram",
-  "persistence": {
-    "enabled": true,
-    "dbPath": "~/.nanosolana/telegram",
-    "conversationHistory": true,
-    "maxHistoryPerChat": 200,
-    "summaryThreshold": 50
-  }
-}
-```
-
-Features:
-- Full message history per chat (up to 200 messages).
-- Auto-summarization when history exceeds threshold.
-- LLM context builder: `buildContext()` returns summary + recent messages.
-- Cross-chat search for finding information across conversations.
-- 30s periodic flush to disk with `0600` permissions.
-
-## Security
-
-- Plugin code runs in the same process as the agent (no sandbox).
-- Plugins should NOT access `vault.enc` directly.
-- API keys should be passed via config, not hardcoded.
-- Plugin dependencies are isolated in their own `package.json`.
+Do not rely on older docs that describe a finished `nanosolana plugins` command
+tree. That manager surface is not part of the current shipped CLI.

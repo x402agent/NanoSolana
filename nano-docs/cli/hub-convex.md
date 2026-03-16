@@ -1,50 +1,44 @@
 ---
-summary: "Use NanoHub + npx clawhub with Convex-backed auth, registration, and publish flows"
+summary: "Use NanoHub with the Convex-backed web app and CLI"
 title: "hub-convex"
 ---
 
 # `hub + convex`
 
-Use NanoHub web + `npx clawhub` together with Convex-backed auth and publishing.
+Use NanoHub web plus the `nanohub` CLI with Convex-backed auth and publishing.
 
-## What is Convex-backed here?
+## What Convex backs
 
-- **User registration / sign-in**: GitHub auth is handled by Convex Auth.
-- **User bootstrap**: first login is finalized through `users.ensure`.
-- **CLI token minting**: `/cli/auth` creates tokens via Convex `tokens.create`.
-- **Skill creation/version publish**: upload route calls Convex `skills.publishVersion`.
-- **Soul (agent doc) creation/version publish**: upload route calls Convex `souls.publishVersion`.
+- GitHub auth and user bootstrap
+- API token minting
+- skill and soul publishing
+- registry data and search
 
-## Web flow (NanoHub)
+## Web flow
 
 1. Open [https://hub.nanosolana.com](https://hub.nanosolana.com).
-2. Click **Sign in with GitHub**.
-3. Publish via **Upload** (skill or soul mode).
-4. Manage API tokens in **Settings → API tokens**.
+2. Sign in with GitHub.
+3. Publish or manage skills and souls from the UI.
 
-## npx flow (CLI)
+## CLI flow
+
+Primary command:
 
 ```bash
-# browser OAuth + Convex token mint
-npx clawhub@latest login
-
-# publish one local skill folder
-npx clawhub@latest publish ./skills/my-agent \
-  --slug my-agent \
-  --name "My Agent" \
-  --version 1.0.0
-
-# scan + upload all changed/new local skills
-npx clawhub@latest sync --all
+npx nanohub@latest login
+npx nanohub@latest publish ./skills/my-agent --slug my-agent --name "My Agent" --version 1.0.0
+npx nanohub@latest sync --all
 ```
 
-## Discovery and endpoints
+Compatibility note: the published NanoHub package still ships `clawhub` as a bin
+alias, so legacy examples may continue to work. Prefer `nanohub`.
 
-`clawhub` discovers registry/auth base from:
+## Discovery
+
+NanoHub discovery should prefer:
+
+- `https://hub.nanosolana.com/.well-known/nanohub.json`
+
+Legacy compatibility may still include:
 
 - `https://hub.nanosolana.com/.well-known/clawhub.json`
-- fallback: `/.well-known/nanohub.json`
-
-Current NanoHub well-known points both `apiBase` and `authBase` to:
-
-- `https://hub.nanosolana.com`

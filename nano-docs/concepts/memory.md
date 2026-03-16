@@ -5,186 +5,79 @@ title: "Memory (ClawVault)"
 
 # Memory (ClawVault)
 
-NanoSolana uses the **ClawVault** epistemological memory system — a 3-tier architecture
-that distinguishes between data freshness, learned patterns, and inferred correlations.
-This prevents the agent from conflating "I just saw this price" with "I noticed this
-pattern over 50 trades."
+NanoSolana uses ClawVault to separate fresh observations from learned patterns and
+ looser inferences.
 
 ## Three tiers
 
-### KNOWN (fresh data, <60s TTL)
+### KNOWN
 
-- Raw API responses: prices, balances, order books.
-- Source: Helius RPC, Birdeye API, Jupiter quotes.
-- Auto-expires after 60 seconds.
-- Never persisted to disk (ephemeral cache).
-- The agent can say: "SOL is at $142.50 right now."
+- fresh, short-lived observations
+- examples: prices, balances, quotes, current market snapshots
 
-### LEARNED (patterns, 7-day TTL)
+### LEARNED
 
-- Derived from trade outcomes and market observations.
-- Examples:
-  - "RSI < 30 + volume spike → 72% chance of bounce (based on 15 trades)"
-  - "Monday mornings have lower volatility (based on 8 weeks data)"
-- Updated after every trade execution with outcome data.
-- Persisted to `~/.nanosolana/clawvault/learned.json`.
-- The agent can say: "In my experience, this pattern usually leads to..."
+- patterns distilled from prior outcomes
+- examples: repeatable setups, confidence adjustments, post-trade lessons
 
-### INFERRED (correlations, 3-day TTL)
+### INFERRED
 
-- Hypotheses and correlations held loosely.
-- Examples:
-  - "This token seems correlated with BTC moves (weak signal)"
-  - "High gas → fewer swaps → less slippage (tentative)"
-- Subject to contradiction detection — if new data contradicts, the inference is dropped.
-- Persisted to `~/.nanosolana/clawvault/inferred.json`.
-- The agent can say: "I suspect that..." (never presents as fact).
+- tentative correlations and hypotheses
+- examples: weak regime relationships or token correlations
 
-## Memory lifecycle
+## Runtime behavior
 
-```mermaid
-graph LR
-    A[API Data] -->|store| B[KNOWN]
-    B -->|expire 60s| C[Gone]
-    D[Trade Outcome] -->|learn| E[LEARNED]
-    E -->|expire 7d| F[Faded]
-    E -->|correlate| G[INFERRED]
-    G -->|expire 3d| H[Faded]
-    G -->|contradict| I[Dropped]
-```
+ClawVault is surfaced today through:
 
-## Temporal decay
+- `nanosolana run`
+- `nanosolana go`
+- `nanosolana status`
+- `nanosolana vault [query]`
 
-All entries have a creation timestamp and TTL. The memory engine runs periodic
-garbage collection:
+The current published CLI does **not** expose a standalone `nanosolana memory ...`
+tree.
 
-```typescript
-// Decay check (runs every 5 minutes)
-for (const entry of vault.entries()) {
-  const age = Date.now() - entry.createdAt;
-  if (age > entry.ttl) {
-    vault.remove(entry.id);
-  }
-}
-```
-
-## Experience replay
-
-After every trade, the memory engine performs **experience replay**:
-
-1. Fetch the last 20 trade outcomes.
-2. Find patterns: which indicators were present before profitable trades?
-3. Store new LEARNED entries with supporting evidence count.
-4. Update existing LEARNED entries with new confidence scores.
-5. Generate INFERRED entries from weak correlations.
-
-## Contradiction detection
-
-When new data contradicts an existing INFERRED entry:
-
-1. Compare new observation with stored inference.
-2. If directly contradicted (e.g., "token X is NOT correlated with BTC"), drop the inference.
-3. If weakly contradicted, reduce confidence by 50%.
-4. Log contradiction for audit trail.
-
-## Research agenda
-
-ClawVault maintains a **research agenda** — questions the agent wants to answer:
-
-```json
-{
-  "agenda": [
-    {
-      "question": "Does high Birdeye volume predict Jupiter swap success?",
-      "status": "investigating",
-      "evidence": 3,
-      "createdAt": 1710000000000
-    }
-  ]
-}
-```
-
-The OODA loop's **Orient** phase checks the research agenda and will prioritize
-data collection that helps answer open questions.
-
-## Memory tools (CLI)
+## What `nanosolana vault` gives you
 
 ```bash
-nanosolana memory status        # Show tier counts and sizes
-nanosolana memory search "RSI"  # Search across all tiers
-nanosolana memory store "..."   # Manually store a memory
-nanosolana memory flush         # Persist all to disk
-nanosolana memory lessons       # List LEARNED entries
+npx nanosolana vault
+npx nanosolana vault RSI
 ```
 
-## Memory tools (agent-facing)
+That command shows:
 
-- `memory_search` — semantic search across all tiers.
-- `memory_get` — read a specific memory entry by ID.
-- `memory_store` — store a new entry in a specific tier.
+- KNOWN / LEARNED / INFERRED counts
+- inbox, lessons, trades, and research-gap stats
+- optional search results
+- recent lessons and research agenda items
 
-## Telegram persistence integration
+## Persistence notes
 
-The Telegram conversation store (`TelegramConversationStore`) integrates with
-ClawVault for persistent chat memory:
+The conceptual doc model still applies:
 
-- Every message is stored with chat/user context.
-- Conversation summaries are auto-generated for long chats.
-- Context is rebuilt from summary + recent messages for LLM prompts.
-- Cross-chat search enables finding info across all conversations.
+- fresh observations are transient
+- learned patterns are persisted
+- inferred ideas decay faster and can be contradicted away
 
-## Configuration
+The exact file/database layout can evolve; the authoritative runtime entrypoint is
+[`../../nano-core/src/memory/`](../../nano-core/src/memory/).
 
-```json5
-{
-  memory: {
-    // ClawVault settings
-    clawvault: {
-      path: "~/.nanosolana/clawvault",
-      knownTTL: 60000,        // 60s
-      learnedTTL: 604800000,  // 7 days
-      inferredTTL: 259200000, // 3 days
-      maxEntries: 10000,
-      replayDepth: 20,        // trades for experience replay
-      gcInterval: 300000,     // 5 min GC cycle
-    },
-    // Telegram persistence
-    telegram: {
-      path: "~/.nanosolana/telegram",
-      maxHistoryPerChat: 200,
-      summaryThreshold: 50,
-      persistInterval: 30000, // 30s flush
-    },
-    // Vector search (optional)
-    search: {
-      enabled: true,
-      provider: "openrouter",
-      model: "openrouter/healer-alpha",
-    }
-  }
-}
+## Extension tie-ins
+
+ClawVault is also extended by repo-level plugins and UI surfaces, including:
+
+- `extensions/memory-core`
+- `extensions/memory-lancedb`
+- the standalone UI tool labels for `memory_search`
+
+## Compatibility note
+
+Older docs referenced:
+
+```bash
+nanosolana memory status
+nanosolana memory search "RSI"
 ```
 
-## File layout
-
-```
-~/.nanosolana/
-├── clawvault/
-│   ├── known.json          # Ephemeral (rarely on disk)
-│   ├── learned.json        # Persistent patterns
-│   ├── inferred.json       # Tentative correlations
-│   ├── agenda.json         # Research questions
-│   └── replay/             # Experience replay logs
-├── telegram/
-│   ├── messages.json       # Per-chat message history
-│   └── contexts.json       # Chat contexts + preferences
-└── vault.enc               # Encrypted secrets (AES-256-GCM)
-```
-
-## Security
-
-- All memory files have `0600` permissions (owner-only).
-- Wallet private keys are NEVER stored in memory tiers.
-- API keys are NEVER stored in memory tiers.
-- Sensitive trade details are redacted in LEARNED entries.
-- Memory files are excluded from git via `.gitignore`.
+Those commands are not part of the current shipped CLI. Use `nanosolana vault`
+instead.

@@ -139,8 +139,20 @@ export class SwarmSpawner {
   // ── Spawn ───────────────────────────────────────────────────────────────
 
   /**
+   * Check if payment gating is enabled and return the cost.
+   * Returns null if payment is not required.
+   */
+  getSpawnCost(): { amount: number; currency: 'USDC' | 'SOL' } | null {
+    const pg = this.config.paymentGating;
+    if (!pg?.enabled) return null;
+    return { amount: pg.spawnCost, currency: pg.currency };
+  }
+
+  /**
    * Spawn a new agent in the swarm.
    * Validates risk limits, creates the agent state, and starts its run loop.
+   * If payment gating is enabled, the caller is responsible for verifying
+   * payment via NanoPaymentAgent before calling spawn.
    */
   async spawn(request: SpawnAgentRequest): Promise<AgentState> {
     // Enforce max agents

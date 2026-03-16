@@ -1,119 +1,51 @@
 ---
-summary: "NanoSolana multi-agent mesh networking via Tailscale and tmux"
+summary: "NanoSolana mesh networking via Tailscale and the current gateway"
 title: "Mesh Networking"
 ---
 
 # Mesh networking
 
-NanoSolana agents can form a peer-to-peer mesh network using **Tailscale** as the
-secure transport and **tmux** for process management.
+NanoSolana can coordinate agents across a Tailscale-connected mesh.
 
-## Architecture
+## Current building blocks
 
+- gateway transport from `nano-core`
+- `nanosolana send`
+- `nanosolana nodes`
+- `nanosolana bots`
+- Tailscale discovery helpers in `nano-core/src/network/mesh.ts`
+
+## Default topology
+
+```text
+Host A                               Host B
+┌──────────────────────┐             ┌──────────────────────┐
+│ nanosolana runtime   │             │ nanosolana runtime   │
+│ gateway :18790       │◄──────────► │ gateway :18790       │
+│ wallet + ClawVault   │   Tailscale │ wallet + ClawVault   │
+└──────────────────────┘             └──────────────────────┘
 ```
-┌──────────────────┐    Tailscale VPN    ┌──────────────────┐
-│  Host A           │◄──────────────────►│  Host B           │
-│  ┌──────────────┐ │                    │  ┌──────────────┐ │
-│  │ Agent Alpha  │ │  ◄─ signals ─►    │  │ Agent Beta   │ │
-│  │ Gateway:18789│ │  ◄─ lessons ─►    │  │ Gateway:18789│ │
-│  │ Wallet: 7xKX │ │  ◄─ heartbeat─►   │  │ Wallet: 9aBC │ │
-│  └──────────────┘ │                    │  └──────────────┘ │
-│                    │                    │                    │
-│  tmux: nano-alpha  │                    │  tmux: nano-beta   │
-└──────────────────┘                    └──────────────────┘
-```
 
-## Setup
+## Setup sketch
 
-### 1. Install Tailscale on each host
+1. Install Tailscale on each host.
+2. Bring the tailnet up with your auth key.
+3. Set `TAILSCALE_AUTH_KEY` and, if needed, `TAILSCALE_DOMAIN`.
+4. Start the runtime with `nanosolana run` or `nanosolana go`.
+5. Inspect peers with `nanosolana nodes`.
+
+## Current operator commands
 
 ```bash
-# macOS
-brew install tailscale
-
-# Linux
-curl -fsSL https://tailscale.com/install.sh | sh
+npx nanosolana nodes
+npx nanosolana bots
+npx nanosolana send "check SOL RSI"
 ```
 
-### 2. Authenticate
+## Current limitations
 
-```bash
-tailscale up --authkey=$TAILSCALE_AUTH_KEY
-```
+- there is no shipped `nanosolana gateway run --bind tailnet` command tree
+- there is no shipped `nanosolana trade status` command
+- the current default gateway port is `18790`
 
-### 3. Configure mesh in NanoSolana
-
-```json5
-{
-  mesh: {
-    tailscale: {
-      authKey: "env:TAILSCALE_AUTH_KEY",
-      domain: "your-tailnet.ts.net",
-    },
-    peers: [
-      { host: "host-b.your-tailnet.ts.net", port: 18789 }
-    ]
-  }
-}
-```
-
-### 4. Start the gateway with mesh enabled
-
-```bash
-nanosolana gateway run --bind tailnet
-```
-
-## Tmux session management
-
-Each NanoSolana agent runs in a named tmux session:
-
-```bash
-# Start agent in tmux
-tmux new-session -d -s nano-agent "nanosolana run"
-
-# Attach to see logs
-tmux attach -t nano-agent
-
-# List running nanosolana sessions
-tmux ls | grep nano
-
-# Send command to running agent
-tmux send-keys -t nano-agent "nanosolana trade status" Enter
-```
-
-## One-shot `nanosolana` command
-
-The `nanosolana` CLI can communicate with bots across the mesh:
-
-```bash
-# Send message to all bots
-nanosolana send --mesh "Check SOL RSI status"
-
-# Query a specific bot
-nanosolana send --to agent-beta "What's your P&L today?"
-
-# List all mesh peers
-nanosolana nodes
-
-# List all connected bots
-nanosolana bots
-```
-
-## Shared data
-
-| Data type | Sharing model |
-|-----------|---------------|
-| Trading signals | Broadcast to all peers |
-| Memory lessons | Broadcast (LEARNED tier) |
-| Price data | Shared WebSocket feeds |
-| Wallet state | Private (never shared) |
-| Private keys | Private (never shared) |
-| Pet status | Shared for fun |
-
-## Security
-
-- All mesh traffic flows through Tailscale WireGuard tunnels.
-- HMAC-SHA256 authentication on every gateway connection.
-- Wallet private keys NEVER leave the local host.
-- Each agent authenticates with its own HMAC secret.
-- Rate limiting applies per-agent, even on mesh connections.
+Use the top-level commands above instead.
