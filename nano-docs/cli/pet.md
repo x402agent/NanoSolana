@@ -1,30 +1,19 @@
 ---
-summary: "nanosolana pet — TamaGOchi virtual pet management"
+summary: "Current TamaGOchi CLI surface"
 title: "pet"
 ---
 
 # `nanosolana pet`
 
-Manage the TamaGOchi virtual pet that lives alongside your trading agent.
-
-## Overview
-
-The TamaGOchi evolves based on your agent's trading performance and overall
-health. Its mood directly affects the trading engine's risk tolerance.
-
-## Subcommands
-
-### `nanosolana pet status`
-
-Show pet status.
+The current CLI exposes a single `nanosolana pet` command that prints the current pet state.
 
 ```bash
-nanosolana pet status
+nanosolana pet
 ```
 
-Output:
+Example output:
 
-```
+```text
 🐾 TamaGOchi Status
 ━━━━━━━━━━━━━━━━━━
   Name:     NanoLobster
@@ -36,30 +25,7 @@ Output:
   Trades:   47 (68% win rate)
 ```
 
-### `nanosolana pet feed`
-
-Feed the pet (prevents hunger-related mood decline).
-
-```bash
-nanosolana pet feed
-```
-
-### `nanosolana pet evolve`
-
-Check evolution eligibility and trigger if ready.
-
-```bash
-nanosolana pet evolve
-nanosolana pet evolve --check  # Just check, don't trigger
-```
-
-### `nanosolana pet history`
-
-Show evolution history.
-
-```bash
-nanosolana pet history
-```
+The richer `pet status/feed/evolve/history` tree described in some older docs is not part of the current published CLI.
 
 ## Evolution stages
 
@@ -82,3 +48,9 @@ nanosolana pet history
 | Sad | Recent losses | -15% position |
 | Sick | Extended losses or hunger | -30% position |
 | Ghost | Health hit 0 | Trading disabled |
+
+## Related commands
+
+- `nanosolana birth`
+- `nanosolana go`
+- `nanosolana status`

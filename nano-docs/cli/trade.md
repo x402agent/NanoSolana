@@ -1,89 +1,45 @@
 ---
-summary: "nanosolana trade — trading engine commands"
+summary: "How trading is exposed in the current NanoSolana CLI and runtime"
 title: "trade"
 ---
 
-# `nanosolana trade`
+# Trading
 
-Interact with the NanoSolana trading engine.
+The trading engine is active inside `nanosolana run`, `nanosolana go`, and `nanosolana demo`.
+The current published CLI does not expose a separate `nanosolana trade ...` subtree yet.
 
-## Subcommands
-
-### `nanosolana trade status`
-
-Show current strategy state and P&L.
+## Current entrypoints
 
 ```bash
-nanosolana trade status
-nanosolana trade status --json
+nanosolana run
+nanosolana go
+nanosolana demo
+nanosolana status
 ```
 
-Output includes:
-- Current positions
-- Today's P&L
-- Win rate (rolling 50 trades)
-- Strategy parameters (RSI/EMA/ATR)
-- Next heartbeat cycle
+## What each one does
 
-### `nanosolana trade signals`
+- `nanosolana run` starts wallet heartbeat, ClawVault, trading engine, and gateway
+- `nanosolana go` performs one-shot setup and then starts the same runtime
+- `nanosolana demo` simulates signals and price movement without API keys
+- `nanosolana status` gives a summary view that includes ClawVault and wallet context
 
-List recent trading signals.
+## Programmatic surface
 
-```bash
-nanosolana trade signals
-nanosolana trade signals --limit 20
-nanosolana trade signals --json
-```
-
-Each signal shows:
-- Action (BUY/SELL/HOLD)
-- Token
-- Confidence score
-- Reasoning summary
-- Timestamp
-
-### `nanosolana trade execute`
-
-Manually execute a trading signal.
-
-```bash
-nanosolana trade execute <signal-id>
-nanosolana trade execute <signal-id> --yes  # Skip confirmation
-```
-
-Requires confirmation unless `--yes` is passed.
-
-### `nanosolana trade history`
-
-Show past trade executions.
-
-```bash
-nanosolana trade history
-nanosolana trade history --limit 50
-nanosolana trade history --json
-```
-
-### `nanosolana trade backtest`
-
-Run strategy backtest on historical data.
-
-```bash
-nanosolana trade backtest --days 30
-nanosolana trade backtest --token SOL --days 90
-```
-
-### `nanosolana trade optimize`
-
-Force re-optimization of strategy parameters.
-
-```bash
-nanosolana trade optimize
-nanosolana trade optimize --dry-run  # Preview changes without applying
-```
+For direct embedding, use `TradingEngine` from `nanosolana` in `nano-core`.
 
 ## Safety
 
 - Trading execution is disabled by default.
-- Enable with: `nanosolana config set trading.execution.enabled true`.
-- Auto-execution requires: `nanosolana config set trading.execution.autoExecute true`.
 - All trades are logged in ClawVault for audit.
+
+## Pump-specific trading surfaces
+
+The repo also includes a separate Pump bridge layer:
+
+- `pump/sdk-bridge.ts`
+- `pump/swarm-spawner.ts`
+- `pump/telegram-gateway.ts`
+- `pump/main.ts`
+
+See [Trading Engine](/trading) for the full architecture and [`../pump/docs/getting-started.md`](../pump/docs/getting-started.md) for protocol-specific flows.

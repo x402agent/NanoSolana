@@ -1,77 +1,21 @@
 ---
-summary: "nanosolana channels — manage chat channels"
+summary: "Messaging and channel surfaces in the current NanoSolana checkout"
 title: "channels"
 ---
 
-# `nanosolana channels`
+# Channels and messaging
 
-Manage chat channel connections (Telegram, Discord, Nostr, iMessage, etc.).
+The current published CLI does not expose a nested `nanosolana channels ...` command tree.
+Channel support exists, but it is split across the gateway, extension packages,
+and the Pump Telegram gateway.
 
-## Subcommands
-
-### `nanosolana channels list`
-
-Show configured channels.
+## Current user-facing commands
 
 ```bash
-nanosolana channels list
-nanosolana channels list --json
-```
-
-### `nanosolana channels status`
-
-Check channel health.
-
-```bash
-nanosolana channels status
-nanosolana channels status --probe   # Deep health check
-```
-
-### `nanosolana channels add`
-
-Add a new channel.
-
-```bash
-# Telegram with persistence
-nanosolana channels add --channel telegram --token $TELEGRAM_BOT_TOKEN
-
-# Discord
-nanosolana channels add --channel discord --token $DISCORD_BOT_TOKEN
-
-# Nostr
-nanosolana channels add --channel nostr --relay wss://relay.damus.io
-```
-
-Options:
-
-- `--channel <name>`: Channel type.
-- `--token <token>`: Bot/API token.
-- `--account <id>`: Account identifier (default: `default`).
-- `--name <label>`: Display name.
-
-### `nanosolana channels remove`
-
-Remove a channel configuration.
-
-```bash
-nanosolana channels remove --channel telegram
-nanosolana channels remove --channel discord --delete
-```
-
-### `nanosolana channels login`
-
-Interactive login (channel-specific).
-
-```bash
-nanosolana channels login --channel telegram
-```
-
-### `nanosolana channels logout`
-
-Log out of a channel session.
-
-```bash
-nanosolana channels logout --channel telegram
+nanosolana send "hello"
+nanosolana nodes
+nanosolana bots list
+nanosolana run
 ```
 
 ## Supported channels
@@ -84,6 +28,15 @@ nanosolana channels logout --channel telegram
 | **iMessage** | Extension | Session | Apple Messages |
 | **Google Chat** | Extension | Session | Team notifications |
 | **BlueBubbles** | Extension | Session | iMessage bridge |
+
+## Pump Telegram control plane
+
+The repo also contains a dedicated Pump Telegram gateway in:
+
+- `pump/telegram-gateway.ts`
+- `pump/main.ts`
+
+That layer supports commands such as `/swarm`, `/spawn`, `/agents`, `/price`, `/quote`, `/curve`, `/fees`, and `/events` for the Pump swarm specifically.
 
 ## Telegram persistence
 
@@ -98,7 +51,7 @@ The Telegram plugin stores full conversation history:
         enabled: true,
         maxHistoryPerChat: 200,
         summaryThreshold: 50,
-        persistInterval: 30000   // 30s flush
+        persistInterval: 30000
       }
     }
   }
@@ -106,7 +59,8 @@ The Telegram plugin stores full conversation history:
 ```
 
 Features:
-- 200 messages per chat (auto-summarizes overflow).
-- Cross-chat search.
-- LLM context: summary + recent messages.
-- Stored at `~/.nanosolana/telegram/`.
+
+- 200 messages per chat
+- cross-chat search
+- summary plus recent-message context rebuilding
+- local storage under `~/.nanosolana/telegram/`

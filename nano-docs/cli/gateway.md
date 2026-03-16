@@ -1,78 +1,64 @@
 ---
-summary: "nanosolana gateway — run and manage the NanoSolana gateway"
+summary: "Gateway entrypoints and operations for the NanoSolana runtime"
 title: "gateway"
 ---
 
-# `nanosolana gateway`
+# Gateway surfaces
 
-Run and manage the NanoSolana WebSocket + HTTP gateway.
+The current published CLI does not expose a standalone `nanosolana gateway ...` command tree.
+The gateway is still real, but it is started through runtime flows or a package script.
 
-## Subcommands
+## Current startup paths
 
-### `nanosolana gateway run`
-
-Start the gateway in the foreground.
-
-```bash
-nanosolana gateway run
-nanosolana gateway run --port 18789
-nanosolana gateway run --port 18789 --verbose
-nanosolana gateway run --force  # Kill existing listener first
-```
-
-Options:
-
-- `--port <port>`: Gateway port (default: `18789`).
-- `--host <host>`: Bind address (default: `127.0.0.1`).
-- `--verbose`: Enable debug logging.
-- `--force`: Kill existing process on the port.
-
-### `nanosolana gateway status`
-
-Show gateway health and connected agents.
+### Through the CLI
 
 ```bash
-nanosolana gateway status
-nanosolana gateway status --deep
-nanosolana gateway status --json
+nanosolana run
+# or
+nanosolana go
 ```
 
-### `nanosolana gateway health`
+Both start the gateway alongside the wallet, trading engine, and memory system.
 
-Quick health probe.
+### Standalone in development
+
+From `nano-core/`:
 
 ```bash
-nanosolana gateway health
+npm run gateway
 ```
 
-### `nanosolana gateway start`
+That invokes `src/gateway/server.ts` directly.
 
-Start as background service.
+## Defaults
+
+Current defaults come from `nano-core/src/config/vault.ts`:
+
+- host: `0.0.0.0`
+- port: `18790`
+- auth: `NANO_GATEWAY_SECRET`
+
+## What the gateway serves
+
+- WebSocket mesh transport
+- HTTP endpoints such as `/health`, `/api/status`, `/api/framework`, `/api/memory`
+- streaming events from trading, wallet heartbeat, and memory
+- NanoHub-facing integration paths
+
+## Current operator commands
 
 ```bash
-nanosolana gateway start
+nanosolana run
+nanosolana go
+nanosolana status
+nanosolana send "ping"
+nanosolana nodes
+nanosolana bots list
 ```
 
-### `nanosolana gateway stop`
+## See also
 
-Stop the background service.
-
-```bash
-nanosolana gateway stop
-```
-
-### `nanosolana gateway restart`
-
-Restart the background service.
-
-```bash
-nanosolana gateway restart
-```
-
-## Protocol
-
-See [Gateway Protocol](/gateway/protocol) for the WebSocket wire format.
-
-## Security
-
-See [Gateway Security](/gateway/security) for authentication details.
+- [Gateway Runbook](/gateway)
+- [Gateway Configuration](/gateway/configuration)
+- [Gateway Protocol](/gateway/protocol)
+- [Gateway Security](/gateway/security)

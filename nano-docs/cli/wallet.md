@@ -1,71 +1,34 @@
 ---
-summary: "nanosolana wallet — Solana wallet management"
+summary: "Wallet flows exposed by the current NanoSolana CLI"
 title: "wallet"
 ---
 
-# `nanosolana wallet`
+# Wallet flows
 
-Manage the agent's Solana wallet.
+The current published CLI does not expose a nested `nanosolana wallet ...` tree.
+Wallet actions are spread across the main runtime commands instead.
 
-## Subcommands
-
-### `nanosolana wallet balance`
-
-Show SOL and SPL token balances.
+## Current wallet-related commands
 
 ```bash
-nanosolana wallet balance
-nanosolana wallet balance --json
+nanosolana birth
+nanosolana go
+nanosolana status
+nanosolana scan [address]
+nanosolana register
+nanosolana registry
 ```
 
-### `nanosolana wallet send`
+## What they cover
 
-Send SOL or tokens (requires vault password).
-
-```bash
-nanosolana wallet send <recipient_address> <amount>
-nanosolana wallet send 7xKX...abc 0.5 --token SOL
-```
-
-Options:
-
-- `--token <mint>`: Token to send (default: `SOL`).
-- `--memo <text>`: Transaction memo.
-- `--yes`: Skip confirmation prompt.
-
-### `nanosolana wallet receive`
-
-Show the deposit address and QR code.
-
-```bash
-nanosolana wallet receive
-nanosolana wallet receive --qr
-```
-
-### `nanosolana wallet history`
-
-Show recent transactions.
-
-```bash
-nanosolana wallet history
-nanosolana wallet history --limit 20
-nanosolana wallet history --json
-```
-
-### `nanosolana wallet export`
-
-Export the wallet (requires vault password confirmation).
-
-```bash
-nanosolana wallet export --format json
-nanosolana wallet export --format base58
-```
-
-> **Warning**: This exports the private key. Handle with extreme care.
+- `birth` creates the wallet and prints the public key
+- `go` creates the wallet if needed and brings up the runtime
+- `status` prints wallet address and current SOL balance
+- `scan` snapshots a wallet with Helius
+- `register` and `registry` manage the devnet identity NFT view
 
 ## Security
 
 - Private key stored in AES-256-GCM encrypted vault.
-- All send operations require explicit confirmation.
-- Export requires vault password re-entry.
-- Transaction history is stored locally (not on any external server).
+- There is no first-class wallet export command in the current published CLI.
+- By default the key stays in `~/.nanosolana/vault.enc`.

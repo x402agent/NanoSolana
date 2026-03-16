@@ -1207,6 +1207,111 @@ program
     await new Promise(() => {});
   });
 
+// ── nanosolana pay (tokenized agent payments) ─────────────────
+
+const payCmd = program
+  .command("pay")
+  .description("Tokenized agent payment system — create invoices and verify payments");
+
+payCmd
+  .command("invoice")
+  .description("Create a payment invoice for a user")
+  .requiredOption("--user <pubkey>", "Payer wallet public key (base58)")
+  .requiredOption("--amount <amount>", "Amount in smallest currency unit")
+  .option("--currency <currency>", "Payment currency (USDC or SOL)", "USDC")
+  .option("--duration <seconds>", "Invoice validity in seconds", "3600")
+  .action(async (opts) => {
+    const { PublicKey } = await import("@solana/web3.js");
+    const { createPaymentAgent } = await import("../payments/index.js");
+
+    try {
+      const agent = createPaymentAgent();
+      const now = Math.floor(Date.now() / 1000);
+      const result = await agent.createPayment({
+        user: new PublicKey(opts.user),
+        currency: opts.currency as "USDC" | "SOL",
+        amount: parseInt(opts.amount, 10),
+        startTime: now,
+        endTime: now + parseInt(opts.duration, 10),
+      });
+
+      console.log(chalk.hex("#14F195")("\n  💳 Invoice Created\n"));
+      console.log(chalk.white(`  Memo:         ${result.invoice.memo}`));
+      console.log(chalk.white(`  Amount:       ${agent.formatAmount(result.invoice.amount, result.invoice.currency)}`));
+      console.log(chalk.white(`  Currency:     ${result.invoice.currency}`));
+      console.log(chalk.white(`  Valid:        ${new Date(result.invoice.startTime * 1000).toISOString()} → ${new Date(result.invoice.endTime * 1000).toISOString()}`));
+      console.log(chalk.white(`  Invoice PDA:  ${result.invoiceIdPda.toBase58()}`));
+      console.log(chalk.white(`  Instructions: ${result.instructions.length}`));
+      console.log(chalk.gray("\n  Send these instructions to the payer's wallet for signing.\n"));
+    } catch (err) {
+      console.error(chalk.red(`  ❌ ${err instanceof Error ? err.message : String(err)}`));
+      process.exit(1);
+    }
+  });
+
+payCmd
+  .command("verify")
+  .description("Verify an invoice payment on-chain")
+  .requiredOption("--user <pubkey>", "Payer wallet public key")
+  .requiredOption("--memo <memo>", "Invoice memo identifier")
+  .requiredOption("--amount <amount>", "Amount in smallest currency unit")
+  .requiredOption("--start <timestamp>", "Invoice start time (Unix)")
+  .requiredOption("--end <timestamp>", "Invoice end time (Unix)")
+  .option("--currency <currency>", "Payment currency (USDC or SOL)", "USDC")
+  .option("--retries <n>", "Max verification retries", "3")
+  .action(async (opts) => {
+    const { PublicKey } = await import("@solana/web3.js");
+    const { createPaymentAgent, CURRENCY_MINTS } = await import("../payments/index.js");
+
+    try {
+      const agent = createPaymentAgent();
+      const currency = opts.currency as "USDC" | "SOL";
+      const invoice = {
+        memo: parseInt(opts.memo, 10),
+        amount: parseInt(opts.amount, 10),
+        currencyMint: CURRENCY_MINTS[currency],
+        currency,
+        startTime: parseInt(opts.start, 10),
+        endTime: parseInt(opts.end, 10),
+        agentMint: agent.getConfig().agentTokenMint,
+        createdAt: new Date().toISOString(),
+      };
+
+      console.log(chalk.yellow("\n  ⏳ Verifying payment on-chain...\n"));
+      const result = await agent.verifyPayment(
+        invoice,
+        new PublicKey(opts.user),
+        { maxRetries: parseInt(opts.retries, 10) },
+      );
+
+      if (result.paid) {
+        console.log(chalk.hex("#14F195")("  ✅ Payment confirmed!"));
+      } else {
+        console.log(chalk.red("  ❌ Payment not found on-chain."));
+      }
+      console.log(chalk.gray(`  Attempts: ${result.attempts}`));
+      console.log(chalk.gray(`  Verified at: ${result.verifiedAt}\n`));
+    } catch (err) {
+      console.error(chalk.red(`  ❌ ${err instanceof Error ? err.message : String(err)}`));
+      process.exit(1);
+    }
+  });
+
+payCmd
+  .command("status")
+  .description("Show payment system configuration")
+  .action(async () => {
+    const mint = process.env.AGENT_TOKEN_MINT_ADDRESS;
+    const rpc = process.env.SOLANA_RPC_URL ?? process.env.HELIUS_RPC_URL ?? "(default)";
+    const currency = process.env.CURRENCY_MINT;
+
+    console.log(chalk.hex("#14F195")("\n  💳 Payment System Status\n"));
+    console.log(chalk.white(`  Agent Mint:   ${mint ?? chalk.red("NOT SET — set AGENT_TOKEN_MINT_ADDRESS")}`));
+    console.log(chalk.white(`  RPC:          ${rpc.slice(0, 60)}${rpc.length > 60 ? "..." : ""}`));
+    console.log(chalk.white(`  Currency:     ${currency === "So11111111111111111111111111111111111111112" ? "SOL" : "USDC"}`));
+    console.log(chalk.gray("\n  Set AGENT_TOKEN_MINT_ADDRESS in .env to enable payments.\n"));
+  });
+
 // ── Parse & Run ────────────────────────────────────────────────
 
 program.parse();

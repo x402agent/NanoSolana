@@ -1,26 +1,25 @@
 ---
-summary: "nanosolana memory — ClawVault memory management"
+summary: "Current ClawVault CLI surface"
 title: "memory"
 ---
 
-# `nanosolana memory`
+# Memory and ClawVault
 
-Manage the ClawVault 3-tier epistemological memory system.
+The current published CLI exposes ClawVault through `nanosolana vault [query]`.
+There is not yet a standalone `nanosolana memory ...` subtree.
 
-## Subcommands
-
-### `nanosolana memory status`
-
-Show memory tier statistics.
+## Current commands
 
 ```bash
-nanosolana memory status
-nanosolana memory status --json
+nanosolana vault
+nanosolana vault "RSI"
+nanosolana status
+nanosolana docs memory
 ```
 
 Output:
 
-```
+```text
 ClawVault Memory Status
 ━━━━━━━━━━━━━━━━━━━━━━
   KNOWN:    42 entries   (TTL: 60s)
@@ -30,54 +29,7 @@ ClawVault Memory Status
   Disk:     1.2 MB
 ```
 
-### `nanosolana memory search`
-
-Search across all memory tiers.
-
-```bash
-nanosolana memory search "RSI oversold pattern"
-nanosolana memory search "SOL correlation" --tier learned
-nanosolana memory search "volume spike" --limit 10 --json
-```
-
-Options:
-
-- `--tier <known|learned|inferred|all>`: Filter by tier (default: `all`).
-- `--limit <n>`: Max results (default: `10`).
-- `--json`: Machine-readable output.
-
-### `nanosolana memory store`
-
-Manually store a memory entry.
-
-```bash
-nanosolana memory store "SOL tends to bounce at $135 support" --tier learned
-nanosolana memory store "High volume mornings correlate with afternoon rallies" --tier inferred
-```
-
-Options:
-
-- `--tier <learned|inferred>`: Target tier (default: `learned`).
-- `--tags <tag1,tag2>`: Comma-separated tags.
-- `--importance <1-10>`: Importance score.
-
-### `nanosolana memory flush`
-
-Persist all in-memory data to disk.
-
-```bash
-nanosolana memory flush
-```
-
-### `nanosolana memory lessons`
-
-List LEARNED entries (trading lessons).
-
-```bash
-nanosolana memory lessons
-nanosolana memory lessons --limit 20
-nanosolana memory lessons --json
-```
+When you pass a query string to `nanosolana vault`, it searches recent memory and prints matching entries with tier labels.
 
 ## Memory tiers
 
@@ -89,7 +41,7 @@ nanosolana memory lessons --json
 
 ## File layout
 
-```
+```text
 ~/.nanosolana/clawvault/
 ├── known.json         # Usually empty (ephemeral)
 ├── learned.json       # Persistent patterns
@@ -97,3 +49,7 @@ nanosolana memory lessons --json
 ├── agenda.json        # Research questions
 └── replay/            # Experience replay logs
 ```
+
+## Note
+
+The richer command tree that appeared in earlier drafts of the docs was a roadmap shape, not the current CLI.
