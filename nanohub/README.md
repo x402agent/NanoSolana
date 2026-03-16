@@ -86,6 +86,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for full local setup, OAuth, JWT keys, an
 - `VITE_SITE_MODE` — optional override: `skills` or `souls`.
 - `SITE_URL` — primary NanoHub URL, local default `http://localhost:3000`.
 - `CONVEX_SITE_URL` — same as `VITE_CONVEX_SITE_URL`.
+- `CUSTOM_AUTH_SITE_URL` — optional public auth origin for Convex Auth. Set this to your deployed app URL when GitHub OAuth should return to Netlify or Railway instead of the raw `convex.site` host.
 - `AUTH_GITHUB_ID` / `AUTH_GITHUB_SECRET` — GitHub OAuth app credentials.
 - `JWT_PRIVATE_KEY` / `JWKS` — Convex Auth signing keys.
 - `OPENAI_API_KEY` — embeddings and indexing.
