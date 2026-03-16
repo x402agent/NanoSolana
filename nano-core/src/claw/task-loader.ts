@@ -18,6 +18,7 @@
 
 import { readdirSync, readFileSync } from 'node:fs';
 import { join, basename, resolve } from 'node:path';
+import { resolveNanoRepositoryRoot } from '../extensions/catalog.js';
 import type { PersonaDefinition } from './persona-loader.js';
 
 // ── Task Schema ─────────────────────────────────────────────────────────────
@@ -45,6 +46,12 @@ export interface TaskAssignment {
   task: AgentTask;
   relevanceScore: number;
   matchedKeywords: string[];
+}
+
+export interface AgentTaskSummary {
+  total: number;
+  byPriority: Record<'HIGH' | 'MED' | 'LOW', number>;
+  byDomain: Record<string, number>;
 }
 
 // ── Domain keyword maps ─────────────────────────────────────────────────────
@@ -104,8 +111,7 @@ const PERSONA_DOMAIN_MAP: Record<string, string[]> = {
 let cachedTasks: AgentTask[] | null = null;
 
 function getTasksDir(): string {
-  // Resolve from project root
-  return resolve(import.meta.dirname ?? __dirname, '../../../../agent-tasks');
+  return join(resolveNanoRepositoryRoot(), 'agent-tasks');
 }
 
 /**
@@ -232,6 +238,58 @@ export function loadAllTasks(): AgentTask[] {
  */
 export function getTask(id: string): AgentTask | null {
   return loadAllTasks().find((t) => t.id === id) ?? null;
+}
+
+/**
+ * Search tasks by id, title, summary, keywords, and domains.
+ */
+export function searchTasks(
+  query: string,
+  limit = 10,
+): AgentTask[] {
+  const normalizedQuery = query.trim().toLowerCase();
+  if (!normalizedQuery) return [];
+
+  const boundedLimit = Math.max(1, Math.min(100, Math.floor(limit)));
+  const terms = normalizedQuery.split(/\s+/).filter((term) => term.length > 0);
+
+  return loadAllTasks()
+    .map((task) => ({
+      task,
+      score: scoreTask(task, normalizedQuery, terms),
+    }))
+    .filter((entry) => entry.score > 0)
+    .sort((left, right) => right.score - left.score || left.task.priority - right.task.priority)
+    .slice(0, boundedLimit)
+    .map((entry) => entry.task);
+}
+
+/**
+ * Build an aggregated summary of the current task registry.
+ */
+export function getTaskSummary(tasks: AgentTask[] = loadAllTasks()): AgentTaskSummary {
+  const byPriority: Record<'HIGH' | 'MED' | 'LOW', number> = {
+    HIGH: 0,
+    MED: 0,
+    LOW: 0,
+  };
+
+  const byDomain: Record<string, number> = {};
+
+  for (const task of tasks) {
+    byPriority[task.priorityLabel] += 1;
+    for (const domain of task.domains) {
+      byDomain[domain] = (byDomain[domain] ?? 0) + 1;
+    }
+  }
+
+  return {
+    total: tasks.length,
+    byPriority,
+    byDomain: Object.fromEntries(
+      Object.entries(byDomain).sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0])),
+    ),
+  };
 }
 
 // ── Persona-Task Matching ───────────────────────────────────────────────────
@@ -399,4 +457,28 @@ export function formatPersonaTaskAssignments(
  */
 export function clearTaskCache(): void {
   cachedTasks = null;
+}
+
+function scoreTask(task: AgentTask, normalizedQuery: string, terms: string[]): number {
+  const haystack = [
+    task.id,
+    task.title,
+    task.summary,
+    ...task.keywords,
+    ...task.domains,
+  ]
+    .join(' ')
+    .toLowerCase();
+
+  let score = 0;
+  if (task.id.toLowerCase() === normalizedQuery) score += 200;
+  if (task.id.toLowerCase().includes(normalizedQuery)) score += 80;
+  if (task.title.toLowerCase().includes(normalizedQuery)) score += 60;
+  if (task.summary.toLowerCase().includes(normalizedQuery)) score += 30;
+
+  for (const term of terms) {
+    if (haystack.includes(term)) score += 10;
+  }
+
+  return score;
 }

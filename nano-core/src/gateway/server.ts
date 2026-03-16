@@ -24,6 +24,8 @@ import type { TradingEngine, ManualTradeInput } from "../trading/engine.js";
 import type { MemoryEngine } from "../memory/engine.js";
 import { getNanoKnowledgeSnapshot, getNanoKnowledgeSummary, searchNanoKnowledge } from "../docs/integration.js";
 import { TelegramConversationStore } from "../telegram/persistence.js";
+import { getPersona } from "../claw/persona-loader.js";
+import { getTaskSummary, getTasksForPersona, loadAllTasks, searchTasks } from "../claw/task-loader.js";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -475,6 +477,44 @@ export class NanoGateway extends EventEmitter<GatewayEvents> {
         break;
       }
 
+      case "/api/tasks": {
+        const query = url.searchParams.get("q")?.trim() ?? "";
+        const personaId = url.searchParams.get("persona")?.trim() ?? "";
+        const limit = this.parsePositiveInteger(url.searchParams.get("limit"), 10);
+        const tasks = loadAllTasks();
+        const summary = getTaskSummary(tasks);
+
+        if (personaId) {
+          const persona = getPersona(personaId);
+          if (!persona) {
+            this.respondBadRequest(res, `Unknown persona: ${personaId}`);
+            break;
+          }
+
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({
+            summary,
+            persona: {
+              id: persona.identifier,
+              title: persona.meta.title,
+              avatar: persona.meta.avatar,
+            },
+            assignments: getTasksForPersona(persona, 2, limit),
+          }));
+          break;
+        }
+
+        const matchedTasks = query ? searchTasks(query, limit) : tasks.slice(0, limit);
+
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({
+          summary,
+          query: query || undefined,
+          tasks: matchedTasks,
+        }));
+        break;
+      }
+
       case "/api/extension/config": {
         if (req.method === "GET") {
           res.writeHead(200, { "Content-Type": "application/json" });
@@ -685,6 +725,7 @@ export class NanoGateway extends EventEmitter<GatewayEvents> {
   private getFrameworkSnapshot(): Record<string, unknown> {
     const knowledgeSummary = getNanoKnowledgeSummary();
     const extensionSnapshot = getNanoKnowledgeSnapshot().extensions;
+    const taskSummary = getTaskSummary(loadAllTasks());
 
     return {
       project: "NanoSolana",
@@ -705,6 +746,7 @@ export class NanoGateway extends EventEmitter<GatewayEvents> {
       },
       memory: this.memory.getStats(),
       knowledge: knowledgeSummary,
+      tasks: taskSummary,
       extensions: {
         directories: extensionSnapshot.directories,
         manifests: extensionSnapshot.manifests,
@@ -715,6 +757,7 @@ export class NanoGateway extends EventEmitter<GatewayEvents> {
         "/health",
         "/api/status",
         "/api/memory",
+        "/api/tasks",
         "/api/framework",
         "/api/docs",
         "/api/extension/config",

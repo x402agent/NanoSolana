@@ -35,6 +35,14 @@ import {
 import { HeliusClient, printWalletSnapshot } from "../onchain/helius-client.js";
 import { AgentRegistry, registerOnHeartbeat } from "../registry/agent-registry.js";
 import { NanoBotServer } from "../nanobot/server.js";
+import {
+  getTask,
+  getTaskSummary,
+  getTasksForPersona,
+  loadAllTasks,
+  searchTasks,
+} from "../claw/task-loader.js";
+import { getPersona } from "../claw/persona-loader.js";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { homedir } from "node:os";
@@ -713,6 +721,119 @@ program
             console.log(`  ${typeTag} ${chalk.white(match.title)}`);
             console.log(`       ${chalk.gray(match.path)}${match.subtitle ? chalk.gray(` — ${match.subtitle}`) : ""}`);
           }
+        }
+      }
+
+      console.log();
+    } catch (err) {
+      console.error(chalk.red(`  ❌ ${(err as Error).message}\n`));
+      process.exit(1);
+    }
+  });
+
+// ── nano tasks ──────────────────────────────────────────────
+
+program
+  .command("tasks")
+  .description("Inspect automated agent tasks from the repo task registry")
+  .argument("[query]", "Optional query to search the task registry")
+  .option("-p, --persona <id>", "Show tasks assigned to a persona")
+  .option("-l, --limit <n>", "Maximum search results", "10")
+  .option("--json", "Emit machine-readable JSON")
+  .action((query, opts) => {
+    try {
+      const limit = parsePositiveInteger(opts.limit as string | undefined, 10);
+      const allTasks = loadAllTasks();
+      const summary = getTaskSummary(allTasks);
+
+      if (opts.persona) {
+        const persona = getPersona(String(opts.persona));
+        if (!persona) {
+          throw new Error(`Unknown persona: ${opts.persona}`);
+        }
+
+        const assignments = getPersonaTasks(persona);
+        if (opts.json) {
+          console.log(JSON.stringify({
+            summary,
+            persona: {
+              id: persona.identifier,
+              title: persona.meta.title,
+              avatar: persona.meta.avatar,
+            },
+            assignments,
+          }, null, 2));
+          return;
+        }
+
+        console.log();
+        console.log(`${persona.meta.avatar} ${persona.meta.title} — Assigned Tasks\n`);
+        if (assignments.length === 0) {
+          console.log(chalk.gray("  No matching tasks found.\n"));
+          return;
+        }
+
+        for (const assignment of assignments) {
+          const priority = assignment.task.priorityLabel === "HIGH"
+            ? chalk.red("HIGH")
+            : assignment.task.priorityLabel === "MED"
+              ? chalk.yellow("MED")
+              : chalk.green("LOW");
+          console.log(`  [${assignment.task.id}] ${assignment.task.title} ${chalk.gray(`(${priority})`)}`);
+        }
+        console.log();
+        return;
+      }
+
+      const tasks = query ? searchTasks(String(query), limit) : allTasks.slice(0, limit);
+
+      if (opts.json) {
+        console.log(JSON.stringify({
+          summary,
+          query: query ? String(query) : undefined,
+          tasks,
+        }, null, 2));
+        return;
+      }
+
+      console.log(chalk.cyan("\n  ── Agent Task Registry ──────────────────────\n"));
+      console.log(chalk.white("  Total:      ") + chalk.green(String(summary.total)));
+      console.log(
+        chalk.white("  Priority:   ")
+        + chalk.red(`HIGH ${summary.byPriority.HIGH} `)
+        + chalk.yellow(`MED ${summary.byPriority.MED} `)
+        + chalk.green(`LOW ${summary.byPriority.LOW}`),
+      );
+
+      const topDomains = Object.entries(summary.byDomain).slice(0, 6);
+      if (topDomains.length > 0) {
+        console.log(
+          chalk.white("  Domains:    ")
+          + chalk.gray(topDomains.map(([domain, count]) => `${domain}:${count}`).join(", ")),
+        );
+      }
+
+      console.log();
+      if (tasks.length === 0) {
+        console.log(chalk.gray("  No matching tasks found."));
+      } else {
+        for (const task of tasks) {
+          const priority = task.priorityLabel === "HIGH"
+            ? chalk.red("HIGH")
+            : task.priorityLabel === "MED"
+              ? chalk.yellow("MED")
+              : chalk.green("LOW");
+          console.log(`  [${task.id}] ${task.title} ${chalk.gray(`(${priority})`)}`);
+          if (task.summary) {
+            console.log(`      ${chalk.gray(task.summary)}`);
+          }
+        }
+      }
+
+      if (query) {
+        const exact = getTask(String(query));
+        if (exact && !tasks.some((task) => task.id === exact.id)) {
+          console.log(`\n  Exact match available: ${exact.id} — ${exact.title}`);
         }
       }
 

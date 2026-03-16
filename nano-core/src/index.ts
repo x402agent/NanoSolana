@@ -85,6 +85,24 @@ export type {
 export { TelegramConversationStore } from "./telegram/persistence.js";
 export type { ConversationMessage, ConversationContext, ConversationSearchResult } from "./telegram/persistence.js";
 
+// Agent Task Registry
+export {
+  loadAllTasks,
+  getTask,
+  getTasksForPersona,
+  buildTaskBriefing,
+  formatTaskList,
+  formatPersonaTaskAssignments,
+  clearTaskCache,
+  searchTasks,
+  getTaskSummary,
+} from "./claw/task-loader.js";
+export type {
+  AgentTask,
+  TaskAssignment,
+  AgentTaskSummary,
+} from "./claw/task-loader.js";
+
 // ── NanoClaw — Containerized Agent Orchestrator ─────────────────────────────
 export { escapeXml, formatMessages, stripInternalTags, formatOutbound, routeOutbound, findChannel } from "./claw/router.js";
 export type {

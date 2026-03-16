@@ -24,6 +24,7 @@ const DOC_AREAS = [
   { area: "extensions", directory: "nano-docs/extensions", path: "nano-docs/extensions" },
   { area: "gateway", directory: "nano-docs/gateway", path: "nano-docs/gateway" },
   { area: "security", directory: "nano-docs/security", path: "nano-docs/security" },
+  { area: "agent-tasks", directory: "agent-tasks", path: "agent-tasks" },
   { area: "tools", directory: "nano-docs/tools", path: "nano-docs/tools" },
   { area: "trading", directory: "nano-docs/trading", path: "nano-docs/trading" },
   { area: "pump-docs", directory: "pump/docs", path: "pump/docs" },
