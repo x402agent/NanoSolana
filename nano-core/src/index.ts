@@ -55,6 +55,7 @@ export {
   searchNanoHubSkills,
   getNanoHubSkill,
   getNanoHubSkillFile,
+  getNanoHubSkillManifest,
   clampNanoHubLimit,
 } from "./hub/public-client.js";
 export type {
@@ -67,6 +68,18 @@ export type {
   NanoHubSearchResponse,
   NanoHubSkillFileResponse,
 } from "./hub/public-client.js";
+export { buildNanoSolanaOneShotPlan } from "./hub/oneshot.js";
+export type {
+  NanoHubManifestFile,
+  NanoHubManifestOwner,
+  NanoHubManifestEnvVar,
+  NanoHubManifestDependency,
+  NanoHubManifestInstallSpec,
+  NanoHubSkillManifest,
+  NanoHubSkillManifestResponse,
+  NanoSolanaOneShotStep,
+  NanoSolanaOneShotPlan,
+} from "./hub/oneshot.js";
 
 // Network (Tailscale + tmux)
 export { TailscaleDiscovery, TmuxManager, NanoNetworkClient } from "./network/mesh.js";

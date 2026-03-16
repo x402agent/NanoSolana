@@ -50,10 +50,12 @@ import {
   getNanoHubSiteUrl,
   getNanoHubSkill,
   getNanoHubSkillFile,
+  getNanoHubSkillManifest,
   getNanoHubSkillUrl,
   listNanoHubSkills,
   searchNanoHubSkills,
 } from "../hub/public-client.js";
+import { buildNanoSolanaOneShotPlan } from "../hub/oneshot.js";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { homedir } from "node:os";
@@ -1502,6 +1504,90 @@ payCmd
       { label: "Currency", value: currency === "So11111111111111111111111111111111111111112" ? "SOL" : "USDC", color: "#FFD700" },
     ]);
     printInfo("\nSet AGENT_TOKEN_MINT_ADDRESS in .env to enable payments.\n");
+  });
+
+// ── nanosolana oneshot ───────────────────────────────────────────
+
+program
+  .command("oneshot")
+  .description("Resolve a NanoHub skill manifest into a one-shot NanoSolana launch plan")
+  .argument("<slug>", "NanoHub skill slug")
+  .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? "https://hub.nanosolana.com")
+  .option("--write <path>", "Write the generated plan to a JSON file")
+  .option("--json", "Emit machine-readable JSON")
+  .action(async (slug, opts) => {
+    try {
+      const siteUrl = getNanoHubSiteUrl(opts.site);
+      const { manifest } = await getNanoHubSkillManifest(String(slug), { siteUrl });
+      const plan = buildNanoSolanaOneShotPlan(manifest, {
+        env: process.env,
+        siteUrl,
+      });
+
+      if (opts.write) {
+        writeFileSync(String(opts.write), `${JSON.stringify(plan, null, 2)}\n`);
+      }
+
+      if (opts.json) {
+        console.log(JSON.stringify({
+          siteUrl,
+          manifest,
+          plan,
+        }, null, 2));
+        return;
+      }
+
+      printBanner();
+      console.log(chalk.white.bold("  ⚡ NanoSolana One-Shot Plan\n"));
+      console.log(chalk.cyan(`  Skill:       ${plan.displayName} (${plan.slug})`));
+      console.log(chalk.cyan(`  Version:     ${plan.version}`));
+      console.log(chalk.cyan(`  Site:        ${siteUrl}`));
+      console.log(chalk.cyan(`  Runtime:     ${plan.runtime ?? "unspecified"}`));
+      console.log(chalk.cyan(`  Entry:       ${plan.entryCommand ?? "not declared"}`));
+      console.log(chalk.cyan(`  Health:      ${plan.healthEndpoint ?? "not declared"}`));
+      console.log(chalk.cyan(`  Setup URL:   ${plan.setupUrl ?? "not declared"}`));
+      console.log(chalk.cyan(`  Ready:       ${plan.readyToLaunch ? "yes" : "not yet"}`));
+
+      if (plan.summary) {
+        console.log(chalk.gray(`\n  ${plan.summary}`));
+      }
+
+      console.log(chalk.white("\n  Steps"));
+      for (const step of plan.steps) {
+        const color = step.status === "ready"
+          ? chalk.green
+          : step.status === "needs_input"
+            ? chalk.yellow
+            : chalk.gray;
+        console.log(color(`  - ${step.title}: ${step.details}`));
+      }
+
+      if (plan.missingEnv.length > 0) {
+        console.log(chalk.yellow(`\n  Missing env: ${plan.missingEnv.join(", ")}`));
+      }
+      if (plan.requiredOAuth.length > 0) {
+        console.log(chalk.yellow(`  OAuth:       ${plan.requiredOAuth.join(", ")}`));
+      }
+      if (plan.extensions.length > 0) {
+        console.log(chalk.gray(`  Extensions:  ${plan.extensions.join(", ")}`));
+      }
+      if (plan.linkedSkills.length > 0) {
+        console.log(chalk.gray(`  Skill deps:  ${plan.linkedSkills.join(", ")}`));
+      }
+      if (plan.warnings.length > 0) {
+        console.log(chalk.yellow("\n  Notes"));
+        for (const warning of plan.warnings) {
+          console.log(chalk.yellow(`  - ${warning}`));
+        }
+      }
+      if (opts.write) {
+        console.log(chalk.gray(`\n  Wrote plan to ${opts.write}`));
+      }
+      console.log();
+    } catch (err) {
+      printError(err instanceof Error ? err.message : String(err));
+      process.exit(1);
+    }
   });
 
 // ── nanosolana hub ────────────────────────────────────────────────

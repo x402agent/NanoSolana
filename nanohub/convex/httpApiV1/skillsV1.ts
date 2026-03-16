@@ -1,6 +1,7 @@
 import { api, internal } from '../_generated/api'
 import type { Doc, Id } from '../_generated/dataModel'
 import type { ActionCtx } from '../_generated/server'
+import { buildSkillAgentManifest } from '../lib/agentManifest'
 import { getOptionalApiTokenUserId, requireApiTokenUser } from '../lib/apiTokenAuth'
 import { applyRateLimit, parseBearerToken } from '../lib/httpRateLimit'
 import { publishVersionForUser } from '../skills'
@@ -583,6 +584,42 @@ export async function skillsGetRouterV1Handler(ctx: ActionCtx, request: Request)
       200,
       rate.headers,
     )
+  }
+
+  if (second === 'manifest' && segments.length === 2) {
+    const result = (await ctx.runQuery(api.skills.getBySlug, { slug })) as GetBySlugResult
+    if (!result?.skill || !result.latestVersion) {
+      const hidden = await describeOwnerVisibleSkillState(ctx, request, slug)
+      if (hidden) return text(hidden.message, hidden.status, rate.headers)
+      return text('Skill not found', 404, rate.headers)
+    }
+
+    const [tags] = await resolveTagsBatch(ctx, [result.skill.tags])
+    const manifest = buildSkillAgentManifest({
+      slug: result.skill.slug,
+      displayName: result.skill.displayName,
+      summary: result.skill.summary ?? null,
+      version: result.latestVersion.version,
+      tags: Object.keys(tags),
+      owner: result.owner
+        ? {
+            handle: result.owner.handle ?? null,
+            displayName: result.owner.displayName ?? null,
+            image: result.owner.image ?? null,
+          }
+        : null,
+      files: result.latestVersion.files.map((file) => ({
+        path: file.path,
+        size: file.size,
+        sha256: file.sha256,
+        contentType: file.contentType ?? null,
+      })),
+      metadata: result.latestVersion.parsed?.metadata,
+      frontmatter: result.latestVersion.parsed?.frontmatter,
+      clawdis: result.latestVersion.parsed?.clawdis,
+    })
+
+    return json({ manifest }, 200, rate.headers)
   }
 
   if (second === 'file' && segments.length === 2) {

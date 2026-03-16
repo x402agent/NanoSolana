@@ -95,7 +95,12 @@ installing the separate registry CLI:
 npx nanosolana hub skills
 npx nanosolana hub skills telegram --limit 5
 npx nanosolana hub inspect token-tracker
+npx nanosolana oneshot token-tracker
 ```
+
+`nanosolana oneshot <slug>` is the new bootstrap scaffold command. It resolves
+the NanoHub manifest for a skill, checks env and OAuth blockers, and emits a
+launch plan without mutating your system yet.
 
 When you want install, publish, or sync flows, drop into the dedicated NanoHub CLI:
 
@@ -206,6 +211,7 @@ Secrets can come from the encrypted local vault, environment variables, or both.
 | --- | --- |
 | `nanosolana hub skills [query]` | Browse or search public NanoHub skills |
 | `nanosolana hub inspect <slug>` | Inspect a skill and preview `SKILL.md` |
+| `nanosolana oneshot <slug>` | Build a one-shot launch plan from the skill manifest |
 | `nanosolana hub register` | Register this agent in the NanoHub agent registry |
 | `nanosolana hub list` | List agents in the NanoHub agent registry |
 | `nanosolana hub search <query>` | Search the NanoHub agent registry |

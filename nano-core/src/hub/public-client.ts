@@ -1,3 +1,7 @@
+import type {
+  NanoHubSkillManifestResponse,
+} from "./oneshot.js";
+
 const DEFAULT_NANOHUB_SITE_URL = "https://hub.nanosolana.com";
 
 export type NanoHubExploreSort =
@@ -197,6 +201,15 @@ export async function getNanoHubSkillFile(
     url.searchParams.set("tag", options.tag.trim());
   }
   return fetchNanoHubJson<NanoHubSkillFileResponse>(url.toString());
+}
+
+export async function getNanoHubSkillManifest(
+  slug: string,
+  options: { siteUrl?: string | null } = {},
+): Promise<NanoHubSkillManifestResponse> {
+  return fetchNanoHubJson<NanoHubSkillManifestResponse>(
+    `${getNanoHubApiBaseUrl(options.siteUrl)}/skills/${encodeURIComponent(slug.trim())}/manifest`,
+  );
 }
 
 export function clampNanoHubLimit(limit: number, fallback = 10): number {
