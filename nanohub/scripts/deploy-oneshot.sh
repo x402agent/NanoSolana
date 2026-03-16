@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PACKAGE_DIR="$ROOT_DIR/packages/clawdhub"
+PACKAGE_DIR="$ROOT_DIR/packages/nanohub"
 
 if [[ -z "${NPM_TOKEN:-}" ]]; then
   echo "Error: NPM_TOKEN is required (export NPM_TOKEN=...)" >&2

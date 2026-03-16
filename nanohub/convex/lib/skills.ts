@@ -7,7 +7,7 @@ import {
   parseArk,
   type SkillInstallSpec,
   TEXT_FILE_EXTENSION_SET,
-} from 'clawhub-schema'
+} from 'nanohub-schema'
 import { parse as parseYaml } from 'yaml'
 
 export type ParsedSkillFrontmatter = Record<string, unknown>

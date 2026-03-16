@@ -242,8 +242,8 @@
 ### Fixed
 - CLI sync: wrap note output to avoid terminal overflow; cap list lengths.
 - CLI sync: label fallback scans as fallback locations.
-- CLI package: bundle schema internally (no external `clawhub-schema` publish).
-- Repo: mark `clawhub-schema` as private to prevent publishing.
+- CLI package: bundle schema internally (no external `nanohub-schema` publish).
+- Repo: mark `nanohub-schema` as private to prevent publishing.
 
 ## 0.0.2 - 2026-01-04
 

@@ -61,7 +61,7 @@ SKIP_CONVEX_DEPLOY=1 bun run deploy:oneshot
 - Web app: TanStack Start (React, Vite/Nitro).
 - Backend: Convex (DB + file storage + HTTP actions) + Convex Auth (GitHub OAuth).
 - Search: OpenAI embeddings (`text-embedding-3-small`) + Convex vector search.
-- API schema + routes: `packages/schema` (`clawhub-schema`).
+- API schema + routes: `packages/schema` (`nanohub-schema`).
 
 ## CLI
 

@@ -9,11 +9,11 @@ import {
   ApiV1SearchResponseSchema,
   ApiV1WhoamiResponseSchema,
   parseArk,
-} from 'clawhub-schema'
+} from 'nanohub-schema'
 import { unzipSync } from 'fflate'
 import { Agent, setGlobalDispatcher } from 'undici'
 import { describe, expect, it } from 'vitest'
-import { readGlobalConfig } from '../packages/clawdhub/src/config'
+import { readGlobalConfig } from '../packages/nanohub/src/config'
 
 const REQUEST_TIMEOUT_MS = 15_000
 
