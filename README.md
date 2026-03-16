@@ -11,7 +11,6 @@
     ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝
 ```
 
-<<<<<<< Updated upstream
 <div align="center">
 
 [![npm version](https://img.shields.io/npm/v/nanosolana?color=14F195&style=for-the-badge)](https://npmjs.com/package/nanosolana)
@@ -29,10 +28,7 @@
 
 </div>
 
-**NanoSolana** is a modular, security-first framework for building autonomous financial agents on Solana. Deploy AI-powered trading agents that observe markets in real-time, learn from every trade, and coordinate across a decentralized mesh network — all with one command.
-=======
-**NanoSolana** is a modular, security-first framework for building autonomous financial agents on Solana. Deploy AI-powered trading agents with 43+ distinct DeFi personalities, direct Pump.fun protocol access, epistemological memory, and multi-bot swarm coordination — all with one command.
->>>>>>> Stashed changes
+**NanoSolana** is a modular, security-first framework for building autonomous financial agents on Solana. It combines AI-powered trading loops, direct Solana integrations, epistemological memory, on-chain identity, and multi-agent coordination in one open-source stack.
 
 **Website:** [nanosolana.com](https://nanosolana.com) · **Hub:** [hub.nanosolana.com](https://hub.nanosolana.com) · **Docs:** [docs.nanosolana.com](https://docs.nanosolana.com) · **GitHub:** [github.com/x402agent/NanoSolana](https://github.com/x402agent/NanoSolana)
 
