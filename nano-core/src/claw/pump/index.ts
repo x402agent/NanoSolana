@@ -50,6 +50,10 @@ export {
   shortenAddress,
 } from './sdk-bridge.js';
 
+// ── Embedded Pump SDK ──────────────────────────────────────────────────────
+
+export * as PumpFunSdk from './sdk/index.js';
+
 // ── Swarm Spawner ───────────────────────────────────────────────────────────
 
 export { SwarmSpawner } from './swarm-spawner.js';

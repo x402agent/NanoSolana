@@ -24,6 +24,7 @@
 
 import { createServer } from "node:http";
 import { createHash, randomUUID } from "node:crypto";
+import { pathToFileURL } from "node:url";
 
 // ── Config ───────────────────────────────────────────────────────
 
@@ -70,7 +71,7 @@ async function supabase(
     Authorization: `Bearer ${key}`,
   };
 
-  if (method === "POST" && opts.preferRepresentation !== false) {
+  if ((method === "POST" || method === "PATCH") && opts.preferRepresentation !== false) {
     headers.Prefer = "return=representation";
   }
 
@@ -136,6 +137,10 @@ async function execSQL(sql: string): Promise<SupabaseResponse> {
 
 function slugify(name: string): string {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 64);
+}
+
+function isValidCategory(value: string): value is "skill" | "soul" | "bot" | "service" | "agent" {
+  return ["skill", "soul", "bot", "service", "agent"].includes(value);
 }
 
 function fp(pubkey: string, name: string, version: string): string {
@@ -292,18 +297,30 @@ async function handleRegister(req: Req, res: Res): Promise<void> {
 
   const name = String(body.name ?? "").trim();
   const description = String(body.description ?? "").trim();
-  const category = String(body.category ?? "agent") as "skill" | "soul" | "bot" | "service" | "agent";
+  const categoryCandidate = String(body.category ?? "agent").trim();
   const publicKey = String(body.publicKey ?? body.public_key ?? "").trim();
   const owner = String(body.owner ?? publicKey.slice(0, 8));
   const version = String(body.version ?? "1.0.0");
   const capabilities = Array.isArray(body.capabilities) ? body.capabilities : [];
   const tags = Array.isArray(body.tags) ? body.tags : [];
-  const metadata = typeof body.metadata === "object" ? body.metadata : {};
+  const metadata = body.metadata && typeof body.metadata === "object" && !Array.isArray(body.metadata)
+    ? body.metadata
+    : {};
 
   if (!name) { json(res, 400, { error: "name is required" }); return; }
   if (!publicKey) { json(res, 400, { error: "publicKey is required" }); return; }
+  if (!isValidCategory(categoryCandidate)) {
+    json(res, 400, { error: "category must be skill, soul, bot, service, or agent" });
+    return;
+  }
 
-  const slug = body.slug ? String(body.slug).trim() : slugify(name);
+  const category = categoryCandidate;
+  const slugSource = body.slug ? String(body.slug).trim() : name;
+  const slug = slugify(slugSource);
+  if (!slug) {
+    json(res, 400, { error: "slug is required after normalization" });
+    return;
+  }
   const registrationToken = randomUUID();
   const fingerprint = fp(publicKey, name, version);
   const now = new Date().toISOString();
@@ -372,13 +389,19 @@ async function handleHeartbeat(req: Req, res: Res, slug: string): Promise<void> 
 
   if (!token) { json(res, 401, { error: "registrationToken required" }); return; }
 
-  const { error } = await supabase("PATCH", "hub_agents", {
+  const { data, error } = await supabase("PATCH", "hub_agents", {
     query: { slug: `eq.${slug}`, registration_token: `eq.${token}` },
     body: { heartbeat_at: new Date().toISOString(), status: "active" },
+    preferRepresentation: true,
   });
 
   if (error) { json(res, 500, { error }); return; }
-  json(res, 200, { ok: true });
+  const updated = Array.isArray(data) ? data : [];
+  if (updated.length === 0) {
+    json(res, 404, { error: "Agent not found or registration token invalid" });
+    return;
+  }
+  json(res, 200, { ok: true, agent: updated[0] });
 }
 
 async function handleUpdateAgent(req: Req, res: Res, slug: string): Promise<void> {
@@ -395,13 +418,19 @@ async function handleUpdateAgent(req: Req, res: Res, slug: string): Promise<void
   if (body.metadata !== undefined) updates.metadata = body.metadata;
   if (body.status !== undefined) updates.status = body.status;
 
-  const { error } = await supabase("PATCH", "hub_agents", {
+  const { data, error } = await supabase("PATCH", "hub_agents", {
     query: { slug: `eq.${slug}`, registration_token: `eq.${token}` },
     body: updates,
+    preferRepresentation: true,
   });
 
   if (error) { json(res, 500, { error }); return; }
-  json(res, 200, { ok: true });
+  const updated = Array.isArray(data) ? data : [];
+  if (updated.length === 0) {
+    json(res, 404, { error: "Agent not found or registration token invalid" });
+    return;
+  }
+  json(res, 200, { ok: true, agent: updated[0] });
 }
 
 async function handleSearch(_req: Req, res: Res, urlObj: URL): Promise<void> {
@@ -453,100 +482,122 @@ async function handleDbInit(_req: Req, res: Res): Promise<void> {
 
 // ── HTTP Server ──────────────────────────────────────────────────
 
-const server = createServer(async (req, res) => {
-  const url = new URL(req.url ?? "/", `http://localhost:${PORT}`);
-  const path = url.pathname;
-  const method = req.method ?? "GET";
+function hasApiSecretAccess(req: Req): boolean {
+  if (!API_SECRET) return true;
+  return req.headers["x-api-secret"] === API_SECRET;
+}
 
-  // CORS preflight
-  if (method === "OPTIONS") {
-    cors(res);
-    res.writeHead(204);
-    res.end();
-    return;
-  }
+export function createRegistryServer() {
+  return createServer(async (req, res) => {
+    const url = new URL(req.url ?? "/", `http://localhost:${PORT}`);
+    const path = url.pathname;
+    const method = req.method ?? "GET";
 
-  try {
-    // Health check
-    if (path === "/health" || path === "/") {
-      json(res, 200, {
-        status: "ok",
-        service: "nanohub-registry",
-        version: "1.0.0",
-        timestamp: Date.now(),
-        supabase: SUPABASE_URL ? "configured" : "missing",
-      });
+    // CORS preflight
+    if (method === "OPTIONS") {
+      cors(res);
+      res.writeHead(204);
+      res.end();
       return;
     }
 
-    // DB Init
-    if (path === "/api/v1/db/init" && method === "POST") {
-      await handleDbInit(req, res);
-      return;
-    }
-
-    // GET /api/v1/db/sql — Return SQL for manual creation
-    if (path === "/api/v1/db/sql" && method === "GET") {
-      json(res, 200, { sql: getCreateTableSQL() });
-      return;
-    }
-
-    // Register
-    if (path === "/api/v1/agents/register" && method === "POST") {
-      await handleRegister(req, res);
-      return;
-    }
-
-    // Search
-    if (path === "/api/v1/agents/search" && method === "GET") {
-      await handleSearch(req, res, url);
-      return;
-    }
-
-    // Stats
-    if (path === "/api/v1/stats" && method === "GET") {
-      await handleStats(req, res);
-      return;
-    }
-
-    // List agents
-    if (path === "/api/v1/agents" && method === "GET") {
-      await handleListAgents(req, res, url);
-      return;
-    }
-
-    // Agent-specific routes: /api/v1/agents/:slug
-    const agentMatch = path.match(/^\/api\/v1\/agents\/([a-z0-9-]+)$/);
-    if (agentMatch) {
-      const slug = agentMatch[1];
-
-      if (method === "GET") {
-        await handleGetAgent(req, res, slug);
+    try {
+      // Health check
+      if (path === "/health" || path === "/") {
+        json(res, 200, {
+          status: "ok",
+          service: "nanohub-registry",
+          version: "1.0.0",
+          timestamp: Date.now(),
+          supabase: SUPABASE_URL ? "configured" : "missing",
+        });
         return;
       }
 
-      if (method === "PATCH") {
-        await handleUpdateAgent(req, res, slug);
+      // DB Init
+      if (path === "/api/v1/db/init" && method === "POST") {
+        if (!hasApiSecretAccess(req)) {
+          json(res, 401, { error: "API secret required" });
+          return;
+        }
+        await handleDbInit(req, res);
         return;
       }
+
+      // GET /api/v1/db/sql — Return SQL for manual creation
+      if (path === "/api/v1/db/sql" && method === "GET") {
+        if (!hasApiSecretAccess(req)) {
+          json(res, 401, { error: "API secret required" });
+          return;
+        }
+        json(res, 200, { sql: getCreateTableSQL() });
+        return;
+      }
+
+      // Register
+      if (path === "/api/v1/agents/register" && method === "POST") {
+        await handleRegister(req, res);
+        return;
+      }
+
+      // Search
+      if (path === "/api/v1/agents/search" && method === "GET") {
+        await handleSearch(req, res, url);
+        return;
+      }
+
+      // Stats
+      if (path === "/api/v1/stats" && method === "GET") {
+        await handleStats(req, res);
+        return;
+      }
+
+      // List agents
+      if (path === "/api/v1/agents" && method === "GET") {
+        await handleListAgents(req, res, url);
+        return;
+      }
+
+      // Agent-specific routes: /api/v1/agents/:slug
+      const agentMatch = path.match(/^\/api\/v1\/agents\/([a-z0-9-]+)$/);
+      if (agentMatch) {
+        const slug = agentMatch[1];
+
+        if (method === "GET") {
+          await handleGetAgent(req, res, slug);
+          return;
+        }
+
+        if (method === "PATCH") {
+          await handleUpdateAgent(req, res, slug);
+          return;
+        }
+      }
+
+      // Heartbeat: /api/v1/agents/:slug/heartbeat
+      const heartbeatMatch = path.match(/^\/api\/v1\/agents\/([a-z0-9-]+)\/heartbeat$/);
+      if (heartbeatMatch && method === "POST") {
+        await handleHeartbeat(req, res, heartbeatMatch[1]);
+        return;
+      }
+
+      // 404
+      json(res, 404, { error: "Not found", path });
+    } catch (err) {
+      json(res, 500, { error: (err as Error).message });
     }
+  });
+}
 
-    // Heartbeat: /api/v1/agents/:slug/heartbeat
-    const heartbeatMatch = path.match(/^\/api\/v1\/agents\/([a-z0-9-]+)\/heartbeat$/);
-    if (heartbeatMatch && method === "POST") {
-      await handleHeartbeat(req, res, heartbeatMatch[1]);
-      return;
-    }
+const server = createRegistryServer();
 
-    // 404
-    json(res, 404, { error: "Not found", path });
-  } catch (err) {
-    json(res, 500, { error: (err as Error).message });
-  }
-});
+function isMainModule(): boolean {
+  return Boolean(process.argv[1]) && import.meta.url === pathToFileURL(process.argv[1]).href;
+}
 
-server.listen(PORT, () => {
-  console.log(`
+if (isMainModule()) {
+  server.listen(PORT, () => {
+    console.log(`
   ╔══════════════════════════════════════════════════════════════╗
   ║          NanoHub — Agent Registration Server                ║
   ║          🦞 Solanapolis Registry API                        ║
@@ -568,6 +619,7 @@ server.listen(PORT, () => {
 
   Ready. 🚀
   `);
-});
+  });
+}
 
 export { server };

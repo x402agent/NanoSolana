@@ -192,6 +192,49 @@ export { SwarmSpawner } from "./claw/pump/swarm-spawner.js";
 // PumpFun — Telegram Gateway
 export { TelegramGateway } from "./claw/pump/telegram-gateway.js";
 
+// PumpFun — Embedded SDK
+export * as PumpFunSdk from "./claw/pump/sdk/index.js";
+export {
+  PumpSdk,
+  OnlinePumpSdk,
+  PUMP_SDK,
+  pumpIdl,
+  PUMP_PROGRAM_ID,
+  PUMP_AMM_PROGRAM_ID,
+  PUMP_FEE_PROGRAM_ID,
+  PUMP_TOKEN_MINT,
+  MAX_SHAREHOLDERS,
+  getBuyTokenAmountFromSolAmount,
+  getBuySolAmountFromTokenAmount,
+  getSellSolAmountFromTokenAmount,
+  newBondingCurve,
+  bondingCurveMarketCap,
+  getStaticRandomFeeRecipient,
+  getFee,
+  computeFeesBps,
+  calculateFeeTier,
+  ONE_BILLION_SUPPLY,
+  totalUnclaimedTokens,
+  currentDayTokens,
+  calculateBuyPriceImpact,
+  calculateSellPriceImpact,
+  getBondingCurveSummary,
+  createFallbackConnection,
+  fetchWithFallback,
+  parseEndpoints,
+  getTokenPrice as getPumpSdkTokenPrice,
+  getGraduationProgress as getPumpSdkGraduationProgress,
+} from "./claw/pump/sdk/index.js";
+export type {
+  BondingCurveSummary,
+  GraduationProgress,
+  TokenPriceInfo,
+  PriceImpactResult,
+  FallbackConfig,
+  Fees,
+  FeeTier,
+} from "./claw/pump/sdk/index.js";
+
 // PumpFun — Bot Registry
 export {
   BOT_REGISTRY,
