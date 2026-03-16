@@ -29,6 +29,9 @@ export type { VaultEntry, TradeRecord, Lesson, ResearchAgenda, KnowledgeTier, Cl
 // Legacy generic memory (kept for compatibility)
 export { MemoryEngine } from "./memory/engine.js";
 
+// Persistent Memory (SQLite + FTS5)
+export { PersistentVault, connectVaultToClawVault } from "./memory/persistence.js";
+
 // AI Provider (OpenRouter)
 export { AIProvider } from "./ai/provider.js";
 export type { AIMessage, AIResponse, OODAContext, TradeDecision, AIProviderEvents } from "./ai/provider.js";

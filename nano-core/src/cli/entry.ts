@@ -58,6 +58,9 @@ import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { homedir } from "node:os";
 import { createInterface } from "node:readline";
+import { execSync } from "node:child_process";
+import { runDoctor } from "./doctor.js";
+import { showSoul, validateSoul, showSoulStats } from "./soul.js";
 
 // ── Banner ────────────────────────────────────────────────────
 
@@ -1963,6 +1966,248 @@ hubCmd
       } else {
         printError("Deregistration failed");
       }
+    } catch (err) {
+      printError(err instanceof Error ? err.message : String(err));
+    }
+  });
+
+// ── Doctor ──────────────────────────────────────────────────────
+
+program
+  .command("doctor")
+  .description("🩺 Diagnose environment, dependencies, config, and connectivity")
+  .action(async () => {
+    printBanner();
+    await runDoctor();
+  });
+
+// ── Soul ────────────────────────────────────────────────────────
+
+const soulCmd = program
+  .command("soul")
+  .description("🧠 View and manage the agent's SOUL.md — identity, philosophy, and values");
+
+soulCmd
+  .command("show")
+  .description("Display SOUL.md contents with highlighted sections")
+  .option("-p, --path <path>", "Path to SOUL.md")
+  .action((opts) => {
+    try {
+      showSoul(opts.path);
+    } catch (err) {
+      printError(err instanceof Error ? err.message : String(err));
+    }
+  });
+
+soulCmd
+  .command("validate")
+  .description("Check SOUL.md for best practices (size, secrets, required sections)")
+  .option("-p, --path <path>", "Path to SOUL.md")
+  .action((opts) => {
+    try {
+      const result = validateSoul(opts.path);
+      if (!result.valid) process.exit(1);
+    } catch (err) {
+      printError(err instanceof Error ? err.message : String(err));
+    }
+  });
+
+soulCmd
+  .command("stats")
+  .description("Show SOUL.md statistics (lines, words, tokens, sections)")
+  .option("-p, --path <path>", "Path to SOUL.md")
+  .action((opts) => {
+    try {
+      showSoulStats(opts.path);
+    } catch (err) {
+      printError(err instanceof Error ? err.message : String(err));
+    }
+  });
+
+// Default `nanosolana soul` (no subcommand) shows the soul
+soulCmd.action(() => {
+  try {
+    showSoul();
+  } catch (err) {
+    printError(err instanceof Error ? err.message : String(err));
+  }
+});
+
+// ── Update ──────────────────────────────────────────────────────
+
+program
+  .command("update")
+  .description("🔄 Update NanoSolana to the latest version")
+  .option("--check", "Only check for updates without installing")
+  .action(async (opts) => {
+    printBanner();
+    console.log(chalk.white.bold("  🔄 NanoSolana Update\n"));
+
+    try {
+      const currentVersion = "1.0.2";
+      console.log(chalk.cyan(`  Current version: v${currentVersion}`));
+
+      // Check npm registry for latest version
+      let latestVersion = currentVersion;
+      try {
+        const res = await fetch("https://registry.npmjs.org/nanosolana/latest", { signal: AbortSignal.timeout(5000) });
+        if (res.ok) {
+          const data = await res.json() as { version: string };
+          latestVersion = data.version;
+        }
+      } catch {
+        console.log(chalk.yellow("  ⚠️  Could not reach npm registry. Checking locally...\n"));
+      }
+
+      if (latestVersion === currentVersion) {
+        printSuccess("Already on the latest version!");
+        return;
+      }
+
+      console.log(chalk.green(`  Latest version:  v${latestVersion}`));
+
+      if (opts.check) {
+        console.log(chalk.cyan(`\n  Update available! Run: npx nanosolana update\n`));
+        return;
+      }
+
+      console.log(chalk.cyan("\n  ⏳ Updating...\n"));
+      execSync("npm install -g nanosolana@latest", { stdio: "inherit" });
+      printSuccess(`Updated to v${latestVersion}!`);
+    } catch (err) {
+      printError(err instanceof Error ? err.message : String(err));
+      console.log(chalk.gray("  Manual update: npm install -g nanosolana@latest\n"));
+    }
+  });
+
+// ── Schedule ────────────────────────────────────────────────────
+
+const scheduleCmd = program
+  .command("schedule")
+  .description("⏰ Manage scheduled automations (Hermes-style cron tasks)");
+
+scheduleCmd
+  .command("list")
+  .description("List all scheduled tasks")
+  .action(async () => {
+    try {
+      const { getAllTasks: fetchAllTasks } = await import("../claw/db.js") as {
+        getAllTasks: () => Array<{
+          id: number; prompt: string; schedule_type: string;
+          schedule_value: string; status: string; next_run: string | null;
+        }>;
+      };
+      const tasks = fetchAllTasks();
+
+      if (tasks.length === 0) {
+        console.log(chalk.gray("\n  No scheduled tasks. Create one with: nanosolana schedule add\n"));
+        return;
+      }
+
+      console.log(chalk.cyan(`\n  ── Scheduled Tasks ── ${tasks.length} total ────────────\n`));
+      for (const task of tasks) {
+        const statusIcon = task.status === "active" ? chalk.green("●") : chalk.red("○");
+        const typeLabel = task.schedule_type === "cron" ? "⏰" : task.schedule_type === "interval" ? "🔁" : "1️⃣";
+        console.log(`  ${statusIcon} ${typeLabel} [${task.id}] ${chalk.white(task.prompt.slice(0, 60))}`);
+        console.log(`    ${chalk.gray(`${task.schedule_type}: ${task.schedule_value}`)} ${task.next_run ? chalk.dim(`→ ${task.next_run}`) : ""}\n`);
+      }
+    } catch {
+      console.log(chalk.gray("\n  No task database found. Tasks are created when the Claw orchestrator runs.\n"));
+    }
+  });
+
+scheduleCmd
+  .command("add")
+  .description("Add a new scheduled task")
+  .requiredOption("-p, --prompt <prompt>", "Task prompt (what the agent should do)")
+  .option("-t, --type <type>", "Schedule type: cron | interval | once", "cron")
+  .option("-v, --value <value>", "Schedule value (cron expression or interval in ms)", "0 9 * * *")
+  .action(async (opts) => {
+    try {
+      const { createTask: insertTask, initDatabase: initDb } = await import("../claw/db.js") as {
+        createTask: (task: {
+          group_folder: string; chat_jid: string; prompt: string;
+          schedule_type: string; schedule_value: string; context_mode: string;
+        }) => { id: number };
+        initDatabase: (dbPath: string) => void;
+      };
+
+      const dbPath = join(homedir(), ".nanosolana", "claw.db");
+      initDb(dbPath);
+
+      const task = insertTask({
+        group_folder: "main",
+        chat_jid: "cli",
+        prompt: opts.prompt,
+        schedule_type: opts.type,
+        schedule_value: opts.value,
+        context_mode: "isolated",
+      });
+
+      printSuccess(`Task #${task.id} scheduled!`);
+      console.log(chalk.gray(`  Type: ${opts.type}`));
+      console.log(chalk.gray(`  Value: ${opts.value}`));
+      console.log(chalk.gray(`  Prompt: ${opts.prompt}\n`));
+    } catch (err) {
+      printError(err instanceof Error ? err.message : String(err));
+    }
+  });
+
+// ── Memory ──────────────────────────────────────────────────────
+
+program
+  .command("memory")
+  .description("🧠 Search persistent ClawVault memory (FTS5 full-text search)")
+  .argument("[query]", "Search query")
+  .option("-t, --tier <tier>", "Filter by tier: known | learned | inferred")
+  .option("-l, --limit <n>", "Max results", "20")
+  .option("--stats", "Show memory database statistics")
+  .action(async (query, opts) => {
+    try {
+      const { PersistentVault } = await import("../memory/persistence.js");
+      const vault = new PersistentVault();
+
+      if (opts.stats) {
+        const stats = vault.getStats();
+        console.log(chalk.cyan("\n  ── ClawVault Persistent Memory ──────────────\n"));
+        console.log(chalk.white(`  Entries:  ${stats.entries}`));
+        console.log(chalk.white(`  Trades:   ${stats.trades}`));
+        console.log(chalk.white(`  Lessons:  ${stats.lessons}`));
+        console.log(chalk.white(`  DB Size:  ${stats.dbSizeKB} KB\n`));
+        vault.close();
+        return;
+      }
+
+      if (opts.tier) {
+        const entries = vault.getByTier(opts.tier);
+        console.log(chalk.cyan(`\n  ── ${opts.tier.toUpperCase()} entries ── ${entries.length} ──────\n`));
+        for (const e of entries.slice(0, Number(opts.limit))) {
+          console.log(`  ${chalk.dim(e.id)} ${chalk.white(e.content.slice(0, 80))}`);
+          console.log(`    ${chalk.gray(`source: ${e.source} · confidence: ${e.confidence}`)}\n`);
+        }
+        vault.close();
+        return;
+      }
+
+      if (!query) {
+        const stats = vault.getStats();
+        console.log(chalk.cyan("\n  ── ClawVault Persistent Memory ──────────────\n"));
+        console.log(chalk.gray(`  ${stats.entries} entries, ${stats.trades} trades, ${stats.lessons} lessons (${stats.dbSizeKB} KB)`));
+        console.log(chalk.gray("  Search: nanosolana memory <query>"));
+        console.log(chalk.gray("  Stats:  nanosolana memory --stats\n"));
+        vault.close();
+        return;
+      }
+
+      const results = vault.searchFTS(query, Number(opts.limit));
+      console.log(chalk.cyan(`\n  ── Search: "${query}" ── ${results.length} results ──────\n`));
+      for (const e of results) {
+        const tierIcon = { known: "📡", learned: "📊", inferred: "🔮" }[e.tier] ?? "📦";
+        console.log(`  ${tierIcon} ${chalk.white(e.content.slice(0, 80))}`);
+        console.log(`    ${chalk.dim(`${e.tier} · ${e.source} · conf: ${e.confidence}`)}\n`);
+      }
+      if (results.length === 0) console.log(chalk.gray("  No results found.\n"));
+      vault.close();
     } catch (err) {
       printError(err instanceof Error ? err.message : String(err));
     }
