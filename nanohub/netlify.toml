@@ -9,7 +9,7 @@
 [context.production.environment]
   VITE_CONVEX_URL = "https://original-ibex-124.convex.cloud"
   VITE_CONVEX_SITE_URL = "https://original-ibex-124.convex.site"
-  SITE_URL = "https://nanosolana.netlify.app"
+  SITE_URL = "https://hub.nanosolana.com"
 
 # Proxy /api/* to Convex HTTP API
 [[redirects]]
