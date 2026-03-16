@@ -1,6 +1,6 @@
 [build]
   command = "bun install && bun run build"
-  publish = "dist/client"
+  publish = ".output/public"
 
 [build.environment]
   NODE_VERSION = "20"
@@ -11,7 +11,7 @@
   VITE_CONVEX_SITE_URL = "https://original-ibex-124.convex.site"
   SITE_URL = "https://nanosolana.netlify.app"
 
-# Proxy /api/* requests to the Convex HTTP API
+# Proxy /api/* to Convex HTTP API
 [[redirects]]
   from = "/api/*"
   to = "https://original-ibex-124.convex.site/api/:splat"
