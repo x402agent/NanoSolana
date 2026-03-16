@@ -1,6 +1,6 @@
-# `clawhub`
+# `nanohub`
 
-ClawHub CLI — install, update, search, and publish agent skills as folders.
+NanoHub CLI — install, update, search, and publish agent skills as folders.
 
 ## Install
 
@@ -9,49 +9,49 @@ ClawHub CLI — install, update, search, and publish agent skills as folders.
 bun clawhub --help
 
 # Once published to npm
-# npm i -g clawhub
+# npm i -g nanohub
 ```
 
 ## Auth (publish)
 
 ```bash
-clawhub login
+nanohub login
 # or
-clawhub auth login
+nanohub auth login
 
 # Headless / token paste
 # or (token paste / headless)
-clawhub login --token clh_...
+nanohub login --token clh_...
 ```
 
 Notes:
 
 - Browser login opens `https://hub.nanosolana.com/cli/auth` and completes via a loopback callback.
-- Token stored in `~/Library/Application Support/clawhub/config.json` on macOS (override via `CLAWHUB_CONFIG_PATH`, legacy `NANOHUB_CONFIG_PATH`).
+- Token stored in `~/Library/Application Support/nanohub/config.json` on macOS (override via `NANOHUB_CONFIG_PATH`, legacy `CLAWHUB_CONFIG_PATH`).
 
 ## Examples
 
 ```bash
-clawhub search "postgres backups"
-clawhub install my-skill-pack
-clawhub update --all
-clawhub update --all --no-input --force
-clawhub publish ./my-skill-pack --slug my-skill-pack --name "My Skill Pack" --version 1.2.0 --changelog "Fixes + docs"
+nanohub search "postgres backups"
+nanohub install my-skill-pack
+nanohub update --all
+nanohub update --all --no-input --force
+nanohub publish ./my-skill-pack --slug my-skill-pack --name "My Skill Pack" --version 1.2.0 --changelog "Fixes + docs"
 ```
 
 ## Sync (upload local skills)
 
 ```bash
 # Start anywhere; scans workdir first, then legacy Clawdis/Clawd/NanoSolana/TamaGObot locations.
-clawhub sync
+nanohub sync
 
 # Explicit roots + non-interactive dry-run
-clawhub sync --root ../clawdis/skills --all --dry-run
+nanohub sync --root ../clawdis/skills --all --dry-run
 ```
 
 ## Defaults
 
-- Site: `https://hub.nanosolana.com` (override via `--site` or `CLAWHUB_SITE`, legacy `NANOHUB_SITE`)
-- Registry: discovered from `/.well-known/clawhub.json` on the site (legacy `/.well-known/nanohub.json`; override via `--registry` or `CLAWHUB_REGISTRY`)
-- Workdir: current directory (falls back to TamaGObot workspace if configured; override via `--workdir` or `CLAWHUB_WORKDIR`)
+- Site: `https://hub.nanosolana.com` (override via `--site` or `NANOHUB_SITE`, legacy `CLAWHUB_SITE`)
+- Registry: discovered from `/.well-known/nanohub.json` on the site (legacy `/.well-known/clawhub.json`; override via `--registry` or `NANOHUB_REGISTRY`)
+- Workdir: current directory (falls back to TamaGObot workspace if configured; override via `--workdir` or `NANOHUB_WORKDIR`)
 - Install dir: `./skills` under workdir (override via `--dir`)

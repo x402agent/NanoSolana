@@ -1,32 +1,111 @@
 <p align="center">
-  <img src="public/clawd-logo.png" alt="ClawHub" width="120">
+  <img src="public/clawd-logo.png" alt="NanoHub" width="120">
 </p>
 
-<h1 align="center">ClawHub</h1>
+<h1 align="center">NanoHub</h1>
 
 <p align="center">
-  <a href="https://github.com/nanosolana/clawhub/actions/workflows/ci.yml?branch=main"><img src="https://img.shields.io/github/actions/workflow/status/nanosolana/clawhub/ci.yml?branch=main&style=for-the-badge" alt="CI status"></a>
-  <a href="https://discord.gg/clawd"><img src="https://img.shields.io/discord/1456350064065904867?label=Discord&logo=discord&logoColor=white&color=5865F2&style=for-the-badge" alt="Discord"></a>
+  <a href="https://github.com/nanosolana/nanosolana/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/nanosolana/nanosolana/ci.yml?style=for-the-badge" alt="CI status"></a>
+  <a href="https://discord.gg/nanosolana"><img src="https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white&style=for-the-badge" alt="Discord"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="MIT License"></a>
 </p>
 
-ClawHub is the **public skill registry for TamaGObot**: publish, version, and search text-based agent skills (a `SKILL.md` plus supporting files).
-It's designed for fast browsing + a CLI-friendly API, with moderation hooks and vector search.
+NanoHub is the public skill registry for NanoSolana agents: publish, version, search, inspect, and install text-based agent skills built around `SKILL.md` plus supporting files.
+It is optimized for fast browsing, a CLI-friendly registry API, moderation workflows, and vector search.
 
-onlycrabs.ai is the **SOUL.md registry**: publish and share system lore the same way you publish skills.
+NanoSolana Docs is the companion registry for `SOUL.md` bundles and long-form system lore.
 
 <p align="center">
-  <a href="https://hub.nanosolana.com">ClawHub</a> ·
-  <a href="https://onlycrabs.ai">onlycrabs.ai</a> ·
+  <a href="https://hub.nanosolana.com">NanoHub</a> ·
+  <a href="https://docs.nanosolana.com">NanoSolana Docs</a> ·
   <a href="VISION.md">Vision</a> ·
   <a href="docs/README.md">Docs</a> ·
   <a href="CONTRIBUTING.md">Contributing</a> ·
-  <a href="https://discord.gg/clawd">Discord</a>
+  <a href="https://discord.gg/nanosolana">Discord</a>
 </p>
 
-## One-shot deploy (npm token)
+## What you can do
 
-Use an npm access token to publish the CLI package and deploy hub backend updates in one command:
+- Browse skills and render their `SKILL.md`.
+- Publish new skill versions with changelogs and tags.
+- Browse soul bundles and render their `SOUL.md`.
+- Publish soul versions with changelogs and tags.
+- Search with embeddings and vector search instead of keyword-only matching.
+- Star, comment, moderate, review, and approve registry content.
+- Use the registry through the web app or the `nanohub` CLI.
+
+## Architecture
+
+- Web app: TanStack Start, React, Vite, Nitro.
+- Backend: Convex database, file storage, HTTP actions, and auth.
+- Search: OpenAI embeddings plus Convex vector search.
+- Shared schemas: `packages/schema/` published internally as `nanohub-schema`.
+- CLI: `packages/nanohub/`, with `nanohub` as the primary binary and `clawhub` kept as a compatibility alias.
+
+## Repo layout
+
+- `src/` — TanStack Start app routes, components, and styles.
+- `convex/` — schema, queries, mutations, actions, HTTP API.
+- `packages/nanohub/` — CLI workspace.
+- `packages/schema/` — shared route and schema package.
+- `server/` — Nitro server routes and OG image rendering.
+- `public/` — static assets and `.well-known` discovery files.
+- `docs/` — architecture, CLI, auth, deploy, API, and troubleshooting docs.
+
+## Local development
+
+Prereqs: [Bun](https://bun.sh/).
+
+```bash
+cd nanohub
+bun install
+cp .env.local.example .env.local
+
+# terminal A
+bunx convex dev --typecheck=disable
+
+# terminal B
+bun run dev
+```
+
+Optional seed data:
+
+```bash
+bunx convex run --no-push devSeed:seedNixSkills
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for full local setup, OAuth, JWT keys, and Convex env requirements.
+
+## Environment
+
+- `VITE_CONVEX_URL` — Convex deployment URL.
+- `VITE_CONVEX_SITE_URL` — Convex site URL used for `/api` access.
+- `VITE_DOCS_SITE_URL` — docs host for SOUL mode. Legacy: `VITE_SOULHUB_SITE_URL`.
+- `VITE_DOCS_HOST` — docs hostname match. Legacy: `VITE_SOULHUB_HOST`.
+- `VITE_SITE_MODE` — optional override: `skills` or `souls`.
+- `SITE_URL` — primary NanoHub URL, local default `http://localhost:3000`.
+- `CONVEX_SITE_URL` — same as `VITE_CONVEX_SITE_URL`.
+- `AUTH_GITHUB_ID` / `AUTH_GITHUB_SECRET` — GitHub OAuth app credentials.
+- `JWT_PRIVATE_KEY` / `JWKS` — Convex Auth signing keys.
+- `OPENAI_API_KEY` — embeddings and indexing.
+
+## CLI
+
+Common flows:
+
+- Auth: `nanohub login`, `nanohub whoami`
+- Discover: `nanohub search ...`, `nanohub explore`
+- Manage installs: `nanohub install <slug>`, `nanohub uninstall <slug>`, `nanohub list`, `nanohub update --all`
+- Inspect without installing: `nanohub inspect <slug>`
+- Publish and sync: `nanohub publish <path>`, `nanohub sync`
+
+Legacy `clawhub` remains available as a compatibility alias.
+
+Docs: [docs/quickstart.md](docs/quickstart.md), [docs/cli.md](docs/cli.md).
+
+## One-shot deploy
+
+Publish the CLI package and deploy backend updates in one command:
 
 ```bash
 cd nanohub
@@ -34,182 +113,47 @@ export NPM_TOKEN=your_npm_access_token
 bun run deploy:oneshot
 ```
 
-Optional: skip Convex deployment when you only want an npm publish:
+Skip Convex deployment when you only want the package publish:
 
 ```bash
 SKIP_CONVEX_DEPLOY=1 bun run deploy:oneshot
 ```
 
-## What you can do with it
+## Railway
 
-- Browse skills + render their `SKILL.md`.
-- Publish new skill versions with changelogs + tags (including `latest`).
-- Browse souls + render their `SOUL.md`.
-- Publish new soul versions with changelogs + tags.
-- Search via embeddings (vector index) instead of brittle keywords.
-- Star + comment; admins/mods can curate and approve skills.
+NanoHub now includes a Railway runtime config at [`railway.json`](railway.json).
+For Railway, the app builds with Bun and serves the Nitro output with Node:
 
-## onlycrabs.ai (SOUL.md registry)
+```bash
+bun run build
+HOST=0.0.0.0 PORT=3000 node .output/server/index.mjs
+```
 
-- Entry point is host-based: `onlycrabs.ai`.
-- On the onlycrabs.ai host, the home page and nav default to souls.
-- On ClawHub, souls live under `/souls`.
-- Soul bundles only accept `SOUL.md` for now (no extra files).
-
-## How it works (high level)
-
-- Web app: TanStack Start (React, Vite/Nitro).
-- Backend: Convex (DB + file storage + HTTP actions) + Convex Auth (GitHub OAuth).
-- Search: OpenAI embeddings (`text-embedding-3-small`) + Convex vector search.
-- API schema + routes: `packages/schema` (`nanohub-schema`).
-
-## CLI
-
-Common CLI flows:
-
-- Auth: `clawhub login`, `clawhub whoami`
-- Discover: `clawhub search ...`, `clawhub explore`
-- Manage local installs: `clawhub install <slug>`, `clawhub uninstall <slug>`, `clawhub list`, `clawhub update --all`
-- Inspect without installing: `clawhub inspect <slug>`
-- Publish/sync: `clawhub publish <path>`, `clawhub sync`
-
-Docs: [`docs/quickstart.md`](docs/quickstart.md), [`docs/cli.md`](docs/cli.md).
-
-### Removal permissions
-
-- `clawhub uninstall <slug>` only removes a local install on your machine.
-- Uploaded registry skills use soft-delete/restore (`clawhub delete <slug>` / `clawhub undelete <slug>` or API equivalents).
-- Soft-delete/restore is allowed for the skill owner, moderators, and admins.
-- Hard delete is admin-only (management tools / ban flows).
-
+See [docs/deploy.md](docs/deploy.md) for Vercel, Convex, and Railway deployment notes.
 
 ## Telemetry
 
-ClawHub tracks minimal **install telemetry** (to compute install counts) when you run `clawhub sync` while logged in.
-Disable via:
+NanoHub tracks minimal install telemetry to compute install counts when you run `nanohub sync` while logged in.
+Disable it with:
 
 ```bash
-export CLAWHUB_DISABLE_TELEMETRY=1
+export NANOHUB_DISABLE_TELEMETRY=1
 ```
 
-Details: [`docs/telemetry.md`](docs/telemetry.md).
-
-## Repo layout
-
-- `src/` — TanStack Start app (routes, components, styles).
-- `convex/` — schema + queries/mutations/actions + HTTP API routes.
-- `packages/schema/` — shared API types/routes for the CLI and app.
-- [`docs/`](docs/README.md) — project documentation (architecture, CLI, auth, deployment, and more).
-- [`docs/spec.md`](docs/spec.md) — product + implementation spec (good first read).
-
-## Local dev
-
-Prereqs: [Bun](https://bun.sh/) (Convex runs via `bunx`, no global install needed).
-
-```bash
-bun install
-cp .env.local.example .env.local
-# edit .env.local — see CONTRIBUTING.md for local Convex values
-
-# terminal A: local Convex backend
-bunx convex dev
-
-# terminal B: web app (port 3000)
-bun run dev
-
-# seed sample data
-bunx convex run --no-push devSeed:seedNixSkills
-```
-
-For full setup instructions (env vars, GitHub OAuth, JWT keys, database seeding), see [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## Environment
-
-- `VITE_CONVEX_URL`: Convex deployment URL (`https://<deployment>.convex.cloud`).
-- `VITE_CONVEX_SITE_URL`: Convex site URL (`https://<deployment>.convex.site`).
-- `VITE_SOULHUB_SITE_URL`: onlycrabs.ai site URL (`https://onlycrabs.ai`).
-- `VITE_SOULHUB_HOST`: onlycrabs.ai host match (`onlycrabs.ai`).
-- `VITE_SITE_MODE`: Optional override (`skills` or `souls`) for SSR builds.
-- `CONVEX_SITE_URL`: same as `VITE_CONVEX_SITE_URL` (auth + cookies).
-- `SITE_URL`: App URL (local: `http://localhost:3000`).
-- `AUTH_GITHUB_ID` / `AUTH_GITHUB_SECRET`: GitHub OAuth App.
-- `JWT_PRIVATE_KEY` / `JWKS`: Convex Auth keys.
-- `OPENAI_API_KEY`: embeddings for search + indexing.
-
-## Nix plugins (nixmode skills)
-
-ClawHub can store a nix-tamagobot plugin pointer in SKILL frontmatter so the registry knows which
-Nix package bundle to install. A nix plugin is different from a regular skill pack: it bundles the
-skill pack, the CLI binary, and its config flags/requirements together.
-
-Add this to `SKILL.md`:
-
-```yaml
----
-name: peekaboo
-description: Capture and automate macOS UI with the Peekaboo CLI.
-metadata: {"tamagobot":{"nix":{"plugin":"github:tamagobot/nix-steipete-tools?dir=tools/peekaboo","systems":["aarch64-darwin"]}}}
----
-```
-
-Install via nix-tamagobot:
-
-```nix
-programs.tamagobot.plugins = [
-  { source = "github:tamagobot/nix-steipete-tools?dir=tools/peekaboo"; }
-];
-```
-
-You can also declare config requirements + an example snippet:
-
-```yaml
----
-name: padel
-description: Check padel court availability and manage bookings via Playtomic.
-metadata: {"tamagobot":{"config":{"requiredEnv":["PADEL_AUTH_FILE"],"stateDirs":[".config/padel"],"example":"config = { env = { PADEL_AUTH_FILE = \\\"/run/agenix/padel-auth\\\"; }; };"}}}
----
-```
-
-To show CLI help (recommended for nix plugins), include the `cli --help` output:
-
-```yaml
----
-name: padel
-description: Check padel court availability and manage bookings via Playtomic.
-metadata: {"tamagobot":{"cliHelp":"padel --help\\nUsage: padel [command]\\n"}}
----
-```
-
-`metadata.tamagobot` is preferred, but `metadata.clawdis` and `metadata.nanosolana` are accepted as aliases.
+Legacy `CLAWHUB_DISABLE_TELEMETRY=1` is still supported.
 
 ## Skill metadata
 
-Skills declare their runtime requirements (env vars, binaries, install specs) in the `SKILL.md` frontmatter. ClawHub's security analysis checks these declarations against actual skill behavior.
+Skills declare runtime requirements in `SKILL.md` frontmatter. NanoHub’s security analysis compares those declarations with observed behavior so users can see required env vars, binaries, install specs, and platform constraints before installing.
 
-Full reference: [`docs/skill-format.md`](docs/skill-format.md#frontmatter-metadata)
-
-Quick example:
-
-```yaml
----
-name: my-skill
-description: Does a thing with an API.
-metadata:
-  nanosolana:
-    requires:
-      env:
-        - MY_API_KEY
-      bins:
-        - curl
-    primaryEnv: MY_API_KEY
----
-```
+Full reference: [docs/skill-format.md](docs/skill-format.md#frontmatter-metadata)
 
 ## Scripts
 
 ```bash
 bun run dev
 bun run build
+bun run start
 bun run test
 bun run coverage
 bun run lint

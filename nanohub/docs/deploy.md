@@ -1,5 +1,5 @@
 ---
-summary: 'Deploy checklist: Convex backend + Vercel web app + /api rewrites.'
+summary: 'Deploy checklist: Convex backend + NanoHub web app on Vercel or Railway.'
 read_when:
   - Shipping to production
   - Debugging /api routing
@@ -7,9 +7,9 @@ read_when:
 
 # Deploy
 
-ClawHub is two deployables:
+NanoHub is two deployables:
 
-- Web app (TanStack Start) → typically Vercel.
+- Web app (TanStack Start + Nitro) → Vercel or Railway.
 - Convex backend → Convex deployment (serves `/api/...` routes).
 
 ## 1) Deploy Convex
@@ -46,7 +46,9 @@ Ensure Convex env is set (auth + embeddings):
 - Optional webhook env (see `docs/webhook.md`)
 - Optional: `GITHUB_TOKEN` (recommended; raises GitHub account lookup limit used by publish gate)
 
-## 2) Deploy web app (Vercel)
+## 2) Deploy web app
+
+### Vercel
 
 Set env vars:
 
@@ -65,6 +67,32 @@ Deploy order:
 
 Do not let Vercel auto-promote a newer web build before Convex is deployed.
 
+### Railway
+
+This repo includes [`railway.json`](../railway.json) for Railway.
+
+Build and runtime:
+
+```bash
+bun install
+bun run build
+HOST=0.0.0.0 PORT=3000 node .output/server/index.mjs
+```
+
+Required Railway variables:
+
+- `VITE_CONVEX_URL`
+- `VITE_CONVEX_SITE_URL`
+- `CONVEX_SITE_URL`
+- `SITE_URL`
+- `AUTH_GITHUB_ID`
+- `AUTH_GITHUB_SECRET`
+- `JWT_PRIVATE_KEY`
+- `JWKS`
+- `OPENAI_API_KEY`
+
+If Railway terminates TLS in front of the app, set `SITE_URL` to the public HTTPS origin for correct auth and share links.
+
 ## 3) Route `/api/*` to Convex
 
 This repo currently uses `vercel.json` rewrites:
@@ -80,13 +108,13 @@ For self-host:
 
 The CLI can discover the API base from:
 
-- `/.well-known/clawhub.json` (preferred)
-- `/.well-known/nanohub.json` (legacy)
+- `/.well-known/nanohub.json` (preferred)
+- `/.well-known/clawhub.json` (legacy)
 
 If you don’t serve that file, users must set:
 
 ```bash
-export CLAWHUB_REGISTRY=https://your-site.example
+export NANOHUB_REGISTRY=https://your-site.example
 ```
 
 ## 5) Post-deploy checks
@@ -99,8 +127,8 @@ curl -i "https://<site>/api/v1/skills/gifgrep"
 Then:
 
 ```bash
-clawhub login --site https://<site>
-clawhub whoami
+nanohub login --site https://<site>
+nanohub whoami
 ```
 
 Rate-limit sanity checks:
@@ -119,7 +147,7 @@ Drift checks:
 
 ```bash
 bun run verify:convex-contract -- --prod
-PLAYWRIGHT_BASE_URL=https://clawhub.ai bunx playwright test e2e/menu-smoke.pw.test.ts e2e/upload-auth-smoke.pw.test.ts
+PLAYWRIGHT_BASE_URL=https://hub.nanosolana.com bunx playwright test e2e/menu-smoke.pw.test.ts e2e/upload-auth-smoke.pw.test.ts
 ```
 
 The Playwright smoke suite should fail on visible error UI, page errors, and

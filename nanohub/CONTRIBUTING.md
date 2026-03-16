@@ -1,10 +1,10 @@
-# Contributing to ClawHub
+# Contributing to NanoHub
 
-Welcome! ClawHub is the public skill registry for [NanoSolana](https://github.com/nanosolana/nanosolana). We appreciate bug fixes, documentation improvements, and feature contributions.
+Welcome. NanoHub is the public skill registry for [NanoSolana](https://github.com/nanosolana/nanosolana). We appreciate bug fixes, documentation improvements, and feature contributions.
 
-- **Questions?** Ask in [#clawhub on Discord](https://discord.gg/clawd).
+- **Questions?** Ask in the NanoSolana Discord.
 - **Bug fixes** — PRs are welcome.
-- **New features or architectural changes** — please start with a Discord conversation in #clawhub first so we can align on scope.
+- **New features or architectural changes** — start with a discussion first so we can align on scope.
 
 ## Local Development Setup
 
@@ -29,7 +29,7 @@ VITE_CONVEX_SITE_URL=http://127.0.0.1:3210
 SITE_URL=http://localhost:3000
 
 # Deployment used by `bunx convex dev`
-CONVEX_DEPLOYMENT=anonymous:anonymous-clawhub
+CONVEX_DEPLOYMENT=anonymous:anonymous-nanohub
 ```
 
 ### GitHub OAuth App (for login)
@@ -109,12 +109,12 @@ These features degrade gracefully without their keys:
 
 ## CLI Development
 
-The CLI source lives in [`packages/nanohub/`](packages/nanohub/). Both `clawhub` and `nanohub` are registered as bin aliases.
+The CLI source lives in [`packages/nanohub/`](packages/nanohub/). `nanohub` is the primary bin and `clawhub` remains a compatibility alias.
 
 To test the CLI against your local instance:
 
 ```bash
-CLAWHUB_REGISTRY=http://127.0.0.1:3210 CLAWHUB_SITE=http://localhost:3000 clawhub search "padel"
+NANOHUB_REGISTRY=http://127.0.0.1:3210 NANOHUB_SITE=http://localhost:3000 nanohub search "padel"
 ```
 
 Manual smoke tests are documented in [`docs/manual-testing.md`](docs/manual-testing.md).
@@ -128,7 +128,7 @@ Manual smoke tests are documented in [`docs/manual-testing.md`](docs/manual-test
 Quick publish:
 
 ```bash
-clawhub publish <path-to-skill-directory>
+nanohub publish <path-to-skill-directory>
 ```
 
 ## Before Submitting a PR

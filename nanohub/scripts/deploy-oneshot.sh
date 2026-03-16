@@ -21,13 +21,13 @@ chmod 600 "$NPMRC_PATH"
 echo "==> verifying npm auth"
 npm whoami --userconfig "$NPMRC_PATH" >/dev/null
 
-echo "==> building clawhub CLI package"
+echo "==> building NanoHub CLI package"
 bunx tsc -p "$PACKAGE_DIR/tsconfig.json"
 
 echo "==> dry-run package verification"
 npm pack --dry-run --json --prefix "$PACKAGE_DIR" >/dev/null
 
-echo "==> publishing clawhub package"
+echo "==> publishing nanohub package"
 npm publish --access public --registry https://registry.npmjs.org --userconfig "$NPMRC_PATH" --prefix "$PACKAGE_DIR"
 
 if [[ "${SKIP_CONVEX_DEPLOY:-0}" != "1" ]]; then
@@ -37,4 +37,4 @@ else
   echo "==> skipping Convex deploy (SKIP_CONVEX_DEPLOY=1)"
 fi
 
-echo "Done: one-shot deploy completed for clawhub + hub backend"
+echo "Done: one-shot deploy completed for nanohub + hub backend"

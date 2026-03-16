@@ -3,9 +3,9 @@ import { existsSync } from 'node:fs'
 import { stat } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 
-const distCliUrl = new URL('./packages/clawdhub/dist/cli.js', import.meta.url)
+const distCliUrl = new URL('./packages/nanohub/dist/cli.js', import.meta.url)
 const distCliPath = fileURLToPath(distCliUrl)
-const srcRootPath = fileURLToPath(new URL('./packages/clawdhub/src/', import.meta.url))
+const srcRootPath = fileURLToPath(new URL('./packages/nanohub/src/', import.meta.url))
 
 const shouldBuild = await (async () => {
   if (!existsSync(distCliPath)) return true
@@ -19,7 +19,7 @@ const shouldBuild = await (async () => {
 })()
 
 if (shouldBuild) {
-  const proc = Bun.spawn(['bunx', 'tsc', '-p', 'packages/clawdhub/tsconfig.json'], {
+  const proc = Bun.spawn(['bunx', 'tsc', '-p', 'packages/nanohub/tsconfig.json'], {
     stdin: 'inherit',
     stdout: 'inherit',
     stderr: 'inherit',
