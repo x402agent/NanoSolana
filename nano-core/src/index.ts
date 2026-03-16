@@ -173,6 +173,19 @@ export type {
   PumpKitBotConfig,
 } from "./claw/pump/types.js";
 
+// ── Tokenized Agent Payments — On-Chain Invoice System ──────────────────────
+export { NanoPaymentAgent, createPaymentAgent, CURRENCY_MINTS, CURRENCY_DECIMALS } from "./payments/index.js";
+export type {
+  PaymentCurrency,
+  Invoice,
+  InvoiceParams,
+  InvoiceRecord,
+  PaymentInstructions,
+  PaymentVerification,
+  VerifyOptions,
+  PaymentConfig,
+} from "./payments/index.js";
+
 // ── Persona System — 42+ DeFi Agent Personalities ──────────────────────────
 export {
   loadAllPersonas,
