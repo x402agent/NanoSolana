@@ -6,7 +6,7 @@ NanoHub CLI — install, update, search, and publish agent skills as folders.
 
 ```bash
 # From this repo (shortcut script at repo root)
-bun clawhub --help
+bun nanohub --help
 
 # Once published to npm
 # npm i -g nanohub

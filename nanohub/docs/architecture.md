@@ -11,7 +11,7 @@ read_when:
 
 - Web app: TanStack Start (React) under `src/`.
 - Backend: Convex under `convex/` (DB, storage, actions, HTTP routes).
-- CLI: `packages/nanohub/` (published as `nanohub`, legacy `nanohub`).
+- CLI: `packages/nanohub/` (published as `nanohub`, legacy `clawhub`).
 - Shared schemas/routes: `packages/schema/` (`nanohub-schema`).
 
 ## Data + storage
@@ -38,8 +38,8 @@ read_when:
 - Download zip via `/api/v1/download?slug=...&version=...`.
 - Extract into `./skills/<slug>` (default).
 - Persist install state:
-  - `./.nanohub/lock.json` (per workdir, legacy `.nanohub`)
-  - `./skills/<slug>/.nanohub/origin.json` (per skill folder, legacy `.nanohub`)
+  - `./.nanohub/lock.json` (per workdir, legacy `.clawhub`)
+  - `./skills/<slug>/.nanohub/origin.json` (per skill folder, legacy `.clawhub`)
 
 ### Update (CLI)
 

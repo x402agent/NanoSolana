@@ -72,7 +72,7 @@ export function buildDiscordPayload(
           },
         ],
         footer: {
-          text: 'ClawHub',
+          text: 'NanoHub',
         },
         timestamp: new Date().toISOString(),
       },
@@ -89,9 +89,9 @@ export function buildSkillUrl(skill: WebhookSkillPayload, siteUrl: string) {
 function buildDescription(event: WebhookEvent, skill: WebhookSkillPayload) {
   const summary = (skill.summary ?? '').trim()
   if (summary) return truncate(summary, 200)
-  if (event === 'skill.highlighted') return 'Newly highlighted skill on ClawHub.'
-  if (skill.version) return `New version v${skill.version} published on ClawHub.`
-  return 'New skill published on ClawHub.'
+  if (event === 'skill.highlighted') return 'Newly highlighted skill on NanoHub.'
+  if (skill.version) return `New version v${skill.version} published on NanoHub.`
+  return 'New skill published on NanoHub.'
 }
 
 function parseBoolean(value?: string) {

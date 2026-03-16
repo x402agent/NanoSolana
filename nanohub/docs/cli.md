@@ -25,9 +25,9 @@ bun nanohub --help
 
 Env equivalents:
 
-- `CLAWHUB_SITE` (legacy `NANOHUB_SITE`)
-- `CLAWHUB_REGISTRY` (legacy `NANOHUB_REGISTRY`)
-- `CLAWHUB_WORKDIR` (legacy `NANOHUB_WORKDIR`)
+- `NANOHUB_SITE` (legacy `CLAWHUB_SITE`)
+- `NANOHUB_REGISTRY` (legacy `CLAWHUB_REGISTRY`)
+- `NANOHUB_WORKDIR` (legacy `CLAWHUB_WORKDIR`)
 
 ### HTTP proxy
 
@@ -62,7 +62,7 @@ When no proxy variable is set, behavior is unchanged (direct connections).
 Stores your API token + cached registry URL.
 
 - macOS: `~/Library/Application Support/nanohub/config.json`
-- override: `CLAWHUB_CONFIG_PATH` (legacy `NANOHUB_CONFIG_PATH`)
+- override: `NANOHUB_CONFIG_PATH` (legacy `CLAWHUB_CONFIG_PATH`)
 
 ## Commands
 
@@ -216,5 +216,5 @@ Stores your API token + cached registry URL.
 
 Telemetry:
 
-- Sent during `sync` when logged in, unless `CLAWHUB_DISABLE_TELEMETRY=1` (legacy `NANOHUB_DISABLE_TELEMETRY=1`).
+- Sent during `sync` when logged in, unless `NANOHUB_DISABLE_TELEMETRY=1` (legacy `CLAWHUB_DISABLE_TELEMETRY=1`).
 - Details: `docs/telemetry.md`.

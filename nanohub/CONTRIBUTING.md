@@ -109,7 +109,7 @@ These features degrade gracefully without their keys:
 
 ## CLI Development
 
-The CLI source lives in [`packages/nanohub/`](packages/nanohub/). `nanohub` is the primary bin and `nanohub` remains a compatibility alias.
+The CLI source lives in [`packages/nanohub/`](packages/nanohub/). `nanohub` is the primary bin and `clawhub` remains a compatibility alias.
 
 To test the CLI against your local instance:
 

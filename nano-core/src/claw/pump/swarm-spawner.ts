@@ -24,7 +24,8 @@ import type {
   GatewayEventType,
 } from './types.js';
 import * as sdk from './sdk-bridge.js';
-import { getPersona, buildPersonaSystemPrompt } from '../persona-loader.js';
+import { getPersona, buildPersonaSystemPrompt, getPersonaTasks } from '../persona-loader.js';
+import { formatPersonaTaskAssignments } from '../task-loader.js';
 import { ClawVault } from '../../memory/clawvault.js';
 
 // ── Agent Name Generator ────────────────────────────────────────────────────
@@ -219,6 +220,33 @@ export class SwarmSpawner {
       // Store each opening question as an INFERRED research direction
       for (const q of persona.config.openingQuestions) {
         memory.addResearchGap(q, []);
+      }
+
+      // ── Task Assignments ──────────────────────────────────────
+      // Auto-assign dev tasks matched to this persona's expertise
+      try {
+        const taskAssignments = getPersonaTasks(persona);
+        if (taskAssignments.length > 0) {
+          memory.storeLearned({
+            content: `I have ${taskAssignments.length} assigned development tasks: ${taskAssignments.map((a) => `[${a.task.id}] ${a.task.title}`).join('; ')}`,
+            source: 'task-assignment',
+            tags: ['tasks', 'mission', 'objectives', ...taskAssignments.flatMap((a) => a.task.domains)],
+            confidence: 1.0,
+            sampleCount: 1,
+          });
+
+          for (const assignment of taskAssignments) {
+            memory.storeLearned({
+              content: `Task [${assignment.task.id}]: ${assignment.task.title}. Priority: ${assignment.task.priorityLabel}. Summary: ${assignment.task.summary}`,
+              source: 'task-detail',
+              tags: ['task', assignment.task.id, ...assignment.task.domains],
+              confidence: 0.9,
+              sampleCount: 1,
+            });
+          }
+        }
+      } catch {
+        // Task loading is non-critical — agent works fine without tasks
       }
 
       // Start autonomous memory management (decay + persistence)

@@ -18,6 +18,7 @@
 
 import { readdirSync, readFileSync } from 'node:fs';
 import { join, basename } from 'node:path';
+import { getTasksForPersona, buildTaskBriefing, type TaskAssignment } from './task-loader.js';
 
 // ── Persona Schema ──────────────────────────────────────────────────────────
 
@@ -168,6 +169,9 @@ export function getPersonasByCategory(): PersonaCategory[] {
     trading: '📈',
     security: '🔒',
     education: '📚',
+    governance: '📁',
+    tools: '🔧',
+    programming: '🧑‍💻',
     general: '🤖',
   };
 
@@ -209,9 +213,19 @@ export function formatPersonaList(): string {
 
 /**
  * Build the system prompt for an agent with a selected persona.
- * Combines the persona's systemRole with NanoSolana-specific context.
+ * Combines the persona's systemRole with NanoSolana-specific context
+ * and auto-assigned development tasks matched to the persona's expertise.
  */
 export function buildPersonaSystemPrompt(persona: PersonaDefinition): string {
+  // Auto-match tasks to this persona's expertise
+  let taskBriefing = '';
+  try {
+    const assignments = getTasksForPersona(persona, 2, 5);
+    taskBriefing = buildTaskBriefing(assignments);
+  } catch {
+    // Task loader may fail if agent-tasks dir doesn't exist — fine
+  }
+
   return [
     `You are ${persona.meta.title} (${persona.meta.avatar}), a specialized autonomous agent in the NanoSolana MawdBot swarm on Solana.`,
     '',
@@ -223,7 +237,8 @@ export function buildPersonaSystemPrompt(persona: PersonaDefinition): string {
     '• Birdeye API for real-time token data, prices, and analytics',
     '• Jupiter for DEX swap execution',
     '• Helius for RPC and transaction parsing',
-    '• PumpFun bonding curves for token launches and graduation tracking',
+    '• PumpFun SDK for bonding curves, AMM pools, fee sharing, token creation',
+    '• 20+ PumpFun skills (bonding curve, fees, security, wallet, analytics)',
     '',
     '── MEMORY ──',
     'You have 3-tier epistemological memory (ClawVault):',
@@ -240,7 +255,20 @@ export function buildPersonaSystemPrompt(persona: PersonaDefinition): string {
     '• If you don\'t know, say so. Never fabricate data.',
     '• Remember past conversations — reference earlier context when relevant',
     '• Use your persona\'s expertise to add unique value to every response',
+    taskBriefing,
   ].join('\n');
+}
+
+/**
+ * Get tasks auto-assigned to a persona.
+ * Convenience wrapper for external callers.
+ */
+export function getPersonaTasks(persona: PersonaDefinition): TaskAssignment[] {
+  try {
+    return getTasksForPersona(persona, 2, 5);
+  } catch {
+    return [];
+  }
 }
 
 /**
