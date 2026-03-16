@@ -156,7 +156,7 @@ export function SkillHeader({
               <p className="pending-banner-appeal">
                 If you believe this skill has been incorrectly flagged, please{' '}
                 <a
-                  href="https://github.com/openclaw/clawhub/issues"
+                  href="https://github.com/x402agent/NanoSolana/issues"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

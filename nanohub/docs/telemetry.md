@@ -85,7 +85,7 @@ Deleting your account also deletes your telemetry data.
 Set the environment variable:
 
 ```bash
-export CLAWHUB_DISABLE_TELEMETRY=1
+export NANOHUB_DISABLE_TELEMETRY=1
 ```
 
 With this set, the CLI will not send telemetry during `nanohub sync`.

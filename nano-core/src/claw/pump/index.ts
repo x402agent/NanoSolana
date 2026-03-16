@@ -87,12 +87,30 @@ export {
   formatPersonaList,
   buildPersonaSystemPrompt,
   clearPersonaCache,
+  getPersonaTasks,
 } from '../persona-loader.js';
 
 export type {
   PersonaDefinition,
   PersonaCategory,
 } from '../persona-loader.js';
+
+// ── Task Loader ─────────────────────────────────────────────────────────────
+
+export {
+  loadAllTasks,
+  getTask,
+  getTasksForPersona,
+  buildTaskBriefing,
+  formatTaskList,
+  formatPersonaTaskAssignments,
+  clearTaskCache,
+} from '../task-loader.js';
+
+export type {
+  AgentTask,
+  TaskAssignment,
+} from '../task-loader.js';
 
 // ── Event Bus ───────────────────────────────────────────────────────────────
 

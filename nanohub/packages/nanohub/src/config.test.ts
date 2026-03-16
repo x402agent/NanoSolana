@@ -17,7 +17,7 @@ vi.mock('node:fs/promises', () => ({
 const { writeGlobalConfig } = await import('./config')
 
 const originalPlatform = process.platform
-const testConfigPath = '/tmp/clawhub-config-test/config.json'
+const testConfigPath = '/tmp/nanohub-config-test/config.json'
 
 function makeErr(code: string): NodeJS.ErrnoException {
   const error = new Error(code) as NodeJS.ErrnoException
@@ -26,7 +26,7 @@ function makeErr(code: string): NodeJS.ErrnoException {
 }
 
 beforeEach(() => {
-  vi.stubEnv('CLAWHUB_CONFIG_PATH', testConfigPath)
+  vi.stubEnv('NANOHUB_CONFIG_PATH', testConfigPath)
   Object.defineProperty(process, 'platform', { value: 'linux' })
   chmodMock.mockResolvedValue(undefined)
   mkdirMock.mockResolvedValue(undefined)
@@ -44,7 +44,7 @@ describe('writeGlobalConfig', () => {
   it('writes config with restricted modes', async () => {
     await writeGlobalConfig({ registry: 'https://example.com', token: 'clh_test' })
 
-    expect(mkdirMock).toHaveBeenCalledWith('/tmp/clawhub-config-test', {
+    expect(mkdirMock).toHaveBeenCalledWith('/tmp/nanohub-config-test', {
       recursive: true,
       mode: 0o700,
     })

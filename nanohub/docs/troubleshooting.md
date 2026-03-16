@@ -15,7 +15,7 @@ read_when:
 
 ## `whoami` / `publish` returns `Unauthorized` (401)
 
-- Token missing or revoked: check your config file (`CLAWHUB_CONFIG_PATH` override?).
+- Token missing or revoked: check your config file (`NANOHUB_CONFIG_PATH` override?).
 - Ensure requests include `Authorization: Bearer ...` (CLI does this automatically).
 
 ## CLI/API returns `Rate limit exceeded` (429)

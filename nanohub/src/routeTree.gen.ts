@@ -16,6 +16,7 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as ManagementRouteImport } from './routes/management'
 import { Route as ImportRouteImport } from './routes/import'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as BotDemoRouteImport } from './routes/bot-demo'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SoulsIndexRouteImport } from './routes/souls/index'
@@ -58,6 +59,11 @@ const ImportRoute = ImportRouteImport.update({
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BotDemoRoute = BotDemoRouteImport.update({
+  id: '/bot-demo',
+  path: '/bot-demo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -104,6 +110,7 @@ const OwnerSlugRoute = OwnerSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/bot-demo': typeof BotDemoRoute
   '/dashboard': typeof DashboardRoute
   '/import': typeof ImportRoute
   '/management': typeof ManagementRoute
@@ -121,6 +128,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/bot-demo': typeof BotDemoRoute
   '/dashboard': typeof DashboardRoute
   '/import': typeof ImportRoute
   '/management': typeof ManagementRoute
@@ -139,6 +147,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/bot-demo': typeof BotDemoRoute
   '/dashboard': typeof DashboardRoute
   '/import': typeof ImportRoute
   '/management': typeof ManagementRoute
@@ -158,6 +167,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/bot-demo'
     | '/dashboard'
     | '/import'
     | '/management'
@@ -175,6 +185,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/admin'
+    | '/bot-demo'
     | '/dashboard'
     | '/import'
     | '/management'
@@ -192,6 +203,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
+    | '/bot-demo'
     | '/dashboard'
     | '/import'
     | '/management'
@@ -210,6 +222,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
+  BotDemoRoute: typeof BotDemoRoute
   DashboardRoute: typeof DashboardRoute
   ImportRoute: typeof ImportRoute
   ManagementRoute: typeof ManagementRoute
@@ -276,6 +289,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bot-demo': {
+      id: '/bot-demo'
+      path: '/bot-demo'
+      fullPath: '/bot-demo'
+      preLoaderRoute: typeof BotDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
@@ -338,6 +358,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
+  BotDemoRoute: BotDemoRoute,
   DashboardRoute: DashboardRoute,
   ImportRoute: ImportRoute,
   ManagementRoute: ManagementRoute,

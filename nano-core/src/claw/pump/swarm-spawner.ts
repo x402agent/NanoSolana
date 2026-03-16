@@ -232,7 +232,6 @@ export class SwarmSpawner {
             source: 'task-assignment',
             tags: ['tasks', 'mission', 'objectives', ...taskAssignments.flatMap((a) => a.task.domains)],
             confidence: 1.0,
-            sampleCount: 1,
           });
 
           for (const assignment of taskAssignments) {
@@ -241,7 +240,6 @@ export class SwarmSpawner {
               source: 'task-detail',
               tags: ['task', assignment.task.id, ...assignment.task.domains],
               confidence: 0.9,
-              sampleCount: 1,
             });
           }
         }

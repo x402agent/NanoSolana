@@ -18,16 +18,16 @@ Required:
 Optional:
 
 - any supporting *text-based* files (see “Allowed files”)
-- `.clawhubignore` (ignore patterns for publish/sync, legacy `.nanohubignore`)
+- `.nanohubignore` (ignore patterns for publish/sync, legacy `.clawhubignore`)
 - `.gitignore` (also honored)
 
 Local install metadata (written by the CLI):
 
-- `<skill>/.nanohub/origin.json` (legacy `.nanohub`)
+- `<skill>/.nanohub/origin.json` (legacy `.clawhub`)
 
 Workdir install state (written by the CLI):
 
-- `<workdir>/.nanohub/lock.json` (legacy `.nanohub`)
+- `<workdir>/.nanohub/lock.json` (legacy `.clawhub`)
 
 ## `SKILL.md`
 

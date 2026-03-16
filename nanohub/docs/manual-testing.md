@@ -10,8 +10,8 @@ read_when:
 ## Setup
 - Ensure logged in: `bun nanohub whoami` (or `bun nanohub login`).
 - Optional: set env
-  - `CLAWHUB_SITE=https://hub.nanosolana.com`
-  - `CLAWHUB_REGISTRY=https://hub.nanosolana.com`
+  - `NANOHUB_SITE=https://hub.nanosolana.com`
+  - `NANOHUB_REGISTRY=https://hub.nanosolana.com`
 
 ## Smoke
 - `bun nanohub --help`

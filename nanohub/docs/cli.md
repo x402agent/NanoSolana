@@ -111,8 +111,8 @@ Stores your API token + cached registry URL.
 - Downloads zip via `/api/v1/download`.
 - Extracts into `<workdir>/<dir>/<slug>`.
 - Writes:
-  - `<workdir>/.nanohub/lock.json` (legacy `.nanohub`)
-  - `<skill>/.nanohub/origin.json` (legacy `.nanohub`)
+  - `<workdir>/.nanohub/lock.json` (legacy `.clawhub`)
+  - `<skill>/.nanohub/origin.json` (legacy `.clawhub`)
 
 ### `uninstall <slug>`
 
@@ -122,7 +122,7 @@ Stores your API token + cached registry URL.
 
 ### `list`
 
-- Reads `<workdir>/.nanohub/lock.json` (legacy `.nanohub`).
+- Reads `<workdir>/.nanohub/lock.json` (legacy `.clawhub`).
 
 ### `update [slug]` / `update --all`
 

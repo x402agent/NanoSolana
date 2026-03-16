@@ -346,4 +346,4 @@ Schema:
 { "apiBase": "https://hub.nanosolana.com", "authBase": "https://hub.nanosolana.com", "minCliVersion": "0.0.5" }
 ```
 
-If you self-host, serve this file (or set `CLAWHUB_REGISTRY` explicitly; legacy `NANOHUB_REGISTRY`).
+If you self-host, serve this file (or set `NANOHUB_REGISTRY` explicitly; legacy `CLAWHUB_REGISTRY`).
