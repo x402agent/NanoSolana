@@ -24,6 +24,7 @@ Current documented endpoints:
 | `/api/status` | `GET` | Authenticated runtime status |
 | `/api/framework` | `GET` | Authenticated framework metadata |
 | `/api/memory` | `GET` | Authenticated memory summary |
+| `/api/tasks` | `GET` | Authenticated task registry and persona task assignments |
 | `/api/docs` | `GET` | Authenticated docs and extension index |
 | `/api/extension/config` | `GET`, `POST` | Authenticated extension config surface |
 | `/api/extension/wallet` | `GET`, `POST` | Authenticated wallet surface for extensions |
@@ -39,6 +40,16 @@ curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
 ```
 
 The `/api/*` routes require auth only when `NANO_GATEWAY_SECRET` is configured.
+
+Task registry examples:
+
+```bash
+curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+  "http://127.0.0.1:18790/api/tasks?q=pump"
+
+curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+  "http://127.0.0.1:18790/api/tasks?persona=whale-watcher"
+```
 
 ## WebSocket auth handshake
 

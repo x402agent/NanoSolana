@@ -52,7 +52,7 @@ The canonical CLI is in `nano-core/src/cli/entry.ts` and currently ships:
 
 - `init`, `birth`, `run`, `status`, `pet`
 - `send`, `nodes`, `bots`
-- `config`, `vault`, `docs`
+- `config`, `vault`, `docs`, `tasks`
 - `go`, `demo`, `dvd`, `lobster`
 - `scan`, `register`, `registry`, `nanobot`
 - `pay invoice|verify|status`
@@ -78,6 +78,12 @@ Use [Hub + Convex](/cli/hub-convex) and NanoHub at `hub.nanosolana.com`.
 
 Read [Extensions](/extensions), [Tools](/tools), and
 [Gateway Protocol](/gateway/protocol).
+
+### I want agents to work from the repo backlog
+
+Use `npx nanosolana tasks`, then inspect [Tools](/tools) and
+[Architecture](/concepts/architecture). Personas already consume the same
+`agent-tasks/` registry for mission assignment.
 
 ## Documentation map
 

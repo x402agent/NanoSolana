@@ -19,6 +19,7 @@ subtree. In this checkout, the gateway is started in one of these ways:
 The gateway in [`nano-core/src/gateway/server.ts`](../../nano-core/src/gateway/server.ts):
 
 - exposes HTTP endpoints such as `/health`, `/api/status`, `/api/framework`, and `/api/memory`
+- exposes `/api/tasks` for the automated agent task registry
 - also exposes `/api/docs` and `/api/extension/{config,wallet,chat,trade}`
 - accepts authenticated WebSocket clients for mesh-style coordination
 - relays memory updates and runtime status

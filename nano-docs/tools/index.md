@@ -5,10 +5,11 @@ title: "Tools"
 
 # Tools
 
-NanoSolana has two tool surfaces in this checkout:
+NanoSolana has three tool surfaces in this checkout:
 
 1. runtime capabilities exposed by the `nanosolana` CLI and gateway
 2. extension-registered tools used by the UI and plugin layer
+3. the automated repo task registry from `agent-tasks/`, used for persona mission assignment
 
 ## Runtime operator surface
 
@@ -25,6 +26,7 @@ The current shipped CLI exposes these top-level operational commands:
 - `config`
 - `vault`
 - `docs`
+- `tasks`
 - `go`
 - `demo`
 - `scan`

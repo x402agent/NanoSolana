@@ -46,6 +46,7 @@ nanosolana scan [address]
 nanosolana register
 nanosolana registry
 nanosolana nanobot
+nanosolana tasks [query]
 nanosolana pay invoice|verify|status
 ```
 
@@ -65,7 +66,8 @@ nanosolana pay invoice|verify|status
 - `nanosolana pet` — show current pet state
 - `nanosolana config` — print redacted config
 - `nanosolana vault [query]` — inspect ClawVault and search it
-- `nanosolana docs [query]` — inspect `nano-docs`, `pump/docs`, and extensions
+- `nanosolana docs [query]` — inspect `nano-docs`, `pump/docs`, `agent-tasks/`, and extensions
+- `nanosolana tasks [query]` — inspect the repo task registry and persona-matched assignments
 - `nanosolana scan [address]` — on-chain wallet snapshot
 - `nanosolana register` / `registry` — devnet identity registration and lookup
 - `nanosolana nanobot` — start the local NanoBot UI on port `7777` by default
@@ -90,6 +92,7 @@ nanosolana pay invoice|verify|status
 - There is no shipped `nanosolana memory ...` subtree yet; ClawVault is exposed through `nanosolana vault`.
 - There is no shipped `nanosolana gateway ...` subtree yet; the gateway is started by `run` or `go`, or via `npm run gateway` inside `nano-core`.
 - `nanosolana pay` **is** shipped and provides on-chain invoice creation, verification, and status via the `@pump-fun/agent-payments-sdk`.
+- `nanosolana tasks` **is** shipped and exposes the same task registry used by persona auto-assignment in the swarm runtime.
 
 Those older command shapes appeared in earlier docs as a target UX. The rest of this doc tree maps those capability areas to the commands and scripts that actually exist.
 
