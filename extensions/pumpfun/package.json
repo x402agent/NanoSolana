@@ -1,0 +1,23 @@
+{
+  "name": "@nanosolana/extension-pumpfun",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "PumpFun protocol extension for NanoSolana — bonding curve trading, token launch monitoring, fee tracking",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "@solana/web3.js": "^1.98.0",
+    "@coral-xyz/anchor": "^0.30.0",
+    "bn.js": "^5.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "vitest": "^4.0.0"
+  }
+}
