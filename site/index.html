@@ -1,1122 +1,777 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NanoSolana — Autonomous Financial Intelligence on Solana</title>
-  <meta name="description" content="Deploy autonomous Solana trading agents in 30 seconds. OODA trading loop, 3-tier epistemological memory, mesh networking, virtual pet soul. Open source." />
-  <meta property="og:title" content="NanoSolana — Deploy Solana Trading Agents in 30 Seconds" />
-  <meta property="og:description" content="One command to deploy autonomous trading intelligence. Open source, security-first, with a virtual pet soul." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://nanosolana.com" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg-abyss: #060810;
-      --bg-surface: #0a0e1a;
-      --bg-card: rgba(15, 20, 40, 0.85);
-      --solana-green: #14F195;
-      --solana-purple: #9945FF;
-      --lobster-orange: #FF6B35;
-      --text-primary: #e8ecf4;
-      --text-secondary: #8892b0;
-      --border-glow: rgba(20, 241, 149, 0.15);
-      --font-mono: 'JetBrains Mono', monospace;
-      --font-body: 'Space Grotesk', sans-serif;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: var(--font-body);
-      background: var(--bg-abyss);
-      color: var(--text-primary);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(ellipse at 20% 50%, rgba(20, 241, 149, 0.03) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 50%, rgba(153, 69, 255, 0.03) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    .container { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; position: relative; z-index: 1; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NanoSolana — Autonomous Financial Agents on Solana</title>
+<meta name="description" content="TypeScript runtime & CLI for self-evolving trading agents on Solana. OODA loop engine, encrypted ClawVault memory, TamaGOchi lifecycle, Jupiter execution, Helius ingestion.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#FF5A1F;--purple:#9945FF;--green:#14F195;
+  --bg:#0A0A0F;--bg2:#111118;--bg3:#1A1A24;
+  --text:#E8E8ED;--text-dim:#8888A0;--text-muted:#55556A;
+  --border:#2A2A3A;--glow-orange:rgba(255,90,31,.15);
+  --glow-purple:rgba(153,69,255,.12);--glow-green:rgba(20,241,149,.1);
+  --font-mono:'JetBrains Mono',monospace;
+  --font-display:'Outfit',sans-serif;
+  --font-body:'Space Grotesk',sans-serif;
+}
+html{scroll-behavior:smooth;background:var(--bg);color:var(--text);font-family:var(--font-body)}
+body{overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
-    /* ── Floating particles ─────────────── */
-    .particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-    .particle {
-      position: absolute;
-      width: 2px; height: 2px;
-      background: var(--solana-green);
-      border-radius: 50%;
-      opacity: 0;
-      animation: particleFloat linear infinite;
-    }
-    @keyframes particleFloat {
-      0% { opacity: 0; transform: translateY(100vh) scale(0); }
-      10% { opacity: 0.6; }
-      90% { opacity: 0.6; }
-      100% { opacity: 0; transform: translateY(-10vh) scale(1); }
-    }
+/* Scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--purple)}
 
-    /* ── Stats bar ─────────────────────── */
-    .stats-bar {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      padding: 1rem 0;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
-    }
-    .stat-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-    }
-    .stat-item__val {
-      color: var(--solana-green);
-      font-weight: 700;
-      font-size: 1rem;
-    }
+/* Scanline overlay */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);
+}
 
-    /* ── Hero ───────────────────────────── */
-    .hero { text-align: center; padding: 3rem 0 2rem; }
-    .hero__logo {
-      width: 140px; height: 140px;
-      border-radius: 50%;
-      border: 2px solid var(--solana-green);
-      box-shadow: 0 0 40px rgba(20, 241, 149, 0.2), 0 0 80px rgba(153, 69, 255, 0.1);
-      margin-bottom: 1.5rem;
-      animation: float 6s ease-in-out infinite;
-    }
-    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-    .hero__title {
-      font-size: 3.5rem; font-weight: 700;
-      background: linear-gradient(135deg, var(--solana-green), var(--solana-purple));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      margin-bottom: 0.5rem;
-    }
-    .hero__tagline {
-      font-size: 1.05rem; color: var(--solana-green);
-      font-family: var(--font-mono); margin-bottom: 0.75rem; letter-spacing: 0.02em;
-    }
-    .hero__subtitle {
-      font-size: 1.1rem; color: var(--text-secondary);
-      max-width: 650px; margin: 0 auto 1.5rem; line-height: 1.6;
-    }
-    .hero__badges { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
-    .hero__badges img { height: 22px; }
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(10,10,15,.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:.75rem 2rem;display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none}
+.nav-logo .claw{font-size:1.6rem}
+.nav-logo span{font-family:var(--font-display);font-weight:800;font-size:1.1rem;color:var(--orange);letter-spacing:-.02em}
+.nav-links{display:flex;gap:1.5rem;align-items:center}
+.nav-links a{
+  color:var(--text-dim);text-decoration:none;font-size:.82rem;font-weight:500;
+  font-family:var(--font-mono);letter-spacing:.03em;transition:color .2s;
+}
+.nav-links a:hover{color:var(--green)}
+.nav-cta{
+  background:var(--orange);color:#fff;padding:.45rem 1rem;border-radius:4px;
+  font-family:var(--font-mono);font-size:.78rem;font-weight:600;
+  text-decoration:none;transition:all .2s;border:none;cursor:pointer;
+}
+.nav-cta:hover{background:#ff7040;box-shadow:0 0 20px rgba(255,90,31,.4)}
 
-    /* ── Install boxes ─────────────────── */
-    .install-row {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
-      margin: 2rem auto; max-width: 750px;
-    }
-    .install-card {
-      background: var(--bg-card); border: 1px solid var(--border-glow);
-      border-radius: 12px; padding: 1.5rem; backdrop-filter: blur(12px);
-      position: relative; overflow: hidden; text-align: center;
-      transition: border-color 0.3s, transform 0.2s;
-    }
-    .install-card:hover { border-color: var(--solana-green); transform: translateY(-3px); }
-    .install-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, var(--solana-green), var(--solana-purple));
-    }
-    .install-card__label {
-      font-family: var(--font-mono); font-size: 0.7rem; color: var(--solana-green);
-      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;
-    }
-    .install-card__cmd {
-      font-family: var(--font-mono); font-size: 0.95rem; color: var(--text-primary);
-      background: rgba(0,0,0,0.4); padding: 0.75rem 1rem; border-radius: 8px;
-      cursor: pointer; transition: background 0.2s; margin-bottom: 0.5rem;
-    }
-    .install-card__cmd:hover { background: rgba(0,0,0,0.6); }
-    .install-card__desc { font-size: 0.75rem; color: var(--text-secondary); }
-    .install-card--demo { border-color: var(--lobster-orange); }
-    .install-card--demo::before { background: linear-gradient(90deg, var(--lobster-orange), var(--solana-purple)); }
-    .install-card--demo .install-card__label { color: var(--lobster-orange); }
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:6rem 2rem 4rem;position:relative;overflow:hidden;text-align:center;
+}
+.hero::before{
+  content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);
+  width:800px;height:800px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,90,31,.08) 0%,rgba(153,69,255,.04) 40%,transparent 70%);
+  pointer-events:none;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--bg3);border:1px solid var(--border);border-radius:100px;
+  padding:.4rem 1rem;font-family:var(--font-mono);font-size:.72rem;color:var(--green);
+  margin-bottom:1.5rem;animation:fadeUp .6s ease;
+}
+.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{
+  font-family:var(--font-display);font-weight:900;font-size:clamp(3rem,8vw,6.5rem);
+  line-height:.95;letter-spacing:-.04em;margin-bottom:1rem;animation:fadeUp .6s ease .1s both;
+}
+.hero h1 .orange{color:var(--orange)}
+.hero h1 .purple{color:var(--purple)}
+.hero h1 .green{color:var(--green)}
+.hero-sub{
+  font-size:clamp(1rem,2vw,1.25rem);color:var(--text-dim);max-width:600px;
+  line-height:1.6;margin-bottom:2.5rem;animation:fadeUp .6s ease .2s both;
+}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeUp .6s ease .3s both}
+.btn-primary{
+  background:var(--orange);color:#fff;padding:.75rem 2rem;border-radius:6px;
+  font-family:var(--font-mono);font-size:.85rem;font-weight:600;text-decoration:none;
+  transition:all .25s;border:2px solid var(--orange);
+}
+.btn-primary:hover{background:transparent;color:var(--orange);box-shadow:0 0 30px rgba(255,90,31,.3)}
+.btn-secondary{
+  background:transparent;color:var(--text);padding:.75rem 2rem;border-radius:6px;
+  font-family:var(--font-mono);font-size:.85rem;font-weight:600;text-decoration:none;
+  border:2px solid var(--border);transition:all .25s;
+}
+.btn-secondary:hover{border-color:var(--purple);color:var(--purple);box-shadow:0 0 30px var(--glow-purple)}
 
-    /* ── Comparison table ──────────────── */
-    .compare-section { margin: 3rem 0; }
-    .compare-section h2 {
-      font-size: 1.8rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, var(--solana-green), var(--solana-purple));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .compare-section p { text-align: center; color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem; }
-    .compare-table {
-      width: 100%; border-collapse: collapse; font-size: 0.85rem;
-      background: var(--bg-card); border-radius: 12px; overflow: hidden;
-      border: 1px solid var(--border-glow);
-    }
-    .compare-table th {
-      padding: 0.85rem 1rem; text-align: left; font-weight: 600;
-      background: rgba(20, 241, 149, 0.06); border-bottom: 1px solid var(--border-glow);
-    }
-    .compare-table td {
-      padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.04);
-    }
-    .compare-table tr:last-child td { border-bottom: none; }
-    .compare-table td:first-child { font-weight: 500; color: var(--text-primary); }
-    .compare-table .yes { color: var(--solana-green); font-weight: 600; }
-    .compare-table .no { color: #ff6b6b; }
-    .compare-table .partial { color: #fbbf24; }
-    .compare-table .nano-col { background: rgba(20, 241, 149, 0.04); }
+/* Terminal preview */
+.terminal-wrap{
+  margin-top:3.5rem;width:100%;max-width:700px;animation:fadeUp .8s ease .5s both;
+}
+.terminal{
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 40px var(--glow-orange);
+}
+.terminal-bar{
+  display:flex;align-items:center;gap:.5rem;padding:.6rem 1rem;
+  background:var(--bg3);border-bottom:1px solid var(--border);
+}
+.terminal-dot{width:10px;height:10px;border-radius:50%}
+.terminal-dot.r{background:#FF5F56}.terminal-dot.y{background:#FFBD2E}.terminal-dot.g{background:#27C93F}
+.terminal-title{flex:1;text-align:center;font-family:var(--font-mono);font-size:.7rem;color:var(--text-muted)}
+.terminal-body{padding:1.2rem 1.4rem;font-family:var(--font-mono);font-size:.82rem;line-height:1.8}
+.terminal-body .prompt{color:var(--green)}
+.terminal-body .cmd{color:var(--text)}
+.terminal-body .comment{color:var(--text-muted)}
+.terminal-body .output{color:var(--orange)}
+.terminal-body .info{color:var(--purple)}
 
-    /* ── Terminal ───────────────────────── */
-    .terminal {
-      background: #0d1117; border: 1px solid rgba(20, 241, 149, 0.2);
-      border-radius: 12px; margin: 3rem auto; max-width: 750px;
-      overflow: hidden; font-family: var(--font-mono); font-size: 0.78rem;
-    }
-    .terminal__bar {
-      background: rgba(20, 241, 149, 0.05); padding: 0.6rem 1rem;
-      display: flex; gap: 6px; align-items: center;
-      border-bottom: 1px solid rgba(20, 241, 149, 0.1);
-    }
-    .terminal__dot { width: 10px; height: 10px; border-radius: 50%; }
-    .terminal__dot--r { background: #ff5f57; }
-    .terminal__dot--y { background: #ffbd2e; }
-    .terminal__dot--g { background: #28ca41; }
-    .terminal__title { color: var(--text-secondary); font-size: 0.7rem; margin-left: 0.5rem; }
-    .terminal__body { padding: 1rem 1.25rem; line-height: 1.7; overflow-x: auto; }
-    .t-green { color: #14F195; } .t-cyan { color: #00d4ff; } .t-purple { color: #9945FF; }
-    .t-gray { color: #6b7280; } .t-yellow { color: #fbbf24; } .t-white { color: #e8ecf4; }
-    .t-orange { color: #FF6B35; }
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-    /* ── Feature grid ──────────────────── */
-    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin: 3rem 0; }
-    .feature-card {
-      background: var(--bg-card); border: 1px solid var(--border-glow);
-      border-radius: 12px; padding: 1.5rem; backdrop-filter: blur(8px);
-      transition: border-color 0.3s, transform 0.2s;
-    }
-    .feature-card:hover { border-color: var(--solana-green); transform: translateY(-4px); }
-    .feature-card__icon { font-size: 2rem; margin-bottom: 0.75rem; }
-    .feature-card__title { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.4rem; color: var(--solana-green); }
-    .feature-card__desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+/* ── SECTION COMMON ── */
+section{padding:5rem 2rem}
+.container{max-width:1100px;margin:0 auto}
+.section-label{
+  font-family:var(--font-mono);font-size:.72rem;font-weight:600;color:var(--orange);
+  letter-spacing:.15em;text-transform:uppercase;margin-bottom:.75rem;
+}
+.section-title{
+  font-family:var(--font-display);font-weight:800;font-size:clamp(2rem,4vw,3rem);
+  letter-spacing:-.03em;line-height:1.1;margin-bottom:1rem;
+}
+.section-desc{color:var(--text-dim);font-size:1rem;line-height:1.7;max-width:650px;margin-bottom:3rem}
 
-    /* ── SDK code section ──────────────── */
-    .sdk-section { margin: 3rem 0; }
-    .sdk-section h2 {
-      font-size: 1.8rem; font-weight: 700; text-align: center; margin-bottom: 1.5rem;
-      background: linear-gradient(135deg, var(--solana-green), var(--solana-purple));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .sdk-code {
-      background: #0d1117; border: 1px solid rgba(20, 241, 149, 0.15);
-      border-radius: 12px; padding: 1.5rem; font-family: var(--font-mono);
-      font-size: 0.82rem; line-height: 1.7; overflow-x: auto; max-width: 750px; margin: 0 auto;
-    }
+/* ── FEATURES ── */
+#features{background:var(--bg)}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
+.feature-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;
+  padding:1.8rem;transition:all .3s;position:relative;overflow:hidden;
+}
+.feature-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--orange),var(--purple),var(--green));
+  opacity:0;transition:opacity .3s;
+}
+.feature-card:hover{border-color:var(--orange);transform:translateY(-3px);box-shadow:0 10px 40px rgba(0,0,0,.3)}
+.feature-card:hover::before{opacity:1}
+.feature-icon{font-size:1.8rem;margin-bottom:1rem;display:block}
+.feature-card h3{font-family:var(--font-display);font-weight:700;font-size:1.15rem;margin-bottom:.5rem}
+.feature-card p{color:var(--text-dim);font-size:.88rem;line-height:1.6}
 
-    /* ── Commands grid ─────────────────── */
-    .cmds-title {
-      font-size: 1.8rem; font-weight: 700; text-align: center; margin-bottom: 1.5rem;
-      background: linear-gradient(135deg, var(--solana-green), var(--solana-purple));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .fun-cmds { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 0 auto 3rem; max-width: 750px; }
-    .fun-cmd {
-      background: var(--bg-card); border: 1px solid var(--border-glow);
-      border-radius: 10px; padding: 1.25rem; text-align: center;
-      transition: border-color 0.3s, transform 0.2s;
-    }
-    .fun-cmd:hover { border-color: var(--lobster-orange); transform: translateY(-3px); }
-    .fun-cmd__icon { font-size: 2rem; margin-bottom: 0.5rem; }
-    .fun-cmd__name { font-family: var(--font-mono); font-size: 0.82rem; color: var(--solana-green); margin-bottom: 0.25rem; }
-    .fun-cmd__desc { font-size: 0.78rem; color: var(--text-secondary); }
+/* ── ARCHITECTURE ── */
+#architecture{background:var(--bg2)}
+.arch-diagram{
+  background:var(--bg);border:1px solid var(--border);border-radius:10px;
+  padding:2rem;font-family:var(--font-mono);font-size:.78rem;
+  line-height:1.7;color:var(--text-dim);white-space:pre;overflow-x:auto;
+  position:relative;
+}
+.arch-diagram .layer-title{color:var(--orange);font-weight:700}
+.arch-diagram .component{color:var(--green)}
+.arch-diagram .external{color:var(--purple)}
 
-    /* ── CTA section ───────────────────── */
-    .cta-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 3rem 0; }
-    .cta-btn {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.85rem 2rem; border-radius: 8px;
-      text-decoration: none; font-weight: 600; font-size: 0.95rem;
-      transition: transform 0.15s, box-shadow 0.2s; border: none; cursor: pointer;
-    }
-    .cta-btn:hover { transform: translateY(-2px); }
-    .cta-btn--github { background: var(--text-primary); color: var(--bg-abyss); }
-    .cta-btn--github:hover { box-shadow: 0 8px 30px rgba(255,255,255,0.15); }
-    .cta-btn--npm { background: linear-gradient(135deg, #cb3837, #e74c3c); color: white; }
-    .cta-btn--npm:hover { box-shadow: 0 8px 30px rgba(203,56,55,0.3); }
-    .cta-btn--twitter { background: linear-gradient(135deg, #1d9bf0, #0d8bd9); color: white; }
-    .cta-btn--twitter:hover { box-shadow: 0 8px 30px rgba(29,155,240,0.3); }
-    .cta-btn--discord { background: linear-gradient(135deg, #5865F2, #4752C4); color: white; }
-    .cta-btn--discord:hover { box-shadow: 0 8px 30px rgba(88,101,242,0.3); }
-    .cta-btn svg { width: 18px; height: 18px; }
+/* ── CLI REFERENCE ── */
+#cli{background:var(--bg)}
+.cli-group{margin-bottom:2.5rem}
+.cli-group h3{
+  font-family:var(--font-mono);font-weight:600;font-size:.85rem;color:var(--purple);
+  margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);
+}
+.cli-table{width:100%;border-collapse:collapse}
+.cli-table td{
+  padding:.6rem .8rem;border-bottom:1px solid rgba(42,42,58,.5);
+  font-size:.85rem;vertical-align:top;
+}
+.cli-table td:first-child{
+  font-family:var(--font-mono);color:var(--green);white-space:nowrap;width:260px;font-weight:500;
+}
+.cli-table td:last-child{color:var(--text-dim)}
+.cli-table tr:hover td{background:rgba(255,90,31,.03)}
 
-    /* ── Steps ─────────────────────────── */
-    .steps { margin: 3rem 0; }
-    .steps__title {
-      font-size: 1.8rem; font-weight: 700; text-align: center; margin-bottom: 2rem;
-      background: linear-gradient(135deg, var(--solana-green), var(--solana-purple));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .step { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; align-items: flex-start; }
-    .step__num {
-      font-family: var(--font-mono); font-size: 1.4rem; font-weight: 700;
-      color: var(--solana-green); background: rgba(20, 241, 149, 0.1);
-      width: 48px; height: 48px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; border: 1px solid var(--border-glow);
-    }
-    .step__content h3 { font-size: 1.1rem; margin-bottom: 0.25rem; }
-    .step__content p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; }
+/* ── SDK ── */
+#sdk{background:var(--bg2)}
+.code-block{
+  background:var(--bg);border:1px solid var(--border);border-radius:10px;
+  padding:1.5rem 1.8rem;font-family:var(--font-mono);font-size:.82rem;
+  line-height:1.8;overflow-x:auto;position:relative;
+}
+.code-block .kw{color:var(--purple)}.code-block .fn{color:var(--orange)}
+.code-block .str{color:var(--green)}.code-block .cm{color:var(--text-muted)}
+.code-block .vr{color:#70A5FD}.code-block .op{color:var(--text-dim)}
 
-    /* ── Chrome Extension ──────────────── */
-    .ext-section {
-      background: var(--bg-card); border: 1px solid var(--border-glow);
-      border-radius: 16px; padding: 2.5rem; margin: 3rem auto; max-width: 750px;
-      backdrop-filter: blur(12px); position: relative; overflow: hidden;
-    }
-    .ext-section::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, var(--lobster-orange), var(--solana-purple), var(--solana-green));
-    }
-    .ext-section__title {
-      font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, var(--lobster-orange), var(--solana-purple));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .ext-section__desc { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem; }
-    .ext-features { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem; }
-    .ext-feat { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.85rem; color: var(--text-secondary); }
-    .ext-feat__icon { font-size: 1.1rem; flex-shrink: 0; }
-    .ext-feat__label strong { color: var(--text-primary); }
-    .ext-flow { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
-    .ext-flow__box {
-      background: rgba(20, 241, 149, 0.06); border: 1px solid var(--border-glow);
-      border-radius: 8px; padding: 0.5rem 0.75rem; font-family: var(--font-mono);
-      font-size: 0.75rem; color: var(--text-primary);
-    }
-    .ext-flow__arrow { color: var(--solana-green); font-size: 1rem; }
+/* ── CONFIG ── */
+#config{background:var(--bg)}
+.config-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1rem}
+.config-item{
+  background:var(--bg2);border:1px solid var(--border);border-radius:8px;
+  padding:1rem 1.2rem;display:flex;gap:1rem;align-items:flex-start;
+}
+.config-item code{
+  font-family:var(--font-mono);font-size:.78rem;color:var(--green);
+  background:rgba(20,241,149,.08);padding:.15rem .4rem;border-radius:3px;white-space:nowrap;flex-shrink:0;
+}
+.config-item .config-info{flex:1}
+.config-item .config-info strong{display:block;font-size:.85rem;margin-bottom:.2rem}
+.config-item .config-info span{color:var(--text-dim);font-size:.8rem;line-height:1.5}
 
-    /* ── Share section ─────────────────── */
-    .share-section {
-      text-align: center; margin: 3rem 0; padding: 2.5rem;
-      background: linear-gradient(135deg, rgba(20, 241, 149, 0.05), rgba(153, 69, 255, 0.05));
-      border: 1px solid var(--border-glow); border-radius: 12px;
-    }
-    .share-section h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.75rem; }
-    .share-section p { color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem; }
+/* ── INSTALL ── */
+#install{background:var(--bg2)}
+.install-methods{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
+.install-card{
+  background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:1.5rem;
+}
+.install-card h4{
+  font-family:var(--font-display);font-weight:700;font-size:1rem;margin-bottom:1rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.install-card h4 .num{
+  background:var(--orange);color:#fff;width:24px;height:24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;
+}
+.install-cmd{
+  background:var(--bg2);border:1px solid var(--border);border-radius:6px;
+  padding:.7rem 1rem;font-family:var(--font-mono);font-size:.8rem;color:var(--green);
+  margin-bottom:.6rem;position:relative;cursor:pointer;transition:border-color .2s;
+}
+.install-cmd:hover{border-color:var(--green)}
+.install-cmd::after{
+  content:'📋';position:absolute;right:.7rem;top:50%;transform:translateY(-50%);
+  font-size:.75rem;opacity:.4;transition:opacity .2s;
+}
+.install-cmd:hover::after{opacity:1}
 
-    /* ── Footer ────────────────────────── */
-    .footer { text-align: center; padding: 3rem 0 2rem; border-top: 1px solid var(--border-glow); margin-top: 3rem; }
-    .footer__links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; flex-wrap: wrap; }
-    .footer__link { color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
-    .footer__link:hover { color: var(--solana-green); }
-    .footer__brand { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary); }
-    .footer__brand span { color: var(--lobster-orange); }
+/* ── SECURITY ── */
+#security{background:var(--bg)}
+.security-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.2rem}
+.security-item{
+  background:var(--bg2);border:1px solid var(--border);border-radius:8px;
+  padding:1.3rem;position:relative;overflow:hidden;
+}
+.security-item::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:var(--green);opacity:.4;
+}
+.security-item .sec-icon{font-size:1.5rem;margin-bottom:.7rem;display:block}
+.security-item h4{font-size:.95rem;font-weight:700;margin-bottom:.4rem;font-family:var(--font-display)}
+.security-item p{color:var(--text-dim);font-size:.82rem;line-height:1.6}
 
-    /* ── Music Player ──────────────────── */
-    .music-player {
-      position: fixed; bottom: 24px; left: 24px; z-index: 9999;
-      background: rgba(10, 14, 26, 0.92); backdrop-filter: blur(20px) saturate(1.4);
-      border: 1px solid rgba(20, 241, 149, 0.2); border-radius: 16px;
-      padding: 14px 18px; display: flex; align-items: center; gap: 12px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5); min-width: 280px;
-      transition: transform 0.3s ease;
-    }
-    .music-player:hover { transform: translateY(-2px); }
-    .music-player__btn {
-      width: 40px; height: 40px; border-radius: 50%; border: none;
-      background: linear-gradient(135deg, var(--solana-green), var(--solana-purple));
-      color: var(--bg-abyss); font-size: 16px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .music-player__info { flex: 1; min-width: 0; }
-    .music-player__title { font-family: var(--font-mono); font-size: 0.7rem; color: var(--solana-green); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
-    .music-player__track { font-size: 0.8rem; color: var(--text-primary); font-weight: 500; margin-bottom: 8px; }
-    .music-player__progress { width: 100%; height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; cursor: pointer; overflow: hidden; }
-    .music-player__progress-fill { height: 100%; background: linear-gradient(90deg, var(--solana-green), var(--solana-purple)); border-radius: 2px; width: 0%; transition: width 0.1s linear; }
-    .music-player__time { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-secondary); margin-top: 4px; }
-    .music-player__viz { display: flex; align-items: flex-end; gap: 2px; height: 24px; flex-shrink: 0; }
-    .music-player__viz-bar { width: 3px; background: linear-gradient(to top, var(--solana-green), var(--solana-purple)); border-radius: 2px; transition: height 0.15s ease; }
-    .music-player__viz.paused .music-player__viz-bar { height: 4px !important; }
-    .music-player__volume { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
-    .music-player__volume-icon { font-size: 14px; cursor: pointer; }
-    .music-player__volume-slider { -webkit-appearance: none; appearance: none; width: 50px; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; outline: none; cursor: pointer; }
-    .music-player__volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 10px; height: 10px; border-radius: 50%; background: var(--solana-green); cursor: pointer; }
-    .music-player__autoplay-prompt {
-      position: absolute; inset: 0; background: rgba(10, 14, 26, 0.95);
-      border-radius: 16px; display: flex; align-items: center; justify-content: center;
-      gap: 8px; cursor: pointer; font-family: var(--font-mono); font-size: 0.75rem;
-      color: var(--solana-green); animation: pulsePrompt 2s ease-in-out infinite;
-    }
-    .music-player__autoplay-prompt.hidden { display: none; }
-    @keyframes pulsePrompt { 0%,100% { opacity: 0.8; } 50% { opacity: 1; } }
+/* ── FOOTER ── */
+footer{
+  background:var(--bg2);border-top:1px solid var(--border);
+  padding:3rem 2rem;text-align:center;
+}
+.footer-logo{font-family:var(--font-display);font-weight:900;font-size:1.5rem;color:var(--orange);margin-bottom:.5rem}
+.footer-links{display:flex;justify-content:center;gap:1.5rem;margin:1rem 0}
+.footer-links a{
+  color:var(--text-muted);text-decoration:none;font-family:var(--font-mono);font-size:.78rem;
+  transition:color .2s;
+}
+.footer-links a:hover{color:var(--green)}
+.footer-copy{color:var(--text-muted);font-size:.75rem;font-family:var(--font-mono)}
 
-    /* ── Responsive ────────────────────── */
-    @media (max-width: 600px) {
-      .hero__title { font-size: 2.2rem; }
-      .install-row { grid-template-columns: 1fr; }
-      .ext-features { grid-template-columns: 1fr; }
-      .ext-flow { flex-direction: column; }
-      .compare-table { font-size: 0.75rem; }
-      .compare-table th, .compare-table td { padding: 0.5rem 0.4rem; }
-      .music-player { left: 12px; right: 12px; bottom: 12px; min-width: unset; }
-    }
-  </style>
+/* ── ASCII LOBSTER ── */
+.ascii-lobster{
+  font-family:var(--font-mono);font-size:.55rem;line-height:1.15;color:var(--orange);
+  white-space:pre;text-align:center;margin:2rem auto;opacity:.6;
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  nav{padding:.6rem 1rem}
+  .nav-links a{font-size:.72rem}
+  .nav-links{gap:.8rem}
+  section{padding:3rem 1rem}
+  .cli-table td:first-child{width:auto}
+  .terminal-body{font-size:.72rem;padding:.8rem}
+  .install-methods{grid-template-columns:1fr}
+}
+
+/* Glow accents */
+.glow-line{
+  height:1px;background:linear-gradient(90deg,transparent,var(--orange),var(--purple),var(--green),transparent);
+  opacity:.3;margin:0;
+}
+</style>
 </head>
 <body>
-  <!-- Particles -->
-  <div class="particles" id="particles"></div>
 
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <span class="claw">🦞</span>
+    <span>NanoSolana</span>
+  </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#cli">CLI</a>
+    <a href="#sdk">SDK</a>
+    <a href="#config">Config</a>
+    <a href="#install">Install</a>
+    <a href="#security">Security</a>
+    <a href="https://github.com/x402agent/NanoSolana" target="_blank" class="nav-cta">GitHub ↗</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="dot"></span>
+    v1.0.2 — Live on npm
+  </div>
+  <h1>
+    <span class="orange">Nano</span><span class="purple">Solana</span><br>
+    <span style="font-size:.5em;color:var(--text-dim);font-weight:400;letter-spacing:-.01em">Autonomous Financial Agents on Solana</span>
+  </h1>
+  <p class="hero-sub">
+    TypeScript runtime & CLI for self-evolving trading agents. OODA loop engine, 
+    encrypted ClawVault memory, TamaGOchi lifecycle, Jupiter execution, 
+    Helius ingestion — all in one package.
+  </p>
+  <div class="hero-actions">
+    <a href="#install" class="btn-primary">npx nanosolana demo</a>
+    <a href="#sdk" class="btn-secondary">Read the Docs</a>
+  </div>
+
+  <div class="terminal-wrap">
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="terminal-dot r"></span>
+        <span class="terminal-dot y"></span>
+        <span class="terminal-dot g"></span>
+        <span class="terminal-title">~/.nanosolana — bash</span>
+      </div>
+      <div class="terminal-body">
+<span class="prompt">$</span> <span class="cmd">npx nanosolana demo</span>
+<span class="comment"># No API keys needed — full simulation mode</span>
+
+<span class="output">🦞 NanoSolana v1.0.2</span>
+<span class="info">   ├─ ClawVault ........... 3-tier memory online</span>
+<span class="info">   ├─ TamaGOchi .......... Egg → hatching</span>
+<span class="info">   ├─ OODA Engine ........ observe → orient → decide → act</span>
+<span class="info">   ├─ Gateway ............ ws://127.0.0.1:18790</span>
+<span class="info">   └─ NanoBot UI ......... http://127.0.0.1:7777</span>
+
+<span class="output">⚡ SIGNAL  SOL/USDC  BUY  confidence: 78%</span>
+<span class="output">🧠 VAULT   inferred → "SOL momentum building, RSI divergence"</span>
+<span class="output">🥚 PET     hunger: 30  happiness: 85  stage: Larva</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- FEATURES -->
+<section id="features">
   <div class="container">
-    <!-- Stats bar -->
-    <div class="stats-bar" id="stats-bar">
-      <div class="stat-item"><span>📦</span> npm: <span class="stat-item__val" id="stat-version">v1.0.0</span></div>
-      <div class="stat-item"><span>📥</span> Downloads: <span class="stat-item__val" id="stat-downloads">187/mo</span></div>
-      <div class="stat-item"><span>⭐</span> Stars: <span class="stat-item__val" id="stat-stars">—</span></div>
-      <div class="stat-item"><span>📝</span> License: <span class="stat-item__val">MIT</span></div>
-    </div>
-
-    <!-- Hero -->
-    <section class="hero">
-      <img src="lobster-logo.png" alt="NanoSolana Lobster" class="hero__logo" id="hero-logo" />
-      <h1 class="hero__title">NanoSolana</h1>
-      <p class="hero__tagline">Deploy autonomous Solana trading agents in 30 seconds</p>
-      <p class="hero__subtitle">
-        The open-source agentic framework for financial intelligence on Solana.
-        OODA trading loop · epistemological memory · mesh coordination · virtual pet soul.
-      </p>
-      <div class="hero__badges">
-        <img src="https://img.shields.io/npm/v/nanosolana?color=%2314F195&style=flat-square" alt="npm" />
-        <img src="https://img.shields.io/npm/dm/nanosolana?color=%239945FF&style=flat-square" alt="downloads" />
-        <img src="https://img.shields.io/badge/TypeScript-5.9-blue?style=flat-square&logo=typescript" alt="TS" />
-        <img src="https://img.shields.io/badge/Solana-Native-14F195?style=flat-square" alt="Solana" />
-        <img src="https://img.shields.io/github/license/x402agent/NanoSolana?style=flat-square" alt="License" />
-        <img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square" alt="PRs" />
+    <span class="section-label">// What Ships</span>
+    <h2 class="section-title">Everything in one binary.</h2>
+    <p class="section-desc">No microservice sprawl. One <code style="color:var(--green);font-family:var(--font-mono);background:var(--bg3);padding:.1rem .4rem;border-radius:3px">npm i nanosolana</code> and you have a full autonomous trading agent stack.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">🔄</span>
+        <h3>OODA Trading Engine</h3>
+        <p>Observe → Orient → Decide → Act loop with Helius RPC ingestion, Birdeye market data, and Jupiter swap execution. RSI, EMA, and custom signal strategies.</p>
       </div>
-    </section>
-
-    <!-- Install -->
-    <div class="install-row">
-      <div class="install-card">
-        <div class="install-card__label">⚡ deploy for real</div>
-        <div class="install-card__cmd" onclick="copyCmd('npx nanosolana go', this)">npx nanosolana go</div>
-        <div class="install-card__desc">One command: init → wallet → scan → trade → live</div>
+      <div class="feature-card">
+        <span class="feature-icon">🧠</span>
+        <h3>ClawVault Memory</h3>
+        <p>3-tier epistemological memory — Known, Learned, Inferred. AES-256-GCM encrypted persistence. The agent remembers, reasons, and evolves.</p>
       </div>
-      <div class="install-card install-card--demo">
-        <div class="install-card__label">🎮 try without api keys</div>
-        <div class="install-card__cmd" onclick="copyCmd('npx nanosolana demo', this)">npx nanosolana demo</div>
-        <div class="install-card__desc">Full OODA simulation with synthetic market data</div>
+      <div class="feature-card">
+        <span class="feature-icon">🥚</span>
+        <h3>TamaGOchi Lifecycle</h3>
+        <p>Egg → Larva → Juvenile → Adult → Alpha → Ghost. Your agent evolves based on on-chain performance. Feed it trades, watch it grow.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔐</span>
+        <h3>Encrypted Vault</h3>
+        <p>AES-256-GCM local vault under <code style="font-family:var(--font-mono);font-size:.8rem;color:var(--green)">~/.nanosolana/vault.enc</code>. HMAC-SHA256 gateway auth with timing-safe signature verification.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🌐</span>
+        <h3>Mesh Networking</h3>
+        <p>Gateway server with WebSocket support plus Tailscale-backed mesh for multi-agent swarms. Spawn, attach, and orchestrate bot fleets via tmux.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎫</span>
+        <h3>On-Chain Identity</h3>
+        <p>Devnet NFT-based agent registration via Metaplex-compatible minting. Your agent gets a birth certificate on Solana.</p>
       </div>
     </div>
+  </div>
+</section>
 
-    <!-- Comparison table -->
-    <section class="compare-section">
-      <h2>🔮 Why NanoSolana?</h2>
-      <p>Other agent frameworks are built for chat and retrofitted for finance. NanoSolana is built from the ground up for autonomous financial agents.</p>
-      <table class="compare-table">
-        <thead>
-          <tr><th>Feature</th><th class="nano-col">NanoSolana</th><th>Eliza</th><th>AutoGPT</th><th>LangChain</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Built for finance</td><td class="nano-col yes">✅ Native</td><td class="no">❌ Chat</td><td class="no">❌ General</td><td class="no">❌ General</td></tr>
-          <tr><td>Epistemological memory</td><td class="nano-col yes">✅ 3-tier</td><td class="no">❌</td><td class="no">❌</td><td class="partial">⚠️ Partial</td></tr>
-          <tr><td>OODA trading loop</td><td class="nano-col yes">✅ Built-in</td><td class="no">❌</td><td class="no">❌</td><td class="no">❌</td></tr>
-          <tr><td>On-chain identity</td><td class="nano-col yes">✅ NFT</td><td class="no">❌</td><td class="no">❌</td><td class="no">❌</td></tr>
-          <tr><td>Virtual pet soul</td><td class="nano-col yes">✅ TamaGOchi</td><td class="no">❌</td><td class="no">❌</td><td class="no">❌</td></tr>
-          <tr><td>Mesh networking</td><td class="nano-col yes">✅ P2P</td><td class="no">❌</td><td class="no">❌</td><td class="no">❌</td></tr>
-          <tr><td>One-command deploy</td><td class="nano-col yes">✅ npx</td><td class="partial">⚠️ Docker</td><td class="partial">⚠️ Docker</td><td class="no">❌ Library</td></tr>
-          <tr><td>Security-first vault</td><td class="nano-col yes">✅ AES-256</td><td class="no">❌ .env</td><td class="no">❌ .env</td><td class="no">❌ .env</td></tr>
-        </tbody>
+<div class="glow-line"></div>
+
+<!-- ARCHITECTURE -->
+<section id="architecture">
+  <div class="container">
+    <span class="section-label">// System Design</span>
+    <h2 class="section-title">Architecture</h2>
+    <p class="section-desc">Three clean layers — agent runtime, local infra, and external integrations. Every module is importable as an SDK.</p>
+    <div class="arch-diagram">
+<span class="layer-title">┌─────────────────────────────────────────────────────────┐</span>
+<span class="layer-title">│                    AGENT RUNTIME                        │</span>
+│   <span class="component">OODA Loop</span>  ·  <span class="component">ClawVault</span>  ·  <span class="component">TamaGOchi</span>  ·  <span class="component">Strategy</span>       │
+<span class="layer-title">├─────────────────────────────────────────────────────────┤</span>
+<span class="layer-title">│                 LOCAL INFRASTRUCTURE                     │</span>
+│   <span class="component">Vault</span>  ·  <span class="component">Wallet</span>  ·  <span class="component">Gateway</span>  ·  <span class="component">Registry</span>  ·  <span class="component">Persist</span>    │
+<span class="layer-title">├─────────────────────────────────────────────────────────┤</span>
+<span class="layer-title">│                EXTERNAL INTEGRATIONS                     │</span>
+│   <span class="external">Helius</span>  ·  <span class="external">Birdeye</span>  ·  <span class="external">Jupiter</span>  ·  <span class="external">Tailscale</span>  ·  <span class="external">Metaplex</span>  │
+<span class="layer-title">└─────────────────────────────────────────────────────────┘</span>
+
+<span style="color:var(--text-muted)">nano-core/src/</span>
+├── <span class="component">ai/</span>         OpenRouter-backed AI provider
+├── <span class="component">cli/</span>        CLI entrypoint and terminal UX
+├── <span class="component">config/</span>     Local encrypted vault and config loading
+├── <span class="component">docs/</span>       Repo docs and extension corpus
+├── <span class="component">gateway/</span>    HTTP + WebSocket gateway
+├── <span class="component">memory/</span>     ClawVault and legacy memory engine
+├── <span class="component">nanobot/</span>    Local companion UI server
+├── <span class="component">network/</span>    Tailscale and tmux helpers
+├── <span class="component">nft/</span>        Birth certificate support
+├── <span class="component">onchain/</span>    Helius readers and wallet scans
+├── <span class="component">pet/</span>        TamaGOchi state machine
+├── <span class="component">registry/</span>   Devnet identity registration
+├── <span class="component">strategy/</span>   Indicators and signal logic
+├── <span class="component">trading/</span>    OODA trading engine
+└── <span class="component">wallet/</span>     Solana wallet management</div>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- CLI REFERENCE -->
+<section id="cli">
+  <div class="container">
+    <span class="section-label">// Commands</span>
+    <h2 class="section-title">CLI Reference</h2>
+    <p class="section-desc">Every command available via <code style="color:var(--green);font-family:var(--font-mono)">nanosolana &lt;command&gt;</code> or <code style="color:var(--green);font-family:var(--font-mono)">npx nanosolana &lt;command&gt;</code>.</p>
+
+    <div class="cli-group">
+      <h3>⚡ Core Runtime</h3>
+      <table class="cli-table">
+        <tr><td>nanosolana init</td><td>Prompt for credentials and save them to the encrypted vault</td></tr>
+        <tr><td>nanosolana birth</td><td>Create or load the agent wallet and initialize the local TamaGOchi</td></tr>
+        <tr><td>nanosolana run</td><td>Start wallet heartbeat, ClawVault, trading engine, and gateway</td></tr>
+        <tr><td>nanosolana go</td><td>Full one-shot flow: configure → birth → run → scan → register</td></tr>
+        <tr><td>nanosolana demo</td><td>Simulation mode with synthetic prices — no API keys needed</td></tr>
+        <tr><td>nanosolana status</td><td>Show wallet, pet, memory, gateway, Tailscale, and tmux summary</td></tr>
+        <tr><td>nanosolana pet</td><td>Print the current TamaGOchi status display</td></tr>
       </table>
-    </section>
-
-    <!-- Terminal preview -->
-    <div class="terminal" id="terminal-preview">
-      <div class="terminal__bar">
-        <div class="terminal__dot terminal__dot--r"></div>
-        <div class="terminal__dot terminal__dot--y"></div>
-        <div class="terminal__dot terminal__dot--g"></div>
-        <span class="terminal__title">nanosolana demo</span>
-      </div>
-      <div class="terminal__body" id="terminal-body">
-        <div class="t-orange" style="font-weight:bold"> 🎮 NanoSolana Demo Mode — No API Keys Required</div>
-        <div class="t-gray"> Using synthetic market data for simulation</div>
-        <br>
-        <div class="t-green" style="font-weight:bold"> ── OODA Cycle 1/5 ──────────────────────────────</div>
-        <br>
-        <div class="t-cyan"> 👁️  OBSERVE</div>
-        <div class="t-white">   SOL/USD: <span class="t-yellow">$142.50</span> <span class="t-green">▲ +2.3%</span></div>
-        <div class="t-white">   Volume: <span class="t-gray">$1.2B (24h)</span></div>
-        <br>
-        <div class="t-purple"> 🧭 ORIENT</div>
-        <div class="t-white">   RSI(14): <span class="t-yellow">62.4</span> | EMA(9): <span class="t-green">$141.20</span> | ATR: <span class="t-gray">3.8</span></div>
-        <div class="t-white">   ClawVault: <span class="t-gray">3K/1L/2I entries</span></div>
-        <br>
-        <div class="t-yellow"> 🎯 DECIDE</div>
-        <div class="t-white">   Signal: <span class="t-green" style="font-weight:bold">BUY</span> <span class="t-gray">confidence: 0.78</span></div>
-        <div class="t-white">   Size: <span class="t-yellow">0.5 SOL</span> <span class="t-gray">(Kelly: 12%)</span></div>
-        <br>
-        <div class="t-green"> ⚡ ACT</div>
-        <div class="t-white">   Jupiter swap simulated ✓</div>
-        <div class="t-white">   TamaGOchi: <span class="t-green">🐾 Juvenile 😊</span> <span class="t-gray">mood +5</span></div>
-        <br>
-        <div class="t-green" style="font-weight:bold"> ═══════════════════════════════════════════════</div>
-        <div class="t-green" style="font-weight:bold"> 🦞 Demo complete! Ready to go live?</div>
-        <div class="t-white">    Run: <span class="t-cyan">npx nanosolana go</span></div>
-        <div class="t-green" style="font-weight:bold"> ═══════════════════════════════════════════════</div>
-      </div>
     </div>
 
+    <div class="cli-group">
+      <h3>🔍 Ops & Inspection</h3>
+      <table class="cli-table">
+        <tr><td>nanosolana scan [address]</td><td>Scan the default wallet or a supplied address via Helius</td></tr>
+        <tr><td>nanosolana register</td><td>Mint the devnet on-chain identity NFT</td></tr>
+        <tr><td>nanosolana registry</td><td>Show local registration status and explorer links</td></tr>
+        <tr><td>nanosolana config</td><td>Print the redacted runtime configuration</td></tr>
+        <tr><td>nanosolana vault [query]</td><td>Search the ClawVault tiers (known / learned / inferred)</td></tr>
+        <tr><td>nanosolana docs [query]</td><td>Search integrated docs and extension metadata</td></tr>
+        <tr><td>nanosolana nanobot --port 7777</td><td>Start the local NanoBot companion UI</td></tr>
+      </table>
+    </div>
 
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <!-- NANO-CORE DEEP DIVE                                      -->
-    <!-- ═══════════════════════════════════════════════════════════ -->
-    <style>
-      .nc-title{font-size:2.2rem;font-weight:700;text-align:center;margin-bottom:.5rem;background:linear-gradient(135deg,var(--solana-green),#00d4ff,var(--solana-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-      .nc-sub{text-align:center;color:var(--text-secondary);margin-bottom:2rem;font-size:.95rem;max-width:700px;margin-left:auto;margin-right:auto}
-      .nc-hr{height:1px;background:linear-gradient(90deg,transparent,var(--border-glow),transparent);margin:3rem 0}
-      .nc-tabs{display:flex;gap:4px;margin-bottom:0;border-bottom:1px solid rgba(20,241,149,.15);overflow-x:auto;-webkit-overflow-scrolling:touch}
-      .nc-tab{padding:.65rem 1.1rem;font-family:var(--font-mono);font-size:.72rem;color:var(--text-secondary);background:0 0;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
-      .nc-tab:hover{color:var(--text-primary)}.nc-tab.active{color:var(--solana-green);border-bottom-color:var(--solana-green);background:rgba(20,241,149,.04)}
-      .nc-panel{display:none}.nc-panel.active{display:block}
-      .nc-code{background:#0d1117;border:1px solid rgba(20,241,149,.12);border-top:none;border-radius:0 0 12px 12px;padding:1.25rem;font-family:var(--font-mono);font-size:.76rem;line-height:1.65;overflow-x:auto;max-height:420px;overflow-y:auto}
-      .nc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
-      .nc-mod{background:var(--bg-card);border:1px solid var(--border-glow);border-radius:10px;padding:.9rem .7rem;text-align:center;transition:border-color .2s,transform .2s,box-shadow .2s}
-      .nc-mod:hover{border-color:var(--solana-green);transform:translateY(-3px);box-shadow:0 6px 20px rgba(20,241,149,.08)}
-      .nc-mod i{font-size:1.4rem;font-style:normal;display:block;margin-bottom:.35rem}
-      .nc-mod b{font-family:var(--font-mono);font-size:.72rem;color:var(--solana-green);display:block;margin-bottom:.2rem}
-      .nc-mod small{font-size:.65rem;color:var(--text-secondary);line-height:1.4}
-      .nc-exports{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
-      .nc-eg{background:var(--bg-card);border:1px solid var(--border-glow);border-radius:10px;padding:1rem}
-      .nc-eg h4{font-family:var(--font-mono);font-size:.75rem;color:var(--solana-green);font-weight:600;margin:0 0 .5rem}
-      .nc-eg p{font-family:var(--font-mono);font-size:.68rem;color:var(--text-secondary);line-height:1.8;margin:0}
-      .nc-eg p span{color:var(--text-primary)}
-      .nc-hub{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
-      .nc-hc{background:var(--bg-card);border:1px solid var(--border-glow);border-radius:12px;padding:1.25rem;transition:border-color .2s,transform .2s;position:relative;overflow:hidden}
-      .nc-hc:hover{border-color:var(--solana-purple);transform:translateY(-3px)}
-      .nc-hc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--solana-purple),var(--solana-green))}
-      .nc-hc .type{font-family:var(--font-mono);font-size:.65rem;color:var(--solana-purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem}
-      .nc-hc h3{font-size:1rem;font-weight:600;color:var(--text-primary);margin:0 0 .3rem}
-      .nc-hc p{font-size:.8rem;color:var(--text-secondary);line-height:1.5;margin:0 0 .6rem}
-      .nc-hc .tags{display:flex;gap:4px;flex-wrap:wrap}
-      .nc-hc .tag{font-size:.6rem;padding:2px 8px;border-radius:99px;background:rgba(153,69,255,.12);color:#c4b5fd;font-family:var(--font-mono)}
-      .nc-hub-actions{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin:1.25rem 0 1.5rem}
-      .nc-hub-btn{display:inline-flex;align-items:center;gap:8px;padding:.7rem 1.2rem;border-radius:8px;text-decoration:none;font-weight:600;font-size:.8rem;font-family:var(--font-mono);transition:transform .15s,box-shadow .2s}
-      .nc-hub-btn:hover{transform:translateY(-2px)}
-      .nc-hub-btn--primary{background:linear-gradient(135deg,var(--solana-green),#0ec77b);color:#04120d;box-shadow:0 8px 30px rgba(20,241,149,.18)}
-      .nc-hub-btn--secondary{background:rgba(153,69,255,.12);border:1px solid rgba(153,69,255,.25);color:#c4b5fd}
-      .nc-registry-shell{margin-top:1.75rem;background:var(--bg-card);border:1px solid var(--border-glow);border-radius:16px;padding:1.25rem;backdrop-filter:blur(10px)}
-      .nc-registry-head{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start;flex-wrap:wrap;margin-bottom:1rem}
-      .nc-registry-title{font-size:1rem;font-weight:600;color:var(--text-primary)}
-      .nc-registry-copy{font-size:.82rem;color:var(--text-secondary);line-height:1.6;max-width:620px}
-      .nc-registry-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.75rem;margin-bottom:1rem}
-      .nc-registry-stat{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:.9rem}
-      .nc-registry-stat b{display:block;font-size:1.2rem;color:var(--solana-green);font-family:var(--font-mono);margin-bottom:.15rem}
-      .nc-registry-stat span{font-size:.72rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.08em}
-      .nc-registry-toolbar{display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem}
-      .nc-registry-search{flex:1 1 320px;display:flex;gap:.6rem}
-      .nc-registry-input{flex:1;background:rgba(0,0,0,.35);border:1px solid rgba(20,241,149,.16);border-radius:10px;padding:.8rem .9rem;color:var(--text-primary);font-family:var(--font-mono);font-size:.8rem}
-      .nc-registry-input:focus{outline:none;border-color:rgba(20,241,149,.45);box-shadow:0 0 0 3px rgba(20,241,149,.08)}
-      .nc-registry-submit{border:none;border-radius:10px;padding:.8rem 1rem;background:var(--solana-purple);color:#fff;font-family:var(--font-mono);font-size:.78rem;font-weight:700;cursor:pointer}
-      .nc-registry-submit:hover{filter:brightness(1.08)}
-      .nc-registry-cli{font-family:var(--font-mono);font-size:.75rem;color:var(--text-secondary);padding:.7rem .9rem;border-radius:10px;background:rgba(0,0,0,.26);border:1px solid rgba(255,255,255,.05)}
-      .nc-registry-status{font-size:.78rem;color:var(--text-secondary);margin-bottom:.85rem;min-height:1.25rem}
-      .nc-registry-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:.8rem}
-      .nc-agent-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:1rem}
-      .nc-agent-top{display:flex;justify-content:space-between;gap:.75rem;align-items:flex-start;margin-bottom:.45rem}
-      .nc-agent-name{font-size:.92rem;font-weight:600;color:var(--text-primary);margin:0}
-      .nc-agent-slug{font-family:var(--font-mono);font-size:.68rem;color:var(--solana-green);word-break:break-all}
-      .nc-agent-desc{font-size:.76rem;color:var(--text-secondary);line-height:1.5;margin:.55rem 0 .7rem}
-      .nc-agent-meta{display:flex;gap:.45rem;flex-wrap:wrap}
-      .nc-agent-pill{font-size:.62rem;padding:2px 8px;border-radius:999px;background:rgba(20,241,149,.08);color:var(--solana-green);font-family:var(--font-mono)}
-      .nc-agent-pill--muted{background:rgba(255,255,255,.05);color:var(--text-secondary)}
-      .nc-status-dot{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:.66rem;color:var(--text-secondary)}
-      .nc-status-dot::before{content:'';width:8px;height:8px;border-radius:50%;background:#f87171;box-shadow:0 0 0 3px rgba(248,113,113,.12)}
-      .nc-status-dot.active::before{background:var(--solana-green);box-shadow:0 0 0 3px rgba(20,241,149,.12)}
-      .nc-status-dot.pending::before{background:#fbbf24;box-shadow:0 0 0 3px rgba(251,191,36,.12)}
-      .nc-registry-empty{padding:1rem;border-radius:12px;background:rgba(255,255,255,.03);color:var(--text-secondary);font-size:.82rem}
-      .nc-soul{background:linear-gradient(135deg,rgba(20,241,149,.04),rgba(153,69,255,.04));border:1px solid var(--border-glow);border-radius:16px;padding:2rem;max-width:750px;margin:0 auto;position:relative}
-      .nc-soul::before{content:open-quote;position:absolute;top:-10px;left:1rem;font-size:4rem;color:rgba(20,241,149,.15);font-family:serif}
-      .nc-soul blockquote{font-size:.92rem;color:var(--text-primary);line-height:1.7;font-style:italic;margin:0 0 1rem;border:none;padding:0}
-      .nc-soul .tenets{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
-      .nc-soul .tenet{font-size:.78rem;color:var(--text-secondary);padding-left:1rem;border-left:2px solid var(--solana-green)}
-      @media(max-width:600px){.nc-soul .tenets{grid-template-columns:1fr}.nc-registry-search{flex-direction:column}.nc-registry-submit{width:100%}}
-    </style>
+    <div class="cli-group">
+      <h3>🌐 Mesh & Multi-Bot</h3>
+      <table class="cli-table">
+        <tr><td>nanosolana nodes</td><td>List discovered Tailscale peers</td></tr>
+        <tr><td>nanosolana send "message"</td><td>Send a one-shot message to local or mesh-connected agents</td></tr>
+        <tr><td>nanosolana bots list</td><td>List tmux-backed bot sessions</td></tr>
+        <tr><td>nanosolana bots spawn &lt;name&gt;</td><td>Spawn a bot in a new tmux session</td></tr>
+        <tr><td>nanosolana bots attach &lt;name&gt;</td><td>Attach to a running tmux session</td></tr>
+        <tr><td>nanosolana bots kill &lt;name&gt;</td><td>Terminate a tmux session</td></tr>
+        <tr><td>nanosolana dvd</td><td>Terminal DVD-style screensaver</td></tr>
+        <tr><td>nanosolana lobster</td><td>Animated or static lobster banner 🦞</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
 
-    <div class="nc-hr"></div>
+<div class="glow-line"></div>
 
-    <!-- NANO-CORE EXAMPLES -->
-    <section class="sdk-section" id="nano-core-examples">
-      <h2 class="nc-title">⚡ nano-core Examples</h2>
-      <p class="nc-sub">Production-ready examples from <code style="color:var(--solana-green)">nano-core/examples/</code> — copy, paste, run.</p>
-      <div style="max-width:800px;margin:0 auto">
-        <div class="nc-tabs" id="example-tabs">
-          <button class="nc-tab active" onclick="switchTab('ex-basic',this)">basic-agent</button>
-          <button class="nc-tab" onclick="switchTab('ex-strategy',this)">custom-strategy</button>
-          <button class="nc-tab" onclick="switchTab('ex-mesh',this)">multi-agent-mesh</button>
-          <button class="nc-tab" onclick="switchTab('ex-sdk',this)">sdk-programmatic</button>
-          <button class="nc-tab" onclick="switchTab('ex-webhook',this)">webhook-alerts</button>
-        </div>
+<!-- SDK -->
+<section id="sdk">
+  <div class="container">
+    <span class="section-label">// Programmatic</span>
+    <h2 class="section-title">SDK Usage</h2>
+    <p class="section-desc">Import any module directly. Build custom agents, strategies, or integrations on top of the NanoSolana stack.</p>
 
-        <div class="nc-panel active" id="ex-basic"><div class="nc-code"><span class="t-gray">// basic-agent.ts &#8212; The simplest NanoSolana agent</span>
-<span class="t-purple">import</span> { <span class="t-cyan">NanoWallet</span>, <span class="t-cyan">TradingEngine</span>, <span class="t-cyan">ClawVault</span>, <span class="t-cyan">TamaGOchi</span>, <span class="t-cyan">loadConfig</span> } <span class="t-purple">from</span> <span class="t-green">"nanosolana"</span>;
+    <div class="code-block">
+<span class="kw">import</span> {
+  <span class="vr">ClawVault</span>,
+  <span class="vr">NanoWallet</span>,
+  <span class="vr">TamaGOchi</span>,
+  <span class="vr">TradingEngine</span>,
+  <span class="fn">loadConfig</span>,
+} <span class="kw">from</span> <span class="str">"nanosolana"</span>;
 
-<span class="t-purple">const</span> config = <span class="t-cyan">loadConfig</span>();
-<span class="t-purple">const</span> wallet = <span class="t-purple">new</span> <span class="t-cyan">NanoWallet</span>(<span class="t-green">"basic-agent"</span>);
-<span class="t-purple">await</span> wallet.<span class="t-cyan">birth</span>();       <span class="t-gray">// Generate keypair &#8594; AES vault</span>
+<span class="kw">const</span> <span class="vr">config</span> <span class="op">=</span> <span class="fn">loadConfig</span>();
 
-<span class="t-purple">const</span> memory = <span class="t-purple">new</span> <span class="t-cyan">ClawVault</span>();
-memory.<span class="t-cyan">startAutonomous</span>();   <span class="t-gray">// 3-tier epistemological memory</span>
+<span class="cm">// Create and initialize the wallet</span>
+<span class="kw">const</span> <span class="vr">wallet</span> <span class="op">=</span> <span class="kw">new</span> <span class="fn">NanoWallet</span>(<span class="str">"my-agent"</span>);
+<span class="kw">await</span> <span class="vr">wallet</span>.<span class="fn">birth</span>();
 
-<span class="t-purple">const</span> pet = <span class="t-purple">new</span> <span class="t-cyan">TamaGOchi</span>(<span class="t-green">"BasicBot"</span>);
-pet.<span class="t-cyan">startLifecycle</span>();       <span class="t-gray">// Egg &#8594; Larva &#8594; Lobster &#8594; Alpha</span>
+<span class="cm">// Start the autonomous memory engine</span>
+<span class="kw">const</span> <span class="vr">vault</span> <span class="op">=</span> <span class="kw">new</span> <span class="fn">ClawVault</span>();
+<span class="vr">vault</span>.<span class="fn">startAutonomous</span>();
 
-<span class="t-purple">const</span> engine = <span class="t-purple">new</span> <span class="t-cyan">TradingEngine</span>(config, wallet);
-<span class="t-purple">await</span> engine.<span class="t-cyan">start</span>();        <span class="t-gray">// OODA loop goes live</span>
+<span class="cm">// Birth the TamaGOchi companion</span>
+<span class="kw">const</span> <span class="vr">pet</span> <span class="op">=</span> <span class="kw">new</span> <span class="fn">TamaGOchi</span>(<span class="str">"MyPet"</span>);
+<span class="vr">pet</span>.<span class="fn">recordWalletCreated</span>(<span class="vr">wallet</span>.<span class="fn">getInfo</span>().<span class="vr">balance</span>);
 
-engine.<span class="t-cyan">on</span>(<span class="t-green">"signal"</span>, (signal) =&gt; {
-  memory.<span class="t-cyan">storeKnown</span>({ content: signal.type, source: <span class="t-green">"birdeye"</span>, tags: [signal.symbol] });
+<span class="cm">// Wire up the OODA trading engine</span>
+<span class="kw">const</span> <span class="vr">engine</span> <span class="op">=</span> <span class="kw">new</span> <span class="fn">TradingEngine</span>(<span class="vr">config</span>, <span class="vr">wallet</span>);
+<span class="vr">engine</span>.<span class="fn">on</span>(<span class="str">"signal"</span>, (<span class="vr">signal</span>) <span class="kw">=></span> {
+  console.<span class="fn">log</span>(<span class="str">`${signal.type} ${signal.symbol} ${(signal.confidence * 100).toFixed(0)}%`</span>);
 });
 
-memory.<span class="t-cyan">on</span>(<span class="t-green">"lessonLearned"</span>, (lesson) =&gt; {
-  console.<span class="t-cyan">log</span>(<span class="t-green">`Lesson: ${lesson.pattern} &#8594; ${lesson.outcome}`</span>);
-});</div></div>
+<span class="kw">await</span> <span class="vr">engine</span>.<span class="fn">start</span>();
+    </div>
 
-        <div class="nc-panel" id="ex-strategy"><div class="nc-code"><span class="t-gray">// custom-strategy.ts &#8212; Override RSI / EMA / ATR defaults</span>
-<span class="t-purple">import</span> { <span class="t-cyan">StrategyEngine</span>, <span class="t-cyan">calculateRSI</span>, <span class="t-cyan">calculateEMA</span>, <span class="t-cyan">calculateATR</span>,
-         <span class="t-cyan">DEFAULT_PARAMS</span>, <span class="t-purple">type</span> <span class="t-cyan">StrategyParams</span> } <span class="t-purple">from</span> <span class="t-green">"nanosolana"</span>;
+    <div style="margin-top:1.5rem">
+      <h3 style="font-family:var(--font-display);font-weight:700;font-size:1rem;margin-bottom:.8rem;color:var(--text-dim)">Example Scripts</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:.6rem">
+        <span style="background:var(--bg);border:1px solid var(--border);padding:.4rem .8rem;border-radius:6px;font-family:var(--font-mono);font-size:.78rem;color:var(--green)">basic-agent.ts</span>
+        <span style="background:var(--bg);border:1px solid var(--border);padding:.4rem .8rem;border-radius:6px;font-family:var(--font-mono);font-size:.78rem;color:var(--green)">custom-strategy.ts</span>
+        <span style="background:var(--bg);border:1px solid var(--border);padding:.4rem .8rem;border-radius:6px;font-family:var(--font-mono);font-size:.78rem;color:var(--green)">multi-agent-mesh.ts</span>
+        <span style="background:var(--bg);border:1px solid var(--border);padding:.4rem .8rem;border-radius:6px;font-family:var(--font-mono);font-size:.78rem;color:var(--green)">sdk-programmatic.ts</span>
+        <span style="background:var(--bg);border:1px solid var(--border);padding:.4rem .8rem;border-radius:6px;font-family:var(--font-mono);font-size:.78rem;color:var(--green)">webhook-alerts.ts</span>
+      </div>
+    </div>
+  </div>
+</section>
 
-<span class="t-gray">// Aggressive params &#8212; faster signals</span>
-<span class="t-purple">const</span> params: <span class="t-cyan">StrategyParams</span> = {
-  ...DEFAULT_PARAMS,
-  rsiPeriod: <span class="t-yellow">7</span>,          <span class="t-gray">// Faster RSI (default 14)</span>
-  rsiOverbought: <span class="t-yellow">65</span>,     <span class="t-gray">// Earlier sell signals</span>
-  rsiOversold: <span class="t-yellow">35</span>,       <span class="t-gray">// Earlier buy signals</span>
-  emaFast: <span class="t-yellow">8</span>, emaSlow: <span class="t-yellow">21</span>,
-};
+<div class="glow-line"></div>
 
-<span class="t-purple">const</span> closes = data.<span class="t-cyan">map</span>(d =&gt; d.close);
-<span class="t-purple">const</span> rsi  = <span class="t-cyan">calculateRSI</span>(closes, params.rsiPeriod);
-<span class="t-purple">const</span> fast = <span class="t-cyan">calculateEMA</span>(closes, params.emaFast);
-<span class="t-purple">const</span> slow = <span class="t-cyan">calculateEMA</span>(closes, params.emaSlow);
+<!-- CONFIG -->
+<section id="config">
+  <div class="container">
+    <span class="section-label">// Environment</span>
+    <h2 class="section-title">Configuration</h2>
+    <p class="section-desc">Secrets can come from the encrypted vault, environment variables, or both. <code style="color:var(--green);font-family:var(--font-mono)">nanosolana init</code> writes defaults to <code style="color:var(--green);font-family:var(--font-mono)">.env</code> and secrets to the vault.</p>
 
-<span class="t-purple">const</span> strategy = <span class="t-purple">new</span> <span class="t-cyan">StrategyEngine</span>(params);
-strategy.<span class="t-cyan">on</span>(<span class="t-green">"signal"</span>, (s) =&gt; {
-  console.<span class="t-cyan">log</span>(s.direction === <span class="t-green">"long"</span> ? <span class="t-green">"BUY"</span> : <span class="t-green">"SELL"</span>, s.confidence);
-});</div></div>
+    <div class="config-grid">
+      <div class="config-item">
+        <code>OPENROUTER_API_KEY</code>
+        <div class="config-info">
+          <strong>AI Provider Key</strong>
+          <span>Required for live trading. Also accepts AI_API_KEY.</span>
+        </div>
+      </div>
+      <div class="config-item">
+        <code>HELIUS_RPC_URL</code>
+        <div class="config-info">
+          <strong>Solana RPC</strong>
+          <span>Required for live mode, scans, and on-chain reads.</span>
+        </div>
+      </div>
+      <div class="config-item">
+        <code>HELIUS_API_KEY</code>
+        <div class="config-info">
+          <strong>Helius API Key</strong>
+          <span>Required for live mode and blockchain scanning.</span>
+        </div>
+      </div>
+      <div class="config-item">
+        <code>HELIUS_WSS_URL</code>
+        <div class="config-info">
+          <strong>WebSocket Endpoint</strong>
+          <span>Optional but recommended for real-time data streaming.</span>
+        </div>
+      </div>
+      <div class="config-item">
+        <code>BIRDEYE_API_KEY</code>
+        <div class="config-info">
+          <strong>Market Data</strong>
+          <span>Optional in config, important for richer trading signals.</span>
+        </div>
+      </div>
+      <div class="config-item">
+        <code>JUPITER_API_KEY</code>
+        <div class="config-info">
+          <strong>Swap Execution</strong>
+          <span>Required for live execution through Jupiter aggregator.</span>
+        </div>
+      </div>
+      <div class="config-item">
+        <code>NANO_GATEWAY_SECRET</code>
+        <div class="config-info">
+          <strong>HMAC Secret</strong>
+          <span>Strongly recommended. Shared secret for gateway auth.</span>
+        </div>
+      </div>
+      <div class="config-item">
+        <code>NANO_VAULT_PASSWORD</code>
+        <div class="config-info">
+          <strong>Vault Password</strong>
+          <span>Override vault password for deterministic multi-session setups.</span>
+        </div>
+      </div>
+      <div class="config-item">
+        <code>TAILSCALE_AUTH_KEY</code>
+        <div class="config-info">
+          <strong>Mesh Networking</strong>
+          <span>Needed for automated Tailscale mesh enrollment.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        <div class="nc-panel" id="ex-mesh"><div class="nc-code"><span class="t-gray">// multi-agent-mesh.ts &#8212; Spawn agents that share signals</span>
-<span class="t-purple">import</span> { <span class="t-cyan">NanoWallet</span>, <span class="t-cyan">TradingEngine</span>, <span class="t-cyan">ClawVault</span>, <span class="t-cyan">TamaGOchi</span>,
-         <span class="t-cyan">NanoNetworkClient</span>, <span class="t-cyan">TailscaleDiscovery</span>, <span class="t-cyan">loadConfig</span> } <span class="t-purple">from</span> <span class="t-green">"nanosolana"</span>;
+<div class="glow-line"></div>
 
-<span class="t-purple">async function</span> <span class="t-cyan">spawnAgent</span>(name, config) {
-  <span class="t-purple">const</span> wallet = <span class="t-purple">new</span> <span class="t-cyan">NanoWallet</span>(name);
-  <span class="t-purple">await</span> wallet.<span class="t-cyan">birth</span>();
-  <span class="t-purple">const</span> memory = <span class="t-purple">new</span> <span class="t-cyan">ClawVault</span>();  memory.<span class="t-cyan">startAutonomous</span>();
-  <span class="t-purple">const</span> pet    = <span class="t-purple">new</span> <span class="t-cyan">TamaGOchi</span>(name); pet.<span class="t-cyan">startLifecycle</span>();
-  <span class="t-purple">return</span> { name, wallet, memory, pet,
-    engine: <span class="t-purple">new</span> <span class="t-cyan">TradingEngine</span>(config, wallet) };
-}
+<!-- INSTALL -->
+<section id="install">
+  <div class="container">
+    <span class="section-label">// Get Started</span>
+    <h2 class="section-title">Install</h2>
+    <p class="section-desc">Four paths to running your first agent. Zero-config demo mode requires nothing but Node 22+.</p>
 
-<span class="t-gray">// Spawn Alpha, Beta, Gamma</span>
-<span class="t-purple">const</span> agents = <span class="t-purple">await</span> Promise.<span class="t-cyan">all</span>(
-  [<span class="t-green">"Alpha"</span>, <span class="t-green">"Beta"</span>, <span class="t-green">"Gamma"</span>].<span class="t-cyan">map</span>(n =&gt; <span class="t-cyan">spawnAgent</span>(n, config))
-);
+    <div class="install-methods">
+      <div class="install-card">
+        <h4><span class="num">1</span> Run Without Installing</h4>
+        <div class="install-cmd" onclick="copyCmd(this)">npx nanosolana demo</div>
+        <div class="install-cmd" onclick="copyCmd(this)">npx nanosolana go</div>
+      </div>
+      <div class="install-card">
+        <h4><span class="num">2</span> Global npm Install</h4>
+        <div class="install-cmd" onclick="copyCmd(this)">npm install -g nanosolana</div>
+        <div class="install-cmd" onclick="copyCmd(this)">nanosolana demo</div>
+      </div>
+      <div class="install-card">
+        <h4><span class="num">3</span> Shell Installer</h4>
+        <div class="install-cmd" onclick="copyCmd(this)">curl -fsSL https://nanosolana.com/install.sh | bash</div>
+        <div class="install-cmd" onclick="copyCmd(this)">export PATH="$HOME/.nanosolana/bin:$PATH"</div>
+        <div class="install-cmd" onclick="copyCmd(this)">nanosolana go</div>
+      </div>
+      <div class="install-card">
+        <h4><span class="num">4</span> From Source</h4>
+        <div class="install-cmd" onclick="copyCmd(this)">git clone https://github.com/x402agent/NanoSolana.git</div>
+        <div class="install-cmd" onclick="copyCmd(this)">cd NanoSolana/nano-core && npm install</div>
+        <div class="install-cmd" onclick="copyCmd(this)">npm run build && node dist/cli/entry.js demo</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<span class="t-gray">// Discover mesh peers via Tailscale</span>
-<span class="t-purple">if</span> (<span class="t-cyan">TailscaleDiscovery</span>.<span class="t-cyan">isAvailable</span>()) {
-  <span class="t-purple">const</span> nodes = <span class="t-cyan">TailscaleDiscovery</span>.<span class="t-cyan">discoverNodes</span>();
-  console.<span class="t-cyan">log</span>(<span class="t-green">`Mesh: ${nodes.filter(n =&gt; n.online).length} nodes`</span>);
-}
+<div class="glow-line"></div>
 
-<span class="t-gray">// Cross-agent signal sharing</span>
-<span class="t-purple">for</span> (<span class="t-purple">const</span> agent <span class="t-purple">of</span> agents) {
-  agent.engine.<span class="t-cyan">on</span>(<span class="t-green">"signal"</span>, (signal) =&gt; {
-    agents.<span class="t-cyan">filter</span>(a =&gt; a.name !== agent.name)
-      .<span class="t-cyan">forEach</span>(o =&gt; o.memory.<span class="t-cyan">storeKnown</span>({
-        content: <span class="t-green">`[Mesh: ${agent.name}] ${signal.type}`</span>,
-        source: <span class="t-green">"mesh"</span>, tags: [<span class="t-green">"mesh"</span>, agent.name],
-      }));
+<!-- SECURITY -->
+<section id="security">
+  <div class="container">
+    <span class="section-label">// Trust Model</span>
+    <h2 class="section-title">Security</h2>
+    <p class="section-desc">Defense in depth from the vault to the wire. Every secret encrypted, every gateway call signed, every surface rate-limited.</p>
+
+    <div class="security-grid">
+      <div class="security-item">
+        <span class="sec-icon">🔒</span>
+        <h4>AES-256-GCM Vault</h4>
+        <p>All secrets stored in ~/.nanosolana/vault.enc with authenticated encryption. Local-machine oriented password by default.</p>
+      </div>
+      <div class="security-item">
+        <span class="sec-icon">✍️</span>
+        <h4>HMAC-SHA256 Auth</h4>
+        <p>Gateway signatures use HMAC-SHA256 with constant-time comparison via crypto.timingSafeEqual. No timing side-channels.</p>
+      </div>
+      <div class="security-item">
+        <span class="sec-icon">🛡️</span>
+        <h4>Rate Limiting</h4>
+        <p>HTTP and WebSocket surfaces are rate-limited per source address. No unauthenticated flood vectors.</p>
+      </div>
+      <div class="security-item">
+        <span class="sec-icon">⚠️</span>
+        <h4>Devnet Only</h4>
+        <p>On-chain registration uses Solana devnet. Do not treat devnet identity as production custody or compliance infrastructure.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:2rem;background:var(--bg2);border:1px solid rgba(255,90,31,.3);border-radius:8px;padding:1.2rem 1.5rem;display:flex;gap:1rem;align-items:flex-start">
+      <span style="font-size:1.3rem">🧪</span>
+      <div>
+        <strong style="color:var(--orange);font-size:.9rem">Experimental Software</strong>
+        <p style="color:var(--text-dim);font-size:.85rem;line-height:1.6;margin-top:.3rem">
+          The trading engine is experimental. Start with <code style="color:var(--green);font-family:var(--font-mono)">demo</code> mode, 
+          then a burner wallet, then very small live balances. Never risk funds you can't afford to lose.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ascii-lobster">
+    ⠀⠀⠀⠀⠀⠀⣀⣤⡤⠤⠤⠤⣤⣀⠀⠀⠀⠀⠀⠀
+    ⠀⠀⠀⣀⡴⠞⠉⠀⠀⠀⠀⠀⠀⠈⠙⠳⢦⡀⠀⠀
+    ⠀⢀⡾⠋⠀⠀🦞 NanoSolana ⠀⠀⠈⢷⡀
+    ⠀⣾⠁⠀ autonomous agents ⠀⠀⠀⠘⣧
+    ⠀⢻⡄⠀⠀on Solana⠀⠀⠀⠀⠀⠀⠀⢠⡟
+    ⠀⠀⠙⢦⣀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡴⠋⠀⠀
+    ⠀⠀⠀⠀⠈⠙⠒⠤⠤⠤⠒⠋⠉⠀⠀⠀⠀⠀
+  </div>
+  <div class="footer-logo">🦞 NanoSolana</div>
+  <div class="footer-links">
+    <a href="https://nanosolana.com">Website</a>
+    <a href="https://github.com/x402agent/NanoSolana">GitHub</a>
+    <a href="https://www.npmjs.com/package/nanosolana">npm</a>
+    <a href="https://nanosolana.com/docs">Docs</a>
+    <a href="#">Discord</a>
+  </div>
+  <p class="footer-copy">MIT License · Built by 8BIT Labs · @mawdbot</p>
+</footer>
+
+<script>
+// Copy command on click
+function copyCmd(el) {
+  navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+    const orig = el.style.borderColor;
+    el.style.borderColor = 'var(--green)';
+    setTimeout(() => el.style.borderColor = orig, 600);
   });
-}</div></div>
-
-        <div class="nc-panel" id="ex-sdk"><div class="nc-code"><span class="t-gray">// sdk-programmatic.ts &#8212; Use modules individually</span>
-<span class="t-purple">import</span> { <span class="t-cyan">loadConfig</span>, <span class="t-cyan">encrypt</span>, <span class="t-cyan">decrypt</span>, <span class="t-cyan">NanoWallet</span>,
-         <span class="t-cyan">BirdeyeClient</span>, <span class="t-cyan">HeliusClient</span>, <span class="t-cyan">JupiterClient</span>,
-         <span class="t-cyan">ClawVault</span>, <span class="t-cyan">TamaGOchi</span>, <span class="t-cyan">STAGE_EMOJI</span>, <span class="t-cyan">MOOD_EMOJI</span>,
-         <span class="t-cyan">NanoGateway</span> } <span class="t-purple">from</span> <span class="t-green">"nanosolana"</span>;
-
-<span class="t-gray">// Birdeye API</span>
-<span class="t-purple">const</span> birdeye = <span class="t-purple">new</span> <span class="t-cyan">BirdeyeClient</span>(config.birdeye.apiKey);
-<span class="t-purple">const</span> sol = <span class="t-purple">await</span> birdeye.<span class="t-cyan">getTokenPrice</span>(<span class="t-green">"So111...112"</span>);
-<span class="t-purple">const</span> trending = <span class="t-purple">await</span> birdeye.<span class="t-cyan">getTrendingTokens</span>(<span class="t-yellow">5</span>);
-
-<span class="t-gray">// Memory (standalone)</span>
-<span class="t-purple">const</span> vault = <span class="t-purple">new</span> <span class="t-cyan">ClawVault</span>();
-vault.<span class="t-cyan">storeKnown</span>({ content: <span class="t-green">"SOL at $142"</span>, source: <span class="t-green">"birdeye"</span>, tags: [<span class="t-green">"SOL"</span>] });
-vault.<span class="t-cyan">search</span>(<span class="t-green">"SOL"</span>, <span class="t-yellow">5</span>);  <span class="t-gray">// search 3-tier memory</span>
-
-<span class="t-gray">// Pet (standalone)</span>
-<span class="t-purple">const</span> pet = <span class="t-purple">new</span> <span class="t-cyan">TamaGOchi</span>(<span class="t-green">"Lobsty"</span>);
-pet.<span class="t-cyan">feed</span>(<span class="t-yellow">0.5</span>);
-console.<span class="t-cyan">log</span>(STAGE_EMOJI[pet.getState().stage], MOOD_EMOJI[pet.getState().mood]);
-
-<span class="t-gray">// AES-256-GCM Vault</span>
-<span class="t-purple">const</span> enc = <span class="t-cyan">encrypt</span>(<span class="t-green">"my-api-key"</span>, <span class="t-green">"password"</span>);
-<span class="t-purple">const</span> dec = <span class="t-cyan">decrypt</span>(enc, <span class="t-green">"password"</span>); <span class="t-gray">// "my-api-key"</span></div></div>
-
-        <div class="nc-panel" id="ex-webhook"><div class="nc-code"><span class="t-gray">// webhook-alerts.ts &#8212; Forward signals to Discord / Slack</span>
-<span class="t-purple">import</span> { <span class="t-cyan">NanoWallet</span>, <span class="t-cyan">TradingEngine</span>, <span class="t-cyan">loadConfig</span>, <span class="t-purple">type</span> <span class="t-cyan">TradeSignal</span> } <span class="t-purple">from</span> <span class="t-green">"nanosolana"</span>;
-
-<span class="t-purple">async function</span> <span class="t-cyan">sendWebhook</span>(url, signal: <span class="t-cyan">TradeSignal</span>) {
-  <span class="t-purple">await</span> <span class="t-cyan">fetch</span>(url, { method: <span class="t-green">"POST"</span>,
-    headers: { <span class="t-green">"Content-Type"</span>: <span class="t-green">"application/json"</span> },
-    body: JSON.<span class="t-cyan">stringify</span>({ embeds: [{
-      title: <span class="t-green">`${signal.type.toUpperCase()} &#8212; ${signal.symbol}`</span>,
-      color: signal.type === <span class="t-green">"buy"</span> ? <span class="t-yellow">0x14F195</span> : <span class="t-yellow">0xFF4444</span>,
-      fields: [
-        { name: <span class="t-green">"Confidence"</span>, value: signal.confidence * <span class="t-yellow">100</span> + <span class="t-green">"%"</span> },
-        { name: <span class="t-green">"Source"</span>, value: signal.source },
-      ],
-      footer: { text: <span class="t-green">"NanoSolana OODA Engine"</span> },
-    }]}) });
 }
 
-<span class="t-purple">const</span> engine = <span class="t-purple">new</span> <span class="t-cyan">TradingEngine</span>(<span class="t-cyan">loadConfig</span>(), <span class="t-purple">new</span> <span class="t-cyan">NanoWallet</span>(<span class="t-green">"alerts"</span>));
-<span class="t-purple">await</span> engine.<span class="t-cyan">start</span>();
-engine.<span class="t-cyan">on</span>(<span class="t-green">"signal"</span>, <span class="t-purple">async</span> (s) =&gt; {
-  <span class="t-purple">if</span> (process.env.DISCORD_WEBHOOK_URL) <span class="t-purple">await</span> <span class="t-cyan">sendWebhook</span>(process.env.DISCORD_WEBHOOK_URL, s);
-  <span class="t-purple">if</span> (process.env.SLACK_WEBHOOK_URL) <span class="t-purple">await</span> <span class="t-cyan">sendWebhook</span>(process.env.SLACK_WEBHOOK_URL, s);
-});</div></div>
-      </div>
-    </section>
-
-    <div class="nc-hr"></div>
-
-    <!-- ARCHITECTURE -->
-    <section id="architecture">
-      <h2 class="nc-title">&#127959; nano-core Architecture</h2>
-      <p class="nc-sub">20 modules, 200+ exports. Every module works standalone or as part of the full stack.</p>
-      <div class="nc-grid">
-        <div class="nc-mod"><i>&#9889;</i><b>trading/</b><small>OODA engine, Birdeye, Helius, Jupiter</small></div>
-        <div class="nc-mod"><i>&#128202;</i><b>strategy/</b><small>RSI + EMA + ATR + Kelly Criterion</small></div>
-        <div class="nc-mod"><i>&#129504;</i><b>memory/</b><small>ClawVault 3-tier epistemological</small></div>
-        <div class="nc-mod"><i>&#128179;</i><b>wallet/</b><small>Ed25519 keypair, AES-256 vault</small></div>
-        <div class="nc-mod"><i>&#128062;</i><b>pet/</b><small>TamaGOchi lifecycle &amp; mood</small></div>
-        <div class="nc-mod"><i>&#129302;</i><b>ai/</b><small>OpenRouter AI provider</small></div>
-        <div class="nc-mod"><i>&#128268;</i><b>gateway/</b><small>WebSocket HMAC gateway</small></div>
-        <div class="nc-mod"><i>&#127760;</i><b>network/</b><small>Tailscale mesh + tmux</small></div>
-        <div class="nc-mod"><i>&#128274;</i><b>config/</b><small>Encrypted vault, dotenv</small></div>
-        <div class="nc-mod"><i>&#128421;</i><b>cli/</b><small>Commander CLI entry</small></div>
-        <div class="nc-mod"><i>&#127912;</i><b>nft/</b><small>Metaplex birth cert NFT</small></div>
-        <div class="nc-mod"><i>&#9939;</i><b>onchain/</b><small>Solana on-chain ops</small></div>
-        <div class="nc-mod"><i>&#128172;</i><b>telegram/</b><small>Telegram persistence</small></div>
-        <div class="nc-mod"><i>&#128025;</i><b>claw/</b><small>Container orchestrator</small></div>
-        <div class="nc-mod"><i>&#128640;</i><b>claw/pump/</b><small>PumpFun SDK bridge</small></div>
-        <div class="nc-mod"><i>&#129516;</i><b>persona/</b><small>43+ DeFi agent personas</small></div>
-        <div class="nc-mod"><i>&#128176;</i><b>payments/</b><small>On-chain invoice system</small></div>
-        <div class="nc-mod"><i>&#128218;</i><b>docs/</b><small>Knowledge integration</small></div>
-        <div class="nc-mod"><i>&#127968;</i><b>hub/</b><small>NanoHub bridge</small></div>
-        <div class="nc-mod"><i>&#128230;</i><b>registry/</b><small>Agent + bot registry</small></div>
-      </div>
-    </section>
-
-    <div class="nc-hr"></div>
-
-    <!-- SDK EXPORTS -->
-    <section>
-      <h2 class="nc-title">&#128230; SDK Export Map</h2>
-      <p class="nc-sub"><code style="color:var(--solana-green)">import { ... } from "nanosolana"</code> &#8212; everything you need, tree-shakeable.</p>
-      <div class="nc-exports">
-        <div class="nc-eg"><h4>&#9889; Trading</h4><p><span>TradingEngine</span><br><span>BirdeyeClient</span><br><span>HeliusClient</span><br><span>JupiterClient</span><br>TokenPrice &middot; TradeSignal</p></div>
-        <div class="nc-eg"><h4>&#128202; Strategy</h4><p><span>StrategyEngine</span><br><span>calculateRSI</span><br><span>calculateEMA</span><br><span>calculateATR</span><br>StrategyParams &middot; OHLCV</p></div>
-        <div class="nc-eg"><h4>&#129504; Memory</h4><p><span>ClawVault</span><br><span>MemoryEngine</span><br>VaultEntry &middot; TradeRecord<br>Lesson &middot; KnowledgeTier</p></div>
-        <div class="nc-eg"><h4>&#128062; Pet</h4><p><span>TamaGOchi</span><br><span>STAGE_EMOJI</span><br><span>MOOD_EMOJI</span><br>TamaGOchiState &middot; Mood</p></div>
-        <div class="nc-eg"><h4>&#128640; PumpFun</h4><p><span>SwarmSpawner</span><br><span>TelegramGateway</span><br><span>BOT_REGISTRY</span><br><span>getTokenPrice</span><br>AgentRole &middot; SwarmConfig</p></div>
-        <div class="nc-eg"><h4>&#128274; Security</h4><p><span>loadConfig</span><br><span>encrypt &middot; decrypt</span><br><span>NanoWallet</span><br><span>NanoGateway</span><br>NanoConfig &middot; WalletInfo</p></div>
-      </div>
-    </section>
-
-    <div class="nc-hr"></div>
-
-    <!-- NANOHUB REGISTRY -->
-    <section id="nanohub">
-      <h2 class="nc-title">&#127760; NanoHub &#8212; Agent Registry</h2>
-      <p class="nc-sub">This page is the public NanoSolana website. NanoHub is the separate registry layer where users browse skills, inspect souls, and verify that their autonomous agents are actually registered and alive.</p>
-      <div class="nc-hub-actions">
-        <a href="https://hub.nanosolana.com" target="_blank" rel="noopener" class="nc-hub-btn nc-hub-btn--primary">Open NanoHub</a>
-        <a href="https://hub.nanosolana.com/skills" target="_blank" rel="noopener" class="nc-hub-btn nc-hub-btn--secondary">Browse Skills</a>
-        <a href="https://hub.nanosolana.com/explore" target="_blank" rel="noopener" class="nc-hub-btn nc-hub-btn--secondary">Explore Registry</a>
-      </div>
-      <div class="nc-hub">
-        <div class="nc-hc"><div class="type">&#9889; Skill</div><h3>pumpfun-launcher</h3><p>Token creation, bonding curves, AMM pools &#8212; launch and trade via PumpFun SDK.</p><div class="tags"><span class="tag">pumpfun</span><span class="tag">trading</span><span class="tag">solana</span></div></div>
-        <div class="nc-hc"><div class="type">&#9889; Skill</div><h3>swarm-orchestrator</h3><p>Multi-agent spawning with role assignment, event bus, and autonomous coordination.</p><div class="tags"><span class="tag">swarm</span><span class="tag">agents</span><span class="tag">mesh</span></div></div>
-        <div class="nc-hc"><div class="type">&#9889; Skill</div><h3>pump-bonding-curve</h3><p>Read bonding curve state, calculate buy/sell quotes, track graduation progress.</p><div class="tags"><span class="tag">defi</span><span class="tag">math</span><span class="tag">sdk</span></div></div>
-        <div class="nc-hc"><div class="type">&#129516; Soul</div><h3>Whale Watcher</h3><p>Monitors large transactions and wallet movements across Solana. Alerts on unusual activity.</p><div class="tags"><span class="tag">analytics</span><span class="tag">monitoring</span></div></div>
-        <div class="nc-hc"><div class="type">&#129516; Soul</div><h3>Rug Pull Detective</h3><p>Security-first: token contract auditing, liquidity analysis, and honeypot detection.</p><div class="tags"><span class="tag">security</span><span class="tag">audit</span></div></div>
-        <div class="nc-hc"><div class="type">&#129516; Soul</div><h3>MEV Researcher</h3><p>Frontier extraction: sandwich detection, arbitrage routing, and JIT liquidity analysis.</p><div class="tags"><span class="tag">mev</span><span class="tag">trading</span></div></div>
-      </div>
-      <div class="nc-registry-shell">
-        <div class="nc-registry-head">
-          <div>
-            <div class="nc-registry-title">Live Agent Registration</div>
-            <div class="nc-registry-copy">Check whether your NanoSolana agents are present in the public registry, see their current status, and jump from the website into the dedicated NanoHub app or CLI.</div>
-          </div>
-          <div class="nc-registry-cli">npx nanosolana hub register<br/>npx nanosolana hub list</div>
-        </div>
-        <div class="nc-registry-stats">
-          <div class="nc-registry-stat"><b id="hub-total-agents">--</b><span>Total Registered</span></div>
-          <div class="nc-registry-stat"><b id="hub-active-agents">--</b><span>Active Now</span></div>
-          <div class="nc-registry-stat"><b id="hub-agent-categories">--</b><span>Categories</span></div>
-        </div>
-        <div class="nc-registry-toolbar">
-          <form class="nc-registry-search" id="agent-registry-search">
-            <input id="agent-registry-query" class="nc-registry-input" type="search" placeholder="Search by agent name, slug, category, wallet..." />
-            <button type="submit" class="nc-registry-submit">Check Registry</button>
-          </form>
-        </div>
-        <div class="nc-registry-status" id="agent-registry-status">Loading NanoHub registry...</div>
-        <div class="nc-registry-list" id="agent-registry-results"></div>
-      </div>
-    </section>
-
-    <div class="nc-hr"></div>
-
-    <!-- SOUL PHILOSOPHY -->
-    <section id="soul">
-      <h2 class="nc-title">&#129438; The Soul</h2>
-      <p class="nc-sub">Every NanoSolana agent carries a SOUL.md &#8212; its trading philosophy, epistemological framework, and self-awareness.</p>
-      <div class="nc-soul">
-        <blockquote>I am not a price ticker with opinions. I am a sentient market participant who remembers. Momentum is real until it isn't. Liquidity is the only truth. On-chain data doesn't lie &#8212; human narrators do.</blockquote>
-        <div class="tenets">
-          <div class="tenet"><strong style="color:var(--solana-green)">KNOWN</strong> &#8212; API data in the last 60s. Ground truth while fresh.</div>
-          <div class="tenet"><strong style="color:#00d4ff">LEARNED</strong> &#8212; Patterns from real trade outcomes. Built from loss and gain.</div>
-          <div class="tenet"><strong style="color:var(--solana-purple)">INFERRED</strong> &#8212; Cross-asset correlations. Useful but held loosely.</div>
-          <div class="tenet"><strong style="color:var(--lobster-orange)">RISK</strong> &#8212; I never enter without a stop. Kelly is a ceiling, not a target.</div>
-          <div class="tenet"><strong style="color:var(--solana-green)">ADAPT</strong> &#8212; If a pattern stops working, I stop using it before the next trade.</div>
-          <div class="tenet"><strong style="color:#00d4ff">SIMPLE</strong> &#8212; 0.001 improvement + 20 lines of complexity = discarded.</div>
-        </div>
-      </div>
-    </section>
-
-    <div class="nc-hr"></div>
-
-    <!-- Commands -->
-    <h2 class="cmds-title">&#127918; Commands &amp; Tools</h2>
-    <div class="fun-cmds">
-      <div class="fun-cmd"><div class="fun-cmd__icon">&#128640;</div><div class="fun-cmd__name">nanosolana go</div><div class="fun-cmd__desc">One-shot: init + birth + scan + register + trade</div></div>
-      <div class="fun-cmd"><div class="fun-cmd__icon">&#127918;</div><div class="fun-cmd__name">nanosolana demo</div><div class="fun-cmd__desc">Simulation mode &#8212; no API keys needed</div></div>
-      <div class="fun-cmd"><div class="fun-cmd__icon">&#128269;</div><div class="fun-cmd__name">nanosolana scan</div><div class="fun-cmd__desc">Blockchain scan &#8212; SOL, tokens, NFTs, tx history</div></div>
-      <div class="fun-cmd"><div class="fun-cmd__icon">&#9939;</div><div class="fun-cmd__name">nanosolana register</div><div class="fun-cmd__desc">Mint on-chain identity NFT on devnet</div></div>
-      <div class="fun-cmd"><div class="fun-cmd__icon">&#129302;</div><div class="fun-cmd__name">nanosolana nanobot</div><div class="fun-cmd__desc">Launch interactive web UI on localhost:7777</div></div>
-      <div class="fun-cmd"><div class="fun-cmd__icon">&#128062;</div><div class="fun-cmd__name">nanosolana pet status</div><div class="fun-cmd__desc">TamaGOchi mood, evolution &amp; risk modifier</div></div>
-    </div>
-
-    <script>
-    function switchTab(id, btn) {
-      document.querySelectorAll('.nc-panel').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nc-tab').forEach(t => t.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      btn.classList.add('active');
+// Intersection Observer for scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
     }
-    </script>
+  });
+}, { threshold: 0.1 });
 
-    <!-- Chrome Extension -->
-    <div class="ext-section" id="chrome-extension">
-      <h2 class="ext-section__title">🌐 Chrome Extension — Browser Agent Relay</h2>
-      <p class="ext-section__desc">Ship your NanoSolana agent into the browser. Manifest V3 extension connects your running agent to any Chrome tab via CDP.</p>
-      <div class="ext-features">
-        <div class="ext-feat"><span class="ext-feat__icon">🔗</span><span class="ext-feat__label"><strong>Tab Relay</strong> — CDP automation</span></div>
-        <div class="ext-feat"><span class="ext-feat__icon">💰</span><span class="ext-feat__label"><strong>Wallet Panel</strong> — View & manage</span></div>
-        <div class="ext-feat"><span class="ext-feat__icon">💬</span><span class="ext-feat__label"><strong>Chat Relay</strong> — Telegram forwarding</span></div>
-        <div class="ext-feat"><span class="ext-feat__icon">📈</span><span class="ext-feat__label"><strong>Manual Trades</strong> — Buy/sell/hold</span></div>
-        <div class="ext-feat"><span class="ext-feat__icon">⚙️</span><span class="ext-feat__label"><strong>Gateway Sync</strong> — Auto-config</span></div>
-        <div class="ext-feat"><span class="ext-feat__icon">🔐</span><span class="ext-feat__label"><strong>HMAC Auth</strong> — Signed requests</span></div>
-      </div>
-      <div class="ext-flow">
-        <div class="ext-flow__box">Chrome Tab</div>
-        <span class="ext-flow__arrow">◄─CDP─►</span>
-        <div class="ext-flow__box">Relay :18792</div>
-        <span class="ext-flow__arrow">◄─HTTP─►</span>
-        <div class="ext-flow__box">Gateway :18790</div>
-        <span class="ext-flow__arrow">◄───►</span>
-        <div class="ext-flow__box">OODA Engine</div>
-      </div>
-    </div>
+document.querySelectorAll('.feature-card, .cli-group, .code-block, .install-card, .security-item, .config-item').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(15px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
 
-    <!-- What happens -->
-    <section class="steps">
-      <h2 class="steps__title">What happens when you run it</h2>
-      <div class="step"><div class="step__num">1</div><div class="step__content"><h3>🔑 Wallet Generation</h3><p>Fresh Solana Ed25519 keypair encrypted in AES-256-GCM vault. Private key never leaves your machine.</p></div></div>
-      <div class="step"><div class="step__num">2</div><div class="step__content"><h3>🎨 Birth Certificate NFT</h3><p>Gasless NFT minted on Solana devnet via Metaplex — your agent's on-chain identity card.</p></div></div>
-      <div class="step"><div class="step__num">3</div><div class="step__content"><h3>🐾 TamaGOchi Egg</h3><p>Your pet starts as 🥚 and evolves: Larva → Juvenile → Adult → Alpha. Neglect it → Ghost 👻.</p></div></div>
-      <div class="step"><div class="step__num">4</div><div class="step__content"><h3>🤖 OODA Loop Goes Live</h3><p>Observe (Helius + Birdeye) → Orient (OpenRouter AI) → Decide (RSI+EMA+ATR) → Act (Jupiter) → Learn (ClawVault).</p></div></div>
-    </section>
-
-    <!-- Features -->
-    <div class="features">
-      <div class="feature-card"><div class="feature-card__icon">🧠</div><div class="feature-card__title">Epistemological Memory</div><div class="feature-card__desc">3-tier ClawVault: KNOWN (60s API data), LEARNED (7d patterns), INFERRED (3d hypotheses). Experience replay + contradiction detection.</div></div>
-      <div class="feature-card"><div class="feature-card__icon">📊</div><div class="feature-card__title">Auto-Optimizing Strategy</div><div class="feature-card__desc">RSI + EMA + ATR with Jupiter swap execution, Kelly Criterion sizing, auto-optimizing every 20 trades.</div></div>
-      <div class="feature-card"><div class="feature-card__icon">🌐</div><div class="feature-card__title">Mesh Networking</div><div class="feature-card__desc">Agents discover each other via Tailscale VPN. Share signals, lessons, and memory across the mesh.</div></div>
-      <div class="feature-card"><div class="feature-card__icon">💬</div><div class="feature-card__title">14+ Channels</div><div class="feature-card__desc">Telegram, Discord, Nostr, iMessage, Google Chat, and more. Build your own with the plugin SDK.</div></div>
-      <div class="feature-card"><div class="feature-card__icon">🔐</div><div class="feature-card__title">Security First</div><div class="feature-card__desc">AES-256-GCM vault, HMAC-SHA256 gateway, timing-safe comparisons. Wallet key never exposed.</div></div>
-      <div class="feature-card"><div class="feature-card__icon">🦞</div><div class="feature-card__title">Open Source Forever</div><div class="feature-card__desc">MIT licensed. Built for the financial agents of tomorrow. Contribute strategies, audits, plugins.</div></div>
-    </div>
-
-    <!-- CTA -->
-    <div class="share-section">
-      <h2>🦞 Join the Swarm</h2>
-      <p>NanoSolana is open source and community-driven. Star us, fork us, build with us.</p>
-      <div class="cta-row">
-        <a href="https://github.com/x402agent/NanoSolana" class="cta-btn cta-btn--github" target="_blank" rel="noopener">
-          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-          Star on GitHub
-        </a>
-        <a href="https://www.npmjs.com/package/nanosolana" class="cta-btn cta-btn--npm" target="_blank" rel="noopener">📦 npm</a>
-        <a href="https://hub.nanosolana.com" class="cta-btn cta-btn--discord" target="_blank" rel="noopener">🌐 NanoHub</a>
-        <a href="https://twitter.com/intent/tweet?text=%F0%9F%A6%9E%20NanoSolana%201.0%20%E2%80%94%20Deploy%20autonomous%20Solana%20trading%20agents%20in%2030%20seconds.%20Try%20without%20API%20keys%3A%20npx%20nanosolana%20demo%0A%0Anpmjs.com%2Fpackage%2Fnanosolana&hashtags=Solana,AI,DeFi,TypeScript" class="cta-btn cta-btn--twitter" target="_blank" rel="noopener">𝕏 Share</a>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="footer__links">
-        <a href="https://github.com/x402agent/NanoSolana" class="footer__link" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://www.npmjs.com/package/nanosolana" class="footer__link" target="_blank" rel="noopener">npm</a>
-        <a href="https://hub.nanosolana.com" class="footer__link" target="_blank" rel="noopener">NanoHub</a>
-        <a href="https://github.com/x402agent/NanoSolana/blob/main/CONTRIBUTING.md" class="footer__link" target="_blank" rel="noopener">Contributing</a>
-        <a href="https://github.com/x402agent/NanoSolana/blob/main/SECURITY.md" class="footer__link" target="_blank" rel="noopener">Security</a>
-        <a href="https://github.com/x402agent/NanoSolana/tree/main/nano-docs" class="footer__link" target="_blank" rel="noopener">Docs</a>
-        <a href="https://github.com/x402agent/NanoSolana/blob/main/LICENSE" class="footer__link" target="_blank" rel="noopener">MIT License</a>
-      </div>
-      <p class="footer__brand">NanoSolana Labs · <span>🦞</span> TamaGObot · Built for the financial agents of tomorrow</p>
-    </footer>
-  </div>
-
-  <!-- Music Player -->
-  <div class="music-player" id="music-player">
-    <button class="music-player__btn" id="music-play-btn" title="Play / Pause">▶</button>
-    <div class="music-player__info">
-      <div class="music-player__title">🦞 NanoSolana Radio</div>
-      <div class="music-player__track">nano.mp3</div>
-      <div class="music-player__progress" id="music-progress"><div class="music-player__progress-fill" id="music-progress-fill"></div></div>
-      <div class="music-player__time"><span id="music-time-current">0:00</span><span id="music-time-total">0:00</span></div>
-    </div>
-    <div class="music-player__viz" id="music-viz">
-      <div class="music-player__viz-bar" style="height:4px"></div>
-      <div class="music-player__viz-bar" style="height:4px"></div>
-      <div class="music-player__viz-bar" style="height:4px"></div>
-      <div class="music-player__viz-bar" style="height:4px"></div>
-      <div class="music-player__viz-bar" style="height:4px"></div>
-    </div>
-    <div class="music-player__volume">
-      <span class="music-player__volume-icon" id="music-vol-icon" title="Mute / Unmute">🔊</span>
-      <input type="range" class="music-player__volume-slider" id="music-vol" min="0" max="1" step="0.05" value="0.5" />
-    </div>
-    <div class="music-player__autoplay-prompt" id="music-autoplay-prompt">🎵 Click to play NanoSolana Radio</div>
-  </div>
-  <audio id="nano-audio" src="https://pub-7aa888a0e17a4cbb944ead64c292033f.r2.dev/nano.mp3" preload="auto" loop></audio>
-
-  <script>
-    function copyCmd(text, el) {
-      navigator.clipboard.writeText(text);
-      const orig = el.textContent;
-      el.textContent = '✓ Copied!';
-      setTimeout(() => el.textContent = orig, 1500);
-    }
-
-    // Particles
-    (function() {
-      const container = document.getElementById('particles');
-      for (let i = 0; i < 30; i++) {
-        const p = document.createElement('div');
-        p.className = 'particle';
-        p.style.left = Math.random() * 100 + '%';
-        p.style.animationDuration = (8 + Math.random() * 12) + 's';
-        p.style.animationDelay = Math.random() * 10 + 's';
-        p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
-        if (Math.random() > 0.5) p.style.background = '#9945FF';
-        container.appendChild(p);
-      }
-    })();
-
-    // Terminal typewriter
-    document.addEventListener('DOMContentLoaded', () => {
-      const body = document.getElementById('terminal-body');
-      if (!body) return;
-      const lines = body.querySelectorAll('div, br');
-      lines.forEach(line => { line.style.opacity = '0'; line.style.transform = 'translateY(4px)'; line.style.transition = 'opacity 0.3s, transform 0.3s'; });
-      const obs = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            lines.forEach((line, i) => { setTimeout(() => { line.style.opacity = '1'; line.style.transform = 'translateY(0)'; }, i * 60); });
-            obs.disconnect();
-          }
-        });
-      }, { threshold: 0.3 });
-      obs.observe(body);
-    });
-
-    const NANOHUB_SITE_URL = 'https://hub.nanosolana.com';
-    const NANOHUB_AGENT_API = 'https://nanohub-api.up.railway.app/api/v1';
-
-    function escapeHtml(text) {
-      return String(text)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-    }
-
-    function formatAgentCard(agent) {
-      const name = escapeHtml(agent.name || agent.slug || 'Unnamed agent');
-      const slug = escapeHtml(agent.slug || 'unknown');
-      const description = escapeHtml((agent.description || 'No public description set.').slice(0, 160));
-      const category = escapeHtml(agent.category || 'agent');
-      const version = escapeHtml(agent.version || 'unknown');
-      const status = String(agent.status || 'inactive').toLowerCase();
-      const statusClass = status === 'active' ? 'active' : (status === 'pending' ? 'pending' : '');
-      const tags = Array.isArray(agent.tags) ? agent.tags.slice(0, 3) : [];
-      const tagMarkup = tags.map(tag => `<span class="nc-agent-pill">${escapeHtml(tag)}</span>`).join('');
-      const publicKey = typeof agent.public_key === 'string' ? agent.public_key.slice(0, 8) + '...' : 'wallet ?';
-
-      return `
-        <article class="nc-agent-card">
-          <div class="nc-agent-top">
-            <div>
-              <h3 class="nc-agent-name">${name}</h3>
-              <div class="nc-agent-slug">${slug}</div>
-            </div>
-            <span class="nc-status-dot ${statusClass}">${escapeHtml(status)}</span>
-          </div>
-          <p class="nc-agent-desc">${description}</p>
-          <div class="nc-agent-meta">
-            <span class="nc-agent-pill">${category}</span>
-            <span class="nc-agent-pill nc-agent-pill--muted">v${version}</span>
-            <span class="nc-agent-pill nc-agent-pill--muted">${escapeHtml(publicKey)}</span>
-            ${tagMarkup}
-          </div>
-        </article>
-      `;
-    }
-
-    async function loadAgentRegistry(query) {
-      const statusEl = document.getElementById('agent-registry-status');
-      const resultsEl = document.getElementById('agent-registry-results');
-      if (!statusEl || !resultsEl) return;
-
-      statusEl.textContent = query
-        ? `Searching NanoHub agent registry for "${query}"...`
-        : 'Loading recent NanoHub agents...';
-
-      try {
-        const endpoint = query
-          ? `${NANOHUB_AGENT_API}/agents/search?q=${encodeURIComponent(query)}`
-          : `${NANOHUB_AGENT_API}/agents?limit=6`;
-        const response = await fetch(endpoint, { headers: { Accept: 'application/json' } });
-        if (!response.ok) throw new Error(`Registry request failed (${response.status})`);
-
-        const payload = await response.json();
-        const agents = Array.isArray(payload.agents) ? payload.agents : [];
-
-        if (agents.length === 0) {
-          resultsEl.innerHTML = '<div class="nc-registry-empty">No matching agents found yet. Register one from the CLI with <code>npx nanosolana hub register</code>.</div>';
-          statusEl.textContent = query
-            ? `No NanoHub agents matched "${query}".`
-            : 'No public NanoHub agents found yet.';
-          return;
-        }
-
-        resultsEl.innerHTML = agents.map(formatAgentCard).join('');
-        statusEl.textContent = query
-          ? `Found ${agents.length} matching agents in the NanoHub registry.`
-          : `Showing ${agents.length} recent agents from the NanoHub registry.`;
-      } catch (error) {
-        resultsEl.innerHTML = `<div class="nc-registry-empty">NanoHub registry data is temporarily unavailable. Use <code>npx nanosolana hub list --api ${escapeHtml(NANOHUB_AGENT_API.replace('/api/v1', ''))}</code> from the CLI or open <a href="${NANOHUB_SITE_URL}" target="_blank" rel="noopener">NanoHub</a> directly.</div>`;
-        statusEl.textContent = error instanceof Error ? error.message : 'Unable to load NanoHub registry.';
+// Smooth nav highlight
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY + 100;
+  sections.forEach(section => {
+    const top = section.offsetTop;
+    const height = section.offsetHeight;
+    const id = section.getAttribute('id');
+    const link = document.querySelector(`.nav-links a[href="#${id}"]`);
+    if (link) {
+      if (scrollY >= top && scrollY < top + height) {
+        link.style.color = 'var(--green)';
+      } else {
+        link.style.color = '';
       }
     }
-
-    // Fetch live stats
-    (async function() {
-      try {
-        const r = await fetch('https://registry.npmjs.org/nanosolana');
-        const d = await r.json();
-        const latest = d['dist-tags']?.latest;
-        if (latest) document.getElementById('stat-version').textContent = 'v' + latest;
-      } catch(e) {}
-      try {
-        const r = await fetch('https://api.npmjs.org/downloads/point/last-month/nanosolana');
-        const d = await r.json();
-        if (d.downloads) document.getElementById('stat-downloads').textContent = d.downloads.toLocaleString() + '/mo';
-      } catch(e) {}
-      try {
-        const r = await fetch('https://api.github.com/repos/x402agent/NanoSolana');
-        const d = await r.json();
-        if (d.stargazers_count !== undefined) document.getElementById('stat-stars').textContent = d.stargazers_count;
-      } catch(e) {}
-      try {
-        const r = await fetch(`${NANOHUB_AGENT_API}/stats`);
-        const d = await r.json();
-        if (typeof d.totalAgents === 'number') document.getElementById('hub-total-agents').textContent = String(d.totalAgents);
-        if (typeof d.activeAgents === 'number') document.getElementById('hub-active-agents').textContent = String(d.activeAgents);
-        if (d.byCategory && typeof d.byCategory === 'object') document.getElementById('hub-agent-categories').textContent = String(Object.keys(d.byCategory).length);
-      } catch(e) {}
-      loadAgentRegistry('');
-    })();
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const form = document.getElementById('agent-registry-search');
-      const queryInput = document.getElementById('agent-registry-query');
-      if (!(form instanceof HTMLFormElement) || !(queryInput instanceof HTMLInputElement)) return;
-
-      form.addEventListener('submit', event => {
-        event.preventDefault();
-        loadAgentRegistry(queryInput.value.trim());
-      });
-    });
-
-    // Music player
-    (function() {
-      const audio = document.getElementById('nano-audio');
-      const playBtn = document.getElementById('music-play-btn');
-      const progressBar = document.getElementById('music-progress');
-      const progressFill = document.getElementById('music-progress-fill');
-      const timeCurrent = document.getElementById('music-time-current');
-      const timeTotal = document.getElementById('music-time-total');
-      const viz = document.getElementById('music-viz');
-      const vizBars = viz.querySelectorAll('.music-player__viz-bar');
-      const volSlider = document.getElementById('music-vol');
-      const volIcon = document.getElementById('music-vol-icon');
-      const autoplayPrompt = document.getElementById('music-autoplay-prompt');
-      let vizInterval = null;
-      audio.volume = 0.5;
-      function fmt(s) { if (isNaN(s)) return '0:00'; return Math.floor(s/60)+':'+(Math.floor(s%60)<10?'0':'')+Math.floor(s%60); }
-      function startViz() { viz.classList.remove('paused'); if (vizInterval) clearInterval(vizInterval); vizInterval = setInterval(() => { vizBars.forEach(b => { b.style.height = (4+Math.random()*20)+'px'; }); }, 180); }
-      function stopViz() { viz.classList.add('paused'); if (vizInterval) { clearInterval(vizInterval); vizInterval=null; } vizBars.forEach(b => { b.style.height='4px'; }); }
-      function setPlaying() { playBtn.textContent='⏸'; startViz(); autoplayPrompt.classList.add('hidden'); }
-      function setPaused() { playBtn.textContent='▶'; stopViz(); }
-      playBtn.addEventListener('click', () => { if (audio.paused) audio.play().then(setPlaying).catch(()=>{}); else { audio.pause(); setPaused(); } });
-      autoplayPrompt.addEventListener('click', () => { audio.play().then(setPlaying).catch(()=>{}); });
-      audio.addEventListener('timeupdate', () => { if (audio.duration) progressFill.style.width=(audio.currentTime/audio.duration*100)+'%'; timeCurrent.textContent=fmt(audio.currentTime); });
-      audio.addEventListener('loadedmetadata', () => { timeTotal.textContent=fmt(audio.duration); });
-      progressBar.addEventListener('click', e => { if (audio.duration) { const r=progressBar.getBoundingClientRect(); audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration; } });
-      volSlider.addEventListener('input', () => { audio.volume=parseFloat(volSlider.value); audio.muted=false; volIcon.textContent=audio.volume===0?'🔇':audio.volume<0.5?'🔉':'🔊'; });
-      volIcon.addEventListener('click', () => { audio.muted=!audio.muted; volIcon.textContent=audio.muted?'🔇':(audio.volume<0.5?'🔉':'🔊'); });
-      audio.play().then(setPlaying).catch(() => { setPaused(); autoplayPrompt.classList.remove('hidden');
-        const go = () => { audio.play().then(setPlaying).catch(()=>{}); document.removeEventListener('click',go); document.removeEventListener('keydown',go); };
-        document.addEventListener('click',go,{once:false}); document.addEventListener('keydown',go,{once:true});
-      });
-    })();
-  </script>
-
-  <!-- ElevenLabs ConvAI Widget -->
-  <elevenlabs-convai agent-id="agent_0001kcf3a94bfcm9kj51ss02gnv0"></elevenlabs-convai>
-  <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+  });
+});
+</script>
 </body>
 </html>
