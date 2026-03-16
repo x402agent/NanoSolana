@@ -46,7 +46,9 @@ export function getNanoHubSiteUrl() {
 export const getClawHubSiteUrl = getNanoHubSiteUrl
 
 export function getDocsSiteUrl() {
-  const explicit = readMetaEnv(import.meta.env.VITE_SOULHUB_SITE_URL)
+  const explicit =
+    readMetaEnv(import.meta.env.VITE_DOCS_SITE_URL) ??
+    readMetaEnv(import.meta.env.VITE_SOULHUB_SITE_URL)
   if (explicit) return explicit
 
   const siteUrl = readMetaEnv(import.meta.env.VITE_SITE_URL)
@@ -72,7 +74,7 @@ export function getDocsSiteUrl() {
 export const getOnlyCrabsSiteUrl = getDocsSiteUrl
 
 export function getDocsHost() {
-  return readMetaEnv(import.meta.env.VITE_SOULHUB_HOST) ?? DEFAULT_DOCS_HOST
+  return readMetaEnv(import.meta.env.VITE_DOCS_HOST) ?? readMetaEnv(import.meta.env.VITE_SOULHUB_HOST) ?? DEFAULT_DOCS_HOST
 }
 
 // Legacy alias
@@ -103,7 +105,9 @@ export function getSiteMode(): SiteMode {
   const forced = readMetaEnv(import.meta.env.VITE_SITE_MODE)
   if (forced === 'souls' || forced === 'skills') return forced
 
-  const docsSite = readMetaEnv(import.meta.env.VITE_SOULHUB_SITE_URL)
+  const docsSite =
+    readMetaEnv(import.meta.env.VITE_DOCS_SITE_URL) ??
+    readMetaEnv(import.meta.env.VITE_SOULHUB_SITE_URL)
   if (docsSite) return detectSiteModeFromUrl(docsSite)
 
   const siteUrl = readMetaEnv(import.meta.env.VITE_SITE_URL) ?? process.env.SITE_URL

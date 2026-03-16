@@ -66,7 +66,7 @@ export default defineEventHandler(async (event) => {
   const title = titleFromQuery || meta?.displayName || slug
   const description = descriptionFromQuery || meta?.summary || ''
 
-  const ownerLabel = owner ? `@${owner}` : 'clawhub'
+  const ownerLabel = owner ? `@${owner}` : 'NanoHub'
   const versionLabel = version ? `v${version}` : 'latest'
   const footer = owner ? `hub.nanosolana.com/${owner}/${slug}` : `hub.nanosolana.com/skills/${slug}`
 

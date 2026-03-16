@@ -6,14 +6,14 @@ import { type GlobalConfig, GlobalConfigSchema, parseArk } from './schema/index.
 
 /**
  * Resolve config path with legacy fallback.
- * Checks for 'clawhub' first, falls back to legacy 'nanohub' if it exists.
+ * Checks for 'nanohub' first, falls back to legacy 'clawhub' if it exists.
  */
 function resolveConfigPath(baseDir: string): string {
-  const clawhubPath = join(baseDir, 'clawhub', 'config.json')
   const nanohubPath = join(baseDir, 'nanohub', 'config.json')
-  if (existsSync(clawhubPath)) return clawhubPath
+  const clawhubPath = join(baseDir, 'clawhub', 'config.json')
   if (existsSync(nanohubPath)) return nanohubPath
-  return clawhubPath
+  if (existsSync(clawhubPath)) return clawhubPath
+  return nanohubPath
 }
 
 function isNonFatalChmodError(error: unknown): boolean {
@@ -24,7 +24,7 @@ function isNonFatalChmodError(error: unknown): boolean {
 
 export function getGlobalConfigPath() {
   const override =
-    process.env.CLAWHUB_CONFIG_PATH?.trim() ?? process.env.NANOHUB_CONFIG_PATH?.trim()
+    process.env.NANOHUB_CONFIG_PATH?.trim() ?? process.env.CLAWHUB_CONFIG_PATH?.trim()
   if (override) return resolve(override)
 
   const home = resolveHome()

@@ -39,9 +39,9 @@ import { fail } from './cli/ui.js'
 import { readGlobalConfig } from './config.js'
 
 const program = new Command()
-  .name('clawhub')
+  .name('nanohub')
   .description(
-    `${styleTitle(`ClawHub CLI ${getCliBuildLabel()}`)}\n${styleEnvBlock(
+    `${styleTitle(`NanoHub CLI ${getCliBuildLabel()}`)}\n${styleEnvBlock(
       'install, update, search, and publish agent skills.',
     )}`,
   )
@@ -56,7 +56,7 @@ const program = new Command()
   .addHelpText(
     'after',
     styleEnvBlock(
-      '\nEnv:\n  CLAWHUB_SITE\n  CLAWHUB_REGISTRY\n  CLAWHUB_WORKDIR\n  (NANOHUB_* supported)\n',
+      '\nEnv:\n  NANOHUB_SITE\n  NANOHUB_REGISTRY\n  NANOHUB_WORKDIR\n  (legacy CLAWHUB_* supported)\n',
     ),
   )
 
@@ -66,16 +66,16 @@ async function resolveGlobalOpts(): Promise<GlobalOpts> {
   const raw = program.opts<{ workdir?: string; dir?: string; site?: string; registry?: string }>()
   const workdir = await resolveWorkdir(raw.workdir)
   const dir = resolve(workdir, raw.dir ?? 'skills')
-  const site = raw.site ?? process.env.CLAWHUB_SITE ?? process.env.NANOHUB_SITE ?? DEFAULT_SITE
+  const site = raw.site ?? process.env.NANOHUB_SITE ?? process.env.CLAWHUB_SITE ?? DEFAULT_SITE
   const registrySource = raw.registry
     ? 'cli'
-    : process.env.CLAWHUB_REGISTRY || process.env.NANOHUB_REGISTRY
+    : process.env.NANOHUB_REGISTRY || process.env.CLAWHUB_REGISTRY
       ? 'env'
       : 'default'
   const registry =
     raw.registry ??
-    process.env.CLAWHUB_REGISTRY ??
     process.env.NANOHUB_REGISTRY ??
+    process.env.CLAWHUB_REGISTRY ??
     DEFAULT_REGISTRY
   return { workdir, dir, site, registry, registrySource }
 }
@@ -87,25 +87,25 @@ function isInputAllowed() {
 
 async function resolveWorkdir(explicit?: string) {
   if (explicit?.trim()) return resolve(explicit.trim())
-  const envWorkdir = process.env.CLAWHUB_WORKDIR?.trim() ?? process.env.NANOHUB_WORKDIR?.trim()
+  const envWorkdir = process.env.NANOHUB_WORKDIR?.trim() ?? process.env.CLAWHUB_WORKDIR?.trim()
   if (envWorkdir) return resolve(envWorkdir)
 
   const cwd = resolve(process.cwd())
-  const hasMarker = await hasClawhubMarker(cwd)
+  const hasMarker = await hasNanoHubMarker(cwd)
   if (hasMarker) return cwd
 
   const tamagobotWorkspace = await resolveTamaGObotDefaultWorkspace()
   return tamagobotWorkspace ? resolve(tamagobotWorkspace) : cwd
 }
 
-async function hasClawhubMarker(workdir: string) {
-  const lockfile = join(workdir, '.clawhub', 'lock.json')
+async function hasNanoHubMarker(workdir: string) {
+  const lockfile = join(workdir, '.nanohub', 'lock.json')
   if (await pathExists(lockfile)) return true
-  const markerDir = join(workdir, '.clawhub')
+  const markerDir = join(workdir, '.nanohub')
   if (await pathExists(markerDir)) return true
-  const legacyLockfile = join(workdir, '.nanohub', 'lock.json')
+  const legacyLockfile = join(workdir, '.clawhub', 'lock.json')
   if (await pathExists(legacyLockfile)) return true
-  const legacyMarkerDir = join(workdir, '.nanohub')
+  const legacyMarkerDir = join(workdir, '.clawhub')
   return pathExists(legacyMarkerDir)
 }
 

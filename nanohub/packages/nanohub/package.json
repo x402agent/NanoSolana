@@ -1,12 +1,12 @@
 {
-  "name": "clawhub",
+  "name": "nanohub",
   "version": "0.7.0",
-  "description": "ClawHub CLI \\u2014 install, update, search, and publish agent skills.",
+  "description": "NanoHub CLI \\u2014 install, update, search, and publish agent skills.",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "clawhub": "bin/nanohub.js",
-    "nanohub": "bin/nanohub.js"
+    "nanohub": "bin/nanohub.js",
+    "clawhub": "bin/clawhub.js"
   },
   "files": [
     "bin",

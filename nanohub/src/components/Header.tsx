@@ -58,7 +58,7 @@ export default function Header() {
           className="brand"
         >
           <span className="brand-mark">
-            <img src="/clawd-logo.png" alt="" aria-hidden="true" />
+            <img src="/clawd-logo.png" alt="NanoHub" />
           </span>
           <span className="brand-name">{siteName}</span>
         </Link>

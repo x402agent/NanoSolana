@@ -6,10 +6,10 @@ import ignore from 'ignore'
 import mime from 'mime'
 import { type Lockfile, LockfileSchema, parseArk, TEXT_FILE_EXTENSION_SET } from './schema/index.js'
 
-const DOT_DIR = '.clawhub'
-const LEGACY_DOT_DIR = '.nanohub'
-const DOT_IGNORE = '.clawhubignore'
-const LEGACY_DOT_IGNORE = '.nanohubignore'
+const DOT_DIR = '.nanohub'
+const LEGACY_DOT_DIR = '.clawhub'
+const DOT_IGNORE = '.nanohubignore'
+const LEGACY_DOT_IGNORE = '.clawhubignore'
 
 export type SkillOrigin = {
   version: 1
