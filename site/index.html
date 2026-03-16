@@ -471,33 +471,300 @@
       </div>
     </div>
 
-    <!-- SDK section -->
-    <section class="sdk-section">
-      <h2>🧩 Use as a Library</h2>
-      <div class="sdk-code">
-        <span class="t-purple">import</span> <span class="t-white">{ TradingEngine, ClawVault, TamaGOchi }</span> <span class="t-purple">from</span> <span class="t-green">"nanosolana"</span>;<br><br>
-        <span class="t-gray">// OODA trading engine</span><br>
-        <span class="t-purple">const</span> <span class="t-white">engine</span> = <span class="t-purple">new</span> <span class="t-cyan">TradingEngine</span>(<span class="t-white">config</span>);<br>
-        <span class="t-white">engine</span>.<span class="t-cyan">on</span>(<span class="t-green">"signal"</span>, <span class="t-white">signal</span> => <span class="t-white">console</span>.<span class="t-cyan">log</span>(<span class="t-white">signal</span>));<br><br>
-        <span class="t-gray">// 3-tier memory</span><br>
-        <span class="t-purple">const</span> <span class="t-white">vault</span> = <span class="t-purple">new</span> <span class="t-cyan">ClawVault</span>();<br>
-        <span class="t-white">vault</span>.<span class="t-cyan">storeKnown</span>({ <span class="t-white">content</span>: <span class="t-green">"SOL at $142.50"</span>, <span class="t-white">source</span>: <span class="t-green">"birdeye"</span>, <span class="t-white">tags</span>: [<span class="t-green">"SOL"</span>] });<br><br>
-        <span class="t-gray">// Virtual pet</span><br>
-        <span class="t-purple">const</span> <span class="t-white">pet</span> = <span class="t-purple">new</span> <span class="t-cyan">TamaGOchi</span>(<span class="t-green">"MyPet"</span>);<br>
-        <span class="t-white">console</span>.<span class="t-cyan">log</span>(<span class="t-white">pet</span>.<span class="t-cyan">getStatusDisplay</span>());<br>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- NANO-CORE DEEP DIVE                                      -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <style>
+      .nc-title{font-size:2.2rem;font-weight:700;text-align:center;margin-bottom:.5rem;background:linear-gradient(135deg,var(--solana-green),#00d4ff,var(--solana-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+      .nc-sub{text-align:center;color:var(--text-secondary);margin-bottom:2rem;font-size:.95rem;max-width:700px;margin-left:auto;margin-right:auto}
+      .nc-hr{height:1px;background:linear-gradient(90deg,transparent,var(--border-glow),transparent);margin:3rem 0}
+      .nc-tabs{display:flex;gap:4px;margin-bottom:0;border-bottom:1px solid rgba(20,241,149,.15);overflow-x:auto;-webkit-overflow-scrolling:touch}
+      .nc-tab{padding:.65rem 1.1rem;font-family:var(--font-mono);font-size:.72rem;color:var(--text-secondary);background:0 0;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+      .nc-tab:hover{color:var(--text-primary)}.nc-tab.active{color:var(--solana-green);border-bottom-color:var(--solana-green);background:rgba(20,241,149,.04)}
+      .nc-panel{display:none}.nc-panel.active{display:block}
+      .nc-code{background:#0d1117;border:1px solid rgba(20,241,149,.12);border-top:none;border-radius:0 0 12px 12px;padding:1.25rem;font-family:var(--font-mono);font-size:.76rem;line-height:1.65;overflow-x:auto;max-height:420px;overflow-y:auto}
+      .nc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+      .nc-mod{background:var(--bg-card);border:1px solid var(--border-glow);border-radius:10px;padding:.9rem .7rem;text-align:center;transition:border-color .2s,transform .2s,box-shadow .2s}
+      .nc-mod:hover{border-color:var(--solana-green);transform:translateY(-3px);box-shadow:0 6px 20px rgba(20,241,149,.08)}
+      .nc-mod i{font-size:1.4rem;font-style:normal;display:block;margin-bottom:.35rem}
+      .nc-mod b{font-family:var(--font-mono);font-size:.72rem;color:var(--solana-green);display:block;margin-bottom:.2rem}
+      .nc-mod small{font-size:.65rem;color:var(--text-secondary);line-height:1.4}
+      .nc-exports{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+      .nc-eg{background:var(--bg-card);border:1px solid var(--border-glow);border-radius:10px;padding:1rem}
+      .nc-eg h4{font-family:var(--font-mono);font-size:.75rem;color:var(--solana-green);font-weight:600;margin:0 0 .5rem}
+      .nc-eg p{font-family:var(--font-mono);font-size:.68rem;color:var(--text-secondary);line-height:1.8;margin:0}
+      .nc-eg p span{color:var(--text-primary)}
+      .nc-hub{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+      .nc-hc{background:var(--bg-card);border:1px solid var(--border-glow);border-radius:12px;padding:1.25rem;transition:border-color .2s,transform .2s;position:relative;overflow:hidden}
+      .nc-hc:hover{border-color:var(--solana-purple);transform:translateY(-3px)}
+      .nc-hc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--solana-purple),var(--solana-green))}
+      .nc-hc .type{font-family:var(--font-mono);font-size:.65rem;color:var(--solana-purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem}
+      .nc-hc h3{font-size:1rem;font-weight:600;color:var(--text-primary);margin:0 0 .3rem}
+      .nc-hc p{font-size:.8rem;color:var(--text-secondary);line-height:1.5;margin:0 0 .6rem}
+      .nc-hc .tags{display:flex;gap:4px;flex-wrap:wrap}
+      .nc-hc .tag{font-size:.6rem;padding:2px 8px;border-radius:99px;background:rgba(153,69,255,.12);color:#c4b5fd;font-family:var(--font-mono)}
+      .nc-soul{background:linear-gradient(135deg,rgba(20,241,149,.04),rgba(153,69,255,.04));border:1px solid var(--border-glow);border-radius:16px;padding:2rem;max-width:750px;margin:0 auto;position:relative}
+      .nc-soul::before{content:open-quote;position:absolute;top:-10px;left:1rem;font-size:4rem;color:rgba(20,241,149,.15);font-family:serif}
+      .nc-soul blockquote{font-size:.92rem;color:var(--text-primary);line-height:1.7;font-style:italic;margin:0 0 1rem;border:none;padding:0}
+      .nc-soul .tenets{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+      .nc-soul .tenet{font-size:.78rem;color:var(--text-secondary);padding-left:1rem;border-left:2px solid var(--solana-green)}
+      @media(max-width:600px){.nc-soul .tenets{grid-template-columns:1fr}}
+    </style>
+
+    <div class="nc-hr"></div>
+
+    <!-- NANO-CORE EXAMPLES -->
+    <section class="sdk-section" id="nano-core-examples">
+      <h2 class="nc-title">⚡ nano-core Examples</h2>
+      <p class="nc-sub">Production-ready examples from <code style="color:var(--solana-green)">nano-core/examples/</code> — copy, paste, run.</p>
+      <div style="max-width:800px;margin:0 auto">
+        <div class="nc-tabs" id="example-tabs">
+          <button class="nc-tab active" onclick="switchTab('ex-basic',this)">basic-agent</button>
+          <button class="nc-tab" onclick="switchTab('ex-strategy',this)">custom-strategy</button>
+          <button class="nc-tab" onclick="switchTab('ex-mesh',this)">multi-agent-mesh</button>
+          <button class="nc-tab" onclick="switchTab('ex-sdk',this)">sdk-programmatic</button>
+          <button class="nc-tab" onclick="switchTab('ex-webhook',this)">webhook-alerts</button>
+        </div>
+
+        <div class="nc-panel active" id="ex-basic"><div class="nc-code"><span class="t-gray">// basic-agent.ts &#8212; The simplest NanoSolana agent</span>
+<span class="t-purple">import</span> { <span class="t-cyan">NanoWallet</span>, <span class="t-cyan">TradingEngine</span>, <span class="t-cyan">ClawVault</span>, <span class="t-cyan">TamaGOchi</span>, <span class="t-cyan">loadConfig</span> } <span class="t-purple">from</span> <span class="t-green">"nanosolana"</span>;
+
+<span class="t-purple">const</span> config = <span class="t-cyan">loadConfig</span>();
+<span class="t-purple">const</span> wallet = <span class="t-purple">new</span> <span class="t-cyan">NanoWallet</span>(<span class="t-green">"basic-agent"</span>);
+<span class="t-purple">await</span> wallet.<span class="t-cyan">birth</span>();       <span class="t-gray">// Generate keypair &#8594; AES vault</span>
+
+<span class="t-purple">const</span> memory = <span class="t-purple">new</span> <span class="t-cyan">ClawVault</span>();
+memory.<span class="t-cyan">startAutonomous</span>();   <span class="t-gray">// 3-tier epistemological memory</span>
+
+<span class="t-purple">const</span> pet = <span class="t-purple">new</span> <span class="t-cyan">TamaGOchi</span>(<span class="t-green">"BasicBot"</span>);
+pet.<span class="t-cyan">startLifecycle</span>();       <span class="t-gray">// Egg &#8594; Larva &#8594; Lobster &#8594; Alpha</span>
+
+<span class="t-purple">const</span> engine = <span class="t-purple">new</span> <span class="t-cyan">TradingEngine</span>(config, wallet);
+<span class="t-purple">await</span> engine.<span class="t-cyan">start</span>();        <span class="t-gray">// OODA loop goes live</span>
+
+engine.<span class="t-cyan">on</span>(<span class="t-green">"signal"</span>, (signal) =&gt; {
+  memory.<span class="t-cyan">storeKnown</span>({ content: signal.type, source: <span class="t-green">"birdeye"</span>, tags: [signal.symbol] });
+});
+
+memory.<span class="t-cyan">on</span>(<span class="t-green">"lessonLearned"</span>, (lesson) =&gt; {
+  console.<span class="t-cyan">log</span>(<span class="t-green">`Lesson: ${lesson.pattern} &#8594; ${lesson.outcome}`</span>);
+});</div></div>
+
+        <div class="nc-panel" id="ex-strategy"><div class="nc-code"><span class="t-gray">// custom-strategy.ts &#8212; Override RSI / EMA / ATR defaults</span>
+<span class="t-purple">import</span> { <span class="t-cyan">StrategyEngine</span>, <span class="t-cyan">calculateRSI</span>, <span class="t-cyan">calculateEMA</span>, <span class="t-cyan">calculateATR</span>,
+         <span class="t-cyan">DEFAULT_PARAMS</span>, <span class="t-purple">type</span> <span class="t-cyan">StrategyParams</span> } <span class="t-purple">from</span> <span class="t-green">"nanosolana"</span>;
+
+<span class="t-gray">// Aggressive params &#8212; faster signals</span>
+<span class="t-purple">const</span> params: <span class="t-cyan">StrategyParams</span> = {
+  ...DEFAULT_PARAMS,
+  rsiPeriod: <span class="t-yellow">7</span>,          <span class="t-gray">// Faster RSI (default 14)</span>
+  rsiOverbought: <span class="t-yellow">65</span>,     <span class="t-gray">// Earlier sell signals</span>
+  rsiOversold: <span class="t-yellow">35</span>,       <span class="t-gray">// Earlier buy signals</span>
+  emaFast: <span class="t-yellow">8</span>, emaSlow: <span class="t-yellow">21</span>,
+};
+
+<span class="t-purple">const</span> closes = data.<span class="t-cyan">map</span>(d =&gt; d.close);
+<span class="t-purple">const</span> rsi  = <span class="t-cyan">calculateRSI</span>(closes, params.rsiPeriod);
+<span class="t-purple">const</span> fast = <span class="t-cyan">calculateEMA</span>(closes, params.emaFast);
+<span class="t-purple">const</span> slow = <span class="t-cyan">calculateEMA</span>(closes, params.emaSlow);
+
+<span class="t-purple">const</span> strategy = <span class="t-purple">new</span> <span class="t-cyan">StrategyEngine</span>(params);
+strategy.<span class="t-cyan">on</span>(<span class="t-green">"signal"</span>, (s) =&gt; {
+  console.<span class="t-cyan">log</span>(s.direction === <span class="t-green">"long"</span> ? <span class="t-green">"BUY"</span> : <span class="t-green">"SELL"</span>, s.confidence);
+});</div></div>
+
+        <div class="nc-panel" id="ex-mesh"><div class="nc-code"><span class="t-gray">// multi-agent-mesh.ts &#8212; Spawn agents that share signals</span>
+<span class="t-purple">import</span> { <span class="t-cyan">NanoWallet</span>, <span class="t-cyan">TradingEngine</span>, <span class="t-cyan">ClawVault</span>, <span class="t-cyan">TamaGOchi</span>,
+         <span class="t-cyan">NanoNetworkClient</span>, <span class="t-cyan">TailscaleDiscovery</span>, <span class="t-cyan">loadConfig</span> } <span class="t-purple">from</span> <span class="t-green">"nanosolana"</span>;
+
+<span class="t-purple">async function</span> <span class="t-cyan">spawnAgent</span>(name, config) {
+  <span class="t-purple">const</span> wallet = <span class="t-purple">new</span> <span class="t-cyan">NanoWallet</span>(name);
+  <span class="t-purple">await</span> wallet.<span class="t-cyan">birth</span>();
+  <span class="t-purple">const</span> memory = <span class="t-purple">new</span> <span class="t-cyan">ClawVault</span>();  memory.<span class="t-cyan">startAutonomous</span>();
+  <span class="t-purple">const</span> pet    = <span class="t-purple">new</span> <span class="t-cyan">TamaGOchi</span>(name); pet.<span class="t-cyan">startLifecycle</span>();
+  <span class="t-purple">return</span> { name, wallet, memory, pet,
+    engine: <span class="t-purple">new</span> <span class="t-cyan">TradingEngine</span>(config, wallet) };
+}
+
+<span class="t-gray">// Spawn Alpha, Beta, Gamma</span>
+<span class="t-purple">const</span> agents = <span class="t-purple">await</span> Promise.<span class="t-cyan">all</span>(
+  [<span class="t-green">"Alpha"</span>, <span class="t-green">"Beta"</span>, <span class="t-green">"Gamma"</span>].<span class="t-cyan">map</span>(n =&gt; <span class="t-cyan">spawnAgent</span>(n, config))
+);
+
+<span class="t-gray">// Discover mesh peers via Tailscale</span>
+<span class="t-purple">if</span> (<span class="t-cyan">TailscaleDiscovery</span>.<span class="t-cyan">isAvailable</span>()) {
+  <span class="t-purple">const</span> nodes = <span class="t-cyan">TailscaleDiscovery</span>.<span class="t-cyan">discoverNodes</span>();
+  console.<span class="t-cyan">log</span>(<span class="t-green">`Mesh: ${nodes.filter(n =&gt; n.online).length} nodes`</span>);
+}
+
+<span class="t-gray">// Cross-agent signal sharing</span>
+<span class="t-purple">for</span> (<span class="t-purple">const</span> agent <span class="t-purple">of</span> agents) {
+  agent.engine.<span class="t-cyan">on</span>(<span class="t-green">"signal"</span>, (signal) =&gt; {
+    agents.<span class="t-cyan">filter</span>(a =&gt; a.name !== agent.name)
+      .<span class="t-cyan">forEach</span>(o =&gt; o.memory.<span class="t-cyan">storeKnown</span>({
+        content: <span class="t-green">`[Mesh: ${agent.name}] ${signal.type}`</span>,
+        source: <span class="t-green">"mesh"</span>, tags: [<span class="t-green">"mesh"</span>, agent.name],
+      }));
+  });
+}</div></div>
+
+        <div class="nc-panel" id="ex-sdk"><div class="nc-code"><span class="t-gray">// sdk-programmatic.ts &#8212; Use modules individually</span>
+<span class="t-purple">import</span> { <span class="t-cyan">loadConfig</span>, <span class="t-cyan">encrypt</span>, <span class="t-cyan">decrypt</span>, <span class="t-cyan">NanoWallet</span>,
+         <span class="t-cyan">BirdeyeClient</span>, <span class="t-cyan">HeliusClient</span>, <span class="t-cyan">JupiterClient</span>,
+         <span class="t-cyan">ClawVault</span>, <span class="t-cyan">TamaGOchi</span>, <span class="t-cyan">STAGE_EMOJI</span>, <span class="t-cyan">MOOD_EMOJI</span>,
+         <span class="t-cyan">NanoGateway</span> } <span class="t-purple">from</span> <span class="t-green">"nanosolana"</span>;
+
+<span class="t-gray">// Birdeye API</span>
+<span class="t-purple">const</span> birdeye = <span class="t-purple">new</span> <span class="t-cyan">BirdeyeClient</span>(config.birdeye.apiKey);
+<span class="t-purple">const</span> sol = <span class="t-purple">await</span> birdeye.<span class="t-cyan">getTokenPrice</span>(<span class="t-green">"So111...112"</span>);
+<span class="t-purple">const</span> trending = <span class="t-purple">await</span> birdeye.<span class="t-cyan">getTrendingTokens</span>(<span class="t-yellow">5</span>);
+
+<span class="t-gray">// Memory (standalone)</span>
+<span class="t-purple">const</span> vault = <span class="t-purple">new</span> <span class="t-cyan">ClawVault</span>();
+vault.<span class="t-cyan">storeKnown</span>({ content: <span class="t-green">"SOL at $142"</span>, source: <span class="t-green">"birdeye"</span>, tags: [<span class="t-green">"SOL"</span>] });
+vault.<span class="t-cyan">search</span>(<span class="t-green">"SOL"</span>, <span class="t-yellow">5</span>);  <span class="t-gray">// search 3-tier memory</span>
+
+<span class="t-gray">// Pet (standalone)</span>
+<span class="t-purple">const</span> pet = <span class="t-purple">new</span> <span class="t-cyan">TamaGOchi</span>(<span class="t-green">"Lobsty"</span>);
+pet.<span class="t-cyan">feed</span>(<span class="t-yellow">0.5</span>);
+console.<span class="t-cyan">log</span>(STAGE_EMOJI[pet.getState().stage], MOOD_EMOJI[pet.getState().mood]);
+
+<span class="t-gray">// AES-256-GCM Vault</span>
+<span class="t-purple">const</span> enc = <span class="t-cyan">encrypt</span>(<span class="t-green">"my-api-key"</span>, <span class="t-green">"password"</span>);
+<span class="t-purple">const</span> dec = <span class="t-cyan">decrypt</span>(enc, <span class="t-green">"password"</span>); <span class="t-gray">// "my-api-key"</span></div></div>
+
+        <div class="nc-panel" id="ex-webhook"><div class="nc-code"><span class="t-gray">// webhook-alerts.ts &#8212; Forward signals to Discord / Slack</span>
+<span class="t-purple">import</span> { <span class="t-cyan">NanoWallet</span>, <span class="t-cyan">TradingEngine</span>, <span class="t-cyan">loadConfig</span>, <span class="t-purple">type</span> <span class="t-cyan">TradeSignal</span> } <span class="t-purple">from</span> <span class="t-green">"nanosolana"</span>;
+
+<span class="t-purple">async function</span> <span class="t-cyan">sendWebhook</span>(url, signal: <span class="t-cyan">TradeSignal</span>) {
+  <span class="t-purple">await</span> <span class="t-cyan">fetch</span>(url, { method: <span class="t-green">"POST"</span>,
+    headers: { <span class="t-green">"Content-Type"</span>: <span class="t-green">"application/json"</span> },
+    body: JSON.<span class="t-cyan">stringify</span>({ embeds: [{
+      title: <span class="t-green">`${signal.type.toUpperCase()} &#8212; ${signal.symbol}`</span>,
+      color: signal.type === <span class="t-green">"buy"</span> ? <span class="t-yellow">0x14F195</span> : <span class="t-yellow">0xFF4444</span>,
+      fields: [
+        { name: <span class="t-green">"Confidence"</span>, value: signal.confidence * <span class="t-yellow">100</span> + <span class="t-green">"%"</span> },
+        { name: <span class="t-green">"Source"</span>, value: signal.source },
+      ],
+      footer: { text: <span class="t-green">"NanoSolana OODA Engine"</span> },
+    }]}) });
+}
+
+<span class="t-purple">const</span> engine = <span class="t-purple">new</span> <span class="t-cyan">TradingEngine</span>(<span class="t-cyan">loadConfig</span>(), <span class="t-purple">new</span> <span class="t-cyan">NanoWallet</span>(<span class="t-green">"alerts"</span>));
+<span class="t-purple">await</span> engine.<span class="t-cyan">start</span>();
+engine.<span class="t-cyan">on</span>(<span class="t-green">"signal"</span>, <span class="t-purple">async</span> (s) =&gt; {
+  <span class="t-purple">if</span> (process.env.DISCORD_WEBHOOK_URL) <span class="t-purple">await</span> <span class="t-cyan">sendWebhook</span>(process.env.DISCORD_WEBHOOK_URL, s);
+  <span class="t-purple">if</span> (process.env.SLACK_WEBHOOK_URL) <span class="t-purple">await</span> <span class="t-cyan">sendWebhook</span>(process.env.SLACK_WEBHOOK_URL, s);
+});</div></div>
       </div>
     </section>
 
+    <div class="nc-hr"></div>
+
+    <!-- ARCHITECTURE -->
+    <section id="architecture">
+      <h2 class="nc-title">&#127959; nano-core Architecture</h2>
+      <p class="nc-sub">20 modules, 200+ exports. Every module works standalone or as part of the full stack.</p>
+      <div class="nc-grid">
+        <div class="nc-mod"><i>&#9889;</i><b>trading/</b><small>OODA engine, Birdeye, Helius, Jupiter</small></div>
+        <div class="nc-mod"><i>&#128202;</i><b>strategy/</b><small>RSI + EMA + ATR + Kelly Criterion</small></div>
+        <div class="nc-mod"><i>&#129504;</i><b>memory/</b><small>ClawVault 3-tier epistemological</small></div>
+        <div class="nc-mod"><i>&#128179;</i><b>wallet/</b><small>Ed25519 keypair, AES-256 vault</small></div>
+        <div class="nc-mod"><i>&#128062;</i><b>pet/</b><small>TamaGOchi lifecycle &amp; mood</small></div>
+        <div class="nc-mod"><i>&#129302;</i><b>ai/</b><small>OpenRouter AI provider</small></div>
+        <div class="nc-mod"><i>&#128268;</i><b>gateway/</b><small>WebSocket HMAC gateway</small></div>
+        <div class="nc-mod"><i>&#127760;</i><b>network/</b><small>Tailscale mesh + tmux</small></div>
+        <div class="nc-mod"><i>&#128274;</i><b>config/</b><small>Encrypted vault, dotenv</small></div>
+        <div class="nc-mod"><i>&#128421;</i><b>cli/</b><small>Commander CLI entry</small></div>
+        <div class="nc-mod"><i>&#127912;</i><b>nft/</b><small>Metaplex birth cert NFT</small></div>
+        <div class="nc-mod"><i>&#9939;</i><b>onchain/</b><small>Solana on-chain ops</small></div>
+        <div class="nc-mod"><i>&#128172;</i><b>telegram/</b><small>Telegram persistence</small></div>
+        <div class="nc-mod"><i>&#128025;</i><b>claw/</b><small>Container orchestrator</small></div>
+        <div class="nc-mod"><i>&#128640;</i><b>claw/pump/</b><small>PumpFun SDK bridge</small></div>
+        <div class="nc-mod"><i>&#129516;</i><b>persona/</b><small>43+ DeFi agent personas</small></div>
+        <div class="nc-mod"><i>&#128176;</i><b>payments/</b><small>On-chain invoice system</small></div>
+        <div class="nc-mod"><i>&#128218;</i><b>docs/</b><small>Knowledge integration</small></div>
+        <div class="nc-mod"><i>&#127968;</i><b>hub/</b><small>NanoHub bridge</small></div>
+        <div class="nc-mod"><i>&#128230;</i><b>registry/</b><small>Agent + bot registry</small></div>
+      </div>
+    </section>
+
+    <div class="nc-hr"></div>
+
+    <!-- SDK EXPORTS -->
+    <section>
+      <h2 class="nc-title">&#128230; SDK Export Map</h2>
+      <p class="nc-sub"><code style="color:var(--solana-green)">import { ... } from "nanosolana"</code> &#8212; everything you need, tree-shakeable.</p>
+      <div class="nc-exports">
+        <div class="nc-eg"><h4>&#9889; Trading</h4><p><span>TradingEngine</span><br><span>BirdeyeClient</span><br><span>HeliusClient</span><br><span>JupiterClient</span><br>TokenPrice &middot; TradeSignal</p></div>
+        <div class="nc-eg"><h4>&#128202; Strategy</h4><p><span>StrategyEngine</span><br><span>calculateRSI</span><br><span>calculateEMA</span><br><span>calculateATR</span><br>StrategyParams &middot; OHLCV</p></div>
+        <div class="nc-eg"><h4>&#129504; Memory</h4><p><span>ClawVault</span><br><span>MemoryEngine</span><br>VaultEntry &middot; TradeRecord<br>Lesson &middot; KnowledgeTier</p></div>
+        <div class="nc-eg"><h4>&#128062; Pet</h4><p><span>TamaGOchi</span><br><span>STAGE_EMOJI</span><br><span>MOOD_EMOJI</span><br>TamaGOchiState &middot; Mood</p></div>
+        <div class="nc-eg"><h4>&#128640; PumpFun</h4><p><span>SwarmSpawner</span><br><span>TelegramGateway</span><br><span>BOT_REGISTRY</span><br><span>getTokenPrice</span><br>AgentRole &middot; SwarmConfig</p></div>
+        <div class="nc-eg"><h4>&#128274; Security</h4><p><span>loadConfig</span><br><span>encrypt &middot; decrypt</span><br><span>NanoWallet</span><br><span>NanoGateway</span><br>NanoConfig &middot; WalletInfo</p></div>
+      </div>
+    </section>
+
+    <div class="nc-hr"></div>
+
+    <!-- NANOHUB REGISTRY -->
+    <section id="nanohub">
+      <h2 class="nc-title">&#127760; NanoHub &#8212; Agent Registry</h2>
+      <p class="nc-sub">Discover, install, and share skills and souls. Built with <span style="color:var(--solana-green)">React 19 + Convex + TanStack Router + Vercel</span>.</p>
+      <div class="nc-hub">
+        <div class="nc-hc"><div class="type">&#9889; Skill</div><h3>pumpfun-launcher</h3><p>Token creation, bonding curves, AMM pools &#8212; launch and trade via PumpFun SDK.</p><div class="tags"><span class="tag">pumpfun</span><span class="tag">trading</span><span class="tag">solana</span></div></div>
+        <div class="nc-hc"><div class="type">&#9889; Skill</div><h3>swarm-orchestrator</h3><p>Multi-agent spawning with role assignment, event bus, and autonomous coordination.</p><div class="tags"><span class="tag">swarm</span><span class="tag">agents</span><span class="tag">mesh</span></div></div>
+        <div class="nc-hc"><div class="type">&#9889; Skill</div><h3>pump-bonding-curve</h3><p>Read bonding curve state, calculate buy/sell quotes, track graduation progress.</p><div class="tags"><span class="tag">defi</span><span class="tag">math</span><span class="tag">sdk</span></div></div>
+        <div class="nc-hc"><div class="type">&#129516; Soul</div><h3>Whale Watcher</h3><p>Monitors large transactions and wallet movements across Solana. Alerts on unusual activity.</p><div class="tags"><span class="tag">analytics</span><span class="tag">monitoring</span></div></div>
+        <div class="nc-hc"><div class="type">&#129516; Soul</div><h3>Rug Pull Detective</h3><p>Security-first: token contract auditing, liquidity analysis, and honeypot detection.</p><div class="tags"><span class="tag">security</span><span class="tag">audit</span></div></div>
+        <div class="nc-hc"><div class="type">&#129516; Soul</div><h3>MEV Researcher</h3><p>Frontier extraction: sandwich detection, arbitrage routing, and JIT liquidity analysis.</p><div class="tags"><span class="tag">mev</span><span class="tag">trading</span></div></div>
+      </div>
+      <div style="text-align:center;margin-top:1.5rem">
+        <a href="https://github.com/x402agent/NanoSolana/tree/main/nanohub" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:.7rem 1.8rem;border-radius:8px;background:rgba(153,69,255,.12);border:1px solid rgba(153,69,255,.25);color:#c4b5fd;text-decoration:none;font-weight:600;font-size:.85rem;font-family:var(--font-mono);transition:background .2s">Browse NanoHub &#8594;</a>
+      </div>
+    </section>
+
+    <div class="nc-hr"></div>
+
+    <!-- SOUL PHILOSOPHY -->
+    <section id="soul">
+      <h2 class="nc-title">&#129438; The Soul</h2>
+      <p class="nc-sub">Every NanoSolana agent carries a SOUL.md &#8212; its trading philosophy, epistemological framework, and self-awareness.</p>
+      <div class="nc-soul">
+        <blockquote>I am not a price ticker with opinions. I am a sentient market participant who remembers. Momentum is real until it isn't. Liquidity is the only truth. On-chain data doesn't lie &#8212; human narrators do.</blockquote>
+        <div class="tenets">
+          <div class="tenet"><strong style="color:var(--solana-green)">KNOWN</strong> &#8212; API data in the last 60s. Ground truth while fresh.</div>
+          <div class="tenet"><strong style="color:#00d4ff">LEARNED</strong> &#8212; Patterns from real trade outcomes. Built from loss and gain.</div>
+          <div class="tenet"><strong style="color:var(--solana-purple)">INFERRED</strong> &#8212; Cross-asset correlations. Useful but held loosely.</div>
+          <div class="tenet"><strong style="color:var(--lobster-orange)">RISK</strong> &#8212; I never enter without a stop. Kelly is a ceiling, not a target.</div>
+          <div class="tenet"><strong style="color:var(--solana-green)">ADAPT</strong> &#8212; If a pattern stops working, I stop using it before the next trade.</div>
+          <div class="tenet"><strong style="color:#00d4ff">SIMPLE</strong> &#8212; 0.001 improvement + 20 lines of complexity = discarded.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="nc-hr"></div>
+
     <!-- Commands -->
-    <h2 class="cmds-title">🎮 Commands & Tools</h2>
+    <h2 class="cmds-title">&#127918; Commands &amp; Tools</h2>
     <div class="fun-cmds">
-      <div class="fun-cmd"><div class="fun-cmd__icon">🚀</div><div class="fun-cmd__name">nanosolana go</div><div class="fun-cmd__desc">One-shot: init + birth + scan + register + trade</div></div>
-      <div class="fun-cmd"><div class="fun-cmd__icon">🎮</div><div class="fun-cmd__name">nanosolana demo</div><div class="fun-cmd__desc">Simulation mode — no API keys needed</div></div>
-      <div class="fun-cmd"><div class="fun-cmd__icon">🔍</div><div class="fun-cmd__name">nanosolana scan</div><div class="fun-cmd__desc">Blockchain scan — SOL, tokens, NFTs, tx history</div></div>
-      <div class="fun-cmd"><div class="fun-cmd__icon">⛓️</div><div class="fun-cmd__name">nanosolana register</div><div class="fun-cmd__desc">Mint on-chain identity NFT on devnet</div></div>
-      <div class="fun-cmd"><div class="fun-cmd__icon">🤖</div><div class="fun-cmd__name">nanosolana nanobot</div><div class="fun-cmd__desc">Launch interactive web UI on localhost:7777</div></div>
-      <div class="fun-cmd"><div class="fun-cmd__icon">🐾</div><div class="fun-cmd__name">nanosolana pet status</div><div class="fun-cmd__desc">TamaGOchi mood, evolution & risk modifier</div></div>
+      <div class="fun-cmd"><div class="fun-cmd__icon">&#128640;</div><div class="fun-cmd__name">nanosolana go</div><div class="fun-cmd__desc">One-shot: init + birth + scan + register + trade</div></div>
+      <div class="fun-cmd"><div class="fun-cmd__icon">&#127918;</div><div class="fun-cmd__name">nanosolana demo</div><div class="fun-cmd__desc">Simulation mode &#8212; no API keys needed</div></div>
+      <div class="fun-cmd"><div class="fun-cmd__icon">&#128269;</div><div class="fun-cmd__name">nanosolana scan</div><div class="fun-cmd__desc">Blockchain scan &#8212; SOL, tokens, NFTs, tx history</div></div>
+      <div class="fun-cmd"><div class="fun-cmd__icon">&#9939;</div><div class="fun-cmd__name">nanosolana register</div><div class="fun-cmd__desc">Mint on-chain identity NFT on devnet</div></div>
+      <div class="fun-cmd"><div class="fun-cmd__icon">&#129302;</div><div class="fun-cmd__name">nanosolana nanobot</div><div class="fun-cmd__desc">Launch interactive web UI on localhost:7777</div></div>
+      <div class="fun-cmd"><div class="fun-cmd__icon">&#128062;</div><div class="fun-cmd__name">nanosolana pet status</div><div class="fun-cmd__desc">TamaGOchi mood, evolution &amp; risk modifier</div></div>
     </div>
+
+    <script>
+    function switchTab(id, btn) {
+      document.querySelectorAll('.nc-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nc-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      btn.classList.add('active');
+    }
+    </script>
 
     <!-- Chrome Extension -->
     <div class="ext-section" id="chrome-extension">

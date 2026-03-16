@@ -26,11 +26,11 @@ import { TamaGOchi, STAGE_EMOJI, MOOD_EMOJI } from "../pet/tamagochi.js";
 import { TailscaleDiscovery, TmuxManager, NanoNetworkClient } from "../network/mesh.js";
 import { getNanoKnowledgeSnapshot, getNanoKnowledgeSummary, searchNanoKnowledge } from "../docs/integration.js";
 import {
-  playStartupAnimation, lobsterWalk, animateLobster, printLobster, startDvdScreensaver,
-  createSpinner, runWithSpinner, printSplashBanner, phaseTransition, matrixRain,
-  printCompleteBanner, printMegaLobster, printCommandHeader, printSuccess, printError,
+  playStartupAnimation, animateLobster, printLobster, startDvdScreensaver,
+  printSplashBanner, phaseTransition, matrixRain,
+  printCompleteBanner, printCommandHeader, printSuccess, printError,
   printWarning, printInfo, paymentAnimation, demoIntro, printInitHeader, printSectionHeader,
-  printCompactLobster, systemBootReadout,
+  systemBootReadout,
 } from "./animations.js";
 import { HeliusClient, printWalletSnapshot } from "../onchain/helius-client.js";
 import { AgentRegistry, registerOnHeartbeat } from "../registry/agent-registry.js";
@@ -784,31 +784,33 @@ program
       wallet.startHeartbeat(config.agent.heartbeatMs);
 
       console.log();
-      console.log(chalk.green("  ✓ Wallet created"));
-      console.log(chalk.white("    Public Key: ") + chalk.cyan(walletInfo.publicKey));
-      console.log(chalk.white("    Balance:    ") + chalk.yellow(`${walletInfo.balance} SOL`));
+      printSuccess("Wallet created");
+      await systemBootReadout([
+        { label: "Public Key", value: walletInfo.publicKey, color: "#00E5FF" },
+        { label: "Balance", value: `${walletInfo.balance} SOL`, color: "#FFD700" },
+      ]);
 
       // Phase 3: TamaGOchi pet
+      await phaseTransition("pet", "Phase 3 — Hatching TamaGOchi");
       const petName = opts.petName ?? opts.name;
       const pet = new TamaGOchi(petName);
       pet.recordWalletCreated(walletInfo.balance);
       pet.startLifecycle();
       const petState = pet.getState();
-      console.log(
-        chalk.green("  ✓ TamaGOchi hatched: ") +
-          chalk.cyan(`${STAGE_EMOJI[petState.stage]} ${petName} ${MOOD_EMOJI[petState.mood]}`),
-      );
+      printSuccess(`TamaGOchi hatched: ${STAGE_EMOJI[petState.stage]} ${petName} ${MOOD_EMOJI[petState.mood]}`);
 
       // Phase 4: Memory
+      await phaseTransition("memory", "Phase 4 — ClawVault Memory");
       const vault = new ClawVault();
       vault.startAutonomous();
       const stats = vault.getStats();
-      console.log(chalk.green("  ✓ ClawVault online: ") + chalk.gray(`${stats.known}K/${stats.learned}L/${stats.inferred}I`));
+      printSuccess(`ClawVault online: ${stats.known}K / ${stats.learned}L / ${stats.inferred}I`);
 
       // Phase 5: Trading
+      await phaseTransition("trade", "Phase 5 — OODA Trading Engine");
       const trading = new TradingEngine(config, wallet);
       await trading.start();
-      console.log(chalk.green("  ✓ OODA trading loop active"));
+      printSuccess("OODA trading loop active");
 
       // Wire events
       trading.on("signal", (signal) => {
@@ -822,11 +824,12 @@ program
       // Phase 5.5: Blockchain Scan (if Helius configured)
       if (config.helius?.rpcUrl && config.helius?.apiKey) {
         try {
+          await phaseTransition("scan", "Phase 5.5 — Blockchain Scan");
           const helius = new HeliusClient({ rpcUrl: config.helius.rpcUrl, apiKey: config.helius.apiKey, wssUrl: config.helius.wssUrl });
           const snap = await helius.snapshotWallet(walletInfo.publicKey);
           printWalletSnapshot(snap, chalk);
         } catch (err) {
-          console.log(chalk.gray(`  ⚠️  Blockchain scan skipped: ${(err as Error).message}`));
+          printWarning(`Blockchain scan skipped: ${(err as Error).message}`);
         }
       }
 
@@ -835,30 +838,29 @@ program
         const skills = ["ooda-trading", "solana-rpc", "jupiter-swaps", "helius-das"];
         const regResult = await registerOnHeartbeat(wallet.getKeypair(), "0.1.0", skills, (msg) => console.log(msg));
         if (regResult) {
-          console.log(chalk.green(`  ✓ On-chain identity: ${regResult.mintAddress.slice(0, 8)}...`));
+          printSuccess(`On-chain identity: ${regResult.mintAddress.slice(0, 8)}...`);
         }
       } catch (err) {
-        console.log(chalk.gray(`  ⚠️  Auto-registration skipped: ${(err as Error).message}`));
+        printWarning(`Auto-registration skipped: ${(err as Error).message}`);
       }
 
       // Phase 6: Gateway
+      await phaseTransition("gateway", "Phase 6 — Gateway");
       const { MemoryEngine } = await import("../memory/engine.js");
       const legacyMemory = new MemoryEngine(config.memory.temporalDecayHours);
       const gateway = new NanoGateway(config, wallet, trading, legacyMemory);
       await gateway.start();
-      console.log(chalk.green(`  ✓ Gateway: ws://${config.gateway.host}:${config.gateway.port}`));
+      printSuccess(`Gateway: ws://${config.gateway.host}:${config.gateway.port}`);
 
       // Success banner
-      console.log();
-      console.log(chalk.hex("#14F195").bold("  ══════════════════════════════════════════════════════"));
-      console.log(chalk.hex("#14F195").bold(`  🦞 ${petName} is LIVE. All systems operational.`));
-      console.log(chalk.hex("#14F195").bold("  ══════════════════════════════════════════════════════"));
-      console.log();
-      console.log(chalk.gray("  Commands while running:"));
-      console.log(chalk.gray("    Ctrl+C          — graceful shutdown"));
-      console.log(chalk.gray("    nanosolana status  — check agent in another terminal"));
-      console.log(chalk.gray("    nanosolana pet     — see your TamaGOchi"));
-      console.log();
+      await printCompleteBanner({
+        publicKey: walletInfo.publicKey,
+        petName,
+        stage: STAGE_EMOJI[petState.stage],
+        mood: MOOD_EMOJI[petState.mood],
+        balance: walletInfo.balance,
+        memory: `${stats.known}K / ${stats.learned}L / ${stats.inferred}I`,
+      });
 
       // Live events
       wallet.on("heartbeat", (info) => {
@@ -915,9 +917,7 @@ program
   .description("🎮 Run a full simulation — no API keys needed. See the OODA loop in action.")
   .option("-d, --duration <seconds>", "Duration in seconds", "60")
   .action(async (opts) => {
-    printBanner();
-    console.log(chalk.hex("#14F195").bold("  🎮 DEMO MODE — Simulated Trading Intelligence\n"));
-    console.log(chalk.gray("  No API keys required. Synthetic market data.\n"));
+    await demoIntro();
 
     const duration = parseInt(opts.duration, 10) || 60;
 
@@ -934,12 +934,12 @@ program
     // Create pet
     const pet = new TamaGOchi("DemoBot");
     const petState = pet.getState();
-    console.log(chalk.green("  ✓ TamaGOchi:") + chalk.cyan(` ${STAGE_EMOJI[petState.stage]} DemoBot ${MOOD_EMOJI[petState.mood]}`));
+    printSuccess(`TamaGOchi: ${STAGE_EMOJI[petState.stage]} DemoBot ${MOOD_EMOJI[petState.mood]}`);
 
     // Create memory
     const vault = new ClawVault();
     vault.startAutonomous();
-    console.log(chalk.green("  ✓ ClawVault:") + chalk.gray(" 3-tier memory online"));
+    printSuccess("ClawVault: 3-tier memory online");
 
     // Simulated wallet
     console.log(chalk.green("  ✓ Wallet:") + chalk.cyan(" 7xKpR3...demo3nYd") + chalk.yellow(" (1.500 SOL)"));
@@ -1234,10 +1234,12 @@ payCmd
   .option("--currency <currency>", "Payment currency (USDC or SOL)", "USDC")
   .option("--duration <seconds>", "Invoice validity in seconds", "3600")
   .action(async (opts) => {
+    printCommandHeader("pay invoice", "Create on-chain payment invoice");
     const { PublicKey } = await import("@solana/web3.js");
     const { createPaymentAgent } = await import("../payments/index.js");
 
     try {
+      await paymentAnimation("invoice");
       const agent = createPaymentAgent();
       const now = Math.floor(Date.now() / 1000);
       const result = await agent.createPayment({
@@ -1248,16 +1250,18 @@ payCmd
         endTime: now + parseInt(opts.duration, 10),
       });
 
-      console.log(chalk.hex("#14F195")("\n  💳 Invoice Created\n"));
-      console.log(chalk.white(`  Memo:         ${result.invoice.memo}`));
-      console.log(chalk.white(`  Amount:       ${agent.formatAmount(result.invoice.amount, result.invoice.currency)}`));
-      console.log(chalk.white(`  Currency:     ${result.invoice.currency}`));
-      console.log(chalk.white(`  Valid:        ${new Date(result.invoice.startTime * 1000).toISOString()} → ${new Date(result.invoice.endTime * 1000).toISOString()}`));
-      console.log(chalk.white(`  Invoice PDA:  ${result.invoiceIdPda.toBase58()}`));
-      console.log(chalk.white(`  Instructions: ${result.instructions.length}`));
-      console.log(chalk.gray("\n  Send these instructions to the payer's wallet for signing.\n"));
+      printSuccess("Invoice Created\n");
+      await systemBootReadout([
+        { label: "Memo", value: String(result.invoice.memo), color: "#00E5FF" },
+        { label: "Amount", value: agent.formatAmount(result.invoice.amount, result.invoice.currency), color: "#FFD700" },
+        { label: "Currency", value: result.invoice.currency },
+        { label: "Valid", value: `${new Date(result.invoice.startTime * 1000).toISOString()} → ${new Date(result.invoice.endTime * 1000).toISOString()}` },
+        { label: "Invoice PDA", value: result.invoiceIdPda.toBase58(), color: "#9945FF" },
+        { label: "Instructions", value: String(result.instructions.length) },
+      ]);
+      printInfo("\n  Send these instructions to the payer's wallet for signing.\n");
     } catch (err) {
-      console.error(chalk.red(`  ❌ ${err instanceof Error ? err.message : String(err)}`));
+      printError(err instanceof Error ? err.message : String(err));
       process.exit(1);
     }
   });
@@ -1276,7 +1280,9 @@ payCmd
     const { PublicKey } = await import("@solana/web3.js");
     const { createPaymentAgent, CURRENCY_MINTS } = await import("../payments/index.js");
 
+    printCommandHeader("pay verify", "Verify on-chain invoice payment");
     try {
+      await paymentAnimation("verify");
       const agent = createPaymentAgent();
       const currency = opts.currency as "USDC" | "SOL";
       const invoice = {
@@ -1290,7 +1296,6 @@ payCmd
         createdAt: new Date().toISOString(),
       };
 
-      console.log(chalk.yellow("\n  ⏳ Verifying payment on-chain...\n"));
       const result = await agent.verifyPayment(
         invoice,
         new PublicKey(opts.user),
@@ -1298,14 +1303,14 @@ payCmd
       );
 
       if (result.paid) {
-        console.log(chalk.hex("#14F195")("  ✅ Payment confirmed!"));
+        printSuccess("Payment confirmed!");
       } else {
-        console.log(chalk.red("  ❌ Payment not found on-chain."));
+        printError("Payment not found on-chain.");
       }
       console.log(chalk.gray(`  Attempts: ${result.attempts}`));
       console.log(chalk.gray(`  Verified at: ${result.verifiedAt}\n`));
     } catch (err) {
-      console.error(chalk.red(`  ❌ ${err instanceof Error ? err.message : String(err)}`));
+      printError(err instanceof Error ? err.message : String(err));
       process.exit(1);
     }
   });
@@ -1314,15 +1319,19 @@ payCmd
   .command("status")
   .description("Show payment system configuration")
   .action(async () => {
+    printCommandHeader("pay status", "Payment system configuration");
+    await paymentAnimation("status");
+
     const mint = process.env.AGENT_TOKEN_MINT_ADDRESS;
     const rpc = process.env.SOLANA_RPC_URL ?? process.env.HELIUS_RPC_URL ?? "(default)";
     const currency = process.env.CURRENCY_MINT;
 
-    console.log(chalk.hex("#14F195")("\n  💳 Payment System Status\n"));
-    console.log(chalk.white(`  Agent Mint:   ${mint ?? chalk.red("NOT SET — set AGENT_TOKEN_MINT_ADDRESS")}`));
-    console.log(chalk.white(`  RPC:          ${rpc.slice(0, 60)}${rpc.length > 60 ? "..." : ""}`));
-    console.log(chalk.white(`  Currency:     ${currency === "So11111111111111111111111111111111111111112" ? "SOL" : "USDC"}`));
-    console.log(chalk.gray("\n  Set AGENT_TOKEN_MINT_ADDRESS in .env to enable payments.\n"));
+    await systemBootReadout([
+      { label: "Agent Mint", value: mint ?? "NOT SET — set AGENT_TOKEN_MINT_ADDRESS", color: mint ? "#00E5FF" : "#FF3864" },
+      { label: "RPC", value: `${rpc.slice(0, 60)}${rpc.length > 60 ? "..." : ""}` },
+      { label: "Currency", value: currency === "So11111111111111111111111111111111111111112" ? "SOL" : "USDC", color: "#FFD700" },
+    ]);
+    printInfo("\nSet AGENT_TOKEN_MINT_ADDRESS in .env to enable payments.\n");
   });
 
 // ── Parse & Run ────────────────────────────────────────────────
