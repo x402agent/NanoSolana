@@ -42,10 +42,13 @@ npx nanosolana bots
 npx nanosolana send "check SOL RSI"
 ```
 
-## Current limitations
+## Practical note
 
-- there is no shipped `nanosolana gateway run --bind tailnet` command tree
-- there is no shipped `nanosolana trade status` command
-- the current default gateway port is `18790`
+Mesh operation in the current runtime is centered on:
 
-Use the top-level commands above instead.
+- `nanosolana run` or `nanosolana go`
+- `nanosolana nodes`
+- `nanosolana bots`
+- `nanosolana send`
+
+The current default gateway port across mesh nodes is `18790`.

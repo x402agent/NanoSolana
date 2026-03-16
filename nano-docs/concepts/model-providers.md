@@ -91,4 +91,4 @@ If the primary model fails, NanoSolana can fall back:
 
 - shorter runtime loops and frequent external calls increase model spend
 - `nanosolana demo` is the cheapest way to exercise the flow without live keys
-- current runtime docs should not assume a separate `heartbeat.lightContext` config surface
+- keep provider guidance aligned with the current env- and vault-based runtime configuration

@@ -2,6 +2,12 @@
 
 All notable changes to NanoSolana will be documented in this file.
 
+## [1.0.2] — 2026-03-16
+
+### Fixed
+
+- Aligned the CLI-reported version with the published npm package so `npx nanosolana --version` matches the release installed by `npx nanosolana go`.
+
 ## [1.0.1] — 2026-03-16
 
 ### Fixed

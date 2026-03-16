@@ -25,7 +25,13 @@ import { NanoGateway } from "../gateway/server.js";
 import { TamaGOchi, STAGE_EMOJI, MOOD_EMOJI } from "../pet/tamagochi.js";
 import { TailscaleDiscovery, TmuxManager, NanoNetworkClient } from "../network/mesh.js";
 import { getNanoKnowledgeSnapshot, getNanoKnowledgeSummary, searchNanoKnowledge } from "../docs/integration.js";
-import { playStartupAnimation, lobsterWalk, animateLobster, printLobster, startDvdScreensaver, createSpinner, runWithSpinner } from "./animations.js";
+import {
+  playStartupAnimation, lobsterWalk, animateLobster, printLobster, startDvdScreensaver,
+  createSpinner, runWithSpinner, printSplashBanner, phaseTransition, matrixRain,
+  printCompleteBanner, printMegaLobster, printCommandHeader, printSuccess, printError,
+  printWarning, printInfo, paymentAnimation, demoIntro, printInitHeader, printSectionHeader,
+  printCompactLobster, systemBootReadout,
+} from "./animations.js";
 import { HeliusClient, printWalletSnapshot } from "../onchain/helius-client.js";
 import { AgentRegistry, registerOnHeartbeat } from "../registry/agent-registry.js";
 import { NanoBotServer } from "../nanobot/server.js";
@@ -37,6 +43,7 @@ import { createInterface } from "node:readline";
 // ── Banner ────────────────────────────────────────────────────
 
 function printBanner(): void {
+  // Legacy sync banner — used by commands that don't await
   console.log(chalk.cyan(`
   ███╗   ██╗ █████╗ ███╗   ██╗ ██████╗ ███████╗ ██████╗ ██╗      █████╗ ███╗   ██╗ █████╗
   ████╗  ██║██╔══██╗████╗  ██║██╔═══██╗██╔════╝██╔═══██╗██║     ██╔══██╗████╗  ██║██╔══██╗
@@ -45,8 +52,8 @@ function printBanner(): void {
   ██║ ╚████║██║  ██║██║ ╚████║╚██████╔╝███████║╚██████╔╝███████╗██║  ██║██║ ╚████║██║  ██║
   ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝
   `));
-  console.log(chalk.white("  🐹 NanoSolana TamaGObot"));
-  console.log(chalk.gray("  A GoBot on Solana · Physical Companion: TamaGOchi · By NanoSolana Labs\n"));
+  console.log(chalk.white("  🦞 NanoSolana TamaGObot"));
+  console.log(chalk.gray("  Autonomous Financial Intelligence on Solana · By NanoSolana Labs\n"));
 }
 
 // ── Helpers ────────────────────────────────────────────────────
@@ -94,7 +101,7 @@ const program = new Command();
 program
   .name("nanosolana")
   .description("🦞 NanoSolana — Autonomous Solana trading intelligence with a virtual pet soul")
-  .version("1.0.0");
+  .version("1.0.2");
 
 // ── nano init ────────────────────────────────────────────────
 
@@ -720,20 +727,22 @@ program
   .option("--pet-name <petName>", "TamaGOchi pet name")
   .option("--skip-init", "Skip API key prompts if already configured")
   .action(async (opts) => {
-    printBanner();
-    await animateLobster(1800);
+    // Epic startup sequence
+    await matrixRain(1200);
+    await printSplashBanner();
+    await animateLobster(2000);
     console.log();
 
     try {
       // Phase 1: Init (ensure home + check config)
-      await lobsterWalk("Phase 1 — Initialization");
+      await phaseTransition("init", "Phase 1 — Initialization");
       ensureNanoHome();
       const secrets = loadSecrets();
       const needsInit = !opts.skipInit && (!secrets.HELIUS_RPC_URL || !secrets.AI_API_KEY);
 
       if (needsInit) {
-        console.log(chalk.yellow("\n  First run detected — let's configure your API keys.\n"));
-        console.log(chalk.cyan("  ── Required Keys ────────────────────────────\n"));
+        printInitHeader();
+        printSectionHeader("Required Keys");
 
         if (!secrets.AI_API_KEY) {
           secrets.AI_API_KEY = await promptSecret("OpenRouter API Key (sk-or-v1-...)");

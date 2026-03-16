@@ -329,13 +329,13 @@ describe("diagnostics-otel service", () => {
 
   test("redacts sensitive data from log attributes before export", async () => {
     const emitCall = await emitAndCaptureLog({
-      0: '{"token":"ghp_abcdefghijklmnopqrstuvwxyz123456"}', // pragma: allowlist secret
+      0: '{"token":"test_fake_token_abcdefghijklmnopqrstuv"}',
       1: "auth configured",
       _meta: { logLevelName: "DEBUG", date: new Date() },
     });
 
     const tokenAttr = emitCall?.attributes?.["nanosolana.token"];
-    expect(tokenAttr).not.toBe("ghp_abcdefghijklmnopqrstuvwxyz123456"); // pragma: allowlist secret
+    expect(tokenAttr).not.toBe("test_fake_token_abcdefghijklmnopqrstuv");
     if (typeof tokenAttr === "string") {
       expect(tokenAttr).toContain("…");
     }
@@ -349,7 +349,7 @@ describe("diagnostics-otel service", () => {
     emitDiagnosticEvent({
       type: "session.state",
       state: "waiting",
-      reason: "token=ghp_abcdefghijklmnopqrstuvwxyz123456", // pragma: allowlist secret
+      reason: "token=test_fake_token_abcdefghijklmnopqrstuv",
     });
 
     const sessionCounter = telemetryState.counters.get("nanosolana.session.state");
@@ -362,7 +362,7 @@ describe("diagnostics-otel service", () => {
     const attrs = sessionCounter?.add.mock.calls[0]?.[1] as Record<string, unknown> | undefined;
     expect(typeof attrs?.["nanosolana.reason"]).toBe("string");
     expect(String(attrs?.["nanosolana.reason"])).not.toContain(
-      "ghp_abcdefghijklmnopqrstuvwxyz123456", // pragma: allowlist secret
+      "test_fake_token_abcdefghijklmnopqrstuv",
     );
     await service.stop?.(ctx);
   });
