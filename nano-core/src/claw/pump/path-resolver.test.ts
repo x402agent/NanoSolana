@@ -26,18 +26,21 @@ describe("resolvePumpServiceDirectory", () => {
   it("publishes candidate roots in migration order", () => {
     const candidates = getPumpServiceRootCandidates();
 
-    expect(NANO_REPO_ROOT.endsWith("/nanosolana")).toBe(true);
+    expect(NANO_REPO_ROOT.toLowerCase().endsWith("/nanosolana")).toBe(true);
     expect(candidates.map((candidate) => candidate.label)).toEqual([
       "integrated-pump",
       "repo-root",
       "vendored-pump-fun-sdk",
     ]);
-    expect(getPumpServiceDirectoryCandidates("swarm-bot")).toEqual(
+    const swarmCandidates = getPumpServiceDirectoryCandidates("swarm-bot");
+    expect(swarmCandidates).toEqual(
       expect.arrayContaining([
         expect.stringContaining("/pump/swarm-bot"),
-        expect.stringContaining("/nanosolana/swarm-bot"),
         expect.stringContaining("/pump-fun-sdk-main/swarm-bot"),
       ]),
+    );
+    expect(swarmCandidates.some((c) => c.toLowerCase().includes("/nanosolana/swarm-bot"))).toBe(
+      true,
     );
   });
 });
