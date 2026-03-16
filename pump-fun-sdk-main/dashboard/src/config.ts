@@ -52,6 +52,26 @@ export function loadConfig(): DashboardConfig {
     });
   }
 
+  if (process.env.CLAIM_BOT_URL) {
+    services.push({
+      id: 'claim-bot',
+      name: 'Claim Bot',
+      url: process.env.CLAIM_BOT_URL,
+      healthPath: '/health',
+      description: 'Fee claim tracker by token CA or X handle',
+    });
+  }
+
+  if (process.env.LAIR_BOT_URL) {
+    services.push({
+      id: 'lair-tg',
+      name: 'Lair TG',
+      url: process.env.LAIR_BOT_URL,
+      healthPath: '/health',
+      description: 'DeFi intelligence: market data, wallet checks, alerts',
+    });
+  }
+
   if (process.env.WEBSOCKET_SERVER_URL) {
     services.push({
       id: 'websocket-server',

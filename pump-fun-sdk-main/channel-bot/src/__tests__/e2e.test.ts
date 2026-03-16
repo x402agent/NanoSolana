@@ -42,8 +42,13 @@ describe('Claim Tracker', () => {
 
   it('detects repeat claim for same GitHub user', () => {
     const mint = 'MintABC123456789012345678901234567890abc';
+    // First claim — should be true
+    const firstResult = tracker.isFirstClaimByGithubUser('user456');
+    expect(firstResult).toBe(true);
     tracker.incrementGithubClaimCount('user456', mint);
     tracker.markGithubUserClaimed('user456', mint);
+
+    // Second claim — should now be false
     const isFirst = tracker.isFirstClaimByGithubUser('user456');
     const claimNumber = tracker.incrementGithubClaimCount('user456', mint);
 

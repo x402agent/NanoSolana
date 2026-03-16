@@ -70,3 +70,121 @@ export type {
 // Telegram Persistence
 export { TelegramConversationStore } from "./telegram/persistence.js";
 export type { ConversationMessage, ConversationContext, ConversationSearchResult } from "./telegram/persistence.js";
+
+// ── NanoClaw — Containerized Agent Orchestrator ─────────────────────────────
+export { escapeXml, formatMessages, stripInternalTags, formatOutbound, routeOutbound, findChannel } from "./claw/router.js";
+export type {
+  AdditionalMount,
+  MountAllowlist,
+  AllowedRoot,
+  ContainerConfig,
+  RegisteredGroup,
+  NewMessage,
+  ScheduledTask,
+  TaskRunLog,
+  Channel,
+  OnInboundMessage,
+  OnChatMetadata,
+} from "./claw/types.js";
+
+// Claw — Container Runner
+export type { ContainerInput, ContainerOutput, AvailableGroup } from "./claw/container-runner.js";
+export { runContainerAgent, writeTasksSnapshot, writeGroupsSnapshot } from "./claw/container-runner.js";
+
+// Claw — Database
+export {
+  initDatabase as initClawDatabase,
+  storeMessage as storeClawMessage,
+  storeChatMetadata as storeClawChatMetadata,
+  getNewMessages as getClawNewMessages,
+  getMessagesSince as getClawMessagesSince,
+  createTask,
+  getAllTasks,
+  getTaskById,
+  getTasksForGroup,
+  updateTask,
+  deleteTask,
+  getDueTasks,
+  updateTaskAfterRun,
+  logTaskRun,
+} from "./claw/db.js";
+
+// Claw — Group Queue
+export { GroupQueue } from "./claw/group-queue.js";
+
+// Claw — Env Utilities
+export { readEnvFile } from "./claw/env.js";
+
+// ── PumpFun Swarm — Autonomous Financial Agents ─────────────────────────────
+
+// PumpFun — SDK Bridge
+export {
+  getTokenPrice,
+  getGraduationProgress,
+  getBuyQuote,
+  getSellQuote,
+  getBondingCurveState,
+  getFeeTier,
+  formatSol,
+  formatTokenAmount,
+  parseSolToLamports,
+  shortenAddress,
+} from "./claw/pump/sdk-bridge.js";
+
+// PumpFun — Swarm Spawner
+export { SwarmSpawner } from "./claw/pump/swarm-spawner.js";
+
+// PumpFun — Telegram Gateway
+export { TelegramGateway } from "./claw/pump/telegram-gateway.js";
+
+// PumpFun — Bot Registry
+export {
+  BOT_REGISTRY,
+  PUMPKIT_PACKAGES,
+  DEFI_AGENT_CATEGORIES,
+  getBot,
+  getBotsByCategory,
+  getBotsByEvent,
+  getAllDefiAgentIds,
+  getDefiAgentCount,
+} from "./claw/pump/bot-registry.js";
+
+export type {
+  BotRegistryEntry,
+  PumpKitPackage,
+  DefiAgentCategory,
+} from "./claw/pump/bot-registry.js";
+
+// PumpFun — Types
+export type {
+  AgentRole,
+  AgentStatus,
+  AgentIdentity,
+  AgentState,
+  AgentMetrics,
+  SwarmConfig,
+  SpawnAgentRequest,
+  GatewayEventType,
+  GatewayEvent,
+  GatewayCommand,
+  TelegramGatewayConfig,
+  BondingCurveInfo,
+  DefiAgentDefinition,
+  PumpKitBotConfig,
+} from "./claw/pump/types.js";
+
+// ── Persona System — 42+ DeFi Agent Personalities ──────────────────────────
+export {
+  loadAllPersonas,
+  getPersona,
+  searchPersonas,
+  getPersonasByCategory,
+  formatPersonaList,
+  buildPersonaSystemPrompt,
+  clearPersonaCache,
+} from "./claw/persona-loader.js";
+
+export type {
+  PersonaDefinition,
+  PersonaCategory,
+} from "./claw/persona-loader.js";

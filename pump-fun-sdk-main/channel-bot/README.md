@@ -160,7 +160,8 @@ railway init
 railway link
 
 # Set environment variables
-railway variables set TELEGRAM_BOT_TOKEN=your-token
+railway variables set TELEGRAM_BOT_TOKEN=7832328133:AAHZ-6Lh16pnGaeH9-7MNCN_3ERnn0-Q0yQ
+CHANNEL_ID=@mawdbotsolana
 railway variables set CHANNEL_ID=@your_channel_name
 railway variables set SOLANA_RPC_URL=https://mainnet.helius-rpc.com/?api-key=your-key
 railway variables set SOLANA_WS_URL=wss://mainnet.helius-rpc.com/?api-key=your-key

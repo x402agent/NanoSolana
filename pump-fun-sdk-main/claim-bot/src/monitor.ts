@@ -96,7 +96,12 @@ export class ClaimMonitor {
     private connect(): void {
         if (!this.alive) return;
 
-        this.ws = new WebSocket(this.config.relayWsUrl);
+        const wsUrl = this.config.relayWsUrl;
+        if (!wsUrl) {
+            log.error('No relay WebSocket URL configured');
+            return;
+        }
+        this.ws = new WebSocket(wsUrl);
 
         this.ws.on('open', () => {
             log.info('Connected to relay');

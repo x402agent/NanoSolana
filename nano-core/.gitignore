@@ -1,14 +1,55 @@
-# Nano Solana — Ignore
+# ── NanoSolana × MawdBot — Git Ignore ────────────────────────────────────────
+
+# Dependencies
 node_modules/
+
+# Build output
 dist/
+
+# Local data & auth
+store/
+data/
+logs/
+
+# Groups — only track base structure and specific CLAUDE.md files
+groups/*
+!groups/main/
+!groups/global/
+groups/main/*
+groups/global/*
+!groups/main/CLAUDE.md
+!groups/global/CLAUDE.md
+
+# ─── SECURITY: Secrets ───────────────────────────────────────────────────
+# CRITICAL: Never commit .env files with real credentials
+*.keys.json
 .env
 .env.local
-*.log
-.DS_Store
-coverage/
+**/.env
+!.env.example
 
-# Secure files (never commit)
+# Keys, wallets, service accounts
+**/keys/
+**/*.pem
+**/*.key
+**/service-account*.json
+**/mawdbot-*.json
+**/wallet.json
+**/keypair.json
 vault.enc
 wallet.pub
-*.pem
-*.key
+
+# Database files
+**/*.db
+**/*.sqlite
+**/*.sqlite3
+
+# ─── OS / IDE ────────────────────────────────────────────────────────────
+.DS_Store
+.idea/
+.vscode/
+*.log
+coverage/
+
+# Agent SDK docs (local reference)
+agents-sdk-docs
