@@ -40,10 +40,10 @@
 - If `git branch -d/-D <branch>` is policy-blocked, delete the local ref directly: `git update-ref -d refs/heads/<branch>`.
 
 ## URL Quick Reference
-- Canonical site: `https://clawhub.ai` (prefer this over legacy domains).
-- Skill page URL format: `https://clawhub.ai/<owner>/<slug>` (owner handle preferred; falls back to owner id).
-- Skill API detail URL: `https://clawhub.ai/api/v1/skills/<slug>`.
-- Skill file URL: `https://clawhub.ai/api/v1/skills/<slug>/file?path=SKILL.md`.
+- Canonical site: `https://hub.nanosolana.com` (prefer this over legacy domains).
+- Skill page URL format: `https://hub.nanosolana.com/<owner>/<slug>` (owner handle preferred; falls back to owner id).
+- Skill API detail URL: `https://hub.nanosolana.com/api/v1/skills/<slug>`.
+- Skill file URL: `https://hub.nanosolana.com/api/v1/skills/<slug>/file?path=SKILL.md`.
 - For “full URL?” requests, return the canonical page URL first, then API URL if useful.
 
 ## Configuration & Security

@@ -7,20 +7,20 @@ read_when:
 
 # CLI
 
-CLI package: `packages/nanohub/` (published as `clawhub`, bin: `clawhub`).
+CLI package: `packages/nanohub/` (published as `nanohub`, bin: `nanohub`).
 
 From this repo you can run it via the wrapper script:
 
 ```bash
-bun clawhub --help
+bun nanohub --help
 ```
 
 ## Global flags
 
 - `--workdir <dir>`: working directory (default: cwd; falls back to TamaGObot workspace if configured)
 - `--dir <dir>`: install dir under workdir (default: `skills`)
-- `--site <url>`: base URL for browser login (default: `https://clawhub.ai`)
-- `--registry <url>`: API base URL (default: discovered, else `https://clawhub.ai`)
+- `--site <url>`: base URL for browser login (default: `https://hub.nanosolana.com`)
+- `--registry <url>`: API base URL (default: discovered, else `https://hub.nanosolana.com`)
 - `--no-input`: disable prompts
 
 Env equivalents:
@@ -52,7 +52,7 @@ Example:
 ```bash
 export HTTPS_PROXY=http://proxy.example.com:3128
 export NO_PROXY=localhost,127.0.0.1
-clawhub search "my query"
+nanohub search "my query"
 ```
 
 When no proxy variable is set, behavior is unchanged (direct connections).
@@ -61,7 +61,7 @@ When no proxy variable is set, behavior is unchanged (direct connections).
 
 Stores your API token + cached registry URL.
 
-- macOS: `~/Library/Application Support/clawhub/config.json`
+- macOS: `~/Library/Application Support/nanohub/config.json`
 - override: `CLAWHUB_CONFIG_PATH` (legacy `NANOHUB_CONFIG_PATH`)
 
 ## Commands
@@ -69,7 +69,7 @@ Stores your API token + cached registry URL.
 ### `login` / `auth login`
 
 - Default: opens browser to `<site>/cli/auth` and completes via loopback callback.
-- Headless: `clawhub login --token clh_...`
+- Headless: `nanohub login --token clh_...`
 
 ### `whoami`
 
@@ -111,8 +111,8 @@ Stores your API token + cached registry URL.
 - Downloads zip via `/api/v1/download`.
 - Extracts into `<workdir>/<dir>/<slug>`.
 - Writes:
-  - `<workdir>/.clawhub/lock.json` (legacy `.nanohub`)
-  - `<skill>/.clawhub/origin.json` (legacy `.nanohub`)
+  - `<workdir>/.nanohub/lock.json` (legacy `.nanohub`)
+  - `<skill>/.nanohub/origin.json` (legacy `.nanohub`)
 
 ### `uninstall <slug>`
 
@@ -122,7 +122,7 @@ Stores your API token + cached registry URL.
 
 ### `list`
 
-- Reads `<workdir>/.clawhub/lock.json` (legacy `.nanohub`).
+- Reads `<workdir>/.nanohub/lock.json` (legacy `.nanohub`).
 
 ### `update [slug]` / `update --all`
 
@@ -136,7 +136,7 @@ Stores your API token + cached registry URL.
 
 - Publishes via `POST /api/v1/skills` (multipart).
 - Requires semver: `--version 1.2.3`.
-- Publishing a skill means it is released under `MIT-0` on ClawHub.
+- Publishing a skill means it is released under `MIT-0` on NanoHub.
 - Published skills are free to use, modify, and redistribute without attribution.
 
 ### `delete <slug>`

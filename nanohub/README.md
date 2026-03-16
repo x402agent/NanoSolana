@@ -40,7 +40,7 @@ NanoSolana Docs is the companion registry for `SOUL.md` bundles and long-form sy
 - Backend: Convex database, file storage, HTTP actions, and auth.
 - Search: OpenAI embeddings plus Convex vector search.
 - Shared schemas: `packages/schema/` published internally as `nanohub-schema`.
-- CLI: `packages/nanohub/`, with `nanohub` as the primary binary and `clawhub` kept as a compatibility alias.
+- CLI: `packages/nanohub/`, with `nanohub` as the primary binary and `nanohub` kept as a compatibility alias.
 
 ## Repo layout
 
@@ -99,7 +99,7 @@ Common flows:
 - Inspect without installing: `nanohub inspect <slug>`
 - Publish and sync: `nanohub publish <path>`, `nanohub sync`
 
-Legacy `clawhub` remains available as a compatibility alias.
+Legacy `nanohub` remains available as a compatibility alias.
 
 Docs: [docs/quickstart.md](docs/quickstart.md), [docs/cli.md](docs/cli.md).
 

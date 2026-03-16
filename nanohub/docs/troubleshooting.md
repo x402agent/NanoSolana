@@ -6,12 +6,12 @@ read_when:
 
 # Troubleshooting
 
-## `clawhub login` opens browser but never completes
+## `nanohub login` opens browser but never completes
 
 - Ensure your browser can reach `http://127.0.0.1:<port>/callback` (local firewalls/VPNs can interfere).
 - Use headless mode:
   - create a token in the web UI (Settings → API tokens)
-  - `clawhub login --token clh_...`
+  - `nanohub login --token clh_...`
 
 ## `whoami` / `publish` returns `Unauthorized` (401)
 
@@ -43,7 +43,7 @@ Error: fetch failed
 
 ```bash
 export HTTPS_PROXY=http://proxy.example.com:3128
-clawhub search "my query"
+nanohub search "my query"
 ```
 
 The CLI respects `HTTPS_PROXY`, `HTTP_PROXY`, `https_proxy`, and `http_proxy`.
@@ -67,7 +67,7 @@ The CLI respects `HTTPS_PROXY`, `HTTP_PROXY`, `https_proxy`, and `http_proxy`.
 - Provide explicit roots:
 
 ```bash
-clawhub sync --root /path/to/skills
+nanohub sync --root /path/to/skills
 ```
 
 ## `update` refuses due to “local changes (no match)”
@@ -75,8 +75,8 @@ clawhub sync --root /path/to/skills
 - Your local files don’t match any published fingerprint.
 - Options:
   - keep local edits; skip updating
-  - overwrite: `clawhub update <slug> --force`
-  - publish as fork: copy to new folder/slug then `clawhub publish ... --fork-of upstream@version`
+  - overwrite: `nanohub update <slug> --force`
+  - publish as fork: copy to new folder/slug then `nanohub publish ... --fork-of upstream@version`
 
 ## `GET /api/*` works locally but not on Vercel
 

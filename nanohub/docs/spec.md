@@ -1,15 +1,15 @@
 ---
-summary: "ClawHub spec: skills registry, versioning, vector search, moderation"
+summary: "NanoHub spec: skills registry, versioning, vector search, moderation"
 read_when:
-  - Bootstrapping ClawHub
+  - Bootstrapping NanoHub
   - Implementing schema/auth/search/versioning
   - Reviewing API and upload/download flows
 ---
 
-# ClawHub — product + implementation spec (v1)
+# NanoHub — product + implementation spec (v1)
 
 ## Goals
-- onlycrabs.ai mode for sharing `SOUL.md` bundles (host-based entry point).
+- docs.nanosolana.com mode for sharing `SOUL.md` bundles (host-based entry point).
 - Minimal, fast SPA for browsing and publishing agent skills.
 - Skills stored in Convex (files + metadata + versions + stats).
 - GitHub OAuth login; GitHub App backs up skills to `tamagobot/skills`.

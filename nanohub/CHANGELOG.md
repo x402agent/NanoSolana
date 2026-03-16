@@ -40,7 +40,7 @@
   (preserves existing skill versions/stats/metadata) and clears active slug reservations.
 - VirusTotal: use shared AV-engine fallback verdict mapping for pending/backfill flows and keep undetected-only results pending (#591) (thanks @Shuai-DaiDai).
 - Skills/listing: keep non-suspicious browse pagination on one cursor family during `isSuspicious` backfill, and re-sync stale `latestVersionSummary` metadata fields (#572) (thanks @sethconvex).
-- PWA: update `manifest.json` branding so installed apps show the correct ClawHub name (#569) (thanks @Glucksberg).
+- PWA: update `manifest.json` branding so installed apps show the correct NanoHub name (#569) (thanks @Glucksberg).
 - Search/tests: cover soft-deleted skill filtering in vector hydration and lexical exact-slug fallback (#552) (thanks @MunemHashmi).
 - Docs/dev: fix local setup instructions for Node support, Convex env vars, frontend port, and post-seed stats refresh (#584) (thanks @jack-piplabs).
 - Docs/CLI: fix `explore` flag list indentation so `--limit` renders correctly in the command reference (#601) (thanks @gandli).
@@ -131,13 +131,13 @@
 
 ### Added
 - Web: show published skills on user profiles (thanks @njoylab, #20).
-- CLI: include ClawHub + TamaGObot fallback skill roots for sync scans.
+- CLI: include NanoHub + TamaGObot fallback skill roots for sync scans.
 - CLI: support NanoSolana configuration files (`NANOSOLANA_CONFIG_PATH` / `NANOSOLANA_STATE_DIR`).
 
 ### Changed
-- Brand: rebrand to ClawHub and publish CLI as `clawhub` (legacy `nanohub` supported).
-- Domain: default site/registry now `https://clawhub.ai`; `.well-known/clawhub.json` preferred.
-- Theme: persist theme under `clawhub-theme` (legacy key still read).
+- Brand: rebrand to NanoHub and publish CLI as `nanohub` (legacy `nanohub` supported).
+- Domain: default site/registry now `https://hub.nanosolana.com`; `.well-known/nanohub.json` preferred.
+- Theme: persist theme under `nanohub-theme` (legacy key still read).
 
 ### Fixed
 - Registry: drop missing skills during search hydration (thanks @aaronn, #28).
@@ -186,7 +186,7 @@
 ## 0.0.5 - 2026-01-06
 
 ### Added
-- Telemetry: track installs via `clawhub sync` (logged-in only), per root, with 120-day staleness.
+- Telemetry: track installs via `nanohub sync` (logged-in only), per root, with 120-day staleness.
 - Skills: show current + all-time installs; sort by installs.
 - Profile: private "Installed" tab with JSON export + delete telemetry controls.
 - Docs: add `docs/telemetry.md` (what we track + how to opt out).

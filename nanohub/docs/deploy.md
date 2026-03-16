@@ -109,7 +109,7 @@ For self-host:
 The CLI can discover the API base from:
 
 - `/.well-known/nanohub.json` (preferred)
-- `/.well-known/clawhub.json` (legacy)
+- `/.well-known/nanohub.json` (legacy)
 
 If you don’t serve that file, users must set:
 

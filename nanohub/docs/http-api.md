@@ -7,7 +7,7 @@ read_when:
 
 # HTTP API
 
-Base URL: `https://clawhub.ai` (default).
+Base URL: `https://hub.nanosolana.com` (default).
 
 All v1 paths are under `/api/v1/...` and implemented by Convex HTTP routes (`convex/http.ts`).
 Legacy `/api/...` and `/api/cli/...` remain for compatibility (see `DEPRECATIONS.md`).
@@ -333,17 +333,17 @@ Still supported for older CLI versions:
 
 See `DEPRECATIONS.md` for removal plan.
 
-## Registry discovery (`/.well-known/clawhub.json`)
+## Registry discovery (`/.well-known/nanohub.json`)
 
 The CLI can discover registry/auth settings from the site:
 
-- `/.well-known/clawhub.json` (JSON, preferred)
+- `/.well-known/nanohub.json` (JSON, preferred)
 - `/.well-known/nanohub.json` (legacy)
 
 Schema:
 
 ```json
-{ "apiBase": "https://clawhub.ai", "authBase": "https://clawhub.ai", "minCliVersion": "0.0.5" }
+{ "apiBase": "https://hub.nanosolana.com", "authBase": "https://hub.nanosolana.com", "minCliVersion": "0.0.5" }
 ```
 
 If you self-host, serve this file (or set `CLAWHUB_REGISTRY` explicitly; legacy `NANOHUB_REGISTRY`).
