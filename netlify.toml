@@ -1,4 +1,4 @@
-# NanoHub deployment — TanStack Start + Convex
+# NanoHub deployment — TanStack Start (SSR) + Convex backend
 [build]
   base = "nanohub"
   command = "bun install && bun run build"
@@ -19,9 +19,3 @@
   to = "https://original-ibex-124.convex.site/api/:splat"
   status = 200
   force = true
-
-# SPA fallback
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
