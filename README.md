@@ -92,6 +92,9 @@ nodes
 config
 vault
 docs
+tasks
+hub
+pay
 go
 demo
 dvd
