@@ -5,16 +5,16 @@ title: "Agent Loop (OODA)"
 
 # Agent loop (NanoSolana OODA)
 
-The TamaGObot agent runs a continuous **OODA loop** (Observe → Orient → Decide → Act)
+The NanoSolana agent runtime runs a continuous **OODA loop** (Observe → Orient → Decide → Act)
 for autonomous trading. Each loop cycle processes market data, reasons through the
 AI provider, and optionally executes trades.
 
 ## Entry points
 
-- Gateway: automatic heartbeat-driven loop.
-- CLI: `nanosolana run` (foreground OODA loop).
-- API: `POST /api/agent` (single turn).
-- Channels: Telegram/Discord message triggers an agent turn.
+- CLI: `nanosolana run` (foreground OODA loop)
+- CLI: `nanosolana go` (one-shot bootstrap plus OODA loop)
+- CLI: `nanosolana demo` (synthetic loop)
+- Gateway: runtime status, memory, docs, and extension/trade surfaces around the running loop
 
 ## How it works (high-level)
 
@@ -43,8 +43,8 @@ graph TD
 
 ### 2. Orient (AI-powered)
 
-- Inject observations into the AI provider (OpenRouter/healer-alpha).
-- System prompt is loaded from **SOUL.md** (TamaGObot identity).
+- Inject observations into the AI provider (OpenRouter/healer-alpha by default).
+- System prompt is loaded from **SOUL.md** (agent identity).
 - AI analyzes market conditions using RSI, EMA, ATR indicators.
 - ClawVault LEARNED tier provides historical pattern context.
 - Returns structured market analysis.
@@ -122,11 +122,9 @@ System prompt is built from:
 
 ## Heartbeat
 
-- Default interval: `30m` (configurable via `heartbeat.every`).
-- Each heartbeat triggers a lightweight OODA cycle.
-- `HEARTBEAT_OK` response suppresses delivery (no spam).
-- Active hours configurable to avoid overnight API costs.
-- TamaGOchi heartbeat runs alongside — pet status updates.
+- The runtime wallet heartbeat defaults to `5000` ms through `NANO_AGENT_HEARTBEAT_INTERVAL_MS`.
+- The gateway broadcasts `agent:heartbeat` when the wallet heartbeat fires.
+- This is distinct from the trading loop itself; older docs described a separate heartbeat scheduler that is not part of the current runtime.
 
 ## Timeouts
 

@@ -5,14 +5,14 @@ title: "System Prompt (SOUL.md)"
 
 # System prompt (SOUL.md)
 
-Every NanoSolana TamaGObot has a **SOUL.md** file that defines its identity,
+Every NanoSolana agent can use a **SOUL.md** file to define identity,
 trading philosophy, and operational principles. This file is injected as the
 system prompt for all AI interactions.
 
 ## SOUL.md structure
 
 ```markdown
-# TamaGObot SOUL
+# NanoSolana SOUL
 
 ## Identity
 - Name: [Agent name]
@@ -49,15 +49,8 @@ system prompt for all AI interactions.
 
 ## Customization
 
-Edit `nano-core/SOUL.md` to customize your agent's personality:
-
-```bash
-# Example: make the agent more conservative
-nanosolana config set trading.strategy.confidenceThreshold 0.85
-# Then update SOUL.md:
-# "## Risk parameters
-#  - Min confidence: 0.85 (conservative mode)"
-```
+Edit `nano-core/SOUL.md` to customize your agent's personality, then keep the
+document aligned with whatever runtime/env settings you actually use.
 
 ## Context assembly order
 

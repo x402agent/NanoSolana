@@ -61,10 +61,13 @@ const reply = await ai.agentChat("What's my portfolio looking like?");
 
 ## Configuration
 
-```bash
-nanosolana config set ai.provider openrouter
-nanosolana config set ai.model "openrouter/healer-alpha"
-nanosolana vault set OPENROUTER_API_KEY "sk-or-v1-..."
+Current configuration is driven by environment variables and the encrypted vault loader:
+
+```env
+OPENROUTER_API_KEY=...
+OPENROUTER_MODEL=openrouter/healer-alpha
+AI_PROVIDER=openrouter
+AI_MODEL=openrouter/healer-alpha
 ```
 
 ## Model failover
@@ -86,6 +89,6 @@ If the primary model fails, NanoSolana can fall back:
 
 ## Cost management
 
-- Heartbeat model can be different from main model (cheaper).
-- `heartbeat.lightContext: true` reduces prompt size.
-- Trading analysis uses full context; chat uses lighter context.
+- shorter runtime loops and frequent external calls increase model spend
+- `nanosolana demo` is the cheapest way to exercise the flow without live keys
+- current runtime docs should not assume a separate `heartbeat.lightContext` config surface

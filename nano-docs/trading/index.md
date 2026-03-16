@@ -75,12 +75,5 @@ CLI exposes directly.
 
 ## Reality check
 
-Older drafts in this repo showed commands such as:
-
-```bash
-nanosolana trade status
-nanosolana trade history
-nanosolana trade backtest
-```
-
-Those are roadmap-style docs, not the current published CLI surface.
+Older drafts in this repo showed a dedicated `nanosolana trade ...` subtree.
+That was roadmap-style documentation, not the current published CLI surface.

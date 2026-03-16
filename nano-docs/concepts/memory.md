@@ -72,12 +72,5 @@ ClawVault is also extended by repo-level plugins and UI surfaces, including:
 
 ## Compatibility note
 
-Older docs referenced:
-
-```bash
-nanosolana memory status
-nanosolana memory search "RSI"
-```
-
-Those commands are not part of the current shipped CLI. Use `nanosolana vault`
-instead.
+Older docs referenced a standalone `nanosolana memory ...` subtree. That command
+family is not part of the current shipped CLI. Use `nanosolana vault` instead.
