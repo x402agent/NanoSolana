@@ -4,7 +4,7 @@ node_modules/
 .pnpm-store
 .npmrc
 **/.npmrc
-
+pump-fun-sdk-main
 # ─── Build ───────────────────────────────────────────────
 dist/
 *.bun-build
