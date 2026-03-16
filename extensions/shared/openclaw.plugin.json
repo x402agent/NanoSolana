@@ -1,0 +1,10 @@
+{
+  "id": "shared",
+  "name": "Shared Helpers",
+  "description": "Shared extension helpers and cross-plugin fixtures used by the NanoSolana extension workspace.",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}

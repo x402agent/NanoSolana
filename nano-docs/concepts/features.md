@@ -52,7 +52,8 @@ NanoSolana is a monorepo for autonomous Solana agents, registry tooling, and Pum
 - **iMessage**: Apple Messages integration.
 - **Google Chat**: Team notifications.
 - This checkout contains 41 extension directories.
-- 14 of those are manifest-based runtime plugins with `nanosolana-plugin.json`.
+- 41 of those directories are now discoverable through the merged extension catalog.
+- 38 ship `openclaw.plugin.json`, and 14 also ship `nanosolana-plugin.json`.
 - `extensions/pumpfun/` is a dedicated PumpFun event bridge scaffold.
 
 ### 🔐 Security-first

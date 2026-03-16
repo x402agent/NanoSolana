@@ -6,6 +6,16 @@
   "description": "PumpFun protocol extension for NanoSolana — bonding curve trading, token launch monitoring, fee tracking",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "nanosolana": {
+    "extensions": [
+      "./src/index.ts"
+    ],
+    "install": {
+      "npmSpec": "@nanosolana/extension-pumpfun",
+      "localPath": "extensions/pumpfun",
+      "defaultChoice": "local"
+    }
+  },
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",

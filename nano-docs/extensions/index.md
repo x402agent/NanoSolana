@@ -13,10 +13,11 @@ points rather than a finished package manager surface.
 
 ## What exists today
 
-- manifest-based runtime plugins in extension directories
+- merged extension metadata from `nanosolana-plugin.json`, `openclaw.plugin.json`, and `package.json#nanosolana`
 - extension metadata indexed by `nanosolana docs`
 - tool registration hooks used by several extensions
 - channel packages for Telegram, Discord, Slack, Matrix, WhatsApp, Nostr, and more
+- gateway surfaces that now expose the normalized extension catalog for UI and automation clients
 
 ## Representative extensions
 
@@ -43,6 +44,21 @@ Several extensions register tools or lifecycle hooks in code. Examples in this r
 
 That makes the extension layer part of the runtime API surface even when the top-level
 CLI does not have dedicated plugin-management commands.
+
+## Catalog normalization
+
+The repo uses more than one metadata format today:
+
+- `nanosolana-plugin.json`
+- `openclaw.plugin.json`
+- `package.json` under the `nanosolana` key
+
+`nano-core` now merges those sources into one catalog so the docs index, gateway,
+and other runtime surfaces all see the same extension inventory.
+
+That matters because many extensions only had `openclaw.plugin.json` or package
+metadata before, which meant they were present in the repo but under-described in
+the unified knowledge view.
 
 ## Current operator reality
 

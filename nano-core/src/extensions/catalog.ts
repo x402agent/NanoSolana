@@ -174,7 +174,7 @@ export function scanNanoExtensions(
       description: extensionDescription,
       directory: toRepoRelative(repoRoot, directoryPath),
       packageName: getStringField(packageJson, "name"),
-      kind: determineExtensionKind(channels, providers, skills, metadataSources),
+      kind: determineExtensionKind(extensionId, channels, providers, skills, metadataSources),
       channels,
       aliases,
       providers,
@@ -309,6 +309,7 @@ function uniqueMetadataSources(
 }
 
 function determineExtensionKind(
+  extensionId: string,
   channels: string[],
   providers: string[],
   skills: string[],
@@ -321,7 +322,8 @@ function determineExtensionKind(
   ].filter((value): value is Exclude<NanoExtensionKind, "support" | "hybrid"> => Boolean(value));
 
   if (categories.length > 1) return "hybrid";
-  if (categories.length === 1) return categories[0];
+  if (categories.length === 1) return categories[0]!;
+  if (extensionId === "shared" || extensionId === "test-utils") return "support";
   return metadataSources.length > 0 ? "tool" : "support";
 }
 
@@ -342,7 +344,7 @@ function humanizeExtensionId(value: string): string {
     .replace(/^@/, "")
     .split(/[\/_-]+/)
     .filter((part) => part.length > 0)
-    .map((part) => part[0].toUpperCase() + part.slice(1))
+    .map((part) => part[0]!.toUpperCase() + part.slice(1))
     .join(" ");
 }
 

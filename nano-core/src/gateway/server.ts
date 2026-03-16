@@ -451,7 +451,9 @@ export class NanoGateway extends EventEmitter<GatewayEvents> {
             directories: snapshot.extensions.directories,
             files: snapshot.extensions.files,
             manifests: snapshot.extensions.manifests,
+            packageMetadata: snapshot.extensions.packageMetadata,
             indexedEntries: snapshot.extensions.entries.length,
+            entries: snapshot.extensions.entries,
           },
           search: query
             ? {
@@ -488,6 +490,7 @@ export class NanoGateway extends EventEmitter<GatewayEvents> {
             },
             wallet: this.wallet.getInfo(),
             telegram: this.extensionTelegramConfig,
+            catalog: getNanoKnowledgeSnapshot().extensions.entries,
           }));
           break;
         }
@@ -681,6 +684,7 @@ export class NanoGateway extends EventEmitter<GatewayEvents> {
    */
   private getFrameworkSnapshot(): Record<string, unknown> {
     const knowledgeSummary = getNanoKnowledgeSummary();
+    const extensionSnapshot = getNanoKnowledgeSnapshot().extensions;
 
     return {
       project: "NanoSolana",
@@ -701,6 +705,12 @@ export class NanoGateway extends EventEmitter<GatewayEvents> {
       },
       memory: this.memory.getStats(),
       knowledge: knowledgeSummary,
+      extensions: {
+        directories: extensionSnapshot.directories,
+        manifests: extensionSnapshot.manifests,
+        packageMetadata: extensionSnapshot.packageMetadata,
+        entries: extensionSnapshot.entries,
+      },
       endpoints: [
         "/health",
         "/api/status",

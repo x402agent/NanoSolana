@@ -89,7 +89,7 @@ The top-level `pump/` workspace remains as a reference but the canonical runtime
 
 There are two extension shapes in this repo:
 
-- manifest-based runtime plugins with `nanosolana-plugin.json`
+- extension metadata merged from `nanosolana-plugin.json`, `openclaw.plugin.json`, and `package.json#nanosolana`
 - adjacent packages and scaffolds that live under `extensions/` but are not discovered through the runtime plugin loader
 
 The dedicated PumpFun extension at [`../extensions/pumpfun/src/index.ts`](../extensions/pumpfun/src/index.ts) is currently a scaffolded package for bridging Pump.fun launches, graduations, whale trades, and fee claims into the NanoSolana message bus.

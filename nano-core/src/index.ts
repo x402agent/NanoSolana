@@ -67,6 +67,20 @@ export type {
   NanoKnowledgeSearchMatch,
 } from "./docs/integration.js";
 
+// Extension Catalog
+export {
+  resolveNanoRepositoryRoot,
+  scanNanoExtensions,
+  getExtensionCatalogSummary,
+} from "./extensions/catalog.js";
+export type {
+  NanoExtensionKind,
+  NanoExtensionMetadataSource,
+  NanoExtensionInstallMetadata,
+  NanoExtensionCatalogEntry,
+  NanoExtensionCatalogSnapshot,
+} from "./extensions/catalog.js";
+
 // Telegram Persistence
 export { TelegramConversationStore } from "./telegram/persistence.js";
 export type { ConversationMessage, ConversationContext, ConversationSearchResult } from "./telegram/persistence.js";

@@ -8,8 +8,14 @@
  */
 
 import { existsSync, readdirSync, readFileSync, statSync, type Dirent } from "node:fs";
-import { basename, dirname, extname, join, relative, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { extname, join, relative, resolve } from "node:path";
+
+import {
+  resolveNanoRepositoryRoot,
+  scanNanoExtensions,
+  type NanoExtensionCatalogEntry,
+  type NanoExtensionCatalogSnapshot,
+} from "../extensions/catalog.js";
 
 const DOC_AREAS = [
   { area: "index", directory: "nano-docs", path: "nano-docs" },
@@ -46,16 +52,7 @@ export interface NanoDocAreaSnapshot {
   entries: NanoDocIndexEntry[];
 }
 
-export interface NanoExtensionIndexEntry {
-  id: string;
-  name: string;
-  description: string;
-  directory: string;
-  channels: string[];
-  hasPersistence: boolean;
-  fileCount: number;
-  manifestPath?: string;
-}
+export type NanoExtensionIndexEntry = NanoExtensionCatalogEntry;
 
 export interface NanoKnowledgeSnapshot {
   generatedAt: number;
@@ -68,12 +65,7 @@ export interface NanoKnowledgeSnapshot {
       bytes: number;
     };
   };
-  extensions: {
-    directories: number;
-    files: number;
-    manifests: number;
-    entries: NanoExtensionIndexEntry[];
-  };
+  extensions: NanoExtensionCatalogSnapshot;
 }
 
 export interface NanoKnowledgeSummary {
@@ -88,6 +80,7 @@ export interface NanoKnowledgeSummary {
     directories: number;
     files: number;
     manifests: number;
+    packageMetadata: number;
   };
 }
 
@@ -153,6 +146,7 @@ export function getNanoKnowledgeSummary(
       directories: snapshot.extensions.directories,
       files: snapshot.extensions.files,
       manifests: snapshot.extensions.manifests,
+      packageMetadata: snapshot.extensions.packageMetadata,
     },
   };
 }
@@ -205,6 +199,11 @@ export function searchNanoKnowledge(
       extension.description,
       extension.directory,
       ...extension.channels,
+      ...extension.aliases,
+      ...extension.providers,
+      ...extension.skills,
+      ...extension.entrypoints,
+      ...extension.metadataSources,
     ]
       .filter((value): value is string => value.length > 0)
       .join(" ")
@@ -241,7 +240,7 @@ function buildNanoKnowledgeSnapshot(): NanoKnowledgeSnapshot {
     { files: 0, markdownFiles: 0, bytes: 0 },
   );
 
-  const extensionSnapshot = scanExtensions(repoRoot);
+  const extensionSnapshot = scanNanoExtensions(repoRoot);
 
   return {
     generatedAt: Date.now(),
@@ -252,31 +251,6 @@ function buildNanoKnowledgeSnapshot(): NanoKnowledgeSnapshot {
     },
     extensions: extensionSnapshot,
   };
-}
-
-function resolveNanoRepositoryRoot(): string {
-  const envRoot = process.env.NANO_REPO_ROOT?.trim();
-  const sourceDirectory = dirname(fileURLToPath(import.meta.url));
-  const nanoCoreRoot = resolve(sourceDirectory, "../..");
-  const cwd = resolve(process.cwd());
-
-  const candidates = [
-    envRoot ? resolve(envRoot) : undefined,
-    cwd,
-    resolve(cwd, ".."),
-    resolve(nanoCoreRoot, ".."),
-  ];
-
-  for (const candidate of candidates) {
-    if (!candidate) continue;
-    if (hasKnowledgeCorpus(candidate)) return candidate;
-  }
-
-  return resolve(nanoCoreRoot, "..");
-}
-
-function hasKnowledgeCorpus(rootPath: string): boolean {
-  return existsSync(join(rootPath, "nano-docs", "index.md")) && existsSync(join(rootPath, "extensions"));
 }
 
 function scanDocsArea(
@@ -325,78 +299,6 @@ function scanDocsArea(
     markdownFiles: markdownCount,
     bytes,
     updatedAt: latestUpdatedAt,
-    entries,
-  };
-}
-
-function scanExtensions(repoRoot: string): NanoKnowledgeSnapshot["extensions"] {
-  const extensionRoot = join(repoRoot, "extensions");
-  if (!existsSync(extensionRoot)) {
-    return {
-      directories: 0,
-      files: 0,
-      manifests: 0,
-      entries: [],
-    };
-  }
-
-  const extensionDirectories = safeReadDirectory(extensionRoot)
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => join(extensionRoot, entry.name))
-    .sort((left, right) => left.localeCompare(right));
-
-  let totalFiles = 0;
-  let manifestCount = 0;
-  const entries: NanoExtensionIndexEntry[] = [];
-
-  for (const directoryPath of extensionDirectories) {
-    const files = walkFiles(directoryPath);
-    const fileCount = files.length;
-    totalFiles += fileCount;
-
-    const manifestPath = join(directoryPath, "nanosolana-plugin.json");
-    const packagePath = join(directoryPath, "package.json");
-
-    const manifest = readJsonObject(manifestPath);
-    const packageJson = readJsonObject(packagePath);
-
-    if (manifest) {
-      manifestCount += 1;
-    }
-
-    const extensionId = getStringField(manifest, "id")
-      ?? getStringField(packageJson, "name")
-      ?? basename(directoryPath);
-
-    const extensionName = getStringField(manifest, "name")
-      ?? getStringField(packageJson, "name")
-      ?? extensionId;
-
-    const extensionDescription = getStringField(manifest, "description")
-      ?? getStringField(packageJson, "description")
-      ?? "";
-
-    const channels = getStringArrayField(manifest, "channels");
-    const persistence = manifest?.["persistence"];
-
-    entries.push({
-      id: extensionId,
-      name: extensionName,
-      description: extensionDescription,
-      directory: toRepoRelative(repoRoot, directoryPath),
-      channels,
-      hasPersistence: isRecord(persistence),
-      fileCount,
-      manifestPath: manifest ? toRepoRelative(repoRoot, manifestPath) : undefined,
-    });
-  }
-
-  entries.sort((left, right) => left.id.localeCompare(right.id));
-
-  return {
-    directories: extensionDirectories.length,
-    files: totalFiles,
-    manifests: manifestCount,
     entries,
   };
 }
@@ -452,36 +354,6 @@ function safeStat(path: string): { size: number; mtimeMs: number } | null {
   } catch {
     return null;
   }
-}
-
-function readJsonObject(path: string): Record<string, unknown> | null {
-  if (!existsSync(path)) return null;
-
-  try {
-    const parsed = JSON.parse(readFileSync(path, "utf8")) as unknown;
-    if (isRecord(parsed)) return parsed;
-    return null;
-  } catch {
-    return null;
-  }
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
-}
-
-function getStringField(record: Record<string, unknown> | null, key: string): string | undefined {
-  if (!record) return undefined;
-  const value = record[key];
-  return typeof value === "string" ? value : undefined;
-}
-
-function getStringArrayField(record: Record<string, unknown> | null, key: string): string[] {
-  if (!record) return [];
-  const value = record[key];
-  if (!Array.isArray(value)) return [];
-
-  return value.filter((entry): entry is string => typeof entry === "string");
 }
 
 function isMarkdownFile(path: string): boolean {

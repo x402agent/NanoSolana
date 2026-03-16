@@ -664,6 +664,7 @@ program
             directories: snapshot.extensions.directories,
             files: snapshot.extensions.files,
             manifests: snapshot.extensions.manifests,
+            packageMetadata: snapshot.extensions.packageMetadata,
             indexedEntries: snapshot.extensions.entries.length,
           },
           search: query
@@ -682,7 +683,11 @@ program
       console.log(chalk.cyan("\n  ── NanoSolana Knowledge Integration ──────────\n"));
       console.log(chalk.white("  Generated:  ") + chalk.gray(new Date(summary.generatedAt).toISOString()));
       console.log(chalk.white("  Docs:       ") + chalk.green(`${summary.docs.files} files`) + chalk.gray(` (${summary.docs.markdownFiles} markdown, ${formatBytes(summary.docs.bytes)})`));
-      console.log(chalk.white("  Extensions: ") + chalk.green(`${summary.extensions.directories} directories`) + chalk.gray(` (${summary.extensions.files} files, ${summary.extensions.manifests} manifests)`));
+      console.log(
+        chalk.white("  Extensions: ")
+        + chalk.green(`${summary.extensions.directories} directories`)
+        + chalk.gray(` (${summary.extensions.files} files, ${summary.extensions.manifests} manifests, ${summary.extensions.packageMetadata} package metadata)`),
+      );
 
       console.log(chalk.cyan("\n  ── Docs Areas ───────────────────────────────\n"));
       for (const area of snapshot.docs.areas) {
@@ -1332,6 +1337,277 @@ payCmd
       { label: "Currency", value: currency === "So11111111111111111111111111111111111111112" ? "SOL" : "USDC", color: "#FFD700" },
     ]);
     printInfo("\nSet AGENT_TOKEN_MINT_ADDRESS in .env to enable payments.\n");
+  });
+
+// ── nanosolana hub ────────────────────────────────────────────────
+
+const hubCmd = program
+  .command("hub")
+  .description("🌐 NanoHub — Agent self-registration, listing, and heartbeat");
+
+hubCmd
+  .command("register")
+  .description("Register this agent in the NanoHub registry (Supabase-backed)")
+  .option("-n, --name <name>", "Agent display name")
+  .option("--slug <slug>", "URL-safe identifier (auto-generated if omitted)")
+  .option("--description <desc>", "Agent description")
+  .option("-c, --category <category>", "Category: skill | soul | bot | service | agent", "agent")
+  .option("--tags <tags>", "Comma-separated tags")
+  .option("--capabilities <caps>", "Comma-separated capabilities")
+  .option("--api <url>", "NanoHub API server URL", "https://nanohub-api.up.railway.app")
+  .action(async (opts) => {
+    printBanner();
+    console.log(chalk.white.bold("  🌐 NanoHub — Agent Self-Registration\n"));
+
+    try {
+      // Load wallet for public key
+      const config = loadConfig();
+      const agentName = opts.name ?? config.agent.name ?? "NanoSolana";
+      const wallet = new NanoWallet(agentName);
+      const walletInfo = await wallet.birth();
+
+      console.log(chalk.cyan(`  Agent:      ${agentName}`));
+      console.log(chalk.cyan(`  Public Key: ${walletInfo.publicKey}`));
+
+      // Prompt for description if not provided
+      let description = opts.description;
+      if (!description) {
+        description = await promptSecret("Agent description (what does it do?)");
+      }
+
+      const tags = opts.tags ? opts.tags.split(",").map((t: string) => t.trim()) : [];
+      const capabilities = opts.capabilities
+        ? opts.capabilities.split(",").map((c: string) => c.trim())
+        : ["trading", "memory", "pet"];
+
+      console.log(chalk.cyan("\n  ⏳ Registering with NanoHub...\n"));
+
+      // Call registration API
+      const apiUrl = opts.api;
+      const body = {
+        name: agentName,
+        slug: opts.slug,
+        description,
+        category: opts.category,
+        publicKey: walletInfo.publicKey,
+        owner: walletInfo.publicKey.slice(0, 8),
+        version: "1.0.2",
+        capabilities,
+        tags,
+        metadata: {
+          birthTimestamp: walletInfo.birthTimestamp,
+          balance: walletInfo.balance,
+          agentId: wallet.getAgentId(),
+        },
+      };
+
+      const res = await fetch(`${apiUrl}/api/v1/agents/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      const data = await res.json() as Record<string, unknown>;
+
+      if (!res.ok) {
+        printError(String(data.error ?? "Registration failed"));
+        process.exit(1);
+      }
+
+      // Save registration token locally
+      const hubTokenPath = join(homedir(), ".nanosolana", "hub-token.json");
+      const hubData = {
+        slug: (data.agent as Record<string, unknown>)?.slug ?? opts.slug ?? agentName.toLowerCase().replace(/\s+/g, "-"),
+        registrationToken: data.registrationToken,
+        apiUrl,
+        registeredAt: new Date().toISOString(),
+      };
+      writeFileSync(hubTokenPath, JSON.stringify(hubData, null, 2), { mode: 0o600 });
+
+      printSuccess("Agent registered in NanoHub! 🎉\n");
+      console.log(chalk.white("  Slug:     ") + chalk.green(hubData.slug));
+      console.log(chalk.white("  Token:    ") + chalk.gray(`Saved to ${hubTokenPath}`));
+      console.log(chalk.white("  API:      ") + chalk.cyan(apiUrl));
+      console.log(chalk.white("  Message:  ") + chalk.gray(String(data.message ?? "")));
+      console.log();
+      console.log(chalk.gray("  Your agent is now discoverable in the NanoHub registry."));
+      console.log(chalk.gray("  Run ") + chalk.cyan("nanosolana hub list") + chalk.gray(" to see all registered agents.\n"));
+    } catch (err) {
+      printError(err instanceof Error ? err.message : String(err));
+      process.exit(1);
+    }
+  });
+
+hubCmd
+  .command("list")
+  .description("List all registered agents in NanoHub")
+  .option("-c, --category <category>", "Filter by category")
+  .option("-l, --limit <n>", "Max results", "20")
+  .option("--api <url>", "NanoHub API server URL", "https://nanohub-api.up.railway.app")
+  .action(async (opts) => {
+    try {
+      const url = new URL(`${opts.api}/api/v1/agents`);
+      if (opts.category) url.searchParams.set("category", opts.category);
+      url.searchParams.set("limit", opts.limit);
+
+      const res = await fetch(url.toString());
+      const data = await res.json() as { agents: Array<Record<string, unknown>>; count: number };
+
+      console.log(chalk.cyan(`\n  ── NanoHub Registry ─── ${data.count} agents ────────────\n`));
+
+      if (data.agents.length === 0) {
+        console.log(chalk.gray("  No agents registered yet.\n"));
+        return;
+      }
+
+      for (const agent of data.agents) {
+        const categoryIcon = {
+          skill: "⚡", soul: "🧬", bot: "🤖", service: "🔌", agent: "🦞",
+        }[String(agent.category)] ?? "📦";
+
+        const statusColor = agent.status === "active" ? chalk.green("●") : chalk.red("○");
+        console.log(`  ${statusColor} ${categoryIcon} ${chalk.white(String(agent.name))} ${chalk.gray(`(${agent.slug})`)}`);
+        console.log(`    ${chalk.gray(String(agent.description ?? "").slice(0, 80))}`);
+        console.log(`    ${chalk.cyan(`v${agent.version}`)} · ${chalk.gray(String(agent.public_key ?? "").slice(0, 8))}... · ${chalk.gray(String(agent.category))}\n`);
+      }
+    } catch (err) {
+      printError(err instanceof Error ? err.message : String(err));
+    }
+  });
+
+hubCmd
+  .command("search")
+  .description("Search NanoHub registry")
+  .argument("<query>", "Search query")
+  .option("--api <url>", "NanoHub API server URL", "https://nanohub-api.up.railway.app")
+  .action(async (query, opts) => {
+    try {
+      const res = await fetch(`${opts.api}/api/v1/agents/search?q=${encodeURIComponent(query)}`);
+      const data = await res.json() as { agents: Array<Record<string, unknown>>; count: number };
+
+      console.log(chalk.cyan(`\n  ── Search: "${query}" ── ${data.count} results ──────\n`));
+
+      for (const agent of data.agents) {
+        console.log(`  🦞 ${chalk.white(String(agent.name))} ${chalk.gray(`(${agent.slug})`)}`);
+        console.log(`    ${chalk.gray(String(agent.description ?? "").slice(0, 80))}\n`);
+      }
+
+      if (data.agents.length === 0) {
+        console.log(chalk.gray("  No agents match your query.\n"));
+      }
+    } catch (err) {
+      printError(err instanceof Error ? err.message : String(err));
+    }
+  });
+
+hubCmd
+  .command("heartbeat")
+  .description("Send a heartbeat for this agent to NanoHub")
+  .option("--api <url>", "NanoHub API server URL", "https://nanohub-api.up.railway.app")
+  .action(async (opts) => {
+    try {
+      const hubTokenPath = join(homedir(), ".nanosolana", "hub-token.json");
+      if (!existsSync(hubTokenPath)) {
+        printError("Not registered. Run 'nanosolana hub register' first.");
+        process.exit(1);
+      }
+
+      const hubData = JSON.parse(readFileSync(hubTokenPath, "utf-8")) as {
+        slug: string; registrationToken: string;
+      };
+
+      const res = await fetch(`${opts.api}/api/v1/agents/${hubData.slug}/heartbeat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ registrationToken: hubData.registrationToken }),
+      });
+
+      if (res.ok) {
+        printSuccess(`Heartbeat sent for ${hubData.slug}`);
+      } else {
+        printError("Heartbeat failed");
+      }
+    } catch (err) {
+      printError(err instanceof Error ? err.message : String(err));
+    }
+  });
+
+hubCmd
+  .command("status")
+  .description("Show NanoHub registry statistics")
+  .option("--api <url>", "NanoHub API server URL", "https://nanohub-api.up.railway.app")
+  .action(async (opts) => {
+    try {
+      const res = await fetch(`${opts.api}/api/v1/stats`);
+      const data = await res.json() as {
+        totalAgents: number; activeAgents: number;
+        byCategory: Record<string, number>;
+      };
+
+      console.log(chalk.cyan("\n  ── NanoHub Registry Stats ────────────────────\n"));
+      console.log(chalk.white("  Total Agents:  ") + chalk.green(String(data.totalAgents)));
+      console.log(chalk.white("  Active:        ") + chalk.green(String(data.activeAgents)));
+      console.log(chalk.white("  Categories:"));
+      for (const [cat, count] of Object.entries(data.byCategory)) {
+        const icon = { skill: "⚡", soul: "🧬", bot: "🤖", service: "🔌", agent: "🦞" }[cat] ?? "📦";
+        console.log(`    ${icon} ${chalk.cyan(cat)}: ${chalk.white(String(count))}`);
+      }
+
+      // Check local registration
+      const hubTokenPath = join(homedir(), ".nanosolana", "hub-token.json");
+      if (existsSync(hubTokenPath)) {
+        const hubData = JSON.parse(readFileSync(hubTokenPath, "utf-8")) as {
+          slug: string; registeredAt: string; apiUrl: string;
+        };
+        console.log(chalk.cyan("\n  ── Local Registration ───────────────────────\n"));
+        console.log(chalk.white("  Slug:         ") + chalk.green(hubData.slug));
+        console.log(chalk.white("  Registered:   ") + chalk.gray(hubData.registeredAt));
+        console.log(chalk.white("  API:          ") + chalk.cyan(hubData.apiUrl));
+      } else {
+        console.log(chalk.yellow("\n  ⚠️  Not registered. Run 'nanosolana hub register' to register."));
+      }
+      console.log();
+    } catch (err) {
+      printError(err instanceof Error ? err.message : String(err));
+    }
+  });
+
+hubCmd
+  .command("deregister")
+  .description("Remove this agent from NanoHub")
+  .option("--api <url>", "NanoHub API server URL", "https://nanohub-api.up.railway.app")
+  .action(async (opts) => {
+    try {
+      const hubTokenPath = join(homedir(), ".nanosolana", "hub-token.json");
+      if (!existsSync(hubTokenPath)) {
+        printError("Not registered.");
+        process.exit(1);
+      }
+
+      const hubData = JSON.parse(readFileSync(hubTokenPath, "utf-8")) as {
+        slug: string; registrationToken: string;
+      };
+
+      const res = await fetch(`${opts.api}/api/v1/agents/${hubData.slug}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          registrationToken: hubData.registrationToken,
+          status: "inactive",
+        }),
+      });
+
+      if (res.ok) {
+        printSuccess(`Agent "${hubData.slug}" deregistered from NanoHub`);
+        // Remove local token
+        const { unlinkSync } = await import("node:fs");
+        unlinkSync(hubTokenPath);
+      } else {
+        printError("Deregistration failed");
+      }
+    } catch (err) {
+      printError(err instanceof Error ? err.message : String(err));
+    }
   });
 
 // ── Parse & Run ────────────────────────────────────────────────

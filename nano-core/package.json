@@ -89,6 +89,8 @@
     "format": "oxfmt --write",
     "gateway": "tsx src/gateway/server.ts",
     "hub:dev": "cd ../nanohub && bun run dev",
+    "hub:serve": "tsx src/hub/registry-server.ts",
+    "hub:register": "tsx src/cli/entry.ts hub register",
     "nanosolana": "tsx src/cli/entry.ts",
     "prepublishOnly": "npm run build"
   },

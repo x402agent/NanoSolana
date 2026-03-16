@@ -1,0 +1,37 @@
+{
+  "id": "pumpfun",
+  "name": "PumpFun",
+  "description": "Pump.fun protocol bridge for NanoSolana — launch monitoring, bonding curve analytics, fee tracking, and swarm trade events.",
+  "providers": ["pumpfun"],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "rpcWs": {
+        "type": "string",
+        "description": "Solana RPC WebSocket URL for Pump.fun event monitoring"
+      },
+      "whaleThreshold": {
+        "type": "number",
+        "default": 10,
+        "description": "Minimum SOL value to classify a trade as a whale event"
+      },
+      "monitorLaunches": {
+        "type": "boolean",
+        "default": true
+      },
+      "monitorGraduations": {
+        "type": "boolean",
+        "default": true
+      },
+      "monitorFeeClaims": {
+        "type": "boolean",
+        "default": true
+      },
+      "pollIntervalMs": {
+        "type": "number",
+        "default": 5000
+      }
+    }
+  }
+}
