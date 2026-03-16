@@ -18,7 +18,7 @@
 `nano-core` is published to npm as `nanosolana`.
 It bundles the local agent runtime, encrypted config vault, wallet lifecycle, OODA trading engine, ClawVault memory, TamaGOchi state machine, gateway server, docs integration, and devnet on-chain identity registration.
 
-[Website](https://nanosolana.com) · [Hub](https://nanosolana.netlify.app) · [Docs](https://docs.nanosolana.com) · [GitHub](https://github.com/x402agent/NanoSolana) · [Discord](https://discord.gg/nanosolana)
+[Website](https://nanosolana.com) · [Hub](https://hub.nanosolana.com) · [Docs](https://docs.nanosolana.com) · [GitHub](https://github.com/x402agent/NanoSolana) · [Discord](https://discord.gg/nanosolana)
 
 </div>
 
@@ -144,7 +144,7 @@ Secrets can come from the encrypted local vault, environment variables, or both.
 | `NANO_GATEWAY_PORT` | Gateway port | Defaults to `18790` |
 | `NANO_GATEWAY_HOST` | Gateway bind host | Defaults to `0.0.0.0` |
 | `NANO_GATEWAY_SECRET` | Shared HMAC secret | Strongly recommended |
-| `NANO_HUB_URL` | NanoHub site URL | Public skill discovery defaults to `https://nanosolana.netlify.app`; local bridge defaults may point at your dev server |
+| `NANO_HUB_URL` | NanoHub site URL | Public skill discovery defaults to `https://hub.nanosolana.com`; local bridge defaults may point at your dev server |
 | `NANO_VAULT_PASSWORD` | Override vault password source | Recommended for deterministic multi-session setups |
 | `TAILSCALE_AUTH_KEY` | Mesh networking | Needed for automated Tailscale enrollment |
 

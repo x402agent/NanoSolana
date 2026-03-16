@@ -1517,7 +1517,7 @@ hubCmd
   .option("-l, --limit <n>", "Max results", "10")
   .option("-s, --sort <sort>", "Sort: newest|downloads|rating|installs|installsAllTime|trending", "newest")
   .option("--highlighted", "Only show highlighted skills")
-  .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? "https://nanosolana.netlify.app")
+  .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? "https://hub.nanosolana.com")
   .option("--json", "Emit machine-readable JSON")
   .action(async (query, opts) => {
     try {
@@ -1615,7 +1615,7 @@ hubCmd
   .command("inspect")
   .description("Inspect a NanoHub skill and optionally fetch its SKILL.md")
   .argument("<slug>", "Skill slug")
-  .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? "https://nanosolana.netlify.app")
+  .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? "https://hub.nanosolana.com")
   .option("--file <path>", "Fetch a specific file from the latest skill version", "SKILL.md")
   .option("--no-file", "Skip fetching the skill file preview")
   .option("--json", "Emit machine-readable JSON")

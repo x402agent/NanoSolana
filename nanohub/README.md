@@ -16,7 +16,7 @@ It is optimized for fast browsing, a CLI-friendly registry API, moderation workf
 NanoSolana Docs is the companion registry for `SOUL.md` bundles and long-form system lore.
 
 <p align="center">
-  <a href="https://nanosolana.netlify.app">NanoHub</a> ·
+  <a href="https://hub.nanosolana.com">NanoHub</a> ·
   <a href="https://docs.nanosolana.com">NanoSolana Docs</a> ·
   <a href="VISION.md">Vision</a> ·
   <a href="docs/README.md">Docs</a> ·

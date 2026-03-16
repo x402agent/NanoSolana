@@ -29,7 +29,7 @@ publish, sync, and auth-heavy registry operations live in the separate
 
 ## Web flow
 
-1. Open [https://nanosolana.netlify.app](https://nanosolana.netlify.app).
+1. Open [https://hub.nanosolana.com](https://hub.nanosolana.com).
 2. Sign in with GitHub.
 3. Publish or manage skills and souls from the UI.
 
@@ -58,8 +58,8 @@ package. Use `nanohub` when you need:
 
 NanoHub discovery should prefer:
 
-- `https://nanosolana.netlify.app/.well-known/nanohub.json`
+- `https://hub.nanosolana.com/.well-known/nanohub.json`
 
 Legacy compatibility may still include:
 
-- `https://nanosolana.netlify.app/.well-known/clawhub.json`
+- `https://hub.nanosolana.com/.well-known/clawhub.json`

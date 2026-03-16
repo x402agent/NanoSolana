@@ -1,4 +1,4 @@
-const DEFAULT_NANOHUB_SITE_URL = "https://nanosolana.netlify.app";
+const DEFAULT_NANOHUB_SITE_URL = "https://hub.nanosolana.com";
 
 export type NanoHubExploreSort =
   | "newest"

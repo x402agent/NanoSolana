@@ -1,6 +1,6 @@
 export type SiteMode = 'skills' | 'souls'
 
-const DEFAULT_NANOHUB_SITE_URL = 'https://nanosolana.netlify.app'
+const DEFAULT_NANOHUB_SITE_URL = 'https://hub.nanosolana.com'
 const DEFAULT_DOCS_SITE_URL = 'https://docs.nanosolana.com'
 const DEFAULT_DOCS_HOST = 'docs.nanosolana.com'
 const LEGACY_HOSTS = new Set([

@@ -36,7 +36,7 @@
 - two doc trees: [`nano-docs/index.md`](nano-docs/index.md) and [`pump/docs/getting-started.md`](pump/docs/getting-started.md)
 - the standalone UI in [`ui/`](ui/) with your new `swarm` and `personas` views
 
-**Website:** [nanosolana.com](https://nanosolana.com) · **Hub:** [nanosolana.netlify.app](https://nanosolana.netlify.app) · **Docs:** [docs.nanosolana.com](https://docs.nanosolana.com) · **GitHub:** [github.com/x402agent/NanoSolana](https://github.com/x402agent/NanoSolana)
+**Website:** [nanosolana.com](https://nanosolana.com) · **Hub:** [hub.nanosolana.com](https://hub.nanosolana.com) · **Docs:** [docs.nanosolana.com](https://docs.nanosolana.com) · **GitHub:** [github.com/x402agent/NanoSolana](https://github.com/x402agent/NanoSolana)
 
 ## Quick Start
 
@@ -291,7 +291,7 @@ Current gateway defaults come from [`nano-core/src/config/vault.ts`](nano-core/s
 - host: `0.0.0.0`
 - port: `18790`
 - runtime bridge URL default: `http://localhost:3000`
-- public NanoHub skill site: `https://nanosolana.netlify.app`
+- public NanoHub skill site: `https://hub.nanosolana.com`
 
 Public NanoHub skill discovery is available directly from the published package:
 

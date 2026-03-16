@@ -12,26 +12,26 @@ import {
 
 describe("hub/public-client", () => {
   it("normalizes the canonical NanoHub site URL", () => {
-    expect(normalizeNanoHubSiteUrl()).toBe("https://nanosolana.netlify.app");
-    expect(normalizeNanoHubSiteUrl("nanosolana.netlify.app/")).toBe("https://nanosolana.netlify.app");
+    expect(normalizeNanoHubSiteUrl()).toBe("https://hub.nanosolana.com");
+    expect(normalizeNanoHubSiteUrl("hub.nanosolana.com/")).toBe("https://hub.nanosolana.com");
     expect(normalizeNanoHubSiteUrl("http://localhost:3000/")).toBe("http://localhost:3000");
   });
 
   it("builds site, api, discovery, and skill URLs", () => {
-    expect(getNanoHubSiteUrl("https://nanosolana.netlify.app/")).toBe("https://nanosolana.netlify.app");
-    expect(getNanoHubApiBaseUrl("https://nanosolana.netlify.app")).toBe("https://nanosolana.netlify.app/api/v1");
-    expect(getNanoHubDiscoveryUrl("https://nanosolana.netlify.app")).toBe(
-      "https://nanosolana.netlify.app/.well-known/nanohub.json",
+    expect(getNanoHubSiteUrl("https://hub.nanosolana.com/")).toBe("https://hub.nanosolana.com");
+    expect(getNanoHubApiBaseUrl("https://hub.nanosolana.com")).toBe("https://hub.nanosolana.com/api/v1");
+    expect(getNanoHubDiscoveryUrl("https://hub.nanosolana.com")).toBe(
+      "https://hub.nanosolana.com/.well-known/nanohub.json",
     );
-    expect(getNanoHubSkillUrl("sonoscli", { siteUrl: "https://nanosolana.netlify.app" })).toBe(
-      "https://nanosolana.netlify.app/skills/sonoscli",
+    expect(getNanoHubSkillUrl("sonoscli", { siteUrl: "https://hub.nanosolana.com" })).toBe(
+      "https://hub.nanosolana.com/skills/sonoscli",
     );
     expect(
       getNanoHubSkillUrl("sonoscli", {
-        siteUrl: "https://nanosolana.netlify.app",
+        siteUrl: "https://hub.nanosolana.com",
         ownerHandle: "8bit",
       }),
-    ).toBe("https://nanosolana.netlify.app/8bit/sonoscli");
+    ).toBe("https://hub.nanosolana.com/8bit/sonoscli");
   });
 
   it("maps sort aliases to the NanoHub API surface", () => {

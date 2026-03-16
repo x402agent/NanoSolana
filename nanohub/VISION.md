@@ -1,4 +1,4 @@
-## NanoHub Vision
+# NanoHub Vision
 
 NanoHub is the skill registry and discovery platform for NanoSolana — the autonomous Solana agent runtime.
 
@@ -14,12 +14,14 @@ It also serves as the publishing platform for the community to share skills, SOU
 ## Current Focus
 
 Priority:
+
 - Skill publishing reliability and first-run UX
 - Vector search quality and relevance
 - Security: upload scanning, malware detection, moderation
 - Tokenized agent payments integration
 
 Next priorities:
+
 - Skill creator web UI for authoring and validating skills in-browser
 - Batch publishing and version management
 - Analytics dashboard for skill authors
@@ -31,18 +33,23 @@ Next priorities:
 NanoHub currently hosts **78 skills** spanning general-purpose tools, messaging integrations, Solana/DeFi tooling, and Pump ecosystem packs:
 
 ### General & Productivity
+
 1password, apple-notes, apple-reminders, bear-notes, blogwatcher, camsnap, canvas, coding-agent, eightctl, gemini, gh-issues, gifgrep, github, gog, goplaces, healthcheck, himalaya, model-usage, nano-banana-pro, nano-pdf, notion, obsidian, oracle, ordercli, peekaboo, sag, session-logs, skill-creator, summarize, things-mac, trello, video-frames, weather, xurl
 
 ### Communication & Messaging
+
 bluebubbles, blucli, discord, imsg, slack, songsee, voice-call, wacli
 
 ### Audio & Media
+
 openai-whisper, openai-whisper-api, sherpa-onnx-tts, sonoscli, spotify-player, openhue
 
 ### Infrastructure & DevOps
+
 clawhub, mcporter, swarm-orchestrator, tmux
 
 ### Solana & Pump Ecosystem (24 packs)
+
 pump-admin-ops, pump-ai-agents, pump-bonding-curve, pump-build-release, pump-claims-readonly, pump-fee-sharing, pump-fee-system, pump-mcp-server, pump-rust-vanity, pump-sdk-core, pump-security, pump-shell-scripts, pump-solana-architecture, pump-solana-dev, pump-solana-wallet, pump-testing, pump-token-incentives, pump-token-lifecycle, pump-ts-vanity, pump-website, pumpfun-analytics, pumpfun-fees, pumpfun-launcher, pumpfun-trading
 
 ## Tokenized Agent Payments
