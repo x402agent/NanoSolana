@@ -93,3 +93,6 @@ __pycache__/
 
 # ─── Vendor ──────────────────────────────────────────────
 vendor/
+
+# Local Netlify folder
+.netlify
