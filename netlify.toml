@@ -1,6 +1,6 @@
 [build]
 publish = "dist/control-ui"
-command = "npm --prefix /Users/8bit/Downloads/nanosolana/ui ci && npm --prefix /Users/8bit/Downloads/nanosolana/ui run build"
+command = "npm --prefix ui ci && npm --prefix ui run build"
 
 [[redirects]]
 from = "/*"

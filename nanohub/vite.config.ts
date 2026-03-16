@@ -57,6 +57,7 @@ const config = defineConfig({
     devtools(),
     nitro({
       serverDir: 'server',
+      preset: process.env.NITRO_PRESET || 'netlify',
       rollupConfig: {
         onwarn: handleRollupWarning,
       },
