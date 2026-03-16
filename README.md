@@ -118,6 +118,13 @@ Important clarification: older drafts in this repo described nested trees such a
 | Standalone UI | [`ui/`](ui/) | Operator UI assets and views, including `swarm` and `personas` tabs |
 | Apps | [`apps/`](apps/) | macOS and Android workspaces |
 
+## Core Structure Clarifications
+
+- [`nano-core/src/claw/`](nano-core/src/claw/) is the integrated orchestration layer inside the published `nanosolana` package. It is already part of `nano-core`, not a separate app.
+- The old `nanoclaw-main` path is no longer part of this checkout. The live runtime now sits directly in [`nano-core/`](nano-core/).
+- The Pump SDK and official IDLs are integrated into [`nano-core/src/claw/pump/sdk/`](nano-core/src/claw/pump/sdk/), and parity is checked against the vendored upstream snapshot in [`pump-fun-sdk-main/src/`](pump-fun-sdk-main/src/).
+- NanoHub agent registration is exposed both from the website in [`site/index.html`](site/index.html) and from the CLI via `nanosolana hub register`, `hub list`, `hub search`, and `hub heartbeat`.
+
 ## Pump Stack In This Checkout
 
 NanoSolana’s Pump support is split across three layers.
@@ -142,6 +149,26 @@ NanoSolana’s Pump support is split across three layers.
 | [`pump/agent-tasks/README.md`](pump/agent-tasks/README.md) | Pump parallel task prompts |
 | [`pump/docs/getting-started.md`](pump/docs/getting-started.md) | Pump SDK quick start |
 | [`pump/docs/ecosystem.md`](pump/docs/ecosystem.md) | Pump ecosystem overview |
+
+### Pump SDK in the published core
+
+The published `nanosolana` package now re-exports the integrated Pump SDK surface directly from [`nano-core/src/index.ts`](nano-core/src/index.ts):
+
+- `PumpFunSdk`
+- `PumpSdk`, `OnlinePumpSdk`, `PUMP_SDK`
+- Pump program constants and IDLs
+- bonding curve, analytics, fee, fallback, and token incentive helpers
+
+Programmatic usage:
+
+```ts
+import {
+  OnlinePumpSdk,
+  PumpFunSdk,
+  PUMP_PROGRAM_ID,
+  getBuyTokenAmountFromSolAmount,
+} from "nanosolana";
+```
 
 ### Pump and PumpFun skills
 

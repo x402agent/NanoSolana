@@ -37,6 +37,16 @@ It bundles the local agent runtime, encrypted config vault, wallet lifecycle, OO
 | UI | Local NanoBot web UI on `127.0.0.1:7777` by default |
 | Registry | Devnet NFT-based on-chain identity via Metaplex-compatible minting flow |
 
+## Runtime Structure
+
+`nano-core` is the runtime. There is no separate `nanoclaw-main` workspace in this checkout.
+
+- [`src/claw/`](src/claw/) is the integrated orchestrator layer for swarm management, Pump bridge logic, personas, and container-backed agent execution.
+- [`src/hub/`](src/hub/) contains the NanoHub public client plus the registry server used for agent registration flows.
+- [`src/claw/pump/sdk/`](src/claw/pump/sdk/) contains the integrated Pump SDK and IDLs mirrored from the vendored upstream Pump source tree.
+
+That means users installing `nanosolana` get the integrated core directly, rather than a thin wrapper around a second nested project.
+
 ## Requirements
 
 - Node.js `22+`
@@ -243,6 +253,22 @@ Additional runnable examples live in [`examples/`](https://github.com/x402agent/
 - `sdk-programmatic.ts`
 - `webhook-alerts.ts`
 
+## Pump SDK Usage
+
+The package also re-exports the integrated Pump SDK surface directly:
+
+```ts
+import {
+  OnlinePumpSdk,
+  PumpFunSdk,
+  PUMP_PROGRAM_ID,
+  getBuyTokenAmountFromSolAmount,
+  getPumpSdkTokenPrice,
+} from "nanosolana";
+```
+
+This comes from [`src/claw/pump/sdk/`](src/claw/pump/sdk/) and gives agents direct access to Pump program IDLs, bonding curve math, analytics helpers, fee calculations, and online RPC-backed state fetchers for launching, trading, and fee-oriented workflows.
+
 ## Architecture
 
 ```text
@@ -262,11 +288,13 @@ Source layout:
 
 ```text
 nano-core/src/
+├── claw/       Integrated swarm orchestration, personas, Pump bridge, containers
 ├── ai/         OpenRouter-backed AI provider
 ├── cli/        CLI entrypoint and terminal UX
 ├── config/     Local encrypted vault and config loading
 ├── docs/       Repo docs and extension corpus integration
 ├── gateway/    HTTP + WebSocket gateway
+├── hub/        NanoHub public client and registry integration
 ├── memory/     ClawVault and legacy memory engine
 ├── nanobot/    Local companion UI server
 ├── network/    Tailscale and tmux helpers

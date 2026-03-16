@@ -292,7 +292,7 @@ GRANT INSERT ON hub_agent_versions TO anon;
 type Req = import("node:http").IncomingMessage;
 type Res = import("node:http").ServerResponse;
 
-async function handleRegister(req: Req, res: Res): Promise<void> {
+export async function handleRegister(req: Req, res: Res): Promise<void> {
   const body = await readBody(req) as Record<string, unknown>;
 
   const name = String(body.name ?? "").trim();
@@ -383,7 +383,7 @@ async function handleGetAgent(_req: Req, res: Res, slug: string): Promise<void> 
   json(res, 200, { agent: agents[0] });
 }
 
-async function handleHeartbeat(req: Req, res: Res, slug: string): Promise<void> {
+export async function handleHeartbeat(req: Req, res: Res, slug: string): Promise<void> {
   const body = await readBody(req) as Record<string, unknown>;
   const token = String(body.registrationToken ?? req.headers["x-agent-key"] ?? "");
 

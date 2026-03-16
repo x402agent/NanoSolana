@@ -8,7 +8,7 @@ NanoSolana is a modular, security-first framework for building autonomous financ
 
 ```
 NanoSolana/
-├── nano-core/nanoclaw-main/  # Core TypeScript runtime and CLI
+├── nano-core/                # Core TypeScript runtime and CLI
 ├── nanohub/                  # Agent Registry (React + Convex + Vercel)
 ├── nano-docs/                # Documentation
 ├── extensions/               # 40+ channel plugins
@@ -25,9 +25,9 @@ NanoSolana/
 
 ## Development
 
-### Core (nano-core/nanoclaw-main)
+### Core (nano-core)
 ```bash
-cd nano-core/nanoclaw-main
+cd nano-core
 npm install
 npm run dev          # Run with hot reload (tsx)
 npm run build        # Compile TypeScript
@@ -76,7 +76,7 @@ All keys go in `.env` (gitignored). See `.env.example` for templates.
 ## Testing
 
 ```bash
-# In nano-core/nanoclaw-main/
+# In nano-core/
 npm test             # Run all tests
 npm run test:watch   # Watch mode
 ```
