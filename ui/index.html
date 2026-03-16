@@ -1,21 +1,1638 @@
-<!doctype html>
-<html lang="en" data-theme="nanosolana" data-theme-mode="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NanoSolana TamaGObot</title>
-    <meta name="description" content="NanoSolana TamaGObot — Autonomous Solana trading intelligence with a virtual pet soul" />
-    <meta name="color-scheme" content="dark" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  </head>
-  <body>
-    <nanosolana-app></nanosolana-app>
-    <script type="module" src="/src/main.ts"></script>
-    <!-- ElevenLabs ConvAI Widget -->
-    <elevenlabs-convai agent-id="agent_0001kcf3a94bfcm9kj51ss02gnv0"></elevenlabs-convai>
-    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NanoSolana — Terminal</title>
+  <meta name="description" content="Deploy autonomous Solana trading agents with one command. The open-source agentic framework for financial intelligence on Solana." />
+  <meta property="og:title" content="NanoSolana — Solana Computer Terminal" />
+  <meta property="og:description" content="One command to deploy autonomous trading intelligence. Watch agents being born on the blockchain in real-time." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://nanosolana.com" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green: #14F195;
+      --purple: #9945FF;
+      --orange: #FF6B35;
+      --cyan: #00d4ff;
+      --yellow: #fbbf24;
+      --red: #ff5f57;
+      --dim: #3a4a5c;
+      --text: #c5d0de;
+      --bg: #0a0e14;
+      --surface: #0d1117;
+      --card: rgba(13, 17, 23, 0.95);
+      --border: rgba(20, 241, 149, 0.12);
+      --mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--mono);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    /* ── CRT Scanline overlay ─────────────── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.03) 2px,
+        rgba(0, 0, 0, 0.03) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── Matrix rain canvas ───────────────── */
+    #matrix-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      opacity: 0.06;
+      pointer-events: none;
+    }
+
+    /* ── Particle field ───────────────────── */
+    #particles {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    /* ── Top bar ──────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.7rem;
+      color: var(--dim);
+      margin-bottom: 1.5rem;
+    }
+    .topbar__left { display: flex; gap: 1.5rem; }
+    .topbar__status { color: var(--green); }
+    .topbar__session { color: var(--purple); }
+    .topbar__right { display: flex; gap: 1rem; }
+    .topbar__link {
+      color: var(--dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .topbar__link:hover { color: var(--green); }
+
+    /* ── Hero terminal ────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 3rem 0 2rem;
+    }
+    .hero__ascii {
+      font-size: 0.5rem;
+      line-height: 1.15;
+      color: var(--green);
+      white-space: pre;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 20px rgba(20, 241, 149, 0.4);
+      overflow-x: auto;
+    }
+    @media (min-width: 768px) {
+      .hero__ascii { font-size: 0.65rem; }
+    }
+    .hero__tagline {
+      font-size: 0.85rem;
+      color: var(--cyan);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .hero__sub {
+      font-size: 0.8rem;
+      color: var(--dim);
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+
+    /* ── Blinking cursor ──────────────────── */
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 1.1em;
+      background: var(--green);
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    /* ── Install section ──────────────────── */
+    .install {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin: 0 auto 2rem;
+      max-width: 700px;
+      overflow: hidden;
+    }
+    .install__bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.5rem 0.75rem;
+      background: rgba(20, 241, 149, 0.04);
+      border-bottom: 1px solid var(--border);
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot--r { background: #ff5f57; }
+    .dot--y { background: #ffbd2e; }
+    .dot--g { background: #28ca41; }
+    .install__title {
+      font-size: 0.65rem;
+      color: var(--dim);
+      margin-left: 0.5rem;
+    }
+    .install__body { padding: 1.25rem; }
+    .install__prompt {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .install__prompt-char { color: var(--green); font-weight: 700; }
+    .install__cmd {
+      color: var(--text);
+      flex: 1;
+      user-select: all;
+    }
+    .install__btn {
+      background: var(--green);
+      color: var(--bg);
+      border: none;
+      padding: 0.4rem 1rem;
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .install__btn:hover {
+      box-shadow: 0 0 20px rgba(20, 241, 149, 0.4);
+      transform: translateY(-1px);
+    }
+    .install__or {
+      text-align: center;
+      color: var(--dim);
+      font-size: 0.7rem;
+      margin: 0.75rem 0;
+    }
+    .install__alt {
+      font-size: 0.75rem;
+      color: var(--dim);
+      text-align: center;
+    }
+    .install__alt code {
+      color: var(--cyan);
+      background: rgba(0, 212, 255, 0.08);
+      padding: 0.15em 0.4em;
+      border-radius: 3px;
+    }
+
+    /* ── Live agent spawn terminal ─────────── */
+    .spawn-section {
+      margin: 3rem 0;
+    }
+    .spawn-section__title {
+      font-size: 0.75rem;
+      color: var(--purple);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 1rem;
+      padding-left: 1rem;
+    }
+    .spawn-terminal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .spawn-terminal__bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.5rem 0.75rem;
+      background: rgba(153, 69, 255, 0.04);
+      border-bottom: 1px solid var(--border);
+    }
+    .spawn-terminal__body {
+      padding: 1rem 1.25rem;
+      min-height: 420px;
+      font-size: 0.78rem;
+      line-height: 1.8;
+      position: relative;
+    }
+    .spawn-line {
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .spawn-line.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .spawn-line .check { color: var(--green); }
+    .spawn-line .warn { color: var(--yellow); }
+    .spawn-line .info { color: var(--cyan); }
+    .spawn-line .agent { color: var(--purple); }
+    .spawn-line .fire { color: var(--orange); }
+    .spawn-line .dim { color: var(--dim); }
+    .spawn-line .bright { color: #fff; font-weight: 600; }
+
+    /* ── Blockchain visualizer ─────────────── */
+    .chain-viz {
+      margin: 3rem 0;
+      padding: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .chain-viz__title {
+      font-size: 0.7rem;
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 1rem;
+    }
+    .chain-blocks {
+      display: flex;
+      gap: 4px;
+      overflow: hidden;
+      height: 40px;
+      align-items: flex-end;
+    }
+    .chain-block {
+      flex: 0 0 6px;
+      background: var(--green);
+      border-radius: 2px 2px 0 0;
+      opacity: 0.6;
+      transition: height 0.3s, opacity 0.3s;
+    }
+    .chain-block.active {
+      opacity: 1;
+      box-shadow: 0 0 8px rgba(20, 241, 149, 0.5);
+    }
+    .chain-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1rem;
+      font-size: 0.7rem;
+      flex-wrap: wrap;
+    }
+    .chain-stat__label { color: var(--dim); }
+    .chain-stat__value { color: var(--green); font-weight: 600; }
+    .chain-stat__value--purple { color: var(--purple); }
+    .chain-stat__value--yellow { color: var(--yellow); }
+    .chain-stat__value--cyan { color: var(--cyan); }
+
+    /* ── Agent registry (tools & agents born) ─ */
+    .registry {
+      margin: 3rem 0;
+    }
+    .registry__title {
+      font-size: 0.75rem;
+      color: var(--orange);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 1rem;
+      padding-left: 1rem;
+    }
+    .registry__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 0.75rem;
+    }
+    .agent-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      transition: border-color 0.3s, transform 0.2s;
+      cursor: default;
+    }
+    .agent-card:hover {
+      border-color: var(--green);
+      transform: translateY(-2px);
+    }
+    .agent-card__header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .agent-card__icon { font-size: 1.2rem; }
+    .agent-card__name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--green);
+    }
+    .agent-card__status {
+      margin-left: auto;
+      font-size: 0.6rem;
+      padding: 0.15em 0.5em;
+      border-radius: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .agent-card__status--live {
+      background: rgba(20, 241, 149, 0.15);
+      color: var(--green);
+    }
+    .agent-card__status--spawning {
+      background: rgba(153, 69, 255, 0.15);
+      color: var(--purple);
+      animation: pulse-status 2s ease-in-out infinite;
+    }
+    @keyframes pulse-status {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+    .agent-card__desc {
+      font-size: 0.72rem;
+      color: var(--dim);
+      line-height: 1.5;
+    }
+    .agent-card__meta {
+      margin-top: 0.5rem;
+      font-size: 0.65rem;
+      color: var(--dim);
+      display: flex;
+      gap: 1rem;
+    }
+    .agent-card__meta span { color: var(--cyan); }
+
+    /* ── Command palette ──────────────────── */
+    .commands {
+      margin: 3rem 0;
+    }
+    .commands__title {
+      font-size: 0.75rem;
+      color: var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 1rem;
+      padding-left: 1rem;
+    }
+    .cmd-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 0.5rem;
+    }
+    .cmd-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      transition: border-color 0.2s;
+    }
+    .cmd-item:hover { border-color: var(--cyan); }
+    .cmd-item__icon { font-size: 1.1rem; flex-shrink: 0; }
+    .cmd-item__info { min-width: 0; }
+    .cmd-item__name {
+      font-size: 0.78rem;
+      color: var(--green);
+      font-weight: 600;
+    }
+    .cmd-item__desc {
+      font-size: 0.65rem;
+      color: var(--dim);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ── Architecture flow ─────────────────── */
+    .arch {
+      margin: 3rem 0;
+      padding: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .arch__title {
+      font-size: 0.7rem;
+      color: var(--yellow);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 1.25rem;
+    }
+    .arch__flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+      flex-wrap: wrap;
+      font-size: 0.72rem;
+      margin-bottom: 1.5rem;
+    }
+    .arch__node {
+      background: rgba(20, 241, 149, 0.08);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.4rem 0.75rem;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .arch__arrow { color: var(--green); font-size: 0.9rem; }
+    .arch__features {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.75rem;
+    }
+    .arch__feat {
+      font-size: 0.72rem;
+      padding: 0.75rem;
+      border-left: 2px solid var(--green);
+    }
+    .arch__feat-title {
+      color: var(--green);
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .arch__feat-desc { color: var(--dim); }
+
+    /* ── Live counter bar ──────────────────── */
+    .live-bar {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1rem;
+      margin: 2rem 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      font-size: 0.7rem;
+    }
+    .live-bar__item {
+      text-align: center;
+    }
+    .live-bar__value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--green);
+      display: block;
+    }
+    .live-bar__value--purple { color: var(--purple); }
+    .live-bar__value--orange { color: var(--orange); }
+    .live-bar__value--cyan { color: var(--cyan); }
+    .live-bar__label { color: var(--dim); }
+
+    /* ── npm badge ─────────────────────────── */
+    .npm-section {
+      text-align: center;
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .npm-section__badge {
+      font-size: 0.7rem;
+      color: var(--dim);
+      margin-bottom: 0.75rem;
+    }
+    .npm-section__badge a {
+      color: var(--orange);
+      text-decoration: none;
+    }
+    .npm-section__badge a:hover { text-decoration: underline; }
+    .npm-section__version {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 0.5rem;
+    }
+    .npm-section__stats {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      font-size: 0.7rem;
+      color: var(--dim);
+      flex-wrap: wrap;
+    }
+    .npm-section__stats strong { color: var(--cyan); }
+
+    /* ── GitHub CTA ────────────────────────── */
+    .github-cta {
+      text-align: center;
+      margin: 3rem 0;
+      padding: 2rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(20, 241, 149, 0.03), rgba(153, 69, 255, 0.03));
+    }
+    .github-cta__pre {
+      font-size: 0.65rem;
+      color: var(--dim);
+      margin-bottom: 1rem;
+    }
+    .github-cta__title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .github-cta__desc {
+      font-size: 0.75rem;
+      color: var(--dim);
+      margin-bottom: 1.25rem;
+    }
+    .github-cta__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--text);
+      color: var(--bg);
+      padding: 0.6rem 1.5rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.8rem;
+      transition: all 0.15s;
+    }
+    .github-cta__btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
+    }
+    .github-cta__btn svg { width: 16px; height: 16px; }
+
+    /* ── Footer ────────────────────────────── */
+    .footer {
+      text-align: center;
+      padding: 2rem 0 1.5rem;
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+      font-size: 0.65rem;
+      color: var(--dim);
+    }
+    .footer__links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .footer__link {
+      color: var(--dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer__link:hover { color: var(--green); }
+    .footer__brand span { color: var(--orange); }
+
+    /* ── Glow pulse on green text ─────────── */
+    .glow {
+      text-shadow: 0 0 10px rgba(20, 241, 149, 0.5), 0 0 30px rgba(20, 241, 149, 0.2);
+    }
+
+    /* ── Responsive ────────────────────────── */
+    @media (max-width: 600px) {
+      .hero__ascii { font-size: 0.32rem; }
+      .install__prompt { flex-wrap: wrap; }
+      .install__btn { width: 100%; text-align: center; margin-top: 0.5rem; }
+      .arch__flow { font-size: 0.6rem; }
+      .live-bar { gap: 1rem; }
+    }
+
+    /* ── Scroll reveal ─────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Typing indicator ──────────────────── */
+    .typing-dots span {
+      animation: dotPulse 1.4s ease-in-out infinite;
+      display: inline-block;
+      color: var(--green);
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes dotPulse {
+      0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+      40% { opacity: 1; transform: scale(1); }
+    }
+
+    /* ── Interactive demo terminals ───────── */
+    .demos {
+      margin: 3rem 0;
+    }
+    .demos__title {
+      font-size: 0.75rem;
+      color: var(--yellow);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 1rem;
+      padding-left: 1rem;
+    }
+    .demo-tabs {
+      display: flex;
+      gap: 0.25rem;
+      flex-wrap: wrap;
+      margin-bottom: 0;
+    }
+    .demo-tab {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      border-radius: 6px 6px 0 0;
+      padding: 0.4rem 0.75rem;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--dim);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .demo-tab:hover { color: var(--green); }
+    .demo-tab.active {
+      background: var(--surface);
+      color: var(--green);
+      border-color: var(--green);
+      border-bottom: 1px solid var(--surface);
+      position: relative;
+      z-index: 2;
+    }
+    .demo-viewport {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0 8px 8px 8px;
+      min-height: 280px;
+      position: relative;
+      overflow: hidden;
+    }
+    .demo-panel {
+      display: none;
+      padding: 1rem 1.25rem;
+      font-size: 0.75rem;
+      line-height: 1.7;
+    }
+    .demo-panel.active { display: block; }
+
+    /* ── DVD screensaver canvas ────────────── */
+    .dvd-canvas {
+      width: 100%;
+      height: 260px;
+      display: block;
+      background: #000;
+      border-radius: 0 8px 8px 8px;
+    }
+
+    /* ── Lobster animation ─────────────────── */
+    .lobster-stage {
+      text-align: center;
+      padding: 2rem;
+      font-size: 2.5rem;
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .lobster-stage__art {
+      font-size: 0.6rem;
+      line-height: 1.2;
+      color: var(--orange);
+      white-space: pre;
+      text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+    }
+    .lobster-stage__label {
+      font-size: 0.7rem;
+      color: var(--dim);
+    }
+
+    /* ── Full command table ─────────────────── */
+    .cmd-table-section {
+      margin: 3rem 0;
+    }
+    .cmd-table-section__title {
+      font-size: 0.75rem;
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 1rem;
+      padding-left: 1rem;
+    }
+    .cmd-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.72rem;
+    }
+    .cmd-table th {
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      color: var(--dim);
+      border-bottom: 1px solid var(--border);
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+    }
+    .cmd-table td {
+      padding: 0.4rem 0.75rem;
+      border-bottom: 1px solid rgba(20, 241, 149, 0.05);
+    }
+    .cmd-table tr:hover td { background: rgba(20, 241, 149, 0.03); }
+    .cmd-table__cmd { color: var(--green); font-weight: 600; white-space: nowrap; }
+    .cmd-table__desc { color: var(--dim); }
+
+    /* ── Architecture tree ─────────────────── */
+    .tree-section {
+      margin: 3rem 0;
+      padding: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.7rem;
+      line-height: 1.6;
+    }
+    .tree-section__title {
+      font-size: 0.7rem;
+      color: var(--purple);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 1rem;
+    }
+    .tree { color: var(--dim); }
+    .tree .dir { color: var(--cyan); }
+    .tree .desc { color: var(--dim); }
+    .tree .arrow { color: var(--green); }
+
+    /* ── API keys section ──────────────────── */
+    .keys-section {
+      margin: 2rem 0;
+    }
+    .keys-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.5rem;
+    }
+    .key-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-size: 0.7rem;
+    }
+    .key-item__name { color: var(--cyan); font-weight: 600; margin-bottom: 0.25rem; }
+    .key-item__source { color: var(--dim); font-size: 0.65rem; }
+    .key-item__req {
+      display: inline-block;
+      font-size: 0.55rem;
+      padding: 0.1em 0.4em;
+      border-radius: 3px;
+      margin-top: 0.25rem;
+    }
+    .key-item__req--required { background: rgba(20, 241, 149, 0.15); color: var(--green); }
+    .key-item__req--recommended { background: rgba(153, 69, 255, 0.15); color: var(--purple); }
+    .key-item__req--optional { background: rgba(59, 74, 92, 0.3); color: var(--dim); }
+
+    /* ── Security checklist ────────────────── */
+    .security-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 0.35rem;
+      margin: 1rem 0;
+    }
+    .security-item {
+      font-size: 0.72rem;
+      padding: 0.35rem 0;
+      color: var(--dim);
+    }
+    .security-item span { color: var(--green); }
+  </style>
+</head>
+<body>
+  <canvas id="matrix-canvas"></canvas>
+
+  <div class="wrapper">
+    <!-- Top bar -->
+    <nav class="topbar">
+      <div class="topbar__left">
+        <span class="topbar__status">● ONLINE</span>
+        <span class="topbar__session">SESSION <span id="session-id">0x7f3a</span></span>
+        <span>SOLANA DEVNET</span>
+      </div>
+      <div class="topbar__right">
+        <a href="https://github.com/x402agent/NanoSolana" class="topbar__link" target="_blank" rel="noopener">[github]</a>
+        <a href="https://www.npmjs.com/package/nanosolana" class="topbar__link" target="_blank" rel="noopener">[npm]</a>
+        <a href="https://github.com/x402agent/NanoSolana/tree/main/nano-docs" class="topbar__link" target="_blank" rel="noopener">[docs]</a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+      <pre class="hero__ascii" id="hero-ascii" aria-label="NanoSolana ASCII art">
+ ███╗   ██╗ █████╗ ███╗   ██╗ ██████╗ ███████╗ ██████╗ ██╗      █████╗ ███╗   ██╗ █████╗
+ ████╗  ██║██╔══██╗████╗  ██║██╔═══██╗██╔════╝██╔═══██╗██║     ██╔══██╗████╗  ██║██╔══██╗
+ ██╔██╗ ██║███████║██╔██╗ ██║██║   ██║███████╗██║   ██║██║     ███████║██╔██╗ ██║███████║
+ ██║╚██╗██║██╔══██║██║╚██╗██║██║   ██║╚════██║██║   ██║██║     ██╔══██║██║╚██╗██║██╔══██║
+ ██║ ╚████║██║  ██║██║ ╚████║╚██████╔╝███████║╚██████╔╝███████╗██║  ██║██║ ╚████║██║  ██║
+ ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝
+      </pre>
+      <p class="hero__tagline">The Open-Source Agentic Framework for Financial Intelligence</p>
+      <p class="hero__sub">Deploy autonomous Solana trading agents with one command. OODA loop. Epistemological memory. Mesh coordination. Virtual pet soul.</p>
+    </section>
+
+    <!-- Install -->
+    <div class="install reveal">
+      <div class="install__bar">
+        <div class="dot dot--r"></div>
+        <div class="dot dot--y"></div>
+        <div class="dot dot--g"></div>
+        <span class="install__title">~ one-shot install</span>
+      </div>
+      <div class="install__body">
+        <div class="install__prompt">
+          <span class="install__prompt-char">$</span>
+          <code class="install__cmd">npx nanosolana go</code>
+          <button class="install__btn" onclick="copyCmd('npx nanosolana go', this)">COPY</button>
+        </div>
+        <div class="install__or">── or ──</div>
+        <div class="install__prompt">
+          <span class="install__prompt-char">$</span>
+          <code class="install__cmd">npm install -g nanosolana && nanosolana go</code>
+          <button class="install__btn" onclick="copyCmd('npm install -g nanosolana && nanosolana go', this)">COPY</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live counters -->
+    <div class="live-bar reveal">
+      <div class="live-bar__item">
+        <span class="live-bar__value" id="counter-agents">0</span>
+        <span class="live-bar__label">agents spawned</span>
+      </div>
+      <div class="live-bar__item">
+        <span class="live-bar__value live-bar__value--purple" id="counter-skills">52</span>
+        <span class="live-bar__label">skills loaded</span>
+      </div>
+      <div class="live-bar__item">
+        <span class="live-bar__value live-bar__value--orange" id="counter-extensions">40</span>
+        <span class="live-bar__label">extensions</span>
+      </div>
+      <div class="live-bar__item">
+        <span class="live-bar__value live-bar__value--cyan" id="counter-blocks">0</span>
+        <span class="live-bar__label">blocks indexed</span>
+      </div>
+    </div>
+
+    <!-- Agent spawn terminal -->
+    <section class="spawn-section reveal">
+      <div class="spawn-section__title">▸ Live Agent Spawn Sequence</div>
+      <div class="spawn-terminal">
+        <div class="spawn-terminal__bar">
+          <div class="dot dot--r"></div>
+          <div class="dot dot--y"></div>
+          <div class="dot dot--g"></div>
+          <span class="install__title">nanosolana go — agent birth</span>
+        </div>
+        <div class="spawn-terminal__body" id="spawn-body">
+          <!-- Lines injected by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Blockchain visualizer -->
+    <div class="chain-viz reveal">
+      <div class="chain-viz__title">⛓ Solana Block Stream</div>
+      <div class="chain-blocks" id="chain-blocks"></div>
+      <div class="chain-stats">
+        <div><span class="chain-stat__label">slot </span><span class="chain-stat__value" id="slot-num">312,458,221</span></div>
+        <div><span class="chain-stat__label">tps </span><span class="chain-stat__value--purple" id="tps-num">4,128</span></div>
+        <div><span class="chain-stat__label">latency </span><span class="chain-stat__value--yellow">42ms</span></div>
+        <div><span class="chain-stat__label">epoch </span><span class="chain-stat__value--cyan">723</span></div>
+      </div>
+    </div>
+
+    <!-- Agents & Tools registry -->
+    <section class="registry reveal">
+      <div class="registry__title">▸ Agents & Tools — Born on Chain</div>
+      <div class="registry__grid">
+        <div class="agent-card">
+          <div class="agent-card__header">
+            <span class="agent-card__icon">🧠</span>
+            <span class="agent-card__name">OODA Engine</span>
+            <span class="agent-card__status agent-card__status--live">LIVE</span>
+          </div>
+          <div class="agent-card__desc">Observe → Orient → Decide → Act trading loop with RSI+EMA+ATR signals via Jupiter swaps</div>
+          <div class="agent-card__meta">type: <span>core</span> | cycle: <span>5s</span></div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-card__header">
+            <span class="agent-card__icon">🦞</span>
+            <span class="agent-card__name">TamaGOchi</span>
+            <span class="agent-card__status agent-card__status--live">LIVE</span>
+          </div>
+          <div class="agent-card__desc">Virtual pet soul — evolves Egg → Larva → Juvenile → Adult → Alpha based on PnL</div>
+          <div class="agent-card__meta">mood: <span>happy</span> | stage: <span>egg</span></div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-card__header">
+            <span class="agent-card__icon">🗃</span>
+            <span class="agent-card__name">ClawVault</span>
+            <span class="agent-card__status agent-card__status--live">LIVE</span>
+          </div>
+          <div class="agent-card__desc">3-tier epistemological memory — KNOWN (60s), LEARNED (7d), INFERRED (3d) with contradiction detection</div>
+          <div class="agent-card__meta">entries: <span>0K/0L/0I</span> | replay: <span>on</span></div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-card__header">
+            <span class="agent-card__icon">🔐</span>
+            <span class="agent-card__name">Ed25519 Vault</span>
+            <span class="agent-card__status agent-card__status--live">LIVE</span>
+          </div>
+          <div class="agent-card__desc">AES-256-GCM encrypted wallet. Private key never leaves the vault. HMAC-SHA256 gateway auth.</div>
+          <div class="agent-card__meta">cipher: <span>aes-256-gcm</span></div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-card__header">
+            <span class="agent-card__icon">🌐</span>
+            <span class="agent-card__name">Mesh Network</span>
+            <span class="agent-card__status agent-card__status--spawning">SPAWNING</span>
+          </div>
+          <div class="agent-card__desc">TamaGObots discover each other via Tailscale VPN. Share signals, lessons, and memory across the mesh.</div>
+          <div class="agent-card__meta">peers: <span>scanning...</span></div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-card__header">
+            <span class="agent-card__icon">🎨</span>
+            <span class="agent-card__name">Birth NFT</span>
+            <span class="agent-card__status agent-card__status--spawning">MINTING</span>
+          </div>
+          <div class="agent-card__desc">Gasless NFT minted on Solana devnet via Metaplex — your agent's on-chain identity card.</div>
+          <div class="agent-card__meta">chain: <span>devnet</span> | std: <span>metaplex</span></div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-card__header">
+            <span class="agent-card__icon">📊</span>
+            <span class="agent-card__name">Strategy Engine</span>
+            <span class="agent-card__status agent-card__status--live">LIVE</span>
+          </div>
+          <div class="agent-card__desc">RSI + EMA + ATR with Kelly Criterion sizing. Auto-optimizes parameters every 20 trades.</div>
+          <div class="agent-card__meta">signals: <span>3</span> | kelly: <span>on</span></div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-card__header">
+            <span class="agent-card__icon">💬</span>
+            <span class="agent-card__name">Channel Hub</span>
+            <span class="agent-card__status agent-card__status--live">LIVE</span>
+          </div>
+          <div class="agent-card__desc">14+ communication channels — Telegram, Discord, Nostr, iMessage, Google Chat, and custom plugins.</div>
+          <div class="agent-card__meta">channels: <span>14+</span> | sdk: <span>open</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive demos -->
+    <section class="demos reveal" id="demos-section">
+      <div class="demos__title">▸ Interactive Command Demos — Click to Preview</div>
+      <div class="demo-tabs">
+        <div class="demo-tab active" data-demo="dvd">📀 dvd</div>
+        <div class="demo-tab" data-demo="lobster">🦞 lobster</div>
+        <div class="demo-tab" data-demo="scan">🔍 scan</div>
+        <div class="demo-tab" data-demo="status">📊 status</div>
+        <div class="demo-tab" data-demo="pet">🐾 pet status</div>
+        <div class="demo-tab" data-demo="signals">📈 trade signals</div>
+      </div>
+      <div class="demo-viewport">
+        <!-- DVD screensaver -->
+        <div class="demo-panel active" id="demo-dvd">
+          <canvas class="dvd-canvas" id="dvd-canvas"></canvas>
+        </div>
+        <!-- Lobster -->
+        <div class="demo-panel" id="demo-lobster">
+          <div class="lobster-stage">
+            <pre class="lobster-stage__art" id="lobster-art"></pre>
+            <div class="lobster-stage__label">nanosolana lobster — animated Unicode mascot</div>
+          </div>
+        </div>
+        <!-- Scan -->
+        <div class="demo-panel" id="demo-scan">
+          <div style="color:var(--green);font-weight:700">⛓ ── Blockchain Scan ──────────────────────────────────</div>
+          <br>
+          <div><span style="color:var(--yellow)">●</span> Solana <span style="color:var(--dim)">v2.0.18 | mainnet-beta | slot 312,458,221</span></div>
+          <div><span style="color:var(--yellow)">◎</span> SOL Balance: <span style="color:var(--yellow)">2.000000000 SOL</span> <span style="color:var(--dim)">($312.48 USD)</span></div>
+          <br>
+          <div style="color:var(--cyan)">  SPL Tokens:</div>
+          <div>  <span style="color:var(--dim)">├──</span> <span style="color:var(--text)">USDC</span> <span style="color:var(--yellow)">1,250.00</span> <span style="color:var(--dim)">EPjFWdd5AufqSSqeM2qN1xzybapC8G4w</span></div>
+          <div>  <span style="color:var(--dim)">├──</span> <span style="color:var(--text)">BONK</span> <span style="color:var(--yellow)">42,000,000</span> <span style="color:var(--dim)">DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7</span></div>
+          <div>  <span style="color:var(--dim)">└──</span> <span style="color:var(--text)">JUP</span> <span style="color:var(--yellow)">500.00</span> <span style="color:var(--dim)">JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbK</span></div>
+          <br>
+          <div style="color:var(--cyan)">  Recent Transactions:</div>
+          <div>  <span style="color:var(--dim)">├──</span> <span style="color:var(--green)">✓</span> Swap 0.5 SOL → 78.12 USDC <span style="color:var(--dim)">via Jupiter | 2s ago</span></div>
+          <div>  <span style="color:var(--dim)">├──</span> <span style="color:var(--green)">✓</span> Transfer 100 USDC → 7xKp...m4Qz <span style="color:var(--dim)">| 15s ago</span></div>
+          <div>  <span style="color:var(--dim)">└──</span> <span style="color:var(--green)">✓</span> NFT Mint: Birth Certificate #1847 <span style="color:var(--dim)">| 1m ago</span></div>
+          <br>
+          <div style="color:var(--green);font-weight:700">──────────────────────────────────────────────────────</div>
+          <div style="color:var(--dim)">  Scan complete in 42ms | DAS API + Enhanced Tx</div>
+        </div>
+        <!-- Status -->
+        <div class="demo-panel" id="demo-status">
+          <div style="color:var(--green);font-weight:700"> 🦞 NanoSolana Agent Status</div>
+          <br>
+          <div>  <span style="color:var(--cyan)">Agent</span>     <span style="color:var(--text)">NanoSolana-Alpha</span></div>
+          <div>  <span style="color:var(--cyan)">Version</span>   <span style="color:var(--text)">0.2.0</span></div>
+          <div>  <span style="color:var(--cyan)">Uptime</span>    <span style="color:var(--green)">4h 23m 17s</span></div>
+          <div>  <span style="color:var(--cyan)">Network</span>   <span style="color:var(--text)">devnet</span></div>
+          <br>
+          <div>  <span style="color:var(--yellow)">◎</span> Wallet: <span style="color:var(--text)">7xKp...m4Qz</span> <span style="color:var(--yellow)">2.347 SOL</span></div>
+          <div>  <span style="color:var(--purple)">◆</span> Identity: <span style="color:var(--text)">Hk7xQ2p3...9fRm</span></div>
+          <div>  <span style="color:var(--green)">●</span> OODA Loop: <span style="color:var(--green)">ACTIVE</span> <span style="color:var(--dim)">| cycle 5s | trades: 47</span></div>
+          <div>  <span style="color:var(--green)">●</span> Gateway: <span style="color:var(--green)">CONNECTED</span> <span style="color:var(--dim)">| ws://0.0.0.0:18790</span></div>
+          <div>  <span style="color:var(--green)">●</span> ClawVault: <span style="color:var(--text)">12K / 8L / 3I</span></div>
+          <div>  <span style="color:var(--orange)">●</span> TamaGOchi: <span style="color:var(--text)">🦞 Adult</span> <span style="color:var(--dim)">| mood: focused | hunger: 72%</span></div>
+          <div>  <span style="color:var(--green)">●</span> Channels: <span style="color:var(--text)">3 active</span> <span style="color:var(--dim)">| Telegram, Discord, Nostr</span></div>
+        </div>
+        <!-- Pet status -->
+        <div class="demo-panel" id="demo-pet">
+          <div style="color:var(--orange);font-weight:700"> 🐾 TamaGOchi Status</div>
+          <br>
+          <div style="text-align:center;font-size:2rem;padding:0.5rem 0">🦞</div>
+          <div style="text-align:center;color:var(--text);font-weight:600">NanoSolana</div>
+          <div style="text-align:center;color:var(--dim);font-size:0.65rem;margin-bottom:1rem">Stage: Adult | Born: 4h ago</div>
+          <br>
+          <div>  <span style="color:var(--cyan)">Mood</span>      <span style="color:var(--green)">😊 Happy</span> <span style="color:var(--dim)">— risk modifier: 1.0x</span></div>
+          <div>  <span style="color:var(--cyan)">Hunger</span>    <span style="color:var(--yellow)">████████░░</span> <span style="color:var(--text)">72%</span></div>
+          <div>  <span style="color:var(--cyan)">Energy</span>    <span style="color:var(--green)">██████████</span> <span style="color:var(--text)">100%</span></div>
+          <div>  <span style="color:var(--cyan)">XP</span>        <span style="color:var(--purple)">████████░░</span> <span style="color:var(--text)">847 / 1000</span></div>
+          <br>
+          <div>  <span style="color:var(--cyan)">Evolution</span> <span style="color:var(--dim)">🥚 Egg → 🐛 Larva → 🐣 Juvenile → <span style="color:var(--orange);font-weight:700">🦞 Adult</span> → 👑 Alpha</span></div>
+          <div>  <span style="color:var(--cyan)">Trades</span>    <span style="color:var(--text)">47</span> <span style="color:var(--dim)">| Win rate: 62.5%</span></div>
+          <div>  <span style="color:var(--cyan)">P&L</span>       <span style="color:var(--green)">+0.347 SOL</span></div>
+        </div>
+        <!-- Trade signals -->
+        <div class="demo-panel" id="demo-signals">
+          <div style="color:var(--purple);font-weight:700"> 📈 Recent Trading Signals</div>
+          <br>
+          <div style="color:var(--dim)">  TIME          PAIR         SIGNAL   CONFIDENCE  RSI    EMA     ATR</div>
+          <div style="color:var(--border)">  ─────────────────────────────────────────────────────────────────────</div>
+          <div>  <span style="color:var(--dim)">14:23:17</span>  <span style="color:var(--text)">SOL/USDC</span>   <span style="color:var(--green);font-weight:700">BUY </span>    <span style="color:var(--green)">0.87</span>        <span style="color:var(--text)">32.1</span>   <span style="color:var(--text)">↑ cross</span> <span style="color:var(--text)">1.24</span></div>
+          <div>  <span style="color:var(--dim)">14:18:42</span>  <span style="color:var(--text)">SOL/USDC</span>   <span style="color:var(--yellow)">HOLD</span>    <span style="color:var(--yellow)">0.52</span>        <span style="color:var(--text)">45.8</span>   <span style="color:var(--text)">neutral</span> <span style="color:var(--text)">1.18</span></div>
+          <div>  <span style="color:var(--dim)">14:13:09</span>  <span style="color:var(--text)">SOL/USDC</span>   <span style="color:var(--red);font-weight:700">SELL</span>    <span style="color:var(--red)">0.91</span>        <span style="color:var(--text)">78.4</span>   <span style="color:var(--text)">↓ cross</span> <span style="color:var(--text)">2.31</span></div>
+          <div>  <span style="color:var(--dim)">14:08:33</span>  <span style="color:var(--text)">SOL/USDC</span>   <span style="color:var(--green);font-weight:700">BUY </span>    <span style="color:var(--green)">0.74</span>        <span style="color:var(--text)">28.9</span>   <span style="color:var(--text)">↑ cross</span> <span style="color:var(--text)">1.56</span></div>
+          <div>  <span style="color:var(--dim)">14:03:11</span>  <span style="color:var(--text)">SOL/USDC</span>   <span style="color:var(--yellow)">HOLD</span>    <span style="color:var(--yellow)">0.41</span>        <span style="color:var(--text)">51.2</span>   <span style="color:var(--text)">neutral</span> <span style="color:var(--text)">1.02</span></div>
+          <br>
+          <div style="color:var(--dim)">  Kelly Criterion: <span style="color:var(--green)">2.4%</span> position size | Auto-optimize in <span style="color:var(--cyan)">13</span> trades</div>
+          <div style="color:var(--dim)">  Strategy: RSI(14) + EMA(9,21) + ATR(14) | Jupiter v6</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Full command reference table -->
+    <section class="cmd-table-section reveal">
+      <div class="cmd-table-section__title">▸ Full CLI Reference — 25+ Commands</div>
+      <table class="cmd-table">
+        <thead>
+          <tr><th>Command</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="cmd-table__cmd">nanosolana go</td><td class="cmd-table__desc">One-shot: init + birth + scan + register + trade</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana init</td><td class="cmd-table__desc">Configure + encrypt API keys</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana birth</td><td class="cmd-table__desc">Create wallet + mint Birth Certificate NFT + blockchain scan</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana run</td><td class="cmd-table__desc">Start OODA trading loop</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana scan [addr]</td><td class="cmd-table__desc">Blockchain data scan — SOL, tokens, NFTs, tx history</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana register</td><td class="cmd-table__desc">Mint on-chain agent identity NFT (devnet)</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana registry</td><td class="cmd-table__desc">Show on-chain agent identity</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana nanobot</td><td class="cmd-table__desc">Launch interactive NanoBot web UI</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana dvd</td><td class="cmd-table__desc">Floating DVD screensaver 🦞</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana lobster</td><td class="cmd-table__desc">Animated Unicode lobster mascot</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana status</td><td class="cmd-table__desc">Show agent + wallet + pet status</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana trade status</td><td class="cmd-table__desc">Trading P&L and strategy state</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana trade signals</td><td class="cmd-table__desc">Recent trading signals with confidence</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana wallet balance</td><td class="cmd-table__desc">SOL + SPL token balances</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana pet status</td><td class="cmd-table__desc">TamaGOchi pet mood and evolution</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana memory search</td><td class="cmd-table__desc">Search ClawVault memory</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana gateway run</td><td class="cmd-table__desc">Start WebSocket gateway</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana channels status</td><td class="cmd-table__desc">Check channel connections</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana vault set</td><td class="cmd-table__desc">Store encrypted secret</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana send &lt;msg&gt;</td><td class="cmd-table__desc">One-shot message to nano bots</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana nodes</td><td class="cmd-table__desc">List Tailscale mesh peers</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana doctor</td><td class="cmd-table__desc">Run diagnostics</td></tr>
+          <tr><td class="cmd-table__cmd">nanosolana security audit</td><td class="cmd-table__desc">Full security scan</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Source architecture tree -->
+    <div class="tree-section reveal">
+      <div class="tree-section__title">▸ Source Architecture</div>
+      <pre class="tree">
+<span class="dir">nano-core/</span>
+<span class="dir">├── src/</span>
+│   ├── <span class="dir">ai/</span>          <span class="arrow">→</span> <span class="desc">OpenRouter AI provider (multimodal: text, image, audio, video)</span>
+│   ├── <span class="dir">cli/</span>         <span class="arrow">→</span> <span class="desc">`nanosolana` CLI (25+ commands)</span>
+│   ├── <span class="dir">config/</span>      <span class="arrow">→</span> <span class="desc">AES-256-GCM encrypted vault &amp; Zod-validated config</span>
+│   ├── <span class="dir">gateway/</span>     <span class="arrow">→</span> <span class="desc">HMAC-SHA256 authenticated WebSocket + HTTP server</span>
+│   ├── <span class="dir">memory/</span>      <span class="arrow">→</span> <span class="desc">ClawVault 3-tier epistemological memory engine</span>
+│   ├── <span class="dir">network/</span>     <span class="arrow">→</span> <span class="desc">Tailscale + tmux mesh networking</span>
+│   ├── <span class="dir">nft/</span>         <span class="arrow">→</span> <span class="desc">Metaplex gasless devnet birth certificate NFT</span>
+│   ├── <span class="dir">onchain/</span>     <span class="arrow">→</span> <span class="desc">Helius blockchain reader (DAS, Enhanced Tx, wallet scan)</span>
+│   ├── <span class="dir">registry/</span>    <span class="arrow">→</span> <span class="desc">On-chain agent identity (Metaplex NFT registration)</span>
+│   ├── <span class="dir">nanobot/</span>     <span class="arrow">→</span> <span class="desc">Interactive local web UI companion</span>
+│   ├── <span class="dir">pet/</span>         <span class="arrow">→</span> <span class="desc">TamaGOchi virtual pet engine (mood × risk)</span>
+│   ├── <span class="dir">strategy/</span>    <span class="arrow">→</span> <span class="desc">RSI + EMA + ATR auto-optimizer</span>
+│   ├── <span class="dir">trading/</span>     <span class="arrow">→</span> <span class="desc">OODA trading engine + Jupiter swap execution</span>
+│   └── <span class="dir">wallet/</span>      <span class="arrow">→</span> <span class="desc">Solana Ed25519 wallet manager</span>
+├── <span class="dir">SOUL.md</span>          <span class="arrow">→</span> <span class="desc">Agent identity system prompt</span>
+└── <span class="dir">extensions/</span>      <span class="arrow">→</span> <span class="desc">40+ plugins (Telegram, Discord, Nostr, iMessage, etc.)</span>
+      </pre>
+    </div>
+
+    <!-- API Keys -->
+    <section class="keys-section reveal">
+      <div class="cmd-table-section__title">▸ Required API Keys</div>
+      <div class="keys-grid">
+        <div class="key-item">
+          <div class="key-item__name">OPENROUTER_API_KEY</div>
+          <div class="key-item__source">openrouter.ai</div>
+          <span class="key-item__req key-item__req--required">REQUIRED</span>
+        </div>
+        <div class="key-item">
+          <div class="key-item__name">HELIUS_RPC_URL</div>
+          <div class="key-item__source">helius.dev</div>
+          <span class="key-item__req key-item__req--required">REQUIRED</span>
+        </div>
+        <div class="key-item">
+          <div class="key-item__name">HELIUS_API_KEY</div>
+          <div class="key-item__source">helius.dev</div>
+          <span class="key-item__req key-item__req--required">REQUIRED</span>
+        </div>
+        <div class="key-item">
+          <div class="key-item__name">HELIUS_WSS_URL</div>
+          <div class="key-item__source">helius.dev</div>
+          <span class="key-item__req key-item__req--recommended">RECOMMENDED</span>
+        </div>
+        <div class="key-item">
+          <div class="key-item__name">BIRDEYE_API_KEY</div>
+          <div class="key-item__source">birdeye.so</div>
+          <span class="key-item__req key-item__req--recommended">RECOMMENDED</span>
+        </div>
+        <div class="key-item">
+          <div class="key-item__name">JUPITER_API_KEY</div>
+          <div class="key-item__source">jup.ag</div>
+          <span class="key-item__req key-item__req--optional">FOR TRADING</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Security -->
+    <section class="reveal">
+      <div class="cmd-table-section__title">▸ Security Architecture</div>
+      <div class="security-list">
+        <div class="security-item"><span>✓</span> AES-256-GCM encrypted secrets vault</div>
+        <div class="security-item"><span>✓</span> HMAC-SHA256 gateway authentication</div>
+        <div class="security-item"><span>✓</span> Ed25519 wallet signatures</div>
+        <div class="security-item"><span>✓</span> Timing-safe token comparison</div>
+        <div class="security-item"><span>✓</span> Rate limiting (10 conn/min, 100 msg/min)</div>
+        <div class="security-item"><span>✓</span> File permissions enforced (0600/0700)</div>
+        <div class="security-item"><span>✓</span> Wallet private key never leaves the vault</div>
+      </div>
+    </section>
+
+    <!-- Architecture -->
+    <div class="arch reveal">
+      <div class="arch__title">▸ Architecture — OODA Loop</div>
+      <div class="arch__flow">
+        <span class="arch__node">Helius + Birdeye</span>
+        <span class="arch__arrow">→</span>
+        <span class="arch__node">Observe</span>
+        <span class="arch__arrow">→</span>
+        <span class="arch__node">Orient (AI)</span>
+        <span class="arch__arrow">→</span>
+        <span class="arch__node">Decide (RSI+EMA+ATR)</span>
+        <span class="arch__arrow">→</span>
+        <span class="arch__node">Act (Jupiter)</span>
+        <span class="arch__arrow">→</span>
+        <span class="arch__node">Learn (ClawVault)</span>
+      </div>
+      <div class="arch__features">
+        <div class="arch__feat">
+          <div class="arch__feat-title">Security First</div>
+          <div class="arch__feat-desc">AES-256-GCM vault, HMAC-SHA256 gateway, timing-safe auth, rate limiting</div>
+        </div>
+        <div class="arch__feat">
+          <div class="arch__feat-title">Experience Replay</div>
+          <div class="arch__feat-desc">ClawVault contradiction detection, episodic memory, auto-parameter tuning</div>
+        </div>
+        <div class="arch__feat">
+          <div class="arch__feat-title">Plugin SDK</div>
+          <div class="arch__feat-desc">52 skills, 40 extensions, custom channels via open plugin interface</div>
+        </div>
+        <div class="arch__feat">
+          <div class="arch__feat-title">Chrome Extension</div>
+          <div class="arch__feat-desc">Manifest V3 browser relay — CDP tab automation, wallet panel, chat</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- npm section -->
+    <div class="npm-section reveal">
+      <div class="npm-section__badge">
+        published on <a href="https://www.npmjs.com/package/nanosolana" target="_blank" rel="noopener">npmjs.com/package/nanosolana</a>
+      </div>
+      <div class="npm-section__version">nanosolana@0.2.0</div>
+      <div class="npm-section__stats">
+        <span>license: <strong>MIT</strong></span>
+        <span>node: <strong>>=22.0.0</strong></span>
+        <span>type: <strong>ESM</strong></span>
+        <span>bin: <strong>nanosolana</strong></span>
+      </div>
+    </div>
+
+    <!-- GitHub CTA -->
+    <div class="github-cta reveal">
+      <div class="github-cta__pre">// open source — MIT licensed — community driven</div>
+      <div class="github-cta__title">Star us on GitHub</div>
+      <div class="github-cta__desc">Building the future of autonomous financial agents. Join us.</div>
+      <a href="https://github.com/x402agent/NanoSolana" class="github-cta__btn" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        Star on GitHub
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer__links">
+        <a href="https://github.com/x402agent/NanoSolana" class="footer__link" target="_blank" rel="noopener">[github]</a>
+        <a href="https://github.com/x402agent/NanoSolana/blob/main/CONTRIBUTING.md" class="footer__link" target="_blank" rel="noopener">[contributing]</a>
+        <a href="https://github.com/x402agent/NanoSolana/blob/main/SECURITY.md" class="footer__link" target="_blank" rel="noopener">[security]</a>
+        <a href="https://github.com/x402agent/NanoSolana/tree/main/nano-docs" class="footer__link" target="_blank" rel="noopener">[docs]</a>
+        <a href="https://github.com/x402agent/NanoSolana/blob/main/LICENSE" class="footer__link" target="_blank" rel="noopener">[MIT license]</a>
+      </div>
+      <p class="footer__brand">NanoSolana Labs · <span>🦞</span> Built for the financial agents of tomorrow</p>
+    </footer>
+  </div>
+
+  <!-- ElevenLabs ConvAI Widget -->
+  <elevenlabs-convai agent-id="agent_0001kcf3a94bfcm9kj51ss02gnv0"></elevenlabs-convai>
+  <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+
+  <script>
+  /* ── Copy helper ─────────────────────────── */
+  function copyCmd(text, btn) {
+    navigator.clipboard.writeText(text);
+    const orig = btn.textContent;
+    btn.textContent = 'COPIED!';
+    btn.style.background = '#9945FF';
+    setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 1200);
+  }
+
+  /* ── Matrix rain ─────────────────────────── */
+  (function() {
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    let cols, drops;
+    const chars = 'ナノソラナ01アエイオウカキクケコサシスセソタチツテトABCDEF0123456789$◎⛓🦞';
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      cols = Math.floor(canvas.width / 14);
+      drops = Array(cols).fill(1);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function draw() {
+      ctx.fillStyle = 'rgba(10, 14, 20, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#14F195';
+      ctx.font = '12px monospace';
+      for (let i = 0; i < cols; i++) {
+        const ch = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(ch, i * 14, drops[i] * 14);
+        if (drops[i] * 14 > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+    setInterval(draw, 50);
+  })();
+
+  /* ── Scroll reveal ───────────────────────── */
+  (function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  })();
+
+  /* ── Live counters ───────────────────────── */
+  (function() {
+    function animateCounter(id, target, duration) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const start = performance.now();
+      const initial = 0;
+      function tick(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.floor(initial + (target - initial) * eased).toLocaleString();
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+    // Trigger on first view
+    const bar = document.querySelector('.live-bar');
+    const obs = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        animateCounter('counter-agents', 1847, 2000);
+        animateCounter('counter-blocks', 312458, 2500);
+        obs.disconnect();
+      }
+    }, { threshold: 0.5 });
+    if (bar) obs.observe(bar);
+  })();
+
+  /* ── Agent spawn sequence ────────────────── */
+  (function() {
+    const lines = [
+      { text: '<span class="dim">// initializing nanosolana agent birth sequence...</span>', delay: 0 },
+      { text: '', delay: 200 },
+      { text: '<span class="check">✓</span> <span class="bright">Phase 1 — Initialization</span>', delay: 400 },
+      { text: '<span class="check">✓</span> Configuration loaded from ~/.nanosolana/config.json', delay: 600 },
+      { text: '<span class="check">✓</span> OpenRouter API key validated', delay: 800 },
+      { text: '', delay: 900 },
+      { text: '<span class="agent">◆</span> <span class="bright">Phase 2 — Birthing Agent</span>', delay: 1000 },
+      { text: '<span class="check">✓</span> Generating Ed25519 keypair <span class="dim">━━━━━━━━━━━━━━━━━━━━</span> <span class="info">done</span>', delay: 1200 },
+      { text: '<span class="check">✓</span> Deriving Solana wallet address', delay: 1400 },
+      { text: '<span class="check">✓</span> Encrypting private key <span class="dim">(AES-256-GCM)</span>', delay: 1600 },
+      { text: '<span class="check">✓</span> Requesting devnet airdrop <span class="dim">━━━━━━━━━━━━━━</span> <span class="warn">2.0 SOL</span>', delay: 1800 },
+      { text: '<span class="check">✓</span> Minting Birth Certificate NFT <span class="dim">(Metaplex)</span>', delay: 2000 },
+      { text: '', delay: 2100 },
+      { text: '<span class="fire">◆</span> <span class="bright">Phase 3 — Systems Online</span>', delay: 2200 },
+      { text: '<span class="check">✓</span> ClawVault memory engine initialized <span class="dim">KNOWN/LEARNED/INFERRED</span>', delay: 2400 },
+      { text: '<span class="check">✓</span> TamaGOchi pet hatched <span class="dim">🥚 → stage: egg | mood: happy</span>', delay: 2600 },
+      { text: '<span class="check">✓</span> Strategy calibrated <span class="dim">RSI(14) + EMA(9,21) + ATR(14)</span>', delay: 2800 },
+      { text: '<span class="check">✓</span> OODA trading loop started <span class="dim">cycle: 5s</span>', delay: 3000 },
+      { text: '<span class="check">✓</span> Gateway connected <span class="dim">ws://0.0.0.0:18790 (HMAC-SHA256)</span>', delay: 3200 },
+      { text: '', delay: 3300 },
+      { text: '<span class="bright">╔══════════════════════════════════════════════════════════╗</span>', delay: 3400 },
+      { text: '<span class="bright">║</span>  <span class="check" style="font-weight:700">⛓  Blockchain Scan</span>                                      <span class="bright">║</span>', delay: 3500 },
+      { text: '<span class="bright">╠══════════════════════════════════════════════════════════╣</span>', delay: 3600 },
+      { text: '<span class="bright">║</span>  <span class="warn">●</span> Solana <span class="dim">v2.0.18 │ slot 312,458,221 │ 42ms</span>          <span class="bright">║</span>', delay: 3700 },
+      { text: '<span class="bright">║</span>  <span class="warn">◎</span> Balance: <span class="warn">2.000000000 SOL</span>                          <span class="bright">║</span>', delay: 3800 },
+      { text: '<span class="bright">║</span>  <span class="info">●</span> Identity: <span class="info">Hk7xQ2p3...m4Qz</span>                       <span class="bright">║</span>', delay: 3900 },
+      { text: '<span class="bright">║</span>  <span class="check">●</span> TamaGOchi: <span class="info">🥚 NanoSolana 😊</span>                      <span class="bright">║</span>', delay: 4000 },
+      { text: '<span class="bright">║</span>  <span class="check">●</span> ClawVault: <span class="dim">0K / 0L / 0I</span>                          <span class="bright">║</span>', delay: 4100 },
+      { text: '<span class="bright">║</span>  <span class="check">●</span> OODA: <span class="check">active</span>  Gateway: <span class="dim">ws://0.0.0.0:18790</span>     <span class="bright">║</span>', delay: 4200 },
+      { text: '<span class="bright">╚══════════════════════════════════════════════════════════╝</span>', delay: 4300 },
+      { text: '', delay: 4400 },
+      { text: '<span class="check" style="font-weight:800;font-size:0.9rem"> 🦞 NanoSolana is LIVE. All systems operational.</span>', delay: 4500 },
+      { text: '<span class="dim">    type `nanosolana --help` for commands</span>', delay: 4700 },
+    ];
+
+    const body = document.getElementById('spawn-body');
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        lines.forEach((line, i) => {
+          setTimeout(() => {
+            const div = document.createElement('div');
+            div.className = 'spawn-line';
+            div.innerHTML = line.text || '&nbsp;';
+            body.appendChild(div);
+            requestAnimationFrame(() => div.classList.add('visible'));
+          }, line.delay);
+        });
+        observer.disconnect();
+      }
+    }, { threshold: 0.2 });
+    if (body) observer.observe(body.parentElement);
+  })();
+
+  /* ── Blockchain block visualizer ─────────── */
+  (function() {
+    const container = document.getElementById('chain-blocks');
+    if (!container) return;
+    const count = Math.floor(Math.min(window.innerWidth * 0.8, 920) / 10);
+    for (let i = 0; i < count; i++) {
+      const block = document.createElement('div');
+      block.className = 'chain-block';
+      block.style.height = (8 + Math.random() * 24) + 'px';
+      container.appendChild(block);
+    }
+    // Animate blocks
+    let idx = 0;
+    setInterval(() => {
+      const blocks = container.querySelectorAll('.chain-block');
+      blocks.forEach(b => b.classList.remove('active'));
+      if (blocks[idx]) {
+        blocks[idx].classList.add('active');
+        blocks[idx].style.height = (8 + Math.random() * 32) + 'px';
+        blocks[idx].style.background = Math.random() > 0.8 ? '#9945FF' : '#14F195';
+      }
+      idx = (idx + 1) % blocks.length;
+      // Update slot
+      const slot = document.getElementById('slot-num');
+      if (slot) {
+        const cur = parseInt(slot.textContent.replace(/,/g, ''));
+        slot.textContent = (cur + Math.floor(Math.random() * 3) + 1).toLocaleString();
+      }
+    }, 120);
+  })();
+
+  /* ── Random session ID ───────────────────── */
+  (function() {
+    const el = document.getElementById('session-id');
+    if (el) {
+      const hex = Array.from({ length: 4 }, () => Math.floor(Math.random() * 16).toString(16)).join('');
+      el.textContent = '0x' + hex;
+    }
+  })();
+
+  /* ── Hero ASCII glow pulse ───────────────── */
+  (function() {
+    const ascii = document.getElementById('hero-ascii');
+    if (!ascii) return;
+    let hue = 0;
+    setInterval(() => {
+      hue = (hue + 1) % 360;
+      const g = Math.sin(hue * Math.PI / 180) * 0.3 + 0.4;
+      ascii.style.textShadow = `0 0 ${10 + g * 20}px rgba(20, 241, 149, ${g}), 0 0 ${40 + g * 30}px rgba(153, 69, 255, ${g * 0.3})`;
+    }, 50);
+  })();
+
+  /* ── Demo tab switching ──────────────────── */
+  (function() {
+    const tabs = document.querySelectorAll('.demo-tab');
+    const panels = document.querySelectorAll('.demo-panel');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        panels.forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        const panel = document.getElementById('demo-' + tab.dataset.demo);
+        if (panel) panel.classList.add('active');
+        // Start DVD when its tab is active
+        if (tab.dataset.demo === 'dvd') startDvd();
+      });
+    });
+  })();
+
+  /* ── DVD Screensaver ─────────────────────── */
+  let dvdRunning = false;
+  function startDvd() {
+    const canvas = document.getElementById('dvd-canvas');
+    if (!canvas || dvdRunning) return;
+    dvdRunning = true;
+    const ctx = canvas.getContext('2d');
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = 260;
+
+    const text = 'NanoSolana 🦞';
+    const colors = ['#14F195', '#9945FF', '#FF6B35', '#00d4ff', '#fbbf24', '#ff5f57'];
+    let colorIdx = 0;
+    let x = 50, y = 80;
+    let dx = 2.2, dy = 1.8;
+    const fontSize = 28;
+
+    function drawFrame() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.font = `bold ${fontSize}px "JetBrains Mono", monospace`;
+      ctx.fillStyle = colors[colorIdx];
+      ctx.shadowColor = colors[colorIdx];
+      ctx.shadowBlur = 20;
+      ctx.fillText(text, x, y);
+      ctx.shadowBlur = 0;
+
+      // Draw version below
+      ctx.font = '12px "JetBrains Mono", monospace';
+      ctx.fillStyle = colors[colorIdx] + '80';
+      ctx.fillText('v0.2.0', x + 10, y + 18);
+
+      x += dx;
+      y += dy;
+
+      const tw = ctx.measureText(text).width + 40;
+      if (x + tw > canvas.width || x < 0) {
+        dx = -dx;
+        colorIdx = (colorIdx + 1) % colors.length;
+      }
+      if (y > canvas.height - 5 || y < fontSize) {
+        dy = -dy;
+        colorIdx = (colorIdx + 1) % colors.length;
+      }
+
+      requestAnimationFrame(drawFrame);
+    }
+    drawFrame();
+  }
+  // Auto-start DVD since it's the default tab
+  document.addEventListener('DOMContentLoaded', () => setTimeout(startDvd, 500));
+
+  /* ── Lobster Animation ───────────────────── */
+  (function() {
+    const frames = [
+      `    ,_____,
+   /  o  o  \\
+  |    <>    |
+   \\  ====  /
+    |  ||  |
+   /|  ||  |\\
+  / |__||__| \\
+ /  /||  ||\\  \\
+(  / ||  || \\  )
+ \\/  ||  ||  \\/
+     ''  ''`,
+      `    ,_____,
+   /  -  o  \\
+  |    <>    |
+   \\  ====  /
+    |  ||  |
+   /|  ||  |\\
+  / |__||__| \\
+ /  /||  ||\\  \\
+(  / ||  || \\  )
+ \\/  ||  ||  \\/
+     ''  ''`,
+      `    ,_____,
+   /  o  -  \\
+  |    <>    |
+   \\  ====  /
+    |  ||  |
+   /|  ||  |\\
+  / |__||__| \\
+ /  /||  ||\\  \\
+(  / ||  || \\  )
+ \\/  ||  ||  \\/
+     ''  ''`,
+      `    ,_____,
+   /  ^  ^  \\
+  |    <>    |
+   \\  ====  /
+    |  ||  |
+   /|  ||  |\\
+  / |__||__| \\
+ /  /||  ||\\  \\
+(  / ||  || \\  )
+ \\/  ||  ||  \\/
+     ''  ''`,
+    ];
+
+    const art = document.getElementById('lobster-art');
+    if (!art) return;
+    let frame = 0;
+    art.textContent = frames[0];
+    setInterval(() => {
+      frame = (frame + 1) % frames.length;
+      art.textContent = frames[frame];
+    }, 600);
+  })();
+  </script>
+</body>
 </html>
