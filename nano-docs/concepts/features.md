@@ -74,10 +74,21 @@ NanoSolana is a monorepo for autonomous Solana agents, registry tooling, and Pum
 - Multimodal input support (text, image, audio, video).
 - OODA-structured reasoning (orient, decide, research, chat).
 
+### 💳 Tokenized agent payments
+
+- On-chain invoice system powered by `@pump-fun/agent-payments-sdk`.
+- `NanoPaymentAgent` class wraps `PumpAgent` for invoice creation, PDA derivation, and verification with retries.
+- Supports USDC (6 decimals) and Wrapped SOL (9 decimals) as payment currencies.
+- Invoice ID PDAs prevent duplicate payments on-chain.
+- Payment-gated swarm spawning: require payment before spawning new agents.
+- CLI: `nanosolana pay invoice`, `nanosolana pay verify`, `nanosolana pay status`.
+- Telegram: `/invoice` and `/invoices` commands for creating and tracking invoices.
+- Program ID: `AgenTMiC2hvxGebTsgmsD4HHBa8WEcqGFf87iwRRxLo7`.
+
 ### 🐋 Pump ecosystem integration
-- `pump/sdk-bridge.ts` exposes token price, graduation progress, and quote helpers.
-- `pump/swarm-spawner.ts` manages role-based Pump agents.
-- `pump/telegram-gateway.ts` provides Telegram control over the Pump swarm.
-- `pump/bot-registry.ts` maps bots, packages, services, env vars, and health endpoints.
+- `nano-core/src/claw/pump/sdk-bridge.ts` exposes token price, graduation progress, and quote helpers.
+- `nano-core/src/claw/pump/swarm-spawner.ts` manages role-based Pump agents with optional payment gating.
+- `nano-core/src/claw/pump/telegram-gateway.ts` provides Telegram control over the Pump swarm, including `/invoice` and `/invoices`.
+- `nano-core/src/claw/pump/bot-registry.ts` maps bots, packages, services, env vars, and health endpoints.
 - `pump/docs/` contains 83 repo-local Pump docs.
 - `skills/` includes 24 Pump and PumpFun-oriented skill packs.

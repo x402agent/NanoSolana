@@ -410,8 +410,8 @@ export class TelegramGateway {
     if (lessons.length > 0) {
       msg += `📖 <b>Top Lessons</b>\n`;
       for (const l of lessons.slice(0, 5)) {
-        const wr = (l.winRate * 100).toFixed(0);
-        msg += `   ${l.winRate >= 0.5 ? '✅' : '⚠️'} ${l.pattern}: ${wr}% WR (${l.occurrences} trades)\n`;
+        const icon = l.confidenceImpact >= 0 ? '✅' : '⚠️';
+        msg += `   ${icon} ${l.pattern}: ${l.adjustment}\n`;
       }
       msg += '\n';
     }

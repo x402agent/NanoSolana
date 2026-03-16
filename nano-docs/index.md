@@ -35,7 +35,8 @@ This doc tree focuses on:
 - the current `nanosolana` CLI in `nano-core`
 - OODA, ClawVault, TamaGOchi, gateway, mesh, and extension concepts
 - NanoHub and skill publishing
-- the Pump bridge layer exposed from `pump/`
+- the Pump bridge layer integrated into `nano-core/src/claw/pump/`
+- the tokenized agent payments system (`nanosolana pay`)
 
 For the much deeper Pump protocol and ecosystem docs, use the separate repo-local tree at [`../pump/docs/getting-started.md`](../pump/docs/getting-started.md).
 
@@ -49,6 +50,7 @@ For the much deeper Pump protocol and ecosystem docs, use the separate repo-loca
 | Extensions | 41 extension directories, 14 manifest-based runtime plugins |
 | Pump docs | 83 files under `pump/docs/` |
 | Pump skills | 24 Pump and PumpFun-specific skill packs under `skills/` |
+| Payments | On-chain invoice system via `@pump-fun/agent-payments-sdk` in `nano-core/src/payments/` |
 | NanoHub | Separate app + CLI in `nanohub/` |
 
 ## Documentation Map
@@ -75,6 +77,7 @@ For the much deeper Pump protocol and ecosystem docs, use the separate repo-loca
 - [**Trade**](/cli/trade) — how trading is exposed today
 - [**Wallet**](/cli/wallet) — wallet flows in the current CLI
 - [**Channels**](/cli/channels) — messaging and extension surfaces
+- [**Pay**](/cli) — on-chain invoice creation, verification, and status (see CLI Index)
 
 ### Runtime Areas
 
@@ -86,16 +89,15 @@ For the much deeper Pump protocol and ecosystem docs, use the separate repo-loca
 
 ## Adjacent Pump Docs
 
-The top-level `pump/` directory is an integration layer around the broader Pump ecosystem vendored in `pump-fun-sdk-main/`.
+The Pump bridge layer is now integrated into `nano-core/src/claw/pump/`. The top-level `pump/` workspace remains as a reference, and `pump-fun-sdk-main/` contains the vendored upstream ecosystem.
 
 Useful entrypoints:
 
-- [`../pump/index.ts`](../pump/index.ts)
-- [`../pump/sdk-bridge.ts`](../pump/sdk-bridge.ts)
-- [`../pump/swarm-spawner.ts`](../pump/swarm-spawner.ts)
-- [`../pump/telegram-gateway.ts`](../pump/telegram-gateway.ts)
-- [`../pump/bot-registry.ts`](../pump/bot-registry.ts)
-- [`../pump/main.ts`](../pump/main.ts)
+- `nano-core/src/claw/pump/sdk-bridge.ts` — analytics and quote helpers
+- `nano-core/src/claw/pump/swarm-spawner.ts` — role-based agent orchestration with payment gating
+- `nano-core/src/claw/pump/telegram-gateway.ts` — Telegram command handling (including `/invoice`, `/invoices`)
+- `nano-core/src/claw/pump/bot-registry.ts` — bot, service, and package metadata
+- `nano-core/src/payments/` — on-chain invoice system (`NanoPaymentAgent`)
 - [`../pump/docs/getting-started.md`](../pump/docs/getting-started.md)
 - [`../pump/docs/ecosystem.md`](../pump/docs/ecosystem.md)
 - [`../pump/agent-tasks/README.md`](../pump/agent-tasks/README.md)

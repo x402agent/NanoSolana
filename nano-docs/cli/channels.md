@@ -31,12 +31,18 @@ nanosolana run
 
 ## Pump Telegram control plane
 
-The repo also contains a dedicated Pump Telegram gateway in:
+The Pump Telegram gateway is integrated into `nano-core` at:
 
-- `pump/telegram-gateway.ts`
-- `pump/main.ts`
+- `nano-core/src/claw/pump/telegram-gateway.ts`
 
-That layer supports commands such as `/swarm`, `/spawn`, `/agents`, `/price`, `/quote`, `/curve`, `/fees`, and `/events` for the Pump swarm specifically.
+It supports commands such as `/swarm`, `/spawn`, `/agents`, `/price`, `/quote`, `/curve`, `/fees`, `/events`, `/invoice`, and `/invoices` for the Pump swarm.
+
+### Payment commands
+
+| Command | Description |
+|---------|-------------|
+| `/invoice <pubkey> <amount> [USDC\|SOL]` | Create an on-chain payment invoice for a user |
+| `/invoices` | List all tracked invoices with paid/pending status |
 
 ## Telegram persistence
 

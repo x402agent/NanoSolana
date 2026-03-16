@@ -46,6 +46,7 @@ nanosolana scan [address]
 nanosolana register
 nanosolana registry
 nanosolana nanobot
+nanosolana pay invoice|verify|status
 ```
 
 ## Command groups
@@ -70,6 +71,12 @@ nanosolana nanobot
 - `nanosolana nanobot` — start the local NanoBot UI on port `7777` by default
 - `nanosolana dvd` / `lobster` — terminal extras
 
+### Tokenized agent payments
+
+- `nanosolana pay invoice --user <pubkey> --amount <amount> [--currency USDC|SOL] [--duration 3600]` — create an on-chain payment invoice
+- `nanosolana pay verify --user <pubkey> --memo <memo> --amount <amount> --start <ts> --end <ts>` — verify an invoice payment
+- `nanosolana pay status` — show payment system configuration and tracked invoices
+
 ### Mesh and tmux operations
 
 - `nanosolana send <message>` — broadcast or target a mesh node
@@ -82,6 +89,7 @@ nanosolana nanobot
 - There is no shipped `nanosolana trade ...` subtree yet.
 - There is no shipped `nanosolana memory ...` subtree yet; ClawVault is exposed through `nanosolana vault`.
 - There is no shipped `nanosolana gateway ...` subtree yet; the gateway is started by `run` or `go`, or via `npm run gateway` inside `nano-core`.
+- `nanosolana pay` **is** shipped and provides on-chain invoice creation, verification, and status via the `@pump-fun/agent-payments-sdk`.
 
 Those older command shapes appeared in earlier docs as a target UX. The rest of this doc tree maps those capability areas to the commands and scripts that actually exist.
 
@@ -101,3 +109,5 @@ Most important variables today:
 | `NANO_GATEWAY_PORT` | Gateway port (default `18790`) |
 | `NANO_GATEWAY_SECRET` | Gateway HMAC secret |
 | `TAILSCALE_AUTH_KEY` | Mesh auth |
+| `AGENT_TOKEN_MINT_ADDRESS` | Agent token mint for on-chain payments |
+| `CURRENCY_MINT` | Payment currency mint (default: USDC) |

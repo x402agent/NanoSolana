@@ -520,8 +520,10 @@ function parseFrontmatter(markdown: string): Record<string, string> {
     const match = /^([A-Za-z0-9_-]+)\s*:\s*(.+)$/.exec(line.trim());
     if (!match) continue;
 
-    const key = match[1];
-    let value = match[2].trim();
+    const [, key, rawValue] = match;
+    if (!key || !rawValue) continue;
+
+    let value = rawValue.trim();
 
     if (
       (value.startsWith('"') && value.endsWith('"'))

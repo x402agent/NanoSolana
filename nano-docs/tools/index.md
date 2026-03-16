@@ -31,6 +31,7 @@ The current shipped CLI exposes these top-level operational commands:
 - `register`
 - `registry`
 - `nanobot`
+- `pay` — on-chain invoice creation, verification, and status (`pay invoice`, `pay verify`, `pay status`)
 
 ## Extension tool examples in this repo
 

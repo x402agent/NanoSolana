@@ -2,6 +2,18 @@
 
 All notable changes to NanoSolana will be documented in this file.
 
+## [1.0.1] — 2026-03-16
+
+### Fixed
+
+- Added the missing `cron-parser` runtime dependency required by the claw IPC and task scheduler paths.
+- Fixed strict TypeScript declaration build errors in the CLI demo flow, docs integration, container runner, Pump swarm spawner, and Pump Telegram gateway.
+- Aligned the bundled docs corpus with the current repo surface, including `pump/docs/` integration in `nanosolana docs`.
+
+### Improved
+
+- Updated package metadata and release artifacts so `npx nanosolana go` resolves to a buildable, test-passing package.
+
 ## [1.0.0] — 2025-03-15
 
 ### 🎉 First Stable Release

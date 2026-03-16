@@ -1,6 +1,6 @@
 {
   "name": "nanosolana",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "🦞 The open-source agentic framework for financial intelligence on Solana. Autonomous OODA trading, epistemological memory, mesh coordination, and a virtual pet soul — deploy in 30 seconds.",
   "keywords": [
     "solana",
@@ -106,6 +106,7 @@
     "bs58": "^6.0.0",
     "chalk": "^5.6.2",
     "commander": "^14.0.3",
+    "cron-parser": "^5.5.0",
     "dotenv": "^17.3.1",
     "drizzle-orm": "^0.36.0",
     "eventemitter3": "^5.0.0",

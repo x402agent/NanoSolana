@@ -50,16 +50,22 @@ Typical runtime flow:
 
 ## Where Pump fits
 
-Pump-specific trading material is not only in `nano-core`.
+The Pump bridge layer is integrated into `nano-core/src/claw/pump/`:
 
-Use these additional sources:
-
-- [`../../pump/sdk-bridge.ts`](../../pump/sdk-bridge.ts)
-- [`../../pump/swarm-spawner.ts`](../../pump/swarm-spawner.ts)
+- `nano-core/src/claw/pump/sdk-bridge.ts` — token price, graduation progress, and quote helpers
+- `nano-core/src/claw/pump/swarm-spawner.ts` — role-based agent orchestration with optional payment gating
 - [`../../pump/docs/amm-trading.md`](../../pump/docs/amm-trading.md)
 - [`../../pump/docs/bonding-curve-math.md`](../../pump/docs/bonding-curve-math.md)
 - [`../../pump/docs/fee-tiers.md`](../../pump/docs/fee-tiers.md)
 - [`../../pump/docs/token-incentives.md`](../../pump/docs/token-incentives.md)
+
+## Payment-gated agent spawning
+
+The swarm spawner supports optional payment gating via `@pump-fun/agent-payments-sdk`:
+
+- Configure `paymentGating` in `SwarmConfig` to require on-chain payment before spawning agents.
+- `nanosolana pay invoice` creates invoices; `nanosolana pay verify` confirms payment.
+- Telegram users can create invoices with `/invoice <pubkey> <amount> [USDC|SOL]`.
 
 ## Programmatic surface
 

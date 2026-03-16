@@ -204,9 +204,7 @@ export class SwarmSpawner {
 
     // ── Epistemological Memory (ClawVault) ────────────────────
     // Each agent gets its own persistent memory vault
-    const memory = new ClawVault(
-      `${this.config.dbPath.replace(/\.db$/, '')}-${id}`,
-    );
+    const memory = new ClawVault();
     this.agentMemory.set(id, memory);
 
     // If persona is set, imprint its identity into LEARNED memory
@@ -218,7 +216,6 @@ export class SwarmSpawner {
         source: 'persona-birth',
         tags: ['identity', 'persona', ...persona.meta.tags],
         confidence: 1.0,
-        sampleCount: 1,
       });
 
       memory.storeLearned({
@@ -226,12 +223,11 @@ export class SwarmSpawner {
         source: 'persona-system-prompt',
         tags: ['system-prompt', 'persona', 'expertise'],
         confidence: 1.0,
-        sampleCount: 1,
       });
 
       // Store each opening question as an INFERRED research direction
       for (const q of persona.config.openingQuestions) {
-        memory.addResearchGap(q, []);
+        memory.addResearchGap(q);
       }
 
       // ── Task Assignments ──────────────────────────────────────

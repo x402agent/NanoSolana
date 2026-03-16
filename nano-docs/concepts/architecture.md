@@ -56,22 +56,33 @@ The current runtime center of gravity is `nano-core`.
 - Published as `nanosolana`
 - Owns the shipped CLI surface
 - Contains wallet management, ClawVault, trading engine, gateway, NanoBot, and on-chain identity
+- Ships `nanosolana pay` for on-chain invoice creation and verification via `@pump-fun/agent-payments-sdk`
+- Integrates the Pump bridge layer at `src/claw/pump/` (sdk-bridge, swarm-spawner, telegram-gateway, bot-registry)
 - Starts the gateway automatically during `nanosolana run` and `nanosolana go`
 - Uses `HELIUS_*`, `BIRDEYE_*`, `JUPITER_API_KEY`, and AI provider secrets from the encrypted vault
 
-## `pump/`
+## `pump/` → `nano-core/src/claw/pump/`
 
-The top-level `pump/` workspace is the NanoSolana-facing Pump bridge layer.
+The Pump bridge layer has been integrated into `nano-core` at `src/claw/pump/`.
 
 It provides:
 
-- [`../pump/sdk-bridge.ts`](../pump/sdk-bridge.ts) for convenience analytics and quote helpers
-- [`../pump/swarm-spawner.ts`](../pump/swarm-spawner.ts) for in-process role-based agent orchestration
-- [`../pump/telegram-gateway.ts`](../pump/telegram-gateway.ts) for Telegram command handling
-- [`../pump/bot-registry.ts`](../pump/bot-registry.ts) for bot, service, and package metadata
-- [`../pump/main.ts`](../pump/main.ts) as a standalone launcher for the Pump swarm bridge
+- `nano-core/src/claw/pump/sdk-bridge.ts` for convenience analytics and quote helpers
+- `nano-core/src/claw/pump/swarm-spawner.ts` for in-process role-based agent orchestration with optional payment gating
+- `nano-core/src/claw/pump/telegram-gateway.ts` for Telegram command handling including `/invoice` and `/invoices`
+- `nano-core/src/claw/pump/bot-registry.ts` for bot, service, and package metadata
+- `nano-core/src/claw/pump/types.ts` for shared Pump type definitions
 
-This layer points into the vendored upstream workspace in `pump-fun-sdk-main/`.
+The top-level `pump/` workspace remains as a reference but the canonical runtime code is in `nano-core`.
+
+## Payments module
+
+`nano-core/src/payments/` provides on-chain tokenized agent payments:
+
+- `agent.ts` — `NanoPaymentAgent` class wrapping `PumpAgent` from `@pump-fun/agent-payments-sdk`
+- `types.ts` — invoice, payment config, and currency type definitions
+- `index.ts` — barrel exports and `createPaymentAgent()` factory
+- Program ID: `AgenTMiC2hvxGebTsgmsD4HHBa8WEcqGFf87iwRRxLo7`
 
 ## `extensions/`
 

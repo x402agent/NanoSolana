@@ -528,7 +528,11 @@ export async function runContainerAgent(
         } else {
           // Fallback: last non-empty line (backwards compatibility)
           const lines = stdout.trim().split('\n');
-          jsonLine = lines[lines.length - 1];
+          const lastLine = lines[lines.length - 1];
+          if (!lastLine) {
+            throw new Error('Container returned no parsable output');
+          }
+          jsonLine = lastLine;
         }
 
         const output: ContainerOutput = JSON.parse(jsonLine);

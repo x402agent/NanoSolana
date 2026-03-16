@@ -74,6 +74,16 @@ You should verify:
 - `NANO_GATEWAY_SECRET` is set when exposing authenticated endpoints
 - gateway endpoints respond on `18790`, not `18789`
 
+## Payment verification security
+
+The `@pump-fun/agent-payments-sdk` integration adds on-chain payment verification:
+
+- Invoice ID PDAs are derived deterministically from currency, memo, amount, and time window — preventing duplicate payments.
+- `validateInvoicePayment` verifies payments on-chain with configurable retry logic.
+- Payment amounts are validated in smallest units (lamports for SOL, micro-units for USDC) to prevent rounding exploits.
+- The `AGENT_TOKEN_MINT_ADDRESS` and `CURRENCY_MINT` env vars should be treated as configuration secrets and not committed to version control.
+- Payment-gated swarm spawning ensures agents cannot be created without verified on-chain payment.
+
 ## Operator guidance
 
 1. Keep the gateway behind localhost or Tailscale.
