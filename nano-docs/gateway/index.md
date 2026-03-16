@@ -19,6 +19,7 @@ subtree. In this checkout, the gateway is started in one of these ways:
 The gateway in [`nano-core/src/gateway/server.ts`](../../nano-core/src/gateway/server.ts):
 
 - exposes HTTP endpoints such as `/health`, `/api/status`, `/api/framework`, and `/api/memory`
+- also exposes `/api/docs` and `/api/extension/{config,wallet,chat,trade}`
 - accepts authenticated WebSocket clients for mesh-style coordination
 - relays memory updates and runtime status
 - fronts the local runtime for UI, automation, and peer communication
@@ -85,6 +86,7 @@ curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
 
 - WebSocket auth: HMAC-SHA256 signature on the initial auth frame
 - HTTP auth: `X-NanoSolana-Secret` or `Authorization: Bearer ...`
+- API auth is enforced on `/api/*` routes only when `NANO_GATEWAY_SECRET` is configured
 - Comparison: timing-safe comparison in the gateway implementation
 - Default limits: `10` connections/minute and `100` messages/minute
 
@@ -95,6 +97,7 @@ curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
 - `nanosolana nodes` and `nanosolana bots` are the current operator-facing mesh views.
 - `nanosolana docs` now indexes both `nano-docs/` and `pump/docs/`, so the gateway
   can surface both NanoSolana and Pump material through one searchable corpus.
+- UI and browser integrations use the `/api/extension/*` endpoints exposed by the gateway.
 
 ## Remote access
 
@@ -107,3 +110,10 @@ ssh -N -L 18790:127.0.0.1:18790 user@gateway-host
 ```
 
 Keep HMAC auth enabled even when tunneling.
+
+## Related docs
+
+- [Gateway Configuration](/gateway/configuration)
+- [Gateway Protocol](/gateway/protocol)
+- [Gateway Security](/gateway/security)
+- [Heartbeat](/gateway/heartbeat)

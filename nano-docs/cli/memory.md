@@ -15,18 +15,23 @@ nanosolana vault
 nanosolana vault "RSI"
 nanosolana status
 nanosolana docs memory
+curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+  http://127.0.0.1:18790/api/memory
 ```
 
-Output:
+Typical CLI output shape:
 
 ```text
 ClawVault Memory Status
 ━━━━━━━━━━━━━━━━━━━━━━
-  KNOWN:    42 entries   (TTL: 60s)
-  LEARNED:  156 entries  (TTL: 7 days)
-  INFERRED: 23 entries   (TTL: 3 days)
-  Agenda:   5 questions
-  Disk:     1.2 MB
+  KNOWN:     0 (fresh API data, expires in ~60s)
+  LEARNED:   0 (trade-derived patterns)
+  INFERRED:  0 (correlations, held loosely)
+  Inbox:     0 (pending reflection)
+  Trades:    0
+  Lessons:   0
+  Win Rate:  0.0%
+  Research:  0 open gaps
 ```
 
 When you pass a query string to `nanosolana vault`, it searches recent memory and prints matching entries with tier labels.
@@ -39,16 +44,22 @@ When you pass a query string to `nanosolana vault`, it searches recent memory an
 | LEARNED | 7 days | Trade outcome patterns |
 | INFERRED | 3 days | Tentative correlations |
 
-## File layout
+## Persistence note
 
-```text
-~/.nanosolana/clawvault/
-├── known.json         # Usually empty (ephemeral)
-├── learned.json       # Persistent patterns
-├── inferred.json      # Tentative correlations
-├── agenda.json        # Research questions
-└── replay/            # Experience replay logs
-```
+The current `ClawVault` implementation is primarily an in-memory runtime structure.
+Older docs sometimes described a fixed on-disk `clawvault/` directory layout; treat
+that as conceptual rather than the current source of truth.
+
+## Gateway surface
+
+The gateway also exposes memory state over:
+
+- `/api/memory`
+- WebSocket `memory:query`
+- WebSocket `memory:results`
+- WebSocket `memory:lesson`
+
+Use the gateway when another process or UI needs memory state without shelling out to the CLI.
 
 ## Note
 

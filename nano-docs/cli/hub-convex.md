@@ -7,6 +7,10 @@ title: "hub-convex"
 
 Use NanoHub web plus the `nanohub` CLI with Convex-backed auth and publishing.
 
+This is adjacent to the NanoSolana runtime rather than a `nanosolana` subcommand.
+The runtime can point at NanoHub through `NANO_HUB_URL`, while publishing and
+registry operations live in the separate `nanohub` package.
+
 ## What Convex backs
 
 - GitHub auth and user bootstrap

@@ -15,6 +15,8 @@ nanosolana run
 nanosolana go
 nanosolana demo
 nanosolana status
+curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+  http://127.0.0.1:18790/api/status
 ```
 
 ## What each one does
@@ -28,6 +30,10 @@ nanosolana status
 
 For direct embedding, use `TradingEngine` from `nanosolana` in `nano-core`.
 
+The gateway also exposes an authenticated manual trade surface for browser and UI integrations:
+
+- `/api/extension/trade`
+
 ## Safety
 
 - Trading execution is disabled by default.
@@ -35,11 +41,22 @@ For direct embedding, use `TradingEngine` from `nanosolana` in `nano-core`.
 
 ## Pump-specific trading surfaces
 
-The repo also includes a separate Pump bridge layer:
+The Pump bridge layer is integrated into `nano-core/src/claw/pump/`:
 
-- `pump/sdk-bridge.ts`
-- `pump/swarm-spawner.ts`
-- `pump/telegram-gateway.ts`
-- `pump/main.ts`
+- `nano-core/src/claw/pump/sdk-bridge.ts`
+- `nano-core/src/claw/pump/swarm-spawner.ts`
+- `nano-core/src/claw/pump/telegram-gateway.ts`
 
 See [Trading Engine](/trading) for the full architecture and [`../pump/docs/getting-started.md`](../pump/docs/getting-started.md) for protocol-specific flows.
+
+## Payment-gated operations
+
+The `nanosolana pay` command group provides on-chain invoice creation and verification:
+
+```bash
+nanosolana pay invoice --user <pubkey> --amount 10 --currency USDC
+nanosolana pay verify --user <pubkey> --memo <memo> --amount 10 --start <ts> --end <ts>
+nanosolana pay status
+```
+
+This enables payment-gated agent spawning and service access through the `@pump-fun/agent-payments-sdk`.

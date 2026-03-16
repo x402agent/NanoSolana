@@ -24,6 +24,11 @@ Current documented endpoints:
 | `/api/status` | `GET` | Authenticated runtime status |
 | `/api/framework` | `GET` | Authenticated framework metadata |
 | `/api/memory` | `GET` | Authenticated memory summary |
+| `/api/docs` | `GET` | Authenticated docs and extension index |
+| `/api/extension/config` | `GET`, `POST` | Authenticated extension config surface |
+| `/api/extension/wallet` | `GET`, `POST` | Authenticated wallet surface for extensions |
+| `/api/extension/chat` | `POST` | Authenticated chat relay surface |
+| `/api/extension/trade` | `POST` | Authenticated manual trade surface |
 
 Example:
 
@@ -32,6 +37,8 @@ curl http://127.0.0.1:18790/health
 curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/status
 ```
+
+The `/api/*` routes require auth only when `NANO_GATEWAY_SECRET` is configured.
 
 ## WebSocket auth handshake
 
@@ -62,6 +69,7 @@ these message families:
 | `trade:*` | signals, fills, runtime trading state |
 | `memory:*` | queries, lessons, synchronization |
 | `agent:*` | heartbeats and lifecycle |
+| `chat:*` | gateway-assisted UI and extension chat flows |
 | `bot:*` | swarm and orchestration events |
 
 ## Limits

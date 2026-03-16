@@ -1,121 +1,77 @@
 ---
-summary: "TamaGObot heartbeat — periodic OODA cycles and pet pulse"
+summary: "Gateway heartbeat in the current runtime — wallet liveness and agent:heartbeat events"
 title: "Heartbeat"
 ---
 
 # Heartbeat
 
-The TamaGObot heartbeat serves dual purposes:
+In the current NanoSolana runtime, heartbeat means the wallet heartbeat and the
+gateway event stream built on top of it. It is not a separate prompt scheduler.
 
-1. **Trading heartbeat** — periodic OODA loop cycles for market monitoring.
-2. **TamaGOchi pulse** — pet status updates tied to the agent's wallet.
+## What happens today
 
-## Quick start
+When `nanosolana run` or `nanosolana go` starts:
 
-```json5
-{
-  agents: {
-    defaults: {
-      heartbeat: {
-        every: "30m",            // OODA cycle interval
-        target: "last",          // deliver alerts to last channel
-        lightContext: true,      // only inject HEARTBEAT.md
-        activeHours: {
-          start: "08:00",
-          end: "24:00"
-        }
-      }
-    }
-  }
-}
+1. the wallet heartbeat is started with `wallet.startHeartbeat(...)`
+2. the gateway subscribes to the wallet `"heartbeat"` event
+3. the gateway broadcasts `agent:heartbeat` frames to connected WebSocket agents
+4. connected-agent metadata updates `lastHeartbeat`
+
+Relevant code paths:
+
+- [`../../nano-core/src/cli/entry.ts`](../../nano-core/src/cli/entry.ts)
+- [`../../nano-core/src/gateway/server.ts`](../../nano-core/src/gateway/server.ts)
+- [`../../nano-core/src/config/vault.ts`](../../nano-core/src/config/vault.ts)
+
+## Default interval
+
+The wallet heartbeat interval is controlled by:
+
+| Setting | Source | Default |
+|--------|--------|---------|
+| Agent heartbeat | `NANO_AGENT_HEARTBEAT_INTERVAL_MS` | `5000` ms |
+
+That value is loaded into `config.agent.heartbeatMs`.
+
+## Where you can see it
+
+### Runtime output
+
+```bash
+npx nanosolana run
 ```
 
-## Defaults
+The CLI runtime prints a rolling local heartbeat line with:
 
-- **Interval**: `30m` (configurable via `heartbeat.every`; `0m` to disable).
-- **Prompt**: reads `HEARTBEAT.md` if it exists, then runs a lightweight OODA scan.
-- **Response contract**: `HEARTBEAT_OK` = all clear (suppressed). Any other text = alert (delivered).
+- current time
+- wallet balance
+- current TamaGOchi mood emoji
 
-## Trading heartbeat
+### HTTP
 
-Each heartbeat triggers a lightweight OODA cycle:
-
-```
-1. Check KNOWN tier for stale data → refresh from Helius/Birdeye
-2. Scan for signal conditions (RSI/EMA crossover)
-3. Check open positions for stop-loss/take-profit
-4. If alert needed → deliver to target channel
-5. If nothing → reply HEARTBEAT_OK (suppressed)
+```bash
+curl http://127.0.0.1:18790/health
+curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+  http://127.0.0.1:18790/api/status
 ```
 
-## TamaGOchi pulse
+### WebSocket
 
-The pet engine updates alongside the trading heartbeat:
+Authenticated clients receive `agent:heartbeat` broadcasts.
 
-- **Hunger**: increases every heartbeat (feed to reset).
-- **Mood**: tied to recent P&L performance.
-- **Evolution**: checked on each heartbeat tick.
-- **Ghost state**: triggered if health reaches 0 (trading disabled).
+## Related fields and endpoints
 
-```mermaid
-graph LR
-    A[Heartbeat Tick] --> B{Check P&L}
-    B -->|Profitable| C[Pet Happy]
-    B -->|Losing| D[Pet Sad]
-    B -->|Neutral| E[Pet Content]
-    A --> F{Check Hunger}
-    F -->|Fed| G[Continue]
-    F -->|Starving| H[Pet Sick → Ghost Risk]
-```
+- `/health` includes runtime liveness and auth state
+- `/api/status` includes connected agents and their `lastHeartbeat`
+- WebSocket `agent:heartbeat` carries the wallet heartbeat payload
 
-## HEARTBEAT.md
+## What this page does not describe
 
-Optional workspace file for custom heartbeat behavior:
+Older docs used “heartbeat” for:
 
-```markdown
-# NanoSolana Heartbeat Checklist
+- `HEARTBEAT.md`
+- active-hours scheduling
+- prompt-target routing
+- lightweight periodic OODA prompts
 
-- Check SOL wallet balance (≥0.1 SOL minimum)
-- Scan for RSI < 25 opportunities (deep oversold)
-- Monitor open positions: check stop-loss/take-profit
-- If TamaGOchi hunger > 80%: remind user to feed
-- If daily P&L > +5%: send celebration message
-```
-
-## Active hours
-
-Restrict heartbeats to trading hours:
-
-```json5
-heartbeat: {
-  every: "15m",
-  activeHours: {
-    start: "09:00",
-    end: "22:00",
-    timezone: "America/New_York"
-  }
-}
-```
-
-Outside this window, heartbeats are skipped. TamaGOchi pulse still runs
-(pet gets hungry even at night).
-
-## Delivery targets
-
-| Target | Description |
-|--------|-------------|
-| `none` | Run OODA but don't deliver (default) |
-| `last` | Deliver to last active channel |
-| `telegram` | Always deliver to Telegram |
-| `discord` | Always deliver to Discord |
-| `nostr` | Broadcast to Nostr relays |
-
-## Cost awareness
-
-Heartbeats run full OODA cycles with AI inference. Shorter intervals = more tokens.
-Recommended minimum: `15m` (to avoid API rate limits and costs).
-
-For budget-conscious setups:
-- Use `lightContext: true` (smaller prompt).
-- Use a cheaper model for heartbeats: `heartbeat.model: "openrouter/healer-alpha"`.
-- Set `target: "none"` for silent monitoring.
+That is not the current implementation in `nano-core`.

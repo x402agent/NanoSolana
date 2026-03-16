@@ -32,6 +32,7 @@ The current runtime center of gravity is `nano-core`.
                        │          nano-core            │
                        │  CLI · wallet · AI · memory   │
                        │  trading · gateway · nanobot  │
+                       │  payments · pump bridge       │
                        └──────────────┬────────────────┘
                                       │
              ┌────────────────────────┼────────────────────────┐
@@ -117,6 +118,13 @@ The gateway is a `nano-core` concern, not a separate workspace. Its default conf
 - port: `18790`
 - auth: HMAC-SHA256
 - startup path: `nanosolana run`, `nanosolana go`, or `npm run gateway` inside `nano-core`
+
+## Payment boundaries
+
+- `nano-core/src/payments/` wraps `@pump-fun/agent-payments-sdk` for on-chain invoices
+- Invoice PDA derivation prevents duplicate payments
+- Payment verification uses on-chain validation with configurable retries
+- `AGENT_TOKEN_MINT_ADDRESS` and `CURRENCY_MINT` are required for payment operations
 
 ## Security boundaries
 

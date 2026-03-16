@@ -70,6 +70,7 @@ graph TD
 - Low-confidence decisions are logged but not executed.
 - All actions broadcast via gateway as `trade:signal` events.
 - TamaGOchi pet mood updated based on trade outcomes.
+- Payment-gated operations (e.g., swarm spawning) verify on-chain invoices before proceeding.
 
 ### 5. Learn
 

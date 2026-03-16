@@ -18,16 +18,20 @@ nanosolana bots list
 nanosolana run
 ```
 
-## Supported channels
+The shipped messaging-oriented commands are:
 
-| Channel | Plugin | Persistence | Features |
-|---------|--------|-------------|----------|
-| **Telegram** | Built-in | ✅ Full | Conversations, commands, media |
-| **Discord** | Built-in | Session | Trading signals, alerts |
-| **Nostr** | Extension | Session | Decentralized relay |
-| **iMessage** | Extension | Session | Apple Messages |
-| **Google Chat** | Extension | Session | Team notifications |
-| **BlueBubbles** | Extension | Session | iMessage bridge |
+- `nanosolana send <message>`
+- `nanosolana nodes`
+- `nanosolana bots list|spawn|attach|kill`
+
+## Channel surfaces in this checkout
+
+| Channel surface | Where it lives | Notes |
+|----------------|----------------|-------|
+| Telegram conversation persistence | `nano-core/src/telegram/` and gateway chat flow | Local conversation history and chat context |
+| Pump Telegram control plane | `pump/telegram-gateway.ts` | Pump swarm commands and control |
+| Channel integrations | `extensions/*` | Telegram, Discord, Slack, Matrix, WhatsApp, Nostr, and others |
+| Mesh broadcast | `nanosolana send` | Gateway-assisted local or Tailscale delivery |
 
 ## Pump Telegram control plane
 
@@ -44,25 +48,21 @@ It supports commands such as `/swarm`, `/spawn`, `/agents`, `/price`, `/quote`, 
 | `/invoice <pubkey> <amount> [USDC\|SOL]` | Create an on-chain payment invoice for a user |
 | `/invoices` | List all tracked invoices with paid/pending status |
 
+## Gateway-backed chat surfaces
+
+The gateway exposes extension-facing chat and config routes:
+
+- `/api/extension/config`
+- `/api/extension/wallet`
+- `/api/extension/chat`
+- `/api/extension/trade`
+
+These routes are authenticated through the gateway secret when one is configured.
+
 ## Telegram persistence
 
-The Telegram plugin stores full conversation history:
-
-```json5
-{
-  channels: {
-    telegram: {
-      enabled: true,
-      persistence: {
-        enabled: true,
-        maxHistoryPerChat: 200,
-        summaryThreshold: 50,
-        persistInterval: 30000
-      }
-    }
-  }
-}
-```
+The repo includes a persistent Telegram conversation store and gateway chat flow.
+Current defaults in `nano-core/src/telegram/persistence.ts` include:
 
 Features:
 
@@ -70,3 +70,10 @@ Features:
 - cross-chat search
 - summary plus recent-message context rebuilding
 - local storage under `~/.nanosolana/telegram/`
+- persisted files such as `messages.json` and `contexts.json`
+
+## Related docs
+
+- [gateway](/cli/gateway)
+- [Gateway Runbook](/gateway)
+- [Gateway Protocol](/gateway/protocol)

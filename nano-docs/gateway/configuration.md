@@ -16,6 +16,7 @@ encrypted vault-backed config resolver in
 | Host | `NANO_GATEWAY_HOST` | `0.0.0.0` |
 | Port | `NANO_GATEWAY_PORT` | `18790` |
 | Secret | `NANO_GATEWAY_SECRET` | optional |
+| Agent heartbeat | `NANO_AGENT_HEARTBEAT_INTERVAL_MS` | `5000` ms |
 
 If the secret is not provided explicitly, the runtime still starts, but anything
 depending on authenticated gateway access should set it.
@@ -31,6 +32,9 @@ depending on authenticated gateway access should set it.
 | `JUPITER_API_KEY` | Swap API |
 | `TAILSCALE_AUTH_KEY` | Mesh networking |
 | `NANO_HUB_URL` | Local/remote NanoHub URL |
+| `NANO_AGENT_HEARTBEAT_INTERVAL_MS` | Wallet heartbeat interval |
+| `AGENT_TOKEN_MINT_ADDRESS` | Agent token mint for payments |
+| `CURRENCY_MINT` | Payment currency mint (default: USDC) |
 
 ## Example `.env`
 
@@ -43,6 +47,7 @@ HELIUS_RPC_URL=https://...
 HELIUS_API_KEY=...
 HELIUS_WSS_URL=wss://...
 OPENROUTER_API_KEY=...
+NANO_AGENT_HEARTBEAT_INTERVAL_MS=5000
 ```
 
 ## What `nanosolana init` writes
@@ -64,3 +69,10 @@ Older docs referenced `~/.nanosolana/config.json` as the main source of truth.
 In the current checkout, the actively used configuration path is the environment
 plus the encrypted vault loader. Treat any `config.json` examples as conceptual,
 not authoritative.
+
+## Related docs
+
+- [Gateway Runbook](/gateway)
+- [Gateway Protocol](/gateway/protocol)
+- [Gateway Security](/gateway/security)
+- [Heartbeat](/gateway/heartbeat)

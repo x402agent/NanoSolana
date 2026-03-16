@@ -41,7 +41,8 @@ Current defaults come from `nano-core/src/config/vault.ts`:
 ## What the gateway serves
 
 - WebSocket mesh transport
-- HTTP endpoints such as `/health`, `/api/status`, `/api/framework`, `/api/memory`
+- HTTP endpoints such as `/health`, `/api/status`, `/api/framework`, `/api/memory`, `/api/docs`
+- extension endpoints such as `/api/extension/config`, `/api/extension/wallet`, `/api/extension/chat`, `/api/extension/trade`
 - streaming events from trading, wallet heartbeat, and memory
 - NanoHub-facing integration paths
 
@@ -60,5 +61,6 @@ nanosolana bots list
 
 - [Gateway Runbook](/gateway)
 - [Gateway Configuration](/gateway/configuration)
+- [Heartbeat](/gateway/heartbeat)
 - [Gateway Protocol](/gateway/protocol)
 - [Gateway Security](/gateway/security)

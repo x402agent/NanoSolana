@@ -75,7 +75,7 @@ nanosolana pay invoice|verify|status
 
 - `nanosolana pay invoice --user <pubkey> --amount <amount> [--currency USDC|SOL] [--duration 3600]` — create an on-chain payment invoice
 - `nanosolana pay verify --user <pubkey> --memo <memo> --amount <amount> --start <ts> --end <ts>` — verify an invoice payment
-- `nanosolana pay status` — show payment system configuration and tracked invoices
+- `nanosolana pay status` — show payment system configuration
 
 ### Mesh and tmux operations
 
@@ -108,6 +108,8 @@ Most important variables today:
 | `JUPITER_API_KEY` | Jupiter swap API |
 | `NANO_GATEWAY_PORT` | Gateway port (default `18790`) |
 | `NANO_GATEWAY_SECRET` | Gateway HMAC secret |
+| `NANO_AGENT_HEARTBEAT_INTERVAL_MS` | Wallet heartbeat interval (default `5000`) |
+| `NANO_HUB_URL` | NanoHub base URL |
 | `TAILSCALE_AUTH_KEY` | Mesh auth |
 | `AGENT_TOKEN_MINT_ADDRESS` | Agent token mint for on-chain payments |
 | `CURRENCY_MINT` | Payment currency mint (default: USDC) |

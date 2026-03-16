@@ -16,6 +16,7 @@ title: "Gateway Security"
 
 - `X-NanoSolana-Secret`
 - `Authorization: Bearer ...`
+- enforced on `/api/*` endpoints when a shared secret is configured
 
 ## Current defaults
 
@@ -45,6 +46,21 @@ curl http://127.0.0.1:18790/health
 curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/status
 ```
+
+## Related docs
+
+- [Gateway Runbook](/gateway)
+- [Gateway Configuration](/gateway/configuration)
+- [Gateway Protocol](/gateway/protocol)
+- [Heartbeat](/gateway/heartbeat)
+
+## Payment verification
+
+The runtime includes on-chain payment verification via `@pump-fun/agent-payments-sdk`:
+
+- Invoice ID PDAs derived deterministically to prevent duplicate payments
+- `validateInvoicePayment` verifies payments on-chain with retry logic
+- Payment env vars (`AGENT_TOKEN_MINT_ADDRESS`, `CURRENCY_MINT`) should be set in the vault
 
 ## Compatibility note
 
