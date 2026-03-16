@@ -1,17 +1,41 @@
 {
   "name": "nanosolana",
   "version": "1.0.0",
-  "description": "NanoSolana × MawdBot — Unified Web3 agent runtime with containerized AI execution, OODA trading loop, PumpFun swarm, and Solana-native intelligence",
+  "description": "🦞 The open-source agentic framework for financial intelligence on Solana. Autonomous OODA trading, epistemological memory, mesh coordination, and a virtual pet soul — deploy in 30 seconds.",
   "keywords": [
     "solana",
-    "trading",
-    "agent",
-    "ai",
+    "trading-bot",
+    "ai-agent",
     "defi",
-    "nano"
+    "autonomous-agent",
+    "financial-intelligence",
+    "ooda",
+    "jupiter",
+    "helius",
+    "birdeye",
+    "web3",
+    "crypto",
+    "nft",
+    "memecoin",
+    "blockchain",
+    "wallet",
+    "solana-agent",
+    "trading-strategy",
+    "rsi",
+    "ema",
+    "market-maker",
+    "cli",
+    "sdk",
+    "tamagotchi",
+    "mesh-network",
+    "openrouter",
+    "metaplex",
+    "swap",
+    "dex",
+    "agentic-framework"
   ],
   "license": "MIT",
-  "author": "NanoSolana Labs",
+  "author": "NanoSolana Labs <team@nanosolana.com> (https://nanosolana.com)",
   "homepage": "https://nanosolana.com",
   "repository": {
     "type": "git",
@@ -21,24 +45,43 @@
   "bugs": {
     "url": "https://github.com/x402agent/NanoSolana/issues"
   },
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/x402agent"
+    }
+  ],
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "type": "module",
   "bin": {
     "nanosolana": "dist/cli/entry.js"
   },
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
-    ".": "./dist/index.js",
-    "./sdk": "./dist/sdk/index.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./sdk": {
+      "types": "./dist/sdk/index.d.ts",
+      "import": "./dist/sdk/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "scripts": {
     "dev": "tsx watch src/cli/entry.ts",
     "build": "tsup src/index.ts src/cli/entry.ts --format esm --dts --sourcemap --out-dir dist --clean",
     "start": "node dist/cli/entry.js",
+    "demo": "tsx src/cli/entry.ts demo",
     "install:one-shot": "bash scripts/install-cli.sh",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -47,24 +90,17 @@
     "gateway": "tsx src/gateway/server.ts",
     "hub:dev": "cd ../nanohub && bun run dev",
     "nanosolana": "tsx src/cli/entry.ts",
-    "claw": "tsx src/claw/index.ts",
-    "claw:dev": "tsx watch src/claw/index.ts",
-    "swarm": "tsx src/claw/pump/main.ts",
-    "auth": "tsx src/claw/whatsapp-auth.ts",
-    "typecheck": "tsc --noEmit",
-    "format:check": "prettier --check \"src/**/*.ts\""
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@metaplex-foundation/mpl-token-metadata": "^3.3.0",
     "@solana/spl-token": "^0.4.0",
     "@solana/web3.js": "^1.95.0",
-    "@whiskeysockets/baileys": "^7.0.0-rc.9",
-    "better-sqlite3": "^11.8.1",
+    "better-sqlite3": "^11.0.0",
     "bip39": "^3.1.0",
     "bs58": "^6.0.0",
     "chalk": "^5.6.2",
     "commander": "^14.0.3",
-    "cron-parser": "^5.5.0",
     "dotenv": "^17.3.1",
     "drizzle-orm": "^0.36.0",
     "eventemitter3": "^5.0.0",
@@ -72,9 +108,7 @@
     "hono": "^4.12.7",
     "nanoid": "^5.0.0",
     "pino": "^9.0.0",
-    "pino-pretty": "^13.0.0",
-    "qrcode": "^1.5.4",
-    "qrcode-terminal": "^0.12.0",
+    "pino-pretty": "^11.0.0",
     "tweetnacl": "^1.0.3",
     "undici": "^7.22.0",
     "unicode-animations": "^1.0.3",
@@ -82,14 +116,11 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.12",
-    "@types/node": "^22.10.0",
-    "@types/qrcode-terminal": "^0.12.2",
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/node": "^22.0.0",
     "@types/ws": "^8.18.1",
-    "@vitest/coverage-v8": "^4.0.18",
     "oxfmt": "0.38.0",
     "oxlint": "^1.53.0",
-    "prettier": "^3.8.1",
     "tsup": "^8.0.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
