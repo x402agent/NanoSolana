@@ -12,7 +12,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { Connection, PublicKey } from '@solana/web3.js';
-import { PumpAgent } from '@pump-fun/agent-payments-sdk';
+import { PumpAgent, getInvoiceIdPDA } from '@pump-fun/agent-payments-sdk';
+import type { BuildAcceptPaymentParams } from '@pump-fun/agent-payments-sdk';
 
 import type {
   PaymentConfig,
@@ -32,14 +33,14 @@ export class NanoPaymentAgent {
   private agent: PumpAgent;
   private config: PaymentConfig;
   private connection: Connection;
+  private mint: PublicKey;
   private invoices = new Map<number, InvoiceRecord>();
 
   constructor(config: PaymentConfig) {
     this.config = config;
     this.connection = new Connection(config.rpcUrl);
-
-    const mint = new PublicKey(config.agentTokenMint);
-    this.agent = new PumpAgent(mint, config.environment, this.connection);
+    this.mint = new PublicKey(config.agentTokenMint);
+    this.agent = new PumpAgent(this.mint, config.environment, this.connection);
   }
 
   // ── Invoice Creation ────────────────────────────────────────────────────
@@ -78,7 +79,7 @@ export class NanoPaymentAgent {
     }
 
     // Build instructions via SDK
-    const buildParams: Record<string, unknown> = {
+    const buildParams: BuildAcceptPaymentParams = {
       user: params.user,
       currencyMint,
       amount: params.amount,
@@ -94,16 +95,14 @@ export class NanoPaymentAgent {
       buildParams.computeUnitPrice = params.computeUnitPrice;
     }
 
-    const instructions = await this.agent.buildAcceptPaymentInstructions(
-      buildParams as Parameters<PumpAgent['buildAcceptPaymentInstructions']>[0],
-    );
+    const instructions = await this.agent.buildAcceptPaymentInstructions(buildParams);
 
-    // Derive the Invoice ID PDA
-    const invoiceIdPda = this.agent.getInvoiceIdPDA(
+    // Derive the Invoice ID PDA (standalone function from SDK)
+    const [invoiceIdPda] = getInvoiceIdPDA(
+      this.mint,
       currencyMint,
-      params.user,
-      memo,
       params.amount,
+      memo,
       startTime,
       endTime,
     );
@@ -162,14 +161,14 @@ export class NanoPaymentAgent {
       attempts++;
 
       try {
-        const paid = await this.agent.validateInvoicePayment(
-          currencyMint,
+        const paid = await this.agent.validateInvoicePayment({
           user,
-          invoice.memo,
-          invoice.amount,
-          invoice.startTime,
-          invoice.endTime,
-        );
+          currencyMint,
+          amount: invoice.amount,
+          memo: invoice.memo,
+          startTime: invoice.startTime,
+          endTime: invoice.endTime,
+        });
 
         if (paid) {
           // Update tracking record
@@ -209,23 +208,23 @@ export class NanoPaymentAgent {
    * Derive the deterministic Invoice ID PDA for a given set of parameters.
    * Useful for checking payment status without the full invoice object.
    */
-  getInvoiceIdPDA(
+  deriveInvoiceIdPDA(
     currency: PaymentCurrency,
-    user: PublicKey,
     memo: number,
     amount: number,
     startTime: number,
     endTime: number,
   ): PublicKey {
     const currencyMint = new PublicKey(CURRENCY_MINTS[currency]);
-    return this.agent.getInvoiceIdPDA(
+    const [pda] = getInvoiceIdPDA(
+      this.mint,
       currencyMint,
-      user,
-      memo,
       amount,
+      memo,
       startTime,
       endTime,
     );
+    return pda;
   }
 
   // ── Invoice Tracking ──────────────────────────────────────────────────

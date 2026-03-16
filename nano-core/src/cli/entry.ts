@@ -951,6 +951,9 @@ program
 
       // Simulate price movement
       const token = tokens[Math.floor(Math.random() * tokens.length)];
+      if (!token) {
+        return;
+      }
       const change = (Math.random() - 0.45) * 15; // Slight upward bias
       token.price *= (1 + change / 100);
 
@@ -1019,7 +1022,9 @@ program
 
     // Initial cycle immediately
     const firstToken = tokens[0];
-    console.log(chalk.gray(`  [${new Date().toLocaleTimeString()}]`) + ` 📊 ${chalk.white(firstToken.symbol)}: $${firstToken.price.toFixed(2)} ${chalk.green("+0.0%")}`);
+    if (firstToken) {
+      console.log(chalk.gray(`  [${new Date().toLocaleTimeString()}]`) + ` 📊 ${chalk.white(firstToken.symbol)}: $${firstToken.price.toFixed(2)} ${chalk.green("+0.0%")}`);
+    }
     console.log(chalk.gray("  Watching 6 tokens across Solana...\n"));
 
     // Graceful shutdown

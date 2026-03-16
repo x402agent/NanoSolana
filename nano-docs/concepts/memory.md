@@ -6,7 +6,7 @@ title: "Memory (ClawVault)"
 # Memory (ClawVault)
 
 NanoSolana uses ClawVault to separate fresh observations from learned patterns and
- looser inferences.
+looser inferences.
 
 ## Three tiers
 
