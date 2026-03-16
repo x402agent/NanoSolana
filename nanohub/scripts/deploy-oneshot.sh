@@ -25,10 +25,10 @@ echo "==> building NanoHub CLI package"
 bunx tsc -p "$PACKAGE_DIR/tsconfig.json"
 
 echo "==> dry-run package verification"
-npm pack --dry-run --json --prefix "$PACKAGE_DIR" >/dev/null
+(cd "$PACKAGE_DIR" && npm pack --dry-run --json >/dev/null)
 
 echo "==> publishing nanohub package"
-npm publish --access public --registry https://registry.npmjs.org --userconfig "$NPMRC_PATH" --prefix "$PACKAGE_DIR"
+(cd "$PACKAGE_DIR" && npm publish --access public --registry https://registry.npmjs.org --userconfig "$NPMRC_PATH")
 
 if [[ "${SKIP_CONVEX_DEPLOY:-0}" != "1" ]]; then
   echo "==> deploying Convex backend"
