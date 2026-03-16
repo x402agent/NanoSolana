@@ -5,6 +5,7 @@
 <h1 align="center">NanoHub</h1>
 
 <p align="center">
+  <a href="https://www.npmjs.com/package/@mawdbotsonsolana/nanohub"><img src="https://img.shields.io/npm/v/@mawdbotsonsolana/nanohub?style=for-the-badge&logo=npm&logoColor=white&label=nanohub" alt="npm version"></a>
   <a href="https://github.com/nanosolana/nanosolana/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/nanosolana/nanosolana/ci.yml?style=for-the-badge" alt="CI status"></a>
   <a href="https://discord.gg/nanosolana"><img src="https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white&style=for-the-badge" alt="Discord"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="MIT License"></a>
@@ -40,7 +41,7 @@ NanoSolana Docs is the companion registry for `SOUL.md` bundles and long-form sy
 - Backend: Convex database, file storage, HTTP actions, and auth.
 - Search: OpenAI embeddings plus Convex vector search.
 - Shared schemas: `packages/schema/` published internally as `nanohub-schema`.
-- CLI: `packages/nanohub/`, with `nanohub` as the primary binary and `clawhub` kept as a compatibility alias.
+- CLI: [`@mawdbotsonsolana/nanohub`](https://www.npmjs.com/package/@mawdbotsonsolana/nanohub) (`packages/nanohub/`), with `nanohub` as the primary binary and `clawhub` kept as a compatibility alias.
 
 ## Repo layout
 
@@ -89,6 +90,16 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for full local setup, OAuth, JWT keys, an
 - `JWT_PRIVATE_KEY` / `JWKS` — Convex Auth signing keys.
 - `OPENAI_API_KEY` — embeddings and indexing.
 
+## Install
+
+Install the CLI globally from [npm](https://www.npmjs.com/package/@mawdbotsonsolana/nanohub):
+
+```bash
+npm install -g @mawdbotsonsolana/nanohub
+```
+
+This gives you the `nanohub` command (and the `clawhub` compatibility alias).
+
 ## CLI
 
 Common flows:
@@ -105,7 +116,7 @@ Docs: [docs/quickstart.md](docs/quickstart.md), [docs/cli.md](docs/cli.md).
 
 ## One-shot deploy
 
-Publish the CLI package and deploy backend updates in one command:
+Publish [`@mawdbotsonsolana/nanohub`](https://www.npmjs.com/package/@mawdbotsonsolana/nanohub) to npm and deploy backend updates in one command:
 
 ```bash
 cd nanohub
