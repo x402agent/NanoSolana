@@ -314,14 +314,227 @@ export function renderApp(state: AppViewState) {
       : undefined;
   _pendingUpdate = requestHostUpdate;
 
-  // Gate: require successful gateway connection before showing the dashboard.
-  // The gateway URL confirmation overlay is always rendered so URL-param flows still work.
+  // When no gateway is connected, show a standalone landing dashboard
+  // instead of the empty login gate — this makes the Netlify deploy useful.
   if (!state.connected) {
+    const basePath = normalizeBasePath(state.basePath ?? "");
+    const faviconSrc = basePath ? `${basePath}/favicon.svg` : "/favicon.svg";
+
     return html`
-      ${renderLoginGate(state)}
       ${renderGatewayUrlConfirmation(state)}
+      <div class="standalone-landing" style="
+        min-height: 100vh;
+        background: var(--bg-primary, #0a0e1a);
+        color: var(--text-primary, #e2e8f0);
+        font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+        overflow-y: auto;
+      ">
+        <!-- Hero -->
+        <header style="
+          text-align: center;
+          padding: 60px 24px 40px;
+          background: linear-gradient(180deg, rgba(99, 102, 241, 0.08) 0%, transparent 100%);
+          border-bottom: 1px solid rgba(255,255,255,0.06);
+        ">
+          <img src="${faviconSrc}" alt="NanoSolana" style="
+            width: 72px; height: 72px; margin-bottom: 20px;
+            filter: drop-shadow(0 0 24px rgba(99, 102, 241, 0.4));
+          " />
+          <h1 style="
+            font-size: 2.8rem; font-weight: 700; margin: 0 0 12px;
+            background: linear-gradient(135deg, #818cf8, #c084fc, #6ee7b7);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+          ">NanoSolana</h1>
+          <p style="
+            font-size: 1.15rem; color: #94a3b8; max-width: 600px; margin: 0 auto 28px;
+            line-height: 1.6;
+          ">
+            Autonomous financial agents for Solana — modular, security-first, with
+            PumpFun integration, 43+ DeFi personas, and ClawVault memory.
+          </p>
+          <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+            <a href="https://github.com/x402agent/NanoSolana" target="_blank" rel="noreferrer" style="
+              display: inline-flex; align-items: center; gap: 8px;
+              padding: 12px 28px; border-radius: 10px;
+              background: linear-gradient(135deg, #6366f1, #8b5cf6);
+              color: #fff; text-decoration: none; font-weight: 600; font-size: 0.95rem;
+              box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+              transition: transform 0.15s, box-shadow 0.15s;
+            ">⭐ GitHub</a>
+            <button @click=${() => {
+              const el = document.querySelector('.standalone-gateway-section');
+              el?.scrollIntoView({ behavior: 'smooth' });
+            }} style="
+              display: inline-flex; align-items: center; gap: 8px;
+              padding: 12px 28px; border-radius: 10px;
+              background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+              color: #e2e8f0; cursor: pointer; font-weight: 600; font-size: 0.95rem;
+              font-family: inherit;
+              transition: background 0.15s;
+            ">🔌 Connect Gateway</button>
+          </div>
+        </header>
+
+        <!-- Stats Grid -->
+        <section style="
+          max-width: 1100px; margin: 0 auto; padding: 40px 24px 20px;
+          display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;
+        ">
+          ${[
+            { icon: "🤖", label: "DeFi Personas", value: "43+", color: "#818cf8" },
+            { icon: "🛠️", label: "Skills Available", value: "77", color: "#6ee7b7" },
+            { icon: "🔌", label: "Extensions", value: "40+", color: "#f472b6" },
+            { icon: "📋", label: "Agent Tasks", value: "13", color: "#fbbf24" },
+          ].map(s => html`
+            <div style="
+              background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+              border-radius: 14px; padding: 24px; text-align: center;
+              transition: border-color 0.2s, transform 0.2s;
+            ">
+              <div style="font-size: 2rem; margin-bottom: 8px;">${s.icon}</div>
+              <div style="font-size: 2rem; font-weight: 700; color: ${s.color};">${s.value}</div>
+              <div style="font-size: 0.85rem; color: #94a3b8; margin-top: 4px;">${s.label}</div>
+            </div>
+          `)}
+        </section>
+
+        <!-- Architecture -->
+        <section style="max-width: 1100px; margin: 0 auto; padding: 20px 24px 40px;">
+          <h2 style="font-size: 1.5rem; font-weight: 600; margin: 0 0 20px; color: #c084fc;">
+            🏗️ Architecture
+          </h2>
+          <div style="
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;
+          ">
+            ${[
+              { title: "nano-core", desc: "TypeScript runtime — persona system, task loader, swarm spawner, ClawVault memory, Pump SDK bridge", icon: "⚡" },
+              { title: "Pump SDK", desc: "Token creation, bonding curves, AMM pools, fee sharing, volume rewards — direct Solana program access", icon: "🚀" },
+              { title: "Swarm Engine", desc: "Multi-agent orchestration with autonomous spawning, role assignment, and inter-agent event bus", icon: "🐝" },
+              { title: "Persona System", desc: "43+ DeFi agent identities with expertise tags, opening questions, and auto-matched mission tasks", icon: "🧬" },
+              { title: "ClawVault Memory", desc: "Tiered memory (RAW → INFERRED → LEARNED) with TTL decay, autonomous management, and persistence", icon: "🧠" },
+              { title: "Extensions", desc: "40+ channel plugins — Telegram, Discord, WhatsApp, Slack, Signal, PumpFun monitor, and more", icon: "🔌" },
+            ].map(card => html`
+              <div style="
+                background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
+                border-radius: 12px; padding: 20px;
+                transition: border-color 0.2s;
+              ">
+                <div style="font-size: 1.5rem; margin-bottom: 8px;">${card.icon}</div>
+                <div style="font-weight: 600; font-size: 1.05rem; margin-bottom: 6px; color: #e2e8f0;">${card.title}</div>
+                <div style="font-size: 0.85rem; color: #94a3b8; line-height: 1.5;">${card.desc}</div>
+              </div>
+            `)}
+          </div>
+        </section>
+
+        <!-- Personas Browser -->
+        <section style="
+          max-width: 1100px; margin: 0 auto; padding: 20px 24px 40px;
+        ">
+          <h2 style="font-size: 1.5rem; font-weight: 600; margin: 0 0 20px; color: #6ee7b7;">
+            🧬 Agent Personas
+          </h2>
+          <div style="
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px;
+          ">
+            ${[
+              { name: "Whale Watcher", cat: "📊 Analytics", tags: ["monitoring", "trading"] },
+              { name: "Rug Pull Detective", cat: "🔒 Security", tags: ["security", "defi"] },
+              { name: "Yield Dashboard Builder", cat: "🖥️ Frontend", tags: ["frontend", "analytics"] },
+              { name: "MEV Researcher", cat: "⚡ Trading", tags: ["trading", "solana"] },
+              { name: "Airdrop Hunter", cat: "🎯 DeFi", tags: ["defi", "monitoring"] },
+              { name: "Crypto Tax Strategist", cat: "📋 Compliance", tags: ["finance", "defi"] },
+              { name: "Smart Contract Auditor", cat: "🔒 Security", tags: ["security", "sdk"] },
+              { name: "DeFi Onboarding Mentor", cat: "📚 Education", tags: ["education", "defi"] },
+              { name: "Alpha Leak Detector", cat: "🔍 Research", tags: ["trading", "monitoring"] },
+              { name: "Bridge Security Analyst", cat: "🔒 Security", tags: ["security", "cross-chain"] },
+              { name: "NFT Wash Trade Detector", cat: "🔒 Security", tags: ["nft", "analytics"] },
+              { name: "Token Incentive Designer", cat: "🎨 Tokenomics", tags: ["tokenomics", "defi"] },
+            ].map(p => html`
+              <div style="
+                background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
+                border-radius: 10px; padding: 16px;
+                display: flex; flex-direction: column; gap: 6px;
+              ">
+                <div style="font-weight: 600; font-size: 0.95rem; color: #e2e8f0;">${p.name}</div>
+                <div style="font-size: 0.75rem; color: #818cf8;">${p.cat}</div>
+                <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-top: auto;">
+                  ${p.tags.map(t => html`
+                    <span style="
+                      font-size: 0.65rem; padding: 2px 8px; border-radius: 99px;
+                      background: rgba(99, 102, 241, 0.15); color: #a5b4fc;
+                    ">${t}</span>
+                  `)}
+                </div>
+              </div>
+            `)}
+          </div>
+          <p style="text-align: center; color: #64748b; font-size: 0.85rem; margin-top: 16px;">
+            + 31 more personas available • All auto-matched with mission tasks at spawn
+          </p>
+        </section>
+
+        <!-- Pump Skills -->
+        <section style="
+          max-width: 1100px; margin: 0 auto; padding: 20px 24px 40px;
+        ">
+          <h2 style="font-size: 1.5rem; font-weight: 600; margin: 0 0 20px; color: #f472b6;">
+            🛠️ Pump Skills
+          </h2>
+          <div style="
+            display: flex; flex-wrap: wrap; gap: 8px;
+          ">
+            ${[
+              "pumpfun-launcher", "pumpfun-analytics", "pumpfun-trading", "pumpfun-fees",
+              "swarm-orchestrator", "pump-sdk-core", "pump-bonding-curve", "pump-fee-system",
+              "pump-token-lifecycle", "pump-security", "pump-solana-wallet", "pump-testing",
+              "pump-ai-agents", "pump-mcp-server", "pump-admin-ops",
+            ].map(s => html`
+              <span style="
+                font-size: 0.8rem; padding: 6px 14px; border-radius: 8px;
+                background: rgba(244, 114, 182, 0.1); border: 1px solid rgba(244, 114, 182, 0.2);
+                color: #f9a8d4; font-family: 'JetBrains Mono', monospace;
+              ">${s}</span>
+            `)}
+          </div>
+          <p style="color: #64748b; font-size: 0.85rem; margin-top: 12px;">
+            25 Pump skills + 52 general skills = 77 total skills available to all agents
+          </p>
+        </section>
+
+        <!-- Gateway Connect (at bottom) -->
+        <section class="standalone-gateway-section" style="
+          max-width: 600px; margin: 0 auto; padding: 20px 24px 60px;
+        ">
+          <div style="
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px; padding: 28px;
+          ">
+            <h2 style="font-size: 1.2rem; font-weight: 600; margin: 0 0 16px; color: #94a3b8;">
+              🔌 Connect to Gateway
+            </h2>
+            <p style="font-size: 0.85rem; color: #64748b; margin: 0 0 16px; line-height: 1.5;">
+              To access the full control panel with live chat, agents, cron, and logs,
+              connect to a running NanoSolana gateway instance.
+            </p>
+            ${renderLoginGate(state)}
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer style="
+          text-align: center; padding: 24px;
+          border-top: 1px solid rgba(255,255,255,0.06);
+          color: #475569; font-size: 0.8rem;
+        ">
+          NanoSolana — Security-first autonomous agents for Solana •
+          <a href="https://github.com/x402agent/NanoSolana" target="_blank" rel="noreferrer" style="color: #818cf8; text-decoration: none;">GitHub</a>
+        </footer>
+      </div>
     `;
   }
+
 
   const presenceCount = state.presenceEntries.length;
   const sessionsCount = state.sessionsResult?.count ?? null;
