@@ -1,23 +1,66 @@
 ---
-summary: "NanoSolana CLI reference for the commands currently shipped by nano-core"
+summary: "Beginner-first CLI guide for NanoSolana with copy/paste startup paths and shipped command reference"
 title: "CLI Reference"
 ---
 
-# CLI reference
+# CLI Reference
 
-NanoSolana ships a unified `nanosolana` CLI from `nano-core/src/cli/entry.ts`.
-This page documents the commands that exist today, and calls out older spec
-surfaces that have not landed as first-class subcommands yet.
+This page is the **source-of-truth for shipped commands** in the current
+`nanosolana` CLI (`nano-core/src/cli/entry.ts`).
 
-## Detailed pages in this doc tree
+If you are new, use one of these three startup tracks.
 
-- [hub-convex](/cli/hub-convex)
-- [pet](/cli/pet)
-- [gateway](/cli/gateway)
-- [wallet](/cli/wallet)
-- [trade](/cli/trade)
-- [memory](/cli/memory)
-- [channels](/cli/channels)
+## Quickstart tracks (copy/paste)
+
+### Track A — Safe simulation (no keys)
+
+```bash
+npx nanosolana demo --duration 30
+```
+
+### Track B — Fast live startup (one command)
+
+```bash
+npx nanosolana go
+```
+
+Optional startup animation:
+
+```bash
+npx nanosolana go --dvd-intro
+```
+
+Or enable DVD intro by environment variable:
+
+```bash
+NANO_DVD_INTRO=1 npx nanosolana go
+```
+
+### Track C — Explicit manual startup
+
+```bash
+npx nanosolana init
+npx nanosolana birth --name MyAgent --pet-name MyPet
+npx nanosolana run
+```
+
+In a second terminal:
+
+```bash
+npx nanosolana status
+npx nanosolana pet
+npx nanosolana vault
+```
+
+## Detailed pages in this section
+
+- [Gateway (CLI Surface)](/cli/gateway)
+- [Trading (CLI Surface)](/cli/trade)
+- [Wallet](/cli/wallet)
+- [Memory](/cli/memory)
+- [Pet](/cli/pet)
+- [Channels](/cli/channels)
+- [Hub + Convex](/cli/hub-convex)
 
 ## Global flags
 
@@ -38,99 +81,95 @@ nanosolana nodes
 nanosolana config
 nanosolana vault [query]
 nanosolana docs [query]
-nanosolana go
-nanosolana demo
+nanosolana tasks [query]
+nanosolana go [--dvd-intro] [--skip-init]
+nanosolana demo [--duration]
 nanosolana dvd
-nanosolana lobster
+nanosolana lobster [--static]
 nanosolana scan [address]
 nanosolana register
 nanosolana registry
-nanosolana nanobot
-nanosolana tasks [query]
-nanosolana hub skills [query]
-nanosolana hub inspect <slug>
-nanosolana hub register|list|search|heartbeat|status|deregister
+nanosolana nanobot [--port]
 nanosolana pay invoice|verify|status
+nanosolana hub skills|inspect|register|list|search|heartbeat|status|deregister
 ```
 
 ## Command groups
 
 ### Bootstrap and runtime
 
-- `nanosolana init` — prompt for secrets and write non-sensitive defaults
-- `nanosolana birth` — create an agent wallet and hatch a pet
-- `nanosolana run` — start wallet heartbeat, ClawVault, trading engine, and gateway
-- `nanosolana go` — one-shot bootstrap flow
-- `nanosolana demo` — synthetic simulation mode
+- `nanosolana init` — prompt for and encrypt secrets in
+  `~/.nanosolana/vault.enc`
+- `nanosolana birth` — create wallet + hatch pet
+- `nanosolana run` — start wallet heartbeat, ClawVault, trading engine, and
+  gateway
+- `nanosolana go` — one-shot initialization + runtime startup
+- `nanosolana demo` — simulation mode without API keys
+
+### Startup visuals and terminal UX
+
+- `nanosolana go --dvd-intro` — plays short DVD-style intro before startup
+  sequence
+- `NANO_DVD_INTRO=1 nanosolana go` — enables same behavior via env flag
+- `nanosolana dvd` — full-screen terminal DVD screensaver mode
+- `nanosolana lobster` — animated mascot (or `--static`)
 
 ### Inspection and local operations
 
-- `nanosolana status` — wallet, pet, ClawVault, Tailscale, and tmux rollup
-- `nanosolana pet` — show current pet state
-- `nanosolana config` — print redacted config
-- `nanosolana vault [query]` — inspect ClawVault and search it
-- `nanosolana docs [query]` — inspect `nano-docs`, `pump/docs`, `agent-tasks/`, and extensions
-- `nanosolana tasks [query]` — inspect the repo task registry and persona-matched assignments
-- `nanosolana hub skills [query]` — browse/search the public NanoHub skill registry at `nanosolana.netlify.app`
-- `nanosolana hub inspect <slug>` — inspect a NanoHub skill and preview `SKILL.md`
-- `nanosolana scan [address]` — on-chain wallet snapshot
+- `nanosolana status` — wallet, pet, memory, Tailscale, and tmux summary
+- `nanosolana pet` — current pet state
+- `nanosolana config` — redacted runtime config
+- `nanosolana vault [query]` — inspect/search ClawVault entries
+- `nanosolana docs [query]` — inspect indexed docs + extension corpus
+- `nanosolana tasks [query]` — inspect registry-backed task assignments
+- `nanosolana scan [address]` — on-chain wallet snapshot (Helius)
 - `nanosolana register` / `registry` — devnet identity registration and lookup
-- `nanosolana nanobot` — start the local NanoBot UI on port `7777` by default
-- `nanosolana dvd` / `lobster` — terminal extras
-
-### Tokenized agent payments
-
-- `nanosolana pay invoice --user <pubkey> --amount <amount> [--currency USDC|SOL] [--duration 3600]` — create an on-chain payment invoice
-- `nanosolana pay verify --user <pubkey> --memo <memo> --amount <amount> --start <ts> --end <ts>` — verify an invoice payment
-- `nanosolana pay status` — show payment system configuration
-
-### NanoHub
-
-- `nanosolana hub skills [query]` — public skill discovery from NanoHub
-- `nanosolana hub inspect <slug>` — show skill metadata, URL, stats, and `SKILL.md` preview
-- `nanosolana hub register` — register the current agent in the NanoHub agent registry
-- `nanosolana hub list` — list registered agents
-- `nanosolana hub search <query>` — search registered agents
-- `nanosolana hub heartbeat` — send a heartbeat for the registered agent
-- `nanosolana hub status` — show registry totals and NanoHub public URLs
-- `nanosolana hub deregister` — deactivate the current agent registration
+- `nanosolana nanobot` — launch local UI companion server
 
 ### Mesh and tmux operations
 
-- `nanosolana send <message>` — broadcast or target a mesh node
-- `nanosolana nodes` — list Tailscale nodes
-- `nanosolana bots list|spawn|attach|kill` — manage tmux-backed bot sessions
+- `nanosolana send <message> [--target <hostname>]`
+- `nanosolana nodes`
+- `nanosolana bots list|spawn|attach|kill`
 
-## Important clarifications
+### Tokenized agent payments
 
-- There is no shipped `nanosolana wallet ...` subtree yet.
-- There is no shipped `nanosolana trade ...` subtree yet.
-- There is no shipped `nanosolana memory ...` subtree yet; ClawVault is exposed through `nanosolana vault`.
-- There is no shipped `nanosolana gateway ...` subtree yet; the gateway is started by `run` or `go`, or via `npm run gateway` inside `nano-core`.
-- `nanosolana pay` **is** shipped and provides on-chain invoice creation, verification, and status via the `@pump-fun/agent-payments-sdk`.
-- `nanosolana tasks` **is** shipped and exposes the same task registry used by persona auto-assignment in the swarm runtime.
-- `nanosolana hub skills` and `nanosolana hub inspect` **are** shipped for read-only NanoHub skill discovery.
-- Install, publish, and sync still live in the dedicated `nanohub` package.
+- `nanosolana pay invoice --user <pubkey> --amount <amount> [--currency USDC|SOL] [--duration 3600]`
+- `nanosolana pay verify --user <pubkey> --memo <memo> --amount <amount> --start <ts> --end <ts>`
+- `nanosolana pay status`
 
-Those older command shapes appeared in earlier docs as a target UX. The rest of this doc tree maps those capability areas to the commands and scripts that actually exist.
+### NanoHub discovery and registry
 
-## Environment variables
+- `nanosolana hub skills [query]`
+- `nanosolana hub inspect <slug>`
+- `nanosolana hub register|list|search|heartbeat|status|deregister`
 
-Most important variables today:
+## Important clarifications (new-user safety)
 
-| Variable | Description |
-|----------|-------------|
-| `OPENROUTER_API_KEY` / `AI_API_KEY` | AI credential |
-| `OPENROUTER_MODEL` / `AI_MODEL` | AI model (default `openrouter/healer-alpha`) |
-| `HELIUS_RPC_URL` | Helius Solana RPC endpoint |
-| `HELIUS_API_KEY` | Helius API key |
-| `HELIUS_WSS_URL` | Helius WebSocket endpoint |
-| `BIRDEYE_API_KEY` | Birdeye market data |
-| `JUPITER_API_KEY` | Jupiter swap API |
-| `NANO_GATEWAY_PORT` | Gateway port (default `18790`) |
-| `NANO_GATEWAY_SECRET` | Gateway HMAC secret |
-| `NANO_AGENT_HEARTBEAT_INTERVAL_MS` | Wallet heartbeat interval (default `5000`) |
-| `NANO_HUB_URL` | NanoHub base URL |
-| `TAILSCALE_AUTH_KEY` | Mesh auth |
-| `AGENT_TOKEN_MINT_ADDRESS` | Agent token mint for on-chain payments |
-| `CURRENCY_MINT` | Payment currency mint (default: USDC) |
+- There is **no shipped** `nanosolana wallet ...` subtree yet.
+- There is **no shipped** `nanosolana trade ...` subtree yet.
+- There is **no shipped** `nanosolana memory ...` subtree yet
+  (`nanosolana vault` is the memory surface).
+- There is **no shipped** `nanosolana gateway ...` subtree yet (gateway starts
+  via `run` or `go`, or `npm run gateway` in `nano-core`).
+- Install/publish/sync for skills still live in the dedicated `nanohub` package.
+
+## Core environment variables
+
+| Variable                            | Description                                      |
+| ----------------------------------- | ------------------------------------------------ |
+| `OPENROUTER_API_KEY` / `AI_API_KEY` | AI credential                                    |
+| `OPENROUTER_MODEL` / `AI_MODEL`     | AI model                                         |
+| `HELIUS_RPC_URL`                    | Solana RPC endpoint                              |
+| `HELIUS_API_KEY`                    | Helius API key                                   |
+| `HELIUS_WSS_URL`                    | Helius WebSocket endpoint                        |
+| `BIRDEYE_API_KEY`                   | Birdeye market data                              |
+| `JUPITER_API_KEY`                   | Jupiter API key                                  |
+| `NANO_GATEWAY_PORT`                 | Gateway port (default `18790`)                   |
+| `NANO_GATEWAY_SECRET`               | Gateway HMAC secret                              |
+| `NANO_DVD_INTRO`                    | Enable `go` DVD intro (`1`, `true`, `yes`, `on`) |
+| `NANO_AGENT_HEARTBEAT_INTERVAL_MS`  | Wallet heartbeat interval                        |
+| `NANO_HUB_URL`                      | NanoHub site URL                                 |
+| `TAILSCALE_AUTH_KEY`                | Mesh auth key                                    |
+| `AGENT_TOKEN_MINT_ADDRESS`          | Agent token mint for payment flows               |
+| `CURRENCY_MINT`                     | Payment currency mint                            |

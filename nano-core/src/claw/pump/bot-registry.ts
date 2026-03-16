@@ -26,7 +26,7 @@
 //   - Plugin delivery system from packages/plugin.delivery
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { resolve } from 'node:path';
+import { resolvePumpServiceDirectory } from "./path-resolver.js";
 
 // ── Bot Models ──────────────────────────────────────────────────────────────
 
@@ -39,7 +39,7 @@ export interface BotRegistryEntry {
   description: string;
   /** Category */
   category: 'bot' | 'pumpkit' | 'agent' | 'service';
-  /** Directory relative to pump-fun-sdk-main */
+  /** Resolved service directory */
   directory: string;
   /** Start command */
   startCommand: string;
@@ -61,8 +61,6 @@ export interface BotRegistryEntry {
 
 // ── Registry ────────────────────────────────────────────────────────────────
 
-const PUMP_SDK_ROOT = resolve(import.meta.dirname ?? '.', '../../../../pump-fun-sdk-main');
-
 export const BOT_REGISTRY: BotRegistryEntry[] = [
   // ── Telegram Bots ─────────────────────────────────────────────────────
   {
@@ -70,7 +68,7 @@ export const BOT_REGISTRY: BotRegistryEntry[] = [
     name: 'PumpFun Fee Monitor',
     description: 'Monitors creator fees, CTO alerts, whale trades. Supports DMs, groups, and a REST API. Uses Grammy for Telegram + @solana/web3.js for on-chain events.',
     category: 'bot',
-    directory: resolve(PUMP_SDK_ROOT, 'telegram-bot'),
+    directory: resolvePumpServiceDirectory("telegram-bot"),
     startCommand: 'node dist/index.js',
     requiredEnvVars: ['TELEGRAM_BOT_TOKEN', 'SOLANA_RPC_URL'],
     optionalEnvVars: ['API_ONLY', 'API_KEYS', 'ALLOWED_USER_IDS', 'ENABLE_LAUNCH_MONITOR'],
@@ -85,7 +83,7 @@ export const BOT_REGISTRY: BotRegistryEntry[] = [
     name: 'Channel Feed Bot',
     description: 'Read-only Telegram channel feed: new launches, graduations, whale trades, fee claims. Filters configurable per-event-type.',
     category: 'bot',
-    directory: resolve(PUMP_SDK_ROOT, 'channel-bot'),
+    directory: resolvePumpServiceDirectory("channel-bot"),
     startCommand: 'node dist/index.js',
     requiredEnvVars: ['TELEGRAM_BOT_TOKEN', 'CHANNEL_ID', 'SOLANA_RPC_URL'],
     optionalEnvVars: ['FEED_CLAIMS', 'FEED_LAUNCHES', 'FEED_GRADUATIONS', 'FEED_WHALES'],
@@ -100,7 +98,7 @@ export const BOT_REGISTRY: BotRegistryEntry[] = [
     name: 'Fee Claim Tracker',
     description: 'Tracks fee claims by token contract address or creator X handle. Monitors on-chain claim events and sends Telegram notifications.',
     category: 'bot',
-    directory: resolve(PUMP_SDK_ROOT, 'claim-bot'),
+    directory: resolvePumpServiceDirectory("claim-bot"),
     startCommand: 'node dist/index.js',
     requiredEnvVars: ['TELEGRAM_BOT_TOKEN', 'SOLANA_RPC_URL'],
     optionalEnvVars: ['TRACKED_TOKENS', 'TRACKED_CREATORS', 'CLAIM_THRESHOLD_SOL'],
@@ -115,7 +113,7 @@ export const BOT_REGISTRY: BotRegistryEntry[] = [
     name: 'Outsiders Call Tracker',
     description: 'Call tracking with leaderboards, PNL cards, win rates, and hardcore mode. Tracks alpha and gamble calls across Telegram groups.',
     category: 'bot',
-    directory: resolve(PUMP_SDK_ROOT, 'outsiders-bot'),
+    directory: resolvePumpServiceDirectory("outsiders-bot"),
     startCommand: 'node dist/index.js',
     requiredEnvVars: ['TELEGRAM_BOT_TOKEN'],
     optionalEnvVars: ['CALL_CHANNEL_ID', 'DEXSCREENER_API', 'ATH_POLL_INTERVAL', 'DB_PATH'],
@@ -130,7 +128,7 @@ export const BOT_REGISTRY: BotRegistryEntry[] = [
     name: 'PumpFun Lair TG',
     description: 'PumpFun Lair Telegram bot — community-focused bot for PumpFun ecosystem interactions.',
     category: 'bot',
-    directory: resolve(PUMP_SDK_ROOT, 'lair-tg'),
+    directory: resolvePumpServiceDirectory("lair-tg"),
     startCommand: 'node dist/index.js',
     requiredEnvVars: ['TELEGRAM_BOT_TOKEN'],
     optionalEnvVars: ['SOLANA_RPC_URL'],
@@ -147,7 +145,7 @@ export const BOT_REGISTRY: BotRegistryEntry[] = [
     name: 'Trading Bot Swarm',
     description: 'Multi-strategy trading bots: sniper, momentum, graduation, market-maker. Real-time position tracking with SQLite persistence and REST API.',
     category: 'bot',
-    directory: resolve(PUMP_SDK_ROOT, 'swarm-bot'),
+    directory: resolvePumpServiceDirectory("swarm-bot"),
     startCommand: 'node dist/index.js',
     requiredEnvVars: ['SOLANA_RPC_URL'],
     optionalEnvVars: ['MAX_POSITION_SOL_PER_BOT', 'MAX_TOTAL_POSITION_SOL', 'DEFAULT_SLIPPAGE_BPS', 'DB_PATH', 'PORT'],
@@ -162,7 +160,7 @@ export const BOT_REGISTRY: BotRegistryEntry[] = [
     name: 'MCP Server',
     description: 'Model Context Protocol server — exposes PumpFun data and actions as MCP tools for AI agents.',
     category: 'service',
-    directory: resolve(PUMP_SDK_ROOT, 'mcp-server'),
+    directory: resolvePumpServiceDirectory("mcp-server"),
     startCommand: 'node dist/index.js',
     requiredEnvVars: ['SOLANA_RPC_URL'],
     optionalEnvVars: ['MCP_PORT', 'MCP_AUTH_TOKEN'],
@@ -177,7 +175,7 @@ export const BOT_REGISTRY: BotRegistryEntry[] = [
     name: 'Swarm Dashboard',
     description: 'Web-based analytics dashboard for monitoring the swarm. Real-time charts, bot metrics, event feeds, and configuration.',
     category: 'service',
-    directory: resolve(PUMP_SDK_ROOT, 'dashboard'),
+    directory: resolvePumpServiceDirectory("dashboard"),
     startCommand: 'node dist/index.js',
     requiredEnvVars: [],
     optionalEnvVars: ['PORT', 'SWARM_API_URL'],
@@ -194,7 +192,7 @@ export const BOT_REGISTRY: BotRegistryEntry[] = [
     name: 'PumpFun Swarm Orchestrator',
     description: 'Orchestrates all bots: unified admin dashboard with real-time event streaming, cross-bot event bus, and health monitoring.',
     category: 'service',
-    directory: resolve(PUMP_SDK_ROOT, 'swarm'),
+    directory: resolvePumpServiceDirectory("swarm"),
     startCommand: 'node dist/index.js',
     requiredEnvVars: [],
     optionalEnvVars: ['PORT', 'LOG_LEVEL', 'HEALTH_CHECK_INTERVAL', 'SWARM_AUTO_START'],

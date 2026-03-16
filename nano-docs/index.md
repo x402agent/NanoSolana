@@ -46,6 +46,14 @@ Want one command? Use:
 npx nanosolana go
 ```
 
+Want startup with the DVD-style intro animation?
+
+```bash
+npx nanosolana go --dvd-intro
+# or
+NANO_DVD_INTRO=1 npx nanosolana go
+```
+
 ## What is shipped right now
 
 The canonical CLI is in `nano-core/src/cli/entry.ts` and currently ships:
@@ -56,6 +64,7 @@ The canonical CLI is in `nano-core/src/cli/entry.ts` and currently ships:
 - `go`, `demo`, `dvd`, `lobster`
 - `scan`, `register`, `registry`, `nanobot`
 - `pay invoice|verify|status`
+- `hub skills|inspect|register|list|search|heartbeat|status|deregister`
 
 ## New-user paths
 
@@ -72,7 +81,8 @@ Start with [Features](/concepts/features),
 
 ### I want to publish and manage skills
 
-Use [Hub + Convex](/cli/hub-convex), `npx nanosolana hub skills`, and NanoHub at `nanosolana.netlify.app`.
+Use [Hub + Convex](/cli/hub-convex), `npx nanosolana hub skills`, and NanoHub at
+`nanosolana.netlify.app`.
 
 ### I want to build integrations
 
@@ -102,9 +112,9 @@ Use `npx nanosolana tasks`, then inspect [Tools](/tools) and
 ### CLI
 
 - [CLI Reference](/cli)
-- [Gateway Surfaces](/cli/gateway)
+- [Gateway (CLI Surface)](/cli/gateway)
 - [Wallet Flows](/cli/wallet)
-- [Trading Surface](/cli/trade)
+- [Trading (CLI Surface)](/cli/trade)
 - [Memory Surface](/cli/memory)
 - [Pet Surface](/cli/pet)
 - [Channels](/cli/channels)

@@ -1,26 +1,38 @@
 ---
-summary: "Gateway entrypoints and operations for the NanoSolana runtime"
-title: "gateway"
+summary: "Beginner-focused guide to NanoSolana gateway startup, auth, and day-one operations"
+title: "Gateway (CLI Surface)"
 ---
 
-# Gateway surfaces
+# Gateway (CLI Surface)
 
-The current published CLI does not expose a standalone `nanosolana gateway ...` command tree.
-The gateway is still real, but it is started through runtime flows or a package script.
+This page explains how operators use the gateway **from the CLI today**.
 
-## Current startup paths
+Important: there is no shipped `nanosolana gateway ...` command subtree yet. The
+gateway is started as part of runtime startup.
 
-### Through the CLI
+## Start the gateway (copy/paste)
+
+### Recommended (all-in-one)
 
 ```bash
-nanosolana run
-# or
-nanosolana go
+npx nanosolana go
 ```
 
-Both start the gateway alongside the wallet, trading engine, and memory system.
+With optional DVD intro startup sequence:
 
-### Standalone in development
+```bash
+npx nanosolana go --dvd-intro
+```
+
+### Manual startup flow
+
+```bash
+npx nanosolana init
+npx nanosolana birth --name MyAgent
+npx nanosolana run
+```
+
+### Gateway-only development
 
 From `nano-core/`:
 
@@ -28,39 +40,57 @@ From `nano-core/`:
 npm run gateway
 ```
 
-That invokes `src/gateway/server.ts` directly.
+## Day-one health checks
 
-## Defaults
+```bash
+npx nanosolana status
+curl http://127.0.0.1:18790/health
+curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+  http://127.0.0.1:18790/api/status
+```
+
+## Defaults and auth
 
 Current defaults come from `nano-core/src/config/vault.ts`:
 
 - host: `0.0.0.0`
 - port: `18790`
-- auth: `NANO_GATEWAY_SECRET`
+- API auth secret: `NANO_GATEWAY_SECRET`
 
-## What the gateway serves
+Auth behavior:
 
-- WebSocket mesh transport
-- HTTP endpoints such as `/health`, `/api/status`, `/api/framework`, `/api/memory`, `/api/docs`
-- extension endpoints such as `/api/extension/config`, `/api/extension/wallet`, `/api/extension/chat`, `/api/extension/trade`
-- streaming events from trading, wallet heartbeat, and memory
-- NanoHub-facing integration paths
+- if `NANO_GATEWAY_SECRET` is set, `/api/*` routes require auth
+- use `X-NanoSolana-Secret: <secret>` header or `Authorization: Bearer <secret>`
+- `/health` remains open for liveness checks
 
-## Current operator commands
+## Gateway endpoints you will use first
+
+- `GET /health`
+- `GET /api/status`
+- `GET /api/framework`
+- `GET /api/docs`
+- `GET /api/memory`
+- `GET /api/tasks`
+- `GET /api/extension/config`
+- `GET /api/extension/wallet`
+- `POST /api/extension/chat`
+- `POST /api/extension/trade`
+
+## Useful operator commands around the gateway
 
 ```bash
-nanosolana run
-nanosolana go
-nanosolana status
-nanosolana send "ping"
-nanosolana nodes
-nanosolana bots list
+npx nanosolana status
+npx nanosolana send "ping"
+npx nanosolana nodes
+npx nanosolana bots list
+npx nanosolana docs "gateway"
 ```
 
-## See also
+## Cross-links
 
 - [Gateway Runbook](/gateway)
 - [Gateway Configuration](/gateway/configuration)
 - [Heartbeat](/gateway/heartbeat)
 - [Gateway Protocol](/gateway/protocol)
 - [Gateway Security](/gateway/security)
+- [CLI Reference](/cli)

@@ -1,24 +1,46 @@
 ---
-summary: "NanoSolana gateway runbook for the current runtime"
+summary: "Beginner-first gateway runbook for startup, health checks, and authenticated API use"
 title: "Gateway Runbook"
 ---
 
-# Gateway runbook
+# Gateway Runbook
 
-This page documents the gateway that ships in `nano-core`.
+This page documents the gateway that ships in `nano-core` and how to operate it
+as a new user.
 
-Important: the current CLI does **not** expose a standalone `nanosolana gateway ...`
-subtree. In this checkout, the gateway is started in one of these ways:
+Important: the current CLI does **not** expose a standalone
+`nanosolana gateway ...` subtree. In this checkout, the gateway is started in
+one of these ways:
 
 - `nanosolana run`
 - `nanosolana go`
 - `npm run gateway` inside `nano-core/`
 
+## Fast startup (recommended)
+
+```bash
+npx nanosolana go
+```
+
+Optional startup animation before the runtime boot sequence:
+
+```bash
+npx nanosolana go --dvd-intro
+```
+
+Or via environment toggle:
+
+```bash
+NANO_DVD_INTRO=1 npx nanosolana go
+```
+
 ## What the gateway does
 
-The gateway in [`nano-core/src/gateway/server.ts`](../../nano-core/src/gateway/server.ts):
+The gateway in
+[`nano-core/src/gateway/server.ts`](../../nano-core/src/gateway/server.ts):
 
-- exposes HTTP endpoints such as `/health`, `/api/status`, `/api/framework`, and `/api/memory`
+- exposes HTTP endpoints such as `/health`, `/api/status`, `/api/framework`, and
+  `/api/memory`
 - exposes `/api/tasks` for the automated agent task registry
 - also exposes `/api/docs` and `/api/extension/{config,wallet,chat,trade}`
 - includes NanoHub public site and discovery URLs in `/api/framework`
@@ -28,12 +50,13 @@ The gateway in [`nano-core/src/gateway/server.ts`](../../nano-core/src/gateway/s
 
 ## Default bind and port
 
-Current defaults come from [`nano-core/src/config/vault.ts`](../../nano-core/src/config/vault.ts):
+Current defaults come from
+[`nano-core/src/config/vault.ts`](../../nano-core/src/config/vault.ts):
 
-| Setting | Default |
-|--------|---------|
-| Host | `0.0.0.0` |
-| Port | `18790` |
+| Setting    | Default               |
+| ---------- | --------------------- |
+| Host       | `0.0.0.0`             |
+| Port       | `18790`               |
 | Secret env | `NANO_GATEWAY_SECRET` |
 
 ## Local startup
@@ -84,22 +107,53 @@ curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/status
 ```
 
+### Useful additional endpoint checks
+
+```bash
+curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+  http://127.0.0.1:18790/api/framework
+
+curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+  "http://127.0.0.1:18790/api/docs?q=gateway"
+
+curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+  http://127.0.0.1:18790/api/tasks
+```
+
 ## Auth model
 
 - WebSocket auth: HMAC-SHA256 signature on the initial auth frame
 - HTTP auth: `X-NanoSolana-Secret` or `Authorization: Bearer ...`
-- API auth is enforced on `/api/*` routes only when `NANO_GATEWAY_SECRET` is configured
+- API auth is enforced on `/api/*` routes only when `NANO_GATEWAY_SECRET` is
+  configured
 - Comparison: timing-safe comparison in the gateway implementation
 - Default limits: `10` connections/minute and `100` messages/minute
+
+## Main endpoints (day one)
+
+- `GET /health`
+- `GET /api/status`
+- `GET /api/framework`
+- `GET /api/docs`
+- `GET /api/memory`
+- `GET /api/tasks`
+- `GET /api/extension/config`
+- `GET /api/extension/wallet`
+- `POST /api/extension/chat`
+- `POST /api/extension/trade`
 
 ## Operator notes
 
 - `nanosolana status` reports the configured gateway host and port.
-- `nanosolana send` uses the configured gateway secret for local or mesh delivery.
-- `nanosolana nodes` and `nanosolana bots` are the current operator-facing mesh views.
-- `nanosolana docs` now indexes both `nano-docs/` and `pump/docs/`, so the gateway
-  can surface both NanoSolana and Pump material through one searchable corpus.
-- UI and browser integrations use the `/api/extension/*` endpoints exposed by the gateway.
+- `nanosolana send` uses the configured gateway secret for local or mesh
+  delivery.
+- `nanosolana nodes` and `nanosolana bots` are the current operator-facing mesh
+  views.
+- `nanosolana docs` now indexes both `nano-docs/` and `pump/docs/`, so the
+  gateway can surface both NanoSolana and Pump material through one searchable
+  corpus.
+- UI and browser integrations use the `/api/extension/*` endpoints exposed by
+  the gateway.
 
 ## Remote access
 
@@ -115,6 +169,7 @@ Keep HMAC auth enabled even when tunneling.
 
 ## Related docs
 
+- [Gateway (CLI Surface)](/cli/gateway)
 - [Gateway Configuration](/gateway/configuration)
 - [Gateway Protocol](/gateway/protocol)
 - [Gateway Security](/gateway/security)

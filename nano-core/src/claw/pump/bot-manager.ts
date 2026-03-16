@@ -10,6 +10,7 @@ import { resolve } from "node:path";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { createLogger } from "./logger.js";
 import { EventBus, type SwarmEventType } from "./event-bus.js";
+import { resolvePumpServiceDirectory } from "./path-resolver.js";
 
 const log = createLogger("bot-manager");
 
@@ -73,18 +74,13 @@ export interface BotEnvConfig {
 
 // ── Bot Definitions ─────────────────────────────────────────────────
 
-const PROJECT_ROOT = resolve(
-  new URL(import.meta.url).pathname,
-  "../../../..",
-);
-
 export const BOT_DEFINITIONS: Record<BotId, BotDefinition> = {
   "telegram-bot": {
     id: "telegram-bot",
     name: "PumpFun Fee Monitor",
     description:
       "Monitors creator fees, CTO alerts, whale trades. Supports DMs, groups, REST API.",
-    directory: resolve(PROJECT_ROOT, "telegram-bot"),
+    directory: resolvePumpServiceDirectory("telegram-bot"),
     startCommand: "node dist/index.js",
     healthEndpoint: null,
     port: 3000,
@@ -102,7 +98,7 @@ export const BOT_DEFINITIONS: Record<BotId, BotDefinition> = {
     name: "Outsiders Call Tracker",
     description:
       "Call tracking with leaderboards, PNL cards, win rates, hardcore mode.",
-    directory: resolve(PROJECT_ROOT, "outsiders-bot"),
+    directory: resolvePumpServiceDirectory("outsiders-bot"),
     startCommand: "node dist/index.js",
     healthEndpoint: null,
     port: null,
@@ -120,7 +116,7 @@ export const BOT_DEFINITIONS: Record<BotId, BotDefinition> = {
     name: "Channel Feed Bot",
     description:
       "Read-only Telegram channel feed: launches, graduations, whales, fee claims.",
-    directory: resolve(PROJECT_ROOT, "channel-bot"),
+    directory: resolvePumpServiceDirectory("channel-bot"),
     startCommand: "node dist/index.js",
     healthEndpoint: null,
     port: null,
@@ -138,7 +134,7 @@ export const BOT_DEFINITIONS: Record<BotId, BotDefinition> = {
     name: "WebSocket Relay",
     description:
       "Real-time token launch broadcasts via WebSocket to browser clients.",
-    directory: resolve(PROJECT_ROOT, "websocket-server"),
+    directory: resolvePumpServiceDirectory("websocket-server"),
     startCommand: "node dist/server.js",
     healthEndpoint: "/health",
     port: 3099,
@@ -151,7 +147,7 @@ export const BOT_DEFINITIONS: Record<BotId, BotDefinition> = {
     name: "Trading Bot Swarm",
     description:
       "Multi-strategy trading bots: sniper, momentum, graduation, market-maker. Real-time position tracking.",
-    directory: resolve(PROJECT_ROOT, "swarm-bot"),
+    directory: resolvePumpServiceDirectory("swarm-bot"),
     startCommand: "node dist/index.js",
     healthEndpoint: "/health",
     port: 3100,
