@@ -47,6 +47,9 @@ nanosolana register
 nanosolana registry
 nanosolana nanobot
 nanosolana tasks [query]
+nanosolana hub skills [query]
+nanosolana hub inspect <slug>
+nanosolana hub register|list|search|heartbeat|status|deregister
 nanosolana pay invoice|verify|status
 ```
 
@@ -68,6 +71,8 @@ nanosolana pay invoice|verify|status
 - `nanosolana vault [query]` — inspect ClawVault and search it
 - `nanosolana docs [query]` — inspect `nano-docs`, `pump/docs`, `agent-tasks/`, and extensions
 - `nanosolana tasks [query]` — inspect the repo task registry and persona-matched assignments
+- `nanosolana hub skills [query]` — browse/search the public NanoHub skill registry at `nanosolana.netlify.app`
+- `nanosolana hub inspect <slug>` — inspect a NanoHub skill and preview `SKILL.md`
 - `nanosolana scan [address]` — on-chain wallet snapshot
 - `nanosolana register` / `registry` — devnet identity registration and lookup
 - `nanosolana nanobot` — start the local NanoBot UI on port `7777` by default
@@ -78,6 +83,17 @@ nanosolana pay invoice|verify|status
 - `nanosolana pay invoice --user <pubkey> --amount <amount> [--currency USDC|SOL] [--duration 3600]` — create an on-chain payment invoice
 - `nanosolana pay verify --user <pubkey> --memo <memo> --amount <amount> --start <ts> --end <ts>` — verify an invoice payment
 - `nanosolana pay status` — show payment system configuration
+
+### NanoHub
+
+- `nanosolana hub skills [query]` — public skill discovery from NanoHub
+- `nanosolana hub inspect <slug>` — show skill metadata, URL, stats, and `SKILL.md` preview
+- `nanosolana hub register` — register the current agent in the NanoHub agent registry
+- `nanosolana hub list` — list registered agents
+- `nanosolana hub search <query>` — search registered agents
+- `nanosolana hub heartbeat` — send a heartbeat for the registered agent
+- `nanosolana hub status` — show registry totals and NanoHub public URLs
+- `nanosolana hub deregister` — deactivate the current agent registration
 
 ### Mesh and tmux operations
 
@@ -93,6 +109,8 @@ nanosolana pay invoice|verify|status
 - There is no shipped `nanosolana gateway ...` subtree yet; the gateway is started by `run` or `go`, or via `npm run gateway` inside `nano-core`.
 - `nanosolana pay` **is** shipped and provides on-chain invoice creation, verification, and status via the `@pump-fun/agent-payments-sdk`.
 - `nanosolana tasks` **is** shipped and exposes the same task registry used by persona auto-assignment in the swarm runtime.
+- `nanosolana hub skills` and `nanosolana hub inspect` **are** shipped for read-only NanoHub skill discovery.
+- Install, publish, and sync still live in the dedicated `nanohub` package.
 
 Those older command shapes appeared in earlier docs as a target UX. The rest of this doc tree maps those capability areas to the commands and scripts that actually exist.
 

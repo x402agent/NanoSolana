@@ -159,8 +159,8 @@ extract_frontmatter_field() {
 sanitize_slug() {
   echo "$1" \
     | tr '[:upper:]' '[:lower:]' \
-    | sed 's/[^a-z0-9-]/-/g' \
-    | sed 's/^-\+//; s/-\+$//; s/--\+/-/g'
+    | sed -E 's/[^a-z0-9-]/-/g' \
+    | sed -E 's/^-+//; s/-+$//; s/-{2,}/-/g'
 }
 
 # ─── Helper: title case (mirrors nanohub slug.ts logic) ──────────────────────

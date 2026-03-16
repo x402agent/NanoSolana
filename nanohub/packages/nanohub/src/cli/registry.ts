@@ -2,8 +2,8 @@ import { readGlobalConfig, writeGlobalConfig } from '../config.js'
 import { discoverRegistryFromSite } from '../discovery.js'
 import type { GlobalOpts } from './types.js'
 
-export const DEFAULT_SITE = 'https://hub.nanosolana.com'
-export const DEFAULT_REGISTRY = 'https://hub.nanosolana.com'
+export const DEFAULT_SITE = 'https://nanosolana.netlify.app'
+export const DEFAULT_REGISTRY = 'https://nanosolana.netlify.app'
 const LEGACY_REGISTRY_HOSTS = new Set([
   'nanohub.com',
   'www.nanohub.com',

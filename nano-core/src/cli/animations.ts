@@ -450,6 +450,15 @@ export function startDvdScreensaver(): { stop: () => void } {
   return { stop };
 }
 
+/**
+ * Play a short DVD-style intro animation and return to normal terminal mode.
+ */
+export async function playDvdIntro(durationMs = 1400): Promise<void> {
+  const dvd = startDvdScreensaver();
+  await sleep(durationMs);
+  dvd.stop();
+}
+
 // ── Matrix Rain (nano-style) ───────────────────────────────────
 
 export function matrixRain(durationMs = 1500): Promise<void> {

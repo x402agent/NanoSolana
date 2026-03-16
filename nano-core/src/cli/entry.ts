@@ -28,6 +28,7 @@ import { getNanoKnowledgeSnapshot, getNanoKnowledgeSummary, searchNanoKnowledge 
 import {
   playStartupAnimation, animateLobster, printLobster, startDvdScreensaver,
   printSplashBanner, phaseTransition, matrixRain,
+  playDvdIntro,
   printCompleteBanner, printCommandHeader, printSuccess, printError,
   printWarning, printInfo, paymentAnimation, demoIntro, printInitHeader, printSectionHeader,
   systemBootReadout,
@@ -43,6 +44,16 @@ import {
   searchTasks,
 } from "../claw/task-loader.js";
 import { getPersona, getPersonaTasks } from "../claw/persona-loader.js";
+import {
+  clampNanoHubLimit,
+  getNanoHubDiscoveryUrl,
+  getNanoHubSiteUrl,
+  getNanoHubSkill,
+  getNanoHubSkillFile,
+  getNanoHubSkillUrl,
+  listNanoHubSkills,
+  searchNanoHubSkills,
+} from "../hub/public-client.js";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { homedir } from "node:os";
@@ -100,6 +111,32 @@ function formatBytes(bytes: number): string {
   }
 
   return `${value.toFixed(1)} ${units[unitIndex]}`;
+}
+
+function formatHubRelativeTime(timestamp?: number | null): string {
+  if (!timestamp || !Number.isFinite(timestamp)) {
+    return "unknown";
+  }
+
+  const diff = Date.now() - timestamp;
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days >= 30) {
+    return `${Math.floor(days / 30)}mo ago`;
+  }
+  if (days > 0) return `${days}d ago`;
+  if (hours > 0) return `${hours}h ago`;
+  if (minutes > 0) return `${minutes}m ago`;
+  return "just now";
+}
+
+function isTruthy(value: string | undefined): boolean {
+  if (!value) return false;
+  const normalized = value.trim().toLowerCase();
+  return normalized === "1" || normalized === "true" || normalized === "yes" || normalized === "on";
 }
 
 // ── CLI Program ────────────────────────────────────────────────
@@ -852,7 +889,14 @@ program
   .option("-n, --name <name>", "Agent name", "NanoSolana")
   .option("--pet-name <petName>", "TamaGOchi pet name")
   .option("--skip-init", "Skip API key prompts if already configured")
+  .option("--dvd-intro", "Play DVD intro animation before startup")
   .action(async (opts) => {
+    const dvdIntroRequested = Boolean(opts.dvdIntro) || isTruthy(process.env.NANO_DVD_INTRO);
+
+    if (dvdIntroRequested) {
+      await playDvdIntro();
+    }
+
     // Epic startup sequence
     await matrixRain(1200);
     await printSplashBanner();
@@ -1464,7 +1508,198 @@ payCmd
 
 const hubCmd = program
   .command("hub")
-  .description("🌐 NanoHub — Agent self-registration, listing, and heartbeat");
+  .description("🌐 NanoHub — public skill discovery plus agent self-registration, listing, and heartbeat");
+
+hubCmd
+  .command("skills")
+  .description("Browse or search public NanoHub skills from the NanoSolana CLI")
+  .argument("[query]", "Optional query to search NanoHub skills")
+  .option("-l, --limit <n>", "Max results", "10")
+  .option("-s, --sort <sort>", "Sort: newest|downloads|rating|installs|installsAllTime|trending", "newest")
+  .option("--highlighted", "Only show highlighted skills")
+  .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? "https://nanosolana.netlify.app")
+  .option("--json", "Emit machine-readable JSON")
+  .action(async (query, opts) => {
+    try {
+      const siteUrl = getNanoHubSiteUrl(opts.site);
+      const limit = clampNanoHubLimit(parsePositiveInteger(opts.limit as string | undefined, 10));
+
+      if (query) {
+        const result = await searchNanoHubSkills({
+          query: String(query),
+          siteUrl,
+          limit,
+          highlightedOnly: Boolean(opts.highlighted),
+        });
+
+        if (opts.json) {
+          console.log(JSON.stringify({
+            siteUrl,
+            discoveryUrl: getNanoHubDiscoveryUrl(siteUrl),
+            query: String(query),
+            results: result.results,
+          }, null, 2));
+          return;
+        }
+
+        console.log(chalk.cyan(`\n  ── NanoHub Search ── "${query}" ───────────────────\n`));
+        console.log(chalk.gray(`  Site: ${siteUrl}`));
+        console.log(chalk.gray(`  Discovery: ${getNanoHubDiscoveryUrl(siteUrl)}\n`));
+
+        if (result.results.length === 0) {
+          console.log(chalk.gray("  No skills matched your query.\n"));
+          return;
+        }
+
+        for (const entry of result.results) {
+          const slug = entry.slug ?? "unknown";
+          const title = entry.displayName ?? slug;
+          const version = entry.version ? chalk.cyan(`v${entry.version}`) : chalk.gray("v?");
+          const age = entry.updatedAt ? chalk.gray(formatHubRelativeTime(entry.updatedAt)) : chalk.gray("updated ?");
+          console.log(`  ⚡ ${chalk.white(title)} ${chalk.gray(`(${slug})`)} ${version} · ${age}`);
+          if (entry.summary) {
+            console.log(`     ${chalk.gray(entry.summary)}`);
+          }
+          console.log(`     ${chalk.gray(getNanoHubSkillUrl(slug, { siteUrl }))}`);
+        }
+        console.log();
+        return;
+      }
+
+      const result = await listNanoHubSkills({
+        siteUrl,
+        limit,
+        sort: String(opts.sort),
+        highlightedOnly: Boolean(opts.highlighted),
+      });
+
+      if (opts.json) {
+        console.log(JSON.stringify({
+          siteUrl,
+          discoveryUrl: getNanoHubDiscoveryUrl(siteUrl),
+          sort: opts.sort,
+          highlightedOnly: Boolean(opts.highlighted),
+          ...result,
+        }, null, 2));
+        return;
+      }
+
+      console.log(chalk.cyan("\n  ── NanoHub Skills ────────────────────────────\n"));
+      console.log(chalk.gray(`  Site: ${siteUrl}`));
+      console.log(chalk.gray(`  Discovery: ${getNanoHubDiscoveryUrl(siteUrl)}`));
+      console.log(chalk.gray(`  Sort: ${opts.sort}${opts.highlighted ? " · highlighted only" : ""}\n`));
+
+      if (result.items.length === 0) {
+        console.log(chalk.gray("  No public skills found.\n"));
+        return;
+      }
+
+      for (const item of result.items) {
+        const title = item.displayName ?? item.slug;
+        const version = item.latestVersion?.version ? chalk.cyan(`v${item.latestVersion.version}`) : chalk.gray("v?");
+        const age = item.updatedAt ? chalk.gray(formatHubRelativeTime(item.updatedAt)) : chalk.gray("updated ?");
+        console.log(`  ⚡ ${chalk.white(title)} ${chalk.gray(`(${item.slug})`)} ${version} · ${age}`);
+        if (item.summary) {
+          console.log(`     ${chalk.gray(item.summary)}`);
+        }
+        console.log(`     ${chalk.gray(getNanoHubSkillUrl(item.slug, { siteUrl }))}`);
+      }
+      console.log();
+    } catch (err) {
+      printError(err instanceof Error ? err.message : String(err));
+      process.exit(1);
+    }
+  });
+
+hubCmd
+  .command("inspect")
+  .description("Inspect a NanoHub skill and optionally fetch its SKILL.md")
+  .argument("<slug>", "Skill slug")
+  .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? "https://nanosolana.netlify.app")
+  .option("--file <path>", "Fetch a specific file from the latest skill version", "SKILL.md")
+  .option("--no-file", "Skip fetching the skill file preview")
+  .option("--json", "Emit machine-readable JSON")
+  .action(async (slug, opts) => {
+    try {
+      const siteUrl = getNanoHubSiteUrl(opts.site);
+      const detail = await getNanoHubSkill(String(slug), { siteUrl });
+
+      if (!detail.skill) {
+        throw new Error(`Skill not found: ${slug}`);
+      }
+
+      const ownerHandle = detail.owner?.handle ?? undefined;
+      const skillUrl = getNanoHubSkillUrl(detail.skill.slug, {
+        siteUrl,
+        ownerHandle,
+      });
+
+      let filePreview: string | undefined;
+      if (opts.file !== false) {
+        try {
+          const file = await getNanoHubSkillFile(detail.skill.slug, {
+            siteUrl,
+            path: String(opts.file || "SKILL.md"),
+          });
+          filePreview = file.content;
+        } catch (error) {
+          filePreview = `Unable to fetch ${opts.file}: ${error instanceof Error ? error.message : String(error)}`;
+        }
+      }
+
+      if (opts.json) {
+        console.log(JSON.stringify({
+          siteUrl,
+          discoveryUrl: getNanoHubDiscoveryUrl(siteUrl),
+          skillUrl,
+          ...detail,
+          filePreview,
+        }, null, 2));
+        return;
+      }
+
+      console.log(chalk.cyan(`\n  ── NanoHub Skill ── ${detail.skill.slug} ─────────────────\n`));
+      console.log(chalk.white("  Name:        ") + chalk.green(detail.skill.displayName ?? detail.skill.slug));
+      console.log(chalk.white("  Slug:        ") + chalk.gray(detail.skill.slug));
+      console.log(chalk.white("  URL:         ") + chalk.cyan(skillUrl));
+      console.log(chalk.white("  Site:        ") + chalk.gray(siteUrl));
+      console.log(chalk.white("  Owner:       ") + chalk.gray(detail.owner?.handle ?? detail.owner?.displayName ?? "unknown"));
+      console.log(chalk.white("  Version:     ") + chalk.cyan(detail.latestVersion?.version ?? "unknown"));
+      console.log(chalk.white("  Updated:     ") + chalk.gray(formatHubRelativeTime(detail.skill.updatedAt)));
+      if (detail.skill.summary) {
+        console.log(chalk.white("  Summary:     ") + chalk.gray(detail.skill.summary));
+      }
+
+      const stats = detail.skill.stats ?? {};
+      const downloads = typeof stats.downloads === "number" ? stats.downloads : 0;
+      const stars = typeof stats.stars === "number" ? stats.stars : 0;
+      const versions = typeof stats.versions === "number" ? stats.versions : 0;
+      console.log(chalk.white("  Stats:       ") + chalk.gray(`downloads ${downloads} · stars ${stars} · versions ${versions}`));
+
+      const tags = detail.skill.tags ? Object.keys(detail.skill.tags) : [];
+      if (tags.length > 0) {
+        console.log(chalk.white("  Tags:        ") + chalk.gray(tags.join(", ")));
+      }
+
+      if (filePreview) {
+        const lines = filePreview.split("\n").slice(0, 20).join("\n");
+        console.log(chalk.cyan(`\n  ── ${opts.file} preview ─────────────────────\n`));
+        console.log(lines);
+        if (filePreview.split("\n").length > 20) {
+          console.log(chalk.gray("\n  … preview truncated …"));
+        }
+      }
+
+      console.log();
+      console.log(chalk.gray("  Install / publish / sync flows live in the dedicated NanoHub CLI:"));
+      console.log(chalk.cyan(`  npx nanohub@latest inspect ${detail.skill.slug}`));
+      console.log(chalk.cyan(`  npx nanohub@latest install ${detail.skill.slug}`));
+      console.log();
+    } catch (err) {
+      printError(err instanceof Error ? err.message : String(err));
+      process.exit(1);
+    }
+  });
 
 hubCmd
   .command("register")
@@ -1561,7 +1796,7 @@ hubCmd
 
 hubCmd
   .command("list")
-  .description("List all registered agents in NanoHub")
+  .description("List all registered agents in the NanoHub agent registry")
   .option("-c, --category <category>", "Filter by category")
   .option("-l, --limit <n>", "Max results", "20")
   .option("--api <url>", "NanoHub API server URL", "https://nanohub-api.up.railway.app")
@@ -1598,7 +1833,7 @@ hubCmd
 
 hubCmd
   .command("search")
-  .description("Search NanoHub registry")
+  .description("Search the NanoHub agent registry")
   .argument("<query>", "Search query")
   .option("--api <url>", "NanoHub API server URL", "https://nanohub-api.up.railway.app")
   .action(async (query, opts) => {
@@ -1666,6 +1901,8 @@ hubCmd
       };
 
       console.log(chalk.cyan("\n  ── NanoHub Registry Stats ────────────────────\n"));
+      console.log(chalk.white("  Public Site:   ") + chalk.cyan(getNanoHubSiteUrl()));
+      console.log(chalk.white("  Discovery:     ") + chalk.gray(getNanoHubDiscoveryUrl()));
       console.log(chalk.white("  Total Agents:  ") + chalk.green(String(data.totalAgents)));
       console.log(chalk.white("  Active:        ") + chalk.green(String(data.activeAgents)));
       console.log(chalk.white("  Categories:"));
@@ -1687,6 +1924,7 @@ hubCmd
       } else {
         console.log(chalk.yellow("\n  ⚠️  Not registered. Run 'nanosolana hub register' to register."));
       }
+      console.log(chalk.gray("\n  Public skills: nanosolana hub skills"));
       console.log();
     } catch (err) {
       printError(err instanceof Error ? err.message : String(err));

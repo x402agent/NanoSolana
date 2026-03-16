@@ -41,7 +41,7 @@ function getRegistry() {
     process.env.CLAWHUB_REGISTRY?.trim() ||
     process.env.NANOHUB_REGISTRY?.trim() ||
     process.env.NANOSOLANA_REGISTRY?.trim() ||
-    'https://hub.nanosolana.com'
+    'https://nanosolana.netlify.app'
   )
 }
 
@@ -50,7 +50,7 @@ function getSite() {
     process.env.CLAWHUB_SITE?.trim() ||
     process.env.NANOHUB_SITE?.trim() ||
     process.env.NANOSOLANA_SITE?.trim() ||
-    'https://hub.nanosolana.com'
+    'https://nanosolana.netlify.app'
   )
 }
 

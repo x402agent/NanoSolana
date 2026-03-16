@@ -26,6 +26,7 @@ import { getNanoKnowledgeSnapshot, getNanoKnowledgeSummary, searchNanoKnowledge 
 import { TelegramConversationStore } from "../telegram/persistence.js";
 import { getPersona } from "../claw/persona-loader.js";
 import { getTaskSummary, getTasksForPersona, loadAllTasks, searchTasks } from "../claw/task-loader.js";
+import { getNanoHubApiBaseUrl, getNanoHubDiscoveryUrl, getNanoHubSiteUrl } from "../hub/public-client.js";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -726,6 +727,7 @@ export class NanoGateway extends EventEmitter<GatewayEvents> {
     const knowledgeSummary = getNanoKnowledgeSummary();
     const extensionSnapshot = getNanoKnowledgeSnapshot().extensions;
     const taskSummary = getTaskSummary(loadAllTasks());
+    const publicHubSiteUrl = getNanoHubSiteUrl();
 
     return {
       project: "NanoSolana",
@@ -745,6 +747,12 @@ export class NanoGateway extends EventEmitter<GatewayEvents> {
         executions: this.trading.getExecutions().length,
       },
       memory: this.memory.getStats(),
+      hub: {
+        runtimeUrl: this.config.hub.url,
+        publicSiteUrl: publicHubSiteUrl,
+        publicApiBaseUrl: getNanoHubApiBaseUrl(publicHubSiteUrl),
+        discoveryUrl: getNanoHubDiscoveryUrl(publicHubSiteUrl),
+      },
       knowledge: knowledgeSummary,
       tasks: taskSummary,
       extensions: {

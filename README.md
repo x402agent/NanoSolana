@@ -36,7 +36,7 @@
 - two doc trees: [`nano-docs/index.md`](nano-docs/index.md) and [`pump/docs/getting-started.md`](pump/docs/getting-started.md)
 - the standalone UI in [`ui/`](ui/) with your new `swarm` and `personas` views
 
-**Website:** [nanosolana.com](https://nanosolana.com) · **Hub:** [hub.nanosolana.com](https://hub.nanosolana.com) · **Docs:** [docs.nanosolana.com](https://docs.nanosolana.com) · **GitHub:** [github.com/x402agent/NanoSolana](https://github.com/x402agent/NanoSolana)
+**Website:** [nanosolana.com](https://nanosolana.com) · **Hub:** [nanosolana.netlify.app](https://nanosolana.netlify.app) · **Docs:** [docs.nanosolana.com](https://docs.nanosolana.com) · **GitHub:** [github.com/x402agent/NanoSolana](https://github.com/x402agent/NanoSolana)
 
 ## Quick Start
 
@@ -284,12 +284,29 @@ Core variables that matter today:
 | `TELEGRAM_BOT_TOKEN` | Optional | Pump Telegram gateway |
 | `SOLANA_RPC_URL` | Optional | Pump bridge RPC override |
 | `TAILSCALE_AUTH_KEY` | Optional | Mesh networking |
+| `NANO_HUB_URL` | Optional | NanoHub site URL override for `nanosolana hub` and Hub bridge integrations |
 
 Current gateway defaults come from [`nano-core/src/config/vault.ts`](nano-core/src/config/vault.ts):
 
 - host: `0.0.0.0`
 - port: `18790`
-- hub URL: `http://localhost:3000`
+- runtime bridge URL default: `http://localhost:3000`
+- public NanoHub skill site: `https://nanosolana.netlify.app`
+
+Public NanoHub skill discovery is available directly from the published package:
+
+```bash
+npx nanosolana hub skills
+npx nanosolana hub skills pump --limit 5
+npx nanosolana hub inspect token-tracker
+```
+
+Install, publish, and sync remain in the dedicated NanoHub CLI:
+
+```bash
+npx nanohub@latest install token-tracker
+npx nanohub@latest search telegram
+```
 
 ## Monorepo Layout
 

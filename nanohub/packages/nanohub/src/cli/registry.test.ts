@@ -22,7 +22,7 @@ function makeOpts(overrides: Partial<GlobalOpts> = {}): GlobalOpts {
   return {
     workdir: '/work',
     dir: '/work/skills',
-    site: 'https://hub.nanosolana.com',
+    site: 'https://nanosolana.netlify.app',
     registry: DEFAULT_REGISTRY,
     registrySource: 'default',
     ...overrides,
@@ -38,7 +38,7 @@ beforeEach(() => {
 describe('registry resolution', () => {
   it('prefers explicit registry over discovery/cache', async () => {
     readGlobalConfig.mockResolvedValue({ registry: 'https://auth.nanohub.com' })
-    discoverRegistryFromSite.mockResolvedValue({ apiBase: 'https://hub.nanosolana.com' })
+    discoverRegistryFromSite.mockResolvedValue({ apiBase: 'https://nanosolana.netlify.app' })
 
     const registry = await resolveRegistry(
       makeOpts({ registry: 'https://custom.example', registrySource: 'cli' }),
@@ -50,13 +50,13 @@ describe('registry resolution', () => {
 
   it('ignores legacy registry and updates cache from discovery', async () => {
     readGlobalConfig.mockResolvedValue({ registry: 'https://auth.nanohub.com', token: 'tkn' })
-    discoverRegistryFromSite.mockResolvedValue({ apiBase: 'https://hub.nanosolana.com' })
+    discoverRegistryFromSite.mockResolvedValue({ apiBase: 'https://nanosolana.netlify.app' })
 
     const registry = await getRegistry(makeOpts(), { cache: true })
 
-    expect(registry).toBe('https://hub.nanosolana.com')
+    expect(registry).toBe('https://nanosolana.netlify.app')
     expect(writeGlobalConfig).toHaveBeenCalledWith({
-      registry: 'https://hub.nanosolana.com',
+      registry: 'https://nanosolana.netlify.app',
       token: 'tkn',
     })
   })

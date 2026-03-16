@@ -26,7 +26,7 @@ nanohub login --token clh_...
 
 Notes:
 
-- Browser login opens `https://hub.nanosolana.com/cli/auth` and completes via a loopback callback.
+- Browser login opens `https://nanosolana.netlify.app/cli/auth` and completes via a loopback callback.
 - Token stored in `~/Library/Application Support/nanohub/config.json` on macOS (override via `NANOHUB_CONFIG_PATH`, legacy `CLAWHUB_CONFIG_PATH`).
 
 ## Examples
@@ -51,7 +51,7 @@ nanohub sync --root ../clawdis/skills --all --dry-run
 
 ## Defaults
 
-- Site: `https://hub.nanosolana.com` (override via `--site` or `NANOHUB_SITE`, legacy `CLAWHUB_SITE`)
+- Site: `https://nanosolana.netlify.app` (override via `--site` or `NANOHUB_SITE`, legacy `CLAWHUB_SITE`)
 - Registry: discovered from `/.well-known/nanohub.json` on the site (legacy `/.well-known/clawhub.json`; override via `--registry` or `NANOHUB_REGISTRY`)
 - Workdir: current directory (falls back to TamaGObot workspace if configured; override via `--workdir` or `NANOHUB_WORKDIR`)
 - Install dir: `./skills` under workdir (override via `--dir`)

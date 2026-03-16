@@ -18,7 +18,7 @@
 `nano-core` is published to npm as `nanosolana`.
 It bundles the local agent runtime, encrypted config vault, wallet lifecycle, OODA trading engine, ClawVault memory, TamaGOchi state machine, gateway server, docs integration, and devnet on-chain identity registration.
 
-[Website](https://nanosolana.com) · [Hub](https://hub.nanosolana.com) · [Docs](https://docs.nanosolana.com) · [GitHub](https://github.com/x402agent/NanoSolana) · [Discord](https://discord.gg/nanosolana)
+[Website](https://nanosolana.com) · [Hub](https://nanosolana.netlify.app) · [Docs](https://docs.nanosolana.com) · [GitHub](https://github.com/x402agent/NanoSolana) · [Discord](https://discord.gg/nanosolana)
 
 </div>
 
@@ -28,7 +28,7 @@ It bundles the local agent runtime, encrypted config vault, wallet lifecycle, OO
 
 | Area | Included in `nanosolana` |
 | --- | --- |
-| CLI | `init`, `birth`, `run`, `go`, `demo`, `scan`, `register`, `registry`, `nanobot`, `status`, `pet`, `docs`, `vault`, `config`, `nodes`, `send`, `bots` |
+| CLI | `init`, `birth`, `run`, `go`, `demo`, `scan`, `register`, `registry`, `nanobot`, `status`, `pet`, `docs`, `tasks`, `vault`, `config`, `nodes`, `send`, `bots`, `hub`, `pay` |
 | Trading runtime | Helius RPC ingestion, Birdeye market data, Jupiter execution, signal events |
 | Memory | ClawVault 3-tier memory: known, learned, inferred |
 | Security | AES-256-GCM local vault, HMAC-SHA256 gateway auth, timing-safe signature checks |
@@ -74,6 +74,24 @@ If secrets are already present, skip the prompts:
 
 ```bash
 npx nanosolana go --skip-init
+```
+
+### NanoHub skill discovery
+
+Use the published `nanosolana` package to browse public NanoHub skills without
+installing the separate registry CLI:
+
+```bash
+npx nanosolana hub skills
+npx nanosolana hub skills telegram --limit 5
+npx nanosolana hub inspect token-tracker
+```
+
+When you want install, publish, or sync flows, drop into the dedicated NanoHub CLI:
+
+```bash
+npx nanohub@latest install token-tracker
+npx nanohub@latest publish ./skills/my-agent --slug my-agent --name "My Agent" --version 1.0.0
 ```
 
 ## Install
@@ -126,6 +144,7 @@ Secrets can come from the encrypted local vault, environment variables, or both.
 | `NANO_GATEWAY_PORT` | Gateway port | Defaults to `18790` |
 | `NANO_GATEWAY_HOST` | Gateway bind host | Defaults to `0.0.0.0` |
 | `NANO_GATEWAY_SECRET` | Shared HMAC secret | Strongly recommended |
+| `NANO_HUB_URL` | NanoHub site URL | Public skill discovery defaults to `https://nanosolana.netlify.app`; local bridge defaults may point at your dev server |
 | `NANO_VAULT_PASSWORD` | Override vault password source | Recommended for deterministic multi-session setups |
 | `TAILSCALE_AUTH_KEY` | Mesh networking | Needed for automated Tailscale enrollment |
 
@@ -155,6 +174,7 @@ Secrets can come from the encrypted local vault, environment variables, or both.
 | `nanosolana config` | Print the redacted runtime configuration |
 | `nanosolana vault [query]` | Search the ClawVault tiers |
 | `nanosolana docs [query]` | Search integrated docs and extension metadata |
+| `nanosolana tasks [query]` | Inspect the automated repo task registry used by personas |
 | `nanosolana nanobot --port 7777` | Start the local NanoBot companion UI |
 
 ### Mesh and multi-bot tooling
@@ -169,6 +189,19 @@ Secrets can come from the encrypted local vault, environment variables, or both.
 | `nanosolana bots kill <name>` | Terminate a tmux session |
 | `nanosolana dvd` | Terminal DVD-style screensaver |
 | `nanosolana lobster` | Animated or static lobster banner |
+
+### NanoHub
+
+| Command | Description |
+| --- | --- |
+| `nanosolana hub skills [query]` | Browse or search public NanoHub skills |
+| `nanosolana hub inspect <slug>` | Inspect a skill and preview `SKILL.md` |
+| `nanosolana hub register` | Register this agent in the NanoHub agent registry |
+| `nanosolana hub list` | List agents in the NanoHub agent registry |
+| `nanosolana hub search <query>` | Search the NanoHub agent registry |
+| `nanosolana hub heartbeat` | Send a registry heartbeat |
+| `nanosolana hub status` | Show registry statistics plus public Hub URLs |
+| `nanosolana hub deregister` | Mark the current agent inactive in the registry |
 
 ## SDK Usage
 

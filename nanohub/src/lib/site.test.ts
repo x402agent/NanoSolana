@@ -42,18 +42,18 @@ afterEach(() => {
 
 describe('site helpers', () => {
   it('returns default and env configured site URLs', () => {
-    expect(getClawHubSiteUrl()).toBe('https://hub.nanosolana.com')
+    expect(getClawHubSiteUrl()).toBe('https://nanosolana.netlify.app')
     withMetaEnv({ VITE_SITE_URL: 'https://example.com' }, () => {
       expect(getClawHubSiteUrl()).toBe('https://example.com')
     })
     withMetaEnv({ VITE_SITE_URL: 'https://nanohub.com' }, () => {
-      expect(getClawHubSiteUrl()).toBe('https://hub.nanosolana.com')
+      expect(getClawHubSiteUrl()).toBe('https://nanosolana.netlify.app')
     })
     withMetaEnv({ VITE_SITE_URL: 'https://auth.nanohub.com' }, () => {
-      expect(getClawHubSiteUrl()).toBe('https://hub.nanosolana.com')
+      expect(getClawHubSiteUrl()).toBe('https://nanosolana.netlify.app')
     })
     withMetaEnv({ VITE_SITE_URL: 'https://clawhub.ai' }, () => {
-      expect(getClawHubSiteUrl()).toBe('https://hub.nanosolana.com')
+      expect(getClawHubSiteUrl()).toBe('https://nanosolana.netlify.app')
     })
   })
 
@@ -133,7 +133,7 @@ describe('site helpers', () => {
     expect(getSiteDescription('skills')).toContain('NanoSolana Hub')
     expect(getSiteDescription('souls')).toContain('NanoSolana Docs')
 
-    expect(getSiteUrlForMode('skills')).toBe('https://hub.nanosolana.com')
+    expect(getSiteUrlForMode('skills')).toBe('https://nanosolana.netlify.app')
     expect(getSiteUrlForMode('souls')).toBe('https://docs.nanosolana.com')
   })
 })

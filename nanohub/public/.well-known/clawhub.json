@@ -1,6 +1,6 @@
 {
-  "apiBase": "https://hub.nanosolana.com",
-  "authBase": "https://hub.nanosolana.com",
+  "apiBase": "https://nanosolana.netlify.app",
+  "authBase": "https://nanosolana.netlify.app",
   "minCliVersion": "0.1.0",
-  "registry": "https://hub.nanosolana.com"
+  "registry": "https://nanosolana.netlify.app"
 }

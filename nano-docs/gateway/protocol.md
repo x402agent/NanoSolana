@@ -22,7 +22,7 @@ Current documented endpoints:
 |---------|--------|-------|
 | `/health` | `GET` | Unauthenticated liveness probe |
 | `/api/status` | `GET` | Authenticated runtime status |
-| `/api/framework` | `GET` | Authenticated framework metadata |
+| `/api/framework` | `GET` | Authenticated framework metadata, including public NanoHub URLs |
 | `/api/memory` | `GET` | Authenticated memory summary |
 | `/api/tasks` | `GET` | Authenticated task registry and persona task assignments |
 | `/api/docs` | `GET` | Authenticated docs and extension index |

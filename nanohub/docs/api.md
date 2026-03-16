@@ -7,7 +7,7 @@ read_when:
 
 # API v1
 
-Base: `https://hub.nanosolana.com`
+Base: `https://nanosolana.netlify.app`
 
 OpenAPI: `/api/v1/openapi.json`
 

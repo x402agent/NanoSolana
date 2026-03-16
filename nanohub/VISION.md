@@ -53,7 +53,7 @@ Today we ship multiple memory options; over time we plan to converge on one reco
 ### Skills
 
 We still ship some bundled skills for baseline UX.
-New skills should be published to NanoHub first (`hub.nanosolana.com`), not added to core by default.
+New skills should be published to NanoHub first (`nanosolana.netlify.app`), not added to core by default.
 Core skill additions should be rare and require a strong product or security reason.
 
 ### MCP Support

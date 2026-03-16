@@ -44,6 +44,29 @@ export type { GatewayMessage, ConnectedAgent, GatewayEvents } from "./gateway/se
 // Hub Bridge
 export { NanoHubBridge } from "./hub/bridge.js";
 export type { HubUpdate, HubBridgeEvents } from "./hub/bridge.js";
+export {
+  normalizeNanoHubSiteUrl,
+  getNanoHubSiteUrl,
+  getNanoHubApiBaseUrl,
+  getNanoHubDiscoveryUrl,
+  getNanoHubSkillUrl,
+  getNanoHubApiSort,
+  listNanoHubSkills,
+  searchNanoHubSkills,
+  getNanoHubSkill,
+  getNanoHubSkillFile,
+  clampNanoHubLimit,
+} from "./hub/public-client.js";
+export type {
+  NanoHubExploreSort,
+  NanoHubSkillListItem,
+  NanoHubSkillDetail,
+  NanoHubSearchResult,
+  NanoHubSkillsResponse,
+  NanoHubSkillResponse,
+  NanoHubSearchResponse,
+  NanoHubSkillFileResponse,
+} from "./hub/public-client.js";
 
 // Network (Tailscale + tmux)
 export { TailscaleDiscovery, TmuxManager, NanoNetworkClient } from "./network/mesh.js";

@@ -7,7 +7,7 @@ read_when:
 
 # HTTP API
 
-Base URL: `https://hub.nanosolana.com` (default).
+Base URL: `https://nanosolana.netlify.app` (default).
 
 All v1 paths are under `/api/v1/...` and implemented by Convex HTTP routes (`convex/http.ts`).
 Legacy `/api/...` and `/api/cli/...` remain for compatibility (see `DEPRECATIONS.md`).
@@ -343,7 +343,7 @@ The CLI can discover registry/auth settings from the site:
 Schema:
 
 ```json
-{ "apiBase": "https://hub.nanosolana.com", "authBase": "https://hub.nanosolana.com", "minCliVersion": "0.0.5" }
+{ "apiBase": "https://nanosolana.netlify.app", "authBase": "https://nanosolana.netlify.app", "minCliVersion": "0.0.5" }
 ```
 
 If you self-host, serve this file (or set `NANOHUB_REGISTRY` explicitly; legacy `CLAWHUB_REGISTRY`).

@@ -9,7 +9,7 @@ Welcome. This is the **new-user hub** for getting productive with NanoSolana
 quickly, without falling into outdated command paths.
 
 **Website:** [nanosolana.com](https://nanosolana.com) · **Hub:**
-[hub.nanosolana.com](https://hub.nanosolana.com) · **Docs:**
+[nanosolana.netlify.app](https://nanosolana.netlify.app) · **Docs:**
 [docs.nanosolana.com](https://docs.nanosolana.com) · **GitHub:**
 [github.com/x402agent/NanoSolana](https://github.com/x402agent/NanoSolana)
 
@@ -72,7 +72,7 @@ Start with [Features](/concepts/features),
 
 ### I want to publish and manage skills
 
-Use [Hub + Convex](/cli/hub-convex) and NanoHub at `hub.nanosolana.com`.
+Use [Hub + Convex](/cli/hub-convex), `npx nanosolana hub skills`, and NanoHub at `nanosolana.netlify.app`.
 
 ### I want to build integrations
 

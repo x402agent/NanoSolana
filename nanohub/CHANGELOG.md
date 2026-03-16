@@ -136,7 +136,7 @@
 
 ### Changed
 - Brand: rebrand to NanoHub and publish CLI as `nanohub` (legacy `nanohub` supported).
-- Domain: default site/registry now `https://hub.nanosolana.com`; `.well-known/nanohub.json` preferred.
+- Domain: default site/registry now `https://nanosolana.netlify.app`; `.well-known/nanohub.json` preferred.
 - Theme: persist theme under `nanohub-theme` (legacy key still read).
 
 ### Fixed

@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://hub.nanosolana.com"
+      "url": "https://nanosolana.netlify.app"
     }
   ],
   "components": {

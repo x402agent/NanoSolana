@@ -31,7 +31,7 @@ depending on authenticated gateway access should set it.
 | `BIRDEYE_API_KEY` | Market data |
 | `JUPITER_API_KEY` | Swap API |
 | `TAILSCALE_AUTH_KEY` | Mesh networking |
-| `NANO_HUB_URL` | Local/remote NanoHub URL |
+| `NANO_HUB_URL` | NanoHub site URL. Public skill discovery defaults to `https://nanosolana.netlify.app`; local bridge flows can point at a dev server |
 | `NANO_AGENT_HEARTBEAT_INTERVAL_MS` | Wallet heartbeat interval |
 | `AGENT_TOKEN_MINT_ADDRESS` | Agent token mint for payments |
 | `CURRENCY_MINT` | Payment currency mint (default: USDC) |

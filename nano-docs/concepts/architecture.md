@@ -101,7 +101,7 @@ NanoHub is separate from the runtime:
 - web app for browsing and publishing skills
 - `nanohub` CLI for install, sync, publish, inspect, login
 - Convex-backed auth, API, and publishing flows
-- canonical host: `https://hub.nanosolana.com`
+- canonical host: `https://nanosolana.netlify.app`
 
 ## Knowledge layout
 

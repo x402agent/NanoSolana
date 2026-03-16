@@ -19,8 +19,8 @@ bun nanohub --help
 
 - `--workdir <dir>`: working directory (default: cwd; falls back to TamaGObot workspace if configured)
 - `--dir <dir>`: install dir under workdir (default: `skills`)
-- `--site <url>`: base URL for browser login (default: `https://hub.nanosolana.com`)
-- `--registry <url>`: API base URL (default: discovered, else `https://hub.nanosolana.com`)
+- `--site <url>`: base URL for browser login (default: `https://nanosolana.netlify.app`)
+- `--registry <url>`: API base URL (default: discovered, else `https://nanosolana.netlify.app`)
 - `--no-input`: disable prompts
 
 Env equivalents:

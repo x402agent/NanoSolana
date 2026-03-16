@@ -10,8 +10,8 @@ read_when:
 ## Setup
 - Ensure logged in: `bun nanohub whoami` (or `bun nanohub login`).
 - Optional: set env
-  - `NANOHUB_SITE=https://hub.nanosolana.com`
-  - `NANOHUB_REGISTRY=https://hub.nanosolana.com`
+  - `NANOHUB_SITE=https://nanosolana.netlify.app`
+  - `NANOHUB_REGISTRY=https://nanosolana.netlify.app`
 
 ## Smoke
 - `bun nanohub --help`
@@ -40,7 +40,7 @@ read_when:
 ## Delete / undelete (owner/admin)
 - `bun nanohub delete nanohub-manual-<ts> --yes`
 - Verify hidden:
-- `curl -i "https://hub.nanosolana.com/api/v1/skills/nanohub-manual-<ts>"`
+- `curl -i "https://nanosolana.netlify.app/api/v1/skills/nanohub-manual-<ts>"`
 - Restore:
   - `bun nanohub undelete nanohub-manual-<ts> --yes`
 - Cleanup:
@@ -54,7 +54,7 @@ read_when:
 Run against prod:
 
 ```
-PLAYWRIGHT_BASE_URL=https://hub.nanosolana.com bun run test:pw
+PLAYWRIGHT_BASE_URL=https://nanosolana.netlify.app bun run test:pw
 ```
 
 This smoke gate should fail on visible error UI, page errors, and browser
@@ -73,7 +73,7 @@ Recommended workflow coverage in Playwright:
 Authenticated prod canary:
 
 ```
-PLAYWRIGHT_BASE_URL=https://hub.nanosolana.com \
+PLAYWRIGHT_BASE_URL=https://nanosolana.netlify.app \
 PLAYWRIGHT_AUTH_STORAGE_STATE=/path/to/storage-state.json \
 bunx playwright test e2e/upload-auth-smoke.pw.test.ts
 ```
