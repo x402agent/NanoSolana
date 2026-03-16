@@ -119,6 +119,8 @@ export class TelegramGateway {
         { command: 'curve', description: '📉 Bonding curve state' },
         { command: 'fees', description: '💸 Fee tier info' },
         { command: 'events', description: '📡 Recent events' },
+        { command: 'invoice', description: '💳 Create payment invoice' },
+        { command: 'invoices', description: '📋 List tracked invoices' },
         { command: 'help', description: '❓ Command reference' },
       ],
     });
@@ -211,6 +213,10 @@ export class TelegramGateway {
         return this.cmdFees(cmd);
       case 'events':
         return this.cmdEvents(cmd);
+      case 'invoice':
+        return this.cmdInvoice(cmd);
+      case 'invoices':
+        return this.cmdInvoices(cmd);
       case 'help':
       case 'start':
         return this.cmdHelp(cmd);
@@ -601,6 +607,91 @@ export class TelegramGateway {
     await this.sendMessage(cmd.chatId, msg);
   }
 
+  private async cmdInvoice(cmd: GatewayCommand): Promise<void> {
+    if (!cmd.isAdmin) {
+      await this.sendMessage(cmd.chatId, '🔒 <b>Admin only.</b>');
+      return;
+    }
+
+    // /invoice <user-pubkey> <amount> [currency]
+    const userPubkey = cmd.args[0];
+    const amountStr = cmd.args[1];
+    const currency = (cmd.args[2]?.toUpperCase() ?? 'USDC') as 'USDC' | 'SOL';
+
+    if (!userPubkey || !amountStr) {
+      await this.sendMessage(cmd.chatId,
+        '💳 <b>Create Payment Invoice</b>\n\n' +
+        'Usage: <code>/invoice &lt;user-pubkey&gt; &lt;amount&gt; [USDC|SOL]</code>\n\n' +
+        'Amount is in smallest unit (1000000 = 1 USDC, 1000000000 = 1 SOL)');
+      return;
+    }
+
+    try {
+      const { PublicKey } = await import('@solana/web3.js');
+      const { createPaymentAgent } = await import('../../payments/index.js');
+      const agent = createPaymentAgent();
+      const amount = parseInt(amountStr, 10);
+
+      const result = await agent.createPayment({
+        user: new PublicKey(userPubkey),
+        currency,
+        amount,
+      });
+
+      let msg = '💳 <b>Invoice Created</b>\n\n';
+      msg += `📝 Memo: <code>${result.invoice.memo}</code>\n`;
+      msg += `💰 Amount: <b>${agent.formatAmount(amount, currency)}</b>\n`;
+      msg += `🪙 Currency: ${currency}\n`;
+      msg += `⏰ Valid: ${new Date(result.invoice.startTime * 1000).toISOString().slice(0, 19)} → ${new Date(result.invoice.endTime * 1000).toISOString().slice(0, 19)}\n`;
+      msg += `🔑 PDA: <code>${result.invoiceIdPda.toBase58().slice(0, 16)}…</code>\n`;
+      msg += `📦 Instructions: ${result.instructions.length}\n`;
+      msg += '\n<i>Send instructions to payer wallet for signing.</i>';
+      await this.sendMessage(cmd.chatId, msg);
+    } catch (err) {
+      await this.sendMessage(cmd.chatId, `❌ <b>Invoice failed:</b> ${err instanceof Error ? err.message : String(err)}`);
+    }
+  }
+
+  private async cmdInvoices(cmd: GatewayCommand): Promise<void> {
+    if (!cmd.isAdmin) {
+      await this.sendMessage(cmd.chatId, '🔒 <b>Admin only.</b>');
+      return;
+    }
+
+    try {
+      const { createPaymentAgent } = await import('../../payments/index.js');
+      const agent = createPaymentAgent();
+      const all = agent.getAllInvoices();
+      const paid = all.filter((i) => i.paid);
+      const unpaid = all.filter((i) => !i.paid);
+
+      let msg = '📋 <b>Invoice Tracker</b>\n\n';
+      msg += `Total: <b>${all.length}</b> | Paid: <b>${paid.length}</b> | Pending: <b>${unpaid.length}</b>\n`;
+
+      if (unpaid.length > 0) {
+        msg += '\n<b>Pending:</b>\n';
+        for (const inv of unpaid.slice(0, 5)) {
+          msg += `  📝 <code>${inv.memo}</code> — ${agent.formatAmount(inv.amount, inv.currency)} (${inv.currency})\n`;
+        }
+      }
+
+      if (paid.length > 0) {
+        msg += '\n<b>Recent Paid:</b>\n';
+        for (const inv of paid.slice(-5)) {
+          msg += `  ✅ <code>${inv.memo}</code> — ${agent.formatAmount(inv.amount, inv.currency)} (${inv.currency})\n`;
+        }
+      }
+
+      if (all.length === 0) {
+        msg += '\n<i>No invoices yet. Use /invoice to create one.</i>';
+      }
+
+      await this.sendMessage(cmd.chatId, msg);
+    } catch (err) {
+      await this.sendMessage(cmd.chatId, `❌ ${err instanceof Error ? err.message : String(err)}`);
+    }
+  }
+
   private async cmdHelp(cmd: GatewayCommand): Promise<void> {
     let msg = '🐝 <b>NanoSolana Pump.Fun Swarm</b>\n\n';
     msg += '<b>Swarm Management:</b>\n';
@@ -615,6 +706,9 @@ export class TelegramGateway {
     msg += '  /quote &lt;mint&gt; &lt;sol&gt; — Buy quote\n';
     msg += '  /curve &lt;mint&gt; — Bonding curve\n';
     msg += '  /fees &lt;mint&gt; — Fee tier\n\n';
+    msg += '<b>Payments:</b>\n';
+    msg += '  /invoice &lt;pubkey&gt; &lt;amount&gt; [USDC|SOL] — Create invoice\n';
+    msg += '  /invoices — List tracked invoices\n\n';
     msg += '<b>Agent Roles:</b>\n';
     msg += '  🎯 sniper — Snipe new launches\n';
     msg += '  📡 monitor — Watch on-chain events\n';

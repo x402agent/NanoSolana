@@ -70,6 +70,15 @@ export interface SwarmConfig {
   healthCheckIntervalMs: number;
   /** SQLite database path for swarm state */
   dbPath: string;
+  /** Payment-gated spawning: require on-chain payment before agent spawn */
+  paymentGating?: {
+    /** Whether payment is required to spawn agents */
+    enabled: boolean;
+    /** Cost per agent spawn in smallest currency unit */
+    spawnCost: number;
+    /** Payment currency */
+    currency: 'USDC' | 'SOL';
+  };
 }
 
 // ── Agent Spawn Request ─────────────────────────────────────────────────────
