@@ -4,7 +4,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://knowing-crane-255.convex.site/api/:path*"
+      "destination": "https://original-ibex-124.convex.site/api/:path*"
     }
   ]
 }
