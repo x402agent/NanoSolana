@@ -16,8 +16,9 @@
 //   identity across sessions and can reason about its own capabilities.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, basename } from 'node:path';
+import { resolveNanoRepositoryRoot } from '../extensions/catalog.js';
 import { getTasksForPersona, buildTaskBriefing, type TaskAssignment } from './task-loader.js';
 
 // ── Persona Schema ──────────────────────────────────────────────────────────
@@ -66,7 +67,12 @@ let cachedPersonas: PersonaDefinition[] | null = null;
 let cachedCategories: PersonaCategory[] | null = null;
 
 function getPersonasDir(): string {
-  // Resolve relative to this file's location
+  const repoPersonasDir = join(resolveNanoRepositoryRoot(), 'nano-core', 'src', 'claw', 'personas');
+  if (existsSync(repoPersonasDir)) {
+    return repoPersonasDir;
+  }
+
+  // Fallback for local source execution and packaged builds that include personas nearby.
   return join(import.meta.dirname ?? __dirname, 'personas');
 }
 

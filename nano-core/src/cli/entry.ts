@@ -42,7 +42,7 @@ import {
   loadAllTasks,
   searchTasks,
 } from "../claw/task-loader.js";
-import { getPersona } from "../claw/persona-loader.js";
+import { getPersona, getPersonaTasks } from "../claw/persona-loader.js";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { homedir } from "node:os";
