@@ -6,3 +6,15 @@ export const ConnectErrorDetailCodes = {
   PASSWORD_INVALID: "PASSWORD_INVALID",
   INCOMPATIBLE: "INCOMPATIBLE",
 } as const;
+
+export function readConnectErrorDetailCode(
+  _error: unknown,
+): string | null {
+  return null;
+}
+
+export function readConnectErrorRecoveryAdvice(
+  _error: unknown,
+): string | null {
+  return null;
+}

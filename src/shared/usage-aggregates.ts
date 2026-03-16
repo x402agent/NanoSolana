@@ -7,7 +7,7 @@ export interface UsageAggregates {
   cost?: { total: number };
 }
 
-export function aggregateUsage(sessions: unknown[]): UsageAggregates {
+export function aggregateUsage(_sessions: unknown[]): UsageAggregates {
   return {
     messages: { total: 0 },
     tokens: { total: 0 },
@@ -15,4 +15,16 @@ export function aggregateUsage(sessions: unknown[]): UsageAggregates {
     errors: { total: 0 },
     cost: { total: 0 },
   };
+}
+
+export function mergeUsageLatency(..._aggregates: unknown[]): unknown {
+  return {};
+}
+
+export function mergeUsageDailyLatency(..._aggregates: unknown[]): unknown {
+  return {};
+}
+
+export function buildUsageAggregateTail(_data: unknown, _window?: number): unknown {
+  return {};
 }
