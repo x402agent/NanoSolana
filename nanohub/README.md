@@ -110,6 +110,7 @@ Common flows:
 - Manage installs: `nanohub install <slug>`, `nanohub uninstall <slug>`, `nanohub list`, `nanohub update --all`
 - Inspect without installing: `nanohub inspect <slug>`
 - Publish and sync: `nanohub publish <path>`, `nanohub sync`
+- Bootstrap metadata: `GET /api/v1/skills/:slug/manifest` for manifest-driven installers such as `nanosolana oneshot <slug>`
 
 Legacy `clawhub` remains available as a compatibility alias.
 

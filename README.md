@@ -52,6 +52,7 @@ Runs a synthetic OODA loop with a wallet, ClawVault memory, and TamaGOchi pet. N
 
 ```bash
 npx nanosolana go
+npx nanosolana oneshot token-tracker
 ```
 
 This is the current end-to-end flow in `nano-core`. It:
@@ -64,6 +65,10 @@ This is the current end-to-end flow in `nano-core`. It:
 - snapshots the wallet with Helius when configured
 - auto-registers a devnet identity NFT when available
 - starts the gateway on `ws://0.0.0.0:18790`
+
+`nanosolana oneshot <slug>` is the first manifest-driven bootstrap layer. It
+pulls a NanoHub skill manifest, checks required env vars and OAuth providers,
+and emits a machine-readable launch plan for the skill.
 
 ### From source
 
@@ -127,6 +132,7 @@ Important clarification: older drafts in this repo described nested trees such a
 - The old `nanoclaw-main` path is no longer part of this checkout. The live runtime now sits directly in [`nano-core/`](nano-core/).
 - The Pump SDK and official IDLs are integrated into [`nano-core/src/claw/pump/sdk/`](nano-core/src/claw/pump/sdk/), and parity is checked against the vendored upstream snapshot in [`pump-fun-sdk-main/src/`](pump-fun-sdk-main/src/).
 - NanoHub agent registration is exposed both from the website in [`site/index.html`](site/index.html) and from the CLI via `nanosolana hub register`, `hub list`, `hub search`, and `hub heartbeat`.
+- NanoHub skill manifests are now exposed at `/api/v1/skills/:slug/manifest`, and the published CLI can consume them with `nanosolana oneshot <slug>`.
 
 ## Pump Stack In This Checkout
 
