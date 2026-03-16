@@ -754,7 +754,7 @@ program
           secrets.HELIUS_API_KEY = await promptSecret("Helius API Key");
         }
 
-        console.log(chalk.cyan("\n  ── Optional Keys (press Enter to skip) ──────\n"));
+        printSectionHeader("Optional Keys (press Enter to skip)");
         if (!secrets.HELIUS_WSS_URL) {
           const wss = await promptSecret("Helius WSS URL");
           if (wss) secrets.HELIUS_WSS_URL = wss;
@@ -769,14 +769,13 @@ program
         }
 
         saveSecrets(secrets);
-        console.log(chalk.green("\n  ✓ Secrets encrypted → ~/.nanosolana/vault.enc\n"));
+        printSuccess("Secrets encrypted → ~/.nanosolana/vault.enc\n");
       } else {
-        console.log(chalk.green("  ✓ Configuration found — skipping init\n"));
+        printSuccess("Configuration found — skipping init\n");
       }
 
       // Phase 2: Birth agent + wallet
-      await lobsterWalk("Phase 2 — Birthing Agent");
-      console.log();
+      await phaseTransition("birth", "Phase 2 — Birthing Agent");
       await playStartupAnimation();
 
       const config = loadConfig();
