@@ -93,10 +93,18 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
+    "@coral-xyz/anchor": "^0.32.1",
     "@metaplex-foundation/mpl-token-metadata": "^3.3.0",
+    "@pump-fun/pump-swap-sdk": "^1.14.1",
     "@solana/spl-token": "^0.4.0",
     "@solana/web3.js": "^1.95.0",
+<<<<<<< Updated upstream
     "better-sqlite3": "^11.0.0",
+=======
+    "@types/bn.js": "^5.2.0",
+    "@whiskeysockets/baileys": "^7.0.0-rc.9",
+    "better-sqlite3": "^11.8.1",
+>>>>>>> Stashed changes
     "bip39": "^3.1.0",
     "bs58": "^6.0.0",
     "chalk": "^5.6.2",
