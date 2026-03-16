@@ -433,6 +433,27 @@ async function handleUpdateAgent(req: Req, res: Res, slug: string): Promise<void
   json(res, 200, { ok: true, agent: updated[0] });
 }
 
+async function handleDeregister(req: Req, res: Res, slug: string): Promise<void> {
+  const body = await readBody(req) as Record<string, unknown>;
+  const token = String(body.registrationToken ?? req.headers["x-agent-key"] ?? "");
+
+  if (!token) { json(res, 401, { error: "registrationToken required" }); return; }
+
+  const { data, error } = await supabase("PATCH", "hub_agents", {
+    query: { slug: `eq.${slug}`, registration_token: `eq.${token}` },
+    body: { status: "inactive", updated_at: new Date().toISOString() },
+    preferRepresentation: true,
+  });
+
+  if (error) { json(res, 500, { error }); return; }
+  const updated = Array.isArray(data) ? data : [];
+  if (updated.length === 0) {
+    json(res, 404, { error: "Agent not found or registration token invalid" });
+    return;
+  }
+  json(res, 200, { ok: true, message: `Agent "${slug}" deregistered`, agent: updated[0] });
+}
+
 async function handleSearch(_req: Req, res: Res, urlObj: URL): Promise<void> {
   const q = urlObj.searchParams.get("q")?.trim() ?? "";
   if (!q) { json(res, 200, { agents: [] }); return; }
@@ -572,6 +593,11 @@ export function createRegistryServer() {
           await handleUpdateAgent(req, res, slug);
           return;
         }
+
+        if (method === "DELETE") {
+          await handleDeregister(req, res, slug);
+          return;
+        }
       }
 
       // Heartbeat: /api/v1/agents/:slug/heartbeat
@@ -612,6 +638,7 @@ if (isMainModule()) {
     GET  /api/v1/agents           — List agents
     GET  /api/v1/agents/:slug     — Get agent
     POST /api/v1/agents/:slug/heartbeat — Heartbeat
+    DELETE /api/v1/agents/:slug    — Deregister
     GET  /api/v1/agents/search?q= — Search
     GET  /api/v1/stats            — Stats
     POST /api/v1/db/init          — Check/init database
@@ -622,4 +649,4 @@ if (isMainModule()) {
   });
 }
 
-export { server };
+export { server, handleDeregister };

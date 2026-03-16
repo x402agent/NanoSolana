@@ -1948,11 +1948,10 @@ hubCmd
       };
 
       const res = await fetch(`${opts.api}/api/v1/agents/${hubData.slug}`, {
-        method: "PATCH",
+        method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           registrationToken: hubData.registrationToken,
-          status: "inactive",
         }),
       });
 
