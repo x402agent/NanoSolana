@@ -2,11 +2,8 @@
  * NanoSolana Docs + Extensions Integration
  *
  * Builds a searchable snapshot of the requested NanoSolana knowledge corpus:
- * - docs/cli
- * - docs/concepts
- * - docs/experiments
- * - docs/gateway
- * - docs/tools
+ * - nano-docs/*
+ * - pump/docs/*
  * - extensions/* (metadata + file counts)
  */
 
@@ -14,11 +11,21 @@ import { existsSync, readdirSync, readFileSync, statSync, type Dirent } from "no
 import { basename, dirname, extname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const DOC_AREAS = ["cli", "concepts", "experiments", "gateway", "tools"] as const;
+const DOC_AREAS = [
+  { area: "index", directory: "nano-docs", path: "nano-docs" },
+  { area: "cli", directory: "nano-docs/cli", path: "nano-docs/cli" },
+  { area: "concepts", directory: "nano-docs/concepts", path: "nano-docs/concepts" },
+  { area: "extensions", directory: "nano-docs/extensions", path: "nano-docs/extensions" },
+  { area: "gateway", directory: "nano-docs/gateway", path: "nano-docs/gateway" },
+  { area: "security", directory: "nano-docs/security", path: "nano-docs/security" },
+  { area: "tools", directory: "nano-docs/tools", path: "nano-docs/tools" },
+  { area: "trading", directory: "nano-docs/trading", path: "nano-docs/trading" },
+  { area: "pump-docs", directory: "pump/docs", path: "pump/docs" },
+] as const;
 const MARKDOWN_EXTENSIONS = new Set([".md", ".mdx"]);
 const DEFAULT_CACHE_TTL_MS = 60_000;
 
-export type NanoDocArea = (typeof DOC_AREAS)[number];
+export type NanoDocArea = (typeof DOC_AREAS)[number]["area"];
 
 export interface NanoDocIndexEntry {
   path: string;
@@ -269,11 +276,14 @@ function resolveNanoRepositoryRoot(): string {
 }
 
 function hasKnowledgeCorpus(rootPath: string): boolean {
-  return existsSync(join(rootPath, "docs", "cli")) && existsSync(join(rootPath, "extensions"));
+  return existsSync(join(rootPath, "nano-docs", "index.md")) && existsSync(join(rootPath, "extensions"));
 }
 
-function scanDocsArea(repoRoot: string, area: NanoDocArea): NanoDocAreaSnapshot {
-  const areaDirectory = join(repoRoot, "docs", area);
+function scanDocsArea(
+  repoRoot: string,
+  areaDefinition: (typeof DOC_AREAS)[number],
+): NanoDocAreaSnapshot {
+  const areaDirectory = join(repoRoot, areaDefinition.directory);
   const files = walkFiles(areaDirectory);
 
   let fileCount = 0;
@@ -309,8 +319,8 @@ function scanDocsArea(repoRoot: string, area: NanoDocArea): NanoDocAreaSnapshot 
   entries.sort((left, right) => left.path.localeCompare(right.path));
 
   return {
-    area,
-    path: `docs/${area}`,
+    area: areaDefinition.area,
+    path: areaDefinition.path,
     files: fileCount,
     markdownFiles: markdownCount,
     bytes,

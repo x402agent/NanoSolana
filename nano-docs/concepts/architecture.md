@@ -1,136 +1,116 @@
 ---
-summary: "NanoSolana gateway architecture, components, and protocol"
-title: "Gateway Architecture"
+summary: "NanoSolana architecture across nano-core, Pump bridge, NanoHub, extensions, and docs"
+title: "Architecture"
 ---
 
-# Gateway architecture
+# Architecture
 
-## Overview
+NanoSolana is not a single package. It is a monorepo with a published runtime, a registry, a Pump bridge layer, extension packages, and separate doc trees.
 
-- A single long-lived **NanoSolana Gateway** owns all communication surfaces
-  (Telegram, Discord, Nostr, iMessage, WebChat, and extension channels).
-- The Gateway also serves as the real-time **trading signal relay** and
-  **memory synchronization** hub across the agent mesh.
-- Control-plane clients (macOS app, CLI, web UI, NanoHub) connect over
-  **WebSocket** on the configured bind host (default `127.0.0.1:18789`).
-- **Mesh nodes** (other TamaGObots via Tailscale) connect with `role: node`
-  and declare capabilities.
-- One Gateway per host; it is the single authority for the agent's wallet
-  session and trading engine.
+## Top-level map
 
-## Components and flows
-
-### Gateway (daemon)
-
-- Maintains channel provider connections (Telegram polling/webhooks, Discord WS, etc.).
-- Maintains Solana RPC + WebSocket connections (Helius, Birdeye).
-- Exposes a typed WS API (requests, responses, server-push events).
-- Validates inbound frames against JSON Schema.
-- Emits events: `agent`, `trade:signal`, `market:price`, `memory:lesson`,
-  `agent:heartbeat`, `presence`, `health`.
-
-### Clients (NanoHub / CLI / macOS app)
-
-- One WS connection per client.
-- Send requests (`health`, `status`, `send`, `agent`, `trade`).
-- Subscribe to events (`tick`, `agent`, `trade:signal`, `presence`, `shutdown`).
-
-### Mesh nodes (other TamaGObots)
-
-- Connect to the **same WS server** with `role: node`.
-- Provide agent identity + wallet public key on `connect`.
-- Can share memory entries, relay signals, and coordinate strategies.
-
-### Security model
-
-- **HMAC-SHA256 authentication** on all WebSocket connections.
-- **Rate limiting** per IP and per agent (100 msgs/min default).
-- **Origin checking** — configurable allowed origins.
-- **Wallet-signed identity** — Ed25519 signatures verify agent identity.
-- **Encrypted secrets** — all API keys stored with AES-256-GCM in vault.
-- **Timing-safe comparison** for all secret/token checks.
-- **X-NanoSolana-Secret** header support for HTTP API endpoints.
-
-## Connection lifecycle
-
-```mermaid
-sequenceDiagram
-    participant Agent
-    participant Gateway
-
-    Agent->>Gateway: auth message (HMAC-signed)
-    Gateway-->>Agent: auth:ok + connected agents list
-
-    Gateway-->>Agent: trade:signal (streaming)
-    Gateway-->>Agent: market:price (streaming)
-    Gateway-->>Agent: memory:lesson (push)
-    Gateway-->>Agent: agent:heartbeat (periodic)
-
-    Agent->>Gateway: memory:query
-    Gateway-->>Agent: memory:results
-
-    Agent->>Gateway: trading:status
-    Gateway-->>Agent: trading:status (signals + executions)
+```text
+NanoSolana/
+├── nano-core/              # Published nanosolana package
+├── nano-docs/              # Product docs
+├── nanohub/                # Registry app + nanohub CLI
+├── extensions/             # Extension packages and plugin manifests
+├── pump/                   # NanoSolana-facing Pump integration layer
+├── pump-fun-sdk-main/      # Vendored Pump ecosystem snapshot
+├── skills/                 # Agent skills, including 24 pump-focused packs
+├── apps/                   # macOS and Android workspaces
+├── site/                   # Marketing site
+└── ui/                     # Standalone UI assets
 ```
 
-## Wire protocol
+## Runtime architecture
 
-- Transport: WebSocket, text frames with JSON payloads.
-- First frame **must** be `auth` with HMAC-SHA256 signature.
-- After handshake:
-  - Messages: `{ type, payload, from, to?, timestamp, signature? }`
-  - Broadcast: omit `to` field.
-  - Direct: set `to` to target agent ID.
-- The gateway secret is configured via `NANO_GATEWAY_SECRET` or
-  `gateway.secret` in config.
+The current runtime center of gravity is `nano-core`.
 
-## Message types
-
-| Type | Direction | Description |
-|------|-----------|-------------|
-| `auth` | Agent → Gateway | Authentication with HMAC signature |
-| `auth:ok` | Gateway → Agent | Successful auth + peer list |
-| `agent:heartbeat` | Both | Periodic liveness check |
-| `trade:signal` | Gateway → Agents | New trading signal from strategy engine |
-| `market:price` | Gateway → Agents | Real-time price update |
-| `memory:query` | Agent → Gateway | Search ClawVault memory |
-| `memory:results` | Gateway → Agent | Memory search results |
-| `memory:store` | Agent → Gateway | Store new memory entry |
-| `memory:lesson` | Gateway → Agents | Broadcast learned lesson |
-| `trading:status` | Both | Trading engine status |
-
-## HTTP API endpoints
-
-All `/api/*` endpoints require the `X-NanoSolana-Secret` header when
-`gateway.secret` is configured.
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/health` | GET | Liveness check (no auth required) |
-| `/api/status` | GET | Full agent status (wallet, memory, trading) |
-| `/api/framework` | GET | Framework metadata snapshot |
-| `/api/memory` | GET | Memory stats + recent lessons |
-
-## Remote access
-
-- **Preferred**: Tailscale VPN for mesh networking.
-- **Fallback**: SSH tunnel.
-
-```bash
-ssh -N -L 18789:127.0.0.1:18789 user@gateway-host
+```text
+                       ┌───────────────────────────────┐
+                       │          nano-core            │
+                       │  CLI · wallet · AI · memory   │
+                       │  trading · gateway · nanobot  │
+                       └──────────────┬────────────────┘
+                                      │
+             ┌────────────────────────┼────────────────────────┐
+             │                        │                        │
+             ▼                        ▼                        ▼
+      ┌──────────────┐         ┌──────────────┐         ┌──────────────┐
+      │ extensions/  │         │   nanohub/   │         │    pump/      │
+      │ plugins +    │         │ app + CLI    │         │ swarm + bridge│
+      │ scaffolds    │         │ for skills   │         │ for Pump SDK  │
+      └──────────────┘         └──────────────┘         └──────┬───────┘
+                                                                │
+                                                                ▼
+                                                     ┌─────────────────────┐
+                                                     │ pump-fun-sdk-main/  │
+                                                     │ vendored upstream   │
+                                                     │ SDK, bots, docs     │
+                                                     └─────────────────────┘
 ```
 
-## Operations
+## `nano-core`
 
-- Start: `nanosolana gateway run --port 18789`
-- Health: `nanosolana gateway health`
-- Status: `nanosolana gateway status`
-- Logs: `nanosolana logs --follow`
+- Published as `nanosolana`
+- Owns the shipped CLI surface
+- Contains wallet management, ClawVault, trading engine, gateway, NanoBot, and on-chain identity
+- Starts the gateway automatically during `nanosolana run` and `nanosolana go`
+- Uses `HELIUS_*`, `BIRDEYE_*`, `JUPITER_API_KEY`, and AI provider secrets from the encrypted vault
 
-## Invariants
+## `pump/`
 
-- Exactly one Gateway per host controls the agent wallet session.
-- Auth is mandatory; any unsigned first frame is rejected.
-- Events are not replayed; clients must refresh on reconnect.
-- Trading signals are broadcast to all connected mesh nodes.
-- Memory lessons propagate across the mesh in real-time.
+The top-level `pump/` workspace is the NanoSolana-facing Pump bridge layer.
+
+It provides:
+
+- [`../pump/sdk-bridge.ts`](../pump/sdk-bridge.ts) for convenience analytics and quote helpers
+- [`../pump/swarm-spawner.ts`](../pump/swarm-spawner.ts) for in-process role-based agent orchestration
+- [`../pump/telegram-gateway.ts`](../pump/telegram-gateway.ts) for Telegram command handling
+- [`../pump/bot-registry.ts`](../pump/bot-registry.ts) for bot, service, and package metadata
+- [`../pump/main.ts`](../pump/main.ts) as a standalone launcher for the Pump swarm bridge
+
+This layer points into the vendored upstream workspace in `pump-fun-sdk-main/`.
+
+## `extensions/`
+
+There are two extension shapes in this repo:
+
+- manifest-based runtime plugins with `nanosolana-plugin.json`
+- adjacent packages and scaffolds that live under `extensions/` but are not discovered through the runtime plugin loader
+
+The dedicated PumpFun extension at [`../extensions/pumpfun/src/index.ts`](../extensions/pumpfun/src/index.ts) is currently a scaffolded package for bridging Pump.fun launches, graduations, whale trades, and fee claims into the NanoSolana message bus.
+
+## `nanohub/`
+
+NanoHub is separate from the runtime:
+
+- web app for browsing and publishing skills
+- `nanohub` CLI for install, sync, publish, inspect, login
+- Convex-backed auth, API, and publishing flows
+- canonical host: `https://hub.nanosolana.com`
+
+## Knowledge layout
+
+- `nano-docs/` is the concise NanoSolana doc site content
+- `pump/docs/` is the much larger Pump protocol and ecosystem doc set
+- `skills/` contains general skills plus 24 Pump or PumpFun-oriented packs
+- `nano-core` exposes a `nanosolana docs` command that indexes docs and extensions for local inspection
+
+## Gateway placement
+
+The gateway is a `nano-core` concern, not a separate workspace. Its default config comes from `nano-core/src/config/vault.ts`:
+
+- host: `0.0.0.0`
+- port: `18790`
+- auth: HMAC-SHA256
+- startup path: `nanosolana run`, `nanosolana go`, or `npm run gateway` inside `nano-core`
+
+## Security boundaries
+
+- secrets live in `~/.nanosolana/vault.enc`
+- the wallet private key is kept in the vault by default
+- the gateway authenticates every WS session with HMAC
+- mesh traffic is expected to run over Tailscale when used remotely
+- extension code runs in-process and must be trusted accordingly

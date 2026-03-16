@@ -5,7 +5,7 @@ title: "Features"
 
 # Features
 
-NanoSolana is an autonomous Solana trading agent with a virtual pet soul.
+NanoSolana is a monorepo for autonomous Solana agents, registry tooling, and Pump integrations.
 
 ## Core capabilities
 
@@ -15,6 +15,12 @@ NanoSolana is an autonomous Solana trading agent with a virtual pet soul.
 - **Decide**: Structured trade decisions with confidence scoring.
 - **Act**: Jupiter Ultra Swap execution with slippage protection.
 - **Learn**: ClawVault memory records every outcome for future improvement.
+
+### 🧩 Runtime + bridge split
+- `nano-core/` is the shipped runtime and npm package.
+- `pump/` is a NanoSolana-facing Pump bridge layer for swarm operations.
+- `pump-fun-sdk-main/` is vendored upstream ecosystem code used by the bridge.
+- `nanohub/` is a separate skill registry app and CLI.
 
 ### 🧠 Epistemological memory (ClawVault)
 - **KNOWN**: Fresh API data (<60s TTL) — what the agent just saw.
@@ -45,7 +51,9 @@ NanoSolana is an autonomous Solana trading agent with a virtual pet soul.
 - **Nostr**: Decentralized signal relay.
 - **iMessage**: Apple Messages integration.
 - **Google Chat**: Team notifications.
-- 14+ extension plugins available.
+- This checkout contains 41 extension directories.
+- 14 of those are manifest-based runtime plugins with `nanosolana-plugin.json`.
+- `extensions/pumpfun/` is a dedicated PumpFun event bridge scaffold.
 
 ### 🔐 Security-first
 - AES-256-GCM encrypted secrets vault.
@@ -65,3 +73,11 @@ NanoSolana is an autonomous Solana trading agent with a virtual pet soul.
 - SOUL.md system prompt defines agent identity and philosophy.
 - Multimodal input support (text, image, audio, video).
 - OODA-structured reasoning (orient, decide, research, chat).
+
+### 🐋 Pump ecosystem integration
+- `pump/sdk-bridge.ts` exposes token price, graduation progress, and quote helpers.
+- `pump/swarm-spawner.ts` manages role-based Pump agents.
+- `pump/telegram-gateway.ts` provides Telegram control over the Pump swarm.
+- `pump/bot-registry.ts` maps bots, packages, services, env vars, and health endpoints.
+- `pump/docs/` contains 83 repo-local Pump docs.
+- `skills/` includes 24 Pump and PumpFun-oriented skill packs.
