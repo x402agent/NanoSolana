@@ -1,21 +1,13 @@
-# NanoHub deployment — TanStack Start (SSR) + Convex backend
+# NanoSolana UI deployment
 [build]
-  base = "nanohub"
-  command = "bun install && bun run build"
-  publish = ".output/public"
+  base = "ui"
+  command = "npm install && npm run build"
+  publish = "../dist/control-ui"
 
 [build.environment]
   NODE_VERSION = "20"
-  NITRO_PRESET = "netlify"
 
-[context.production.environment]
-  VITE_CONVEX_URL = "https://original-ibex-124.convex.cloud"
-  VITE_CONVEX_SITE_URL = "https://original-ibex-124.convex.site"
-  SITE_URL = "https://nanosolana.netlify.app"
-
-# Proxy /api/* to Convex HTTP API
 [[redirects]]
-  from = "/api/*"
-  to = "https://original-ibex-124.convex.site/api/:splat"
+  from = "/*"
+  to = "/index.html"
   status = 200
-  force = true
