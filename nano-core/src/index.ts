@@ -43,6 +43,28 @@ export type { TamaGOchiState, EvolutionStage, Mood, TamaGOchiEvents } from "./pe
 export { NanoGateway } from "./gateway/server.js";
 export type { GatewayMessage, ConnectedAgent, GatewayEvents } from "./gateway/server.js";
 
+// Bitaxe mining
+export {
+  BitaxeClient,
+  createBitaxeClientFromEnv,
+  deriveBitaxeHealth,
+  deriveBitaxeMood,
+  deriveBitaxeStage,
+  loadBitaxeConfigFromEnv,
+} from "./bitaxe/client.js";
+export type {
+  BitaxeAlert,
+  BitaxeAlertLevel,
+  BitaxeConfig,
+  BitaxeHealth,
+  BitaxeMood,
+  BitaxePetState,
+  BitaxeSnapshot,
+  BitaxeStage,
+  BitaxeStats,
+  BitaxeClientEvents,
+} from "./bitaxe/client.js";
+
 // Hub Bridge
 export { NanoHubBridge } from "./hub/bridge.js";
 export type { HubUpdate, HubBridgeEvents } from "./hub/bridge.js";

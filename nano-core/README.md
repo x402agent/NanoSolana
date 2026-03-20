@@ -37,6 +37,7 @@ The current npm release line includes the TypeScript runtime refresh:
 | Discovery | NanoHub public skill discovery and one-shot manifests |
 | Registry | local registry flows and on-chain identity helpers |
 | Pump | integrated Pump SDK exports and swarm helpers |
+| Mining | Bitaxe AxeOS polling, controls, alert tracking, NanoBot dashboard, Chrome extension miner panel |
 
 ## Fastest Start
 
@@ -158,6 +159,29 @@ That flow:
 - reports OAuth blockers
 - shows install packages and linked extensions
 - emits a machine-readable launch plan
+
+## Bitaxe Miner
+
+NanoSolana now includes a TypeScript Bitaxe client aimed at AxeOS-powered devices such as the Bitaxe Gamma line.
+
+Setup:
+
+```bash
+BITAXE_ENABLED=true
+BITAXE_HOST=192.168.1.42
+BITAXE_POLL_INTERVAL=10
+BITAXE_ALERTS_ENABLED=true
+BITAXE_TEMP_WARNING=60
+BITAXE_TEMP_CRITICAL=70
+BITAXE_HASHRATE_MIN=0
+BITAXE_ALERT_COOLDOWN=300
+```
+
+Surfaces:
+
+- `nanosolana nanobot` exposes a local MawdAxe miner dashboard on `/api/miner`
+- the gateway exposes `/api/miner` and `/api/extension/miner`
+- the Chrome extension options page can refresh status, restart, tune frequency, tune fan, and set pool or payout wallet
 
 ## Current CLI
 

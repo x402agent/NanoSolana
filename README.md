@@ -105,6 +105,38 @@ The current runtime in [`nano-core/src/`](nano-core/src/) already includes:
 - NanoBot local UI
 - NanoHub skill discovery and one-shot manifests
 - Pump SDK integration and swarm tooling
+- Bitaxe Gamma / AxeOS mining integration with polling, control actions, alert tracking, NanoBot UI, and Chrome extension controls
+
+## Bitaxe Integration
+
+The TypeScript runtime now includes a Bitaxe client ported from the Go runtime model and exposed through both the gateway and NanoBot.
+
+Current surfaces:
+
+- `NanoBot` local dashboard at `nanosolana nanobot`
+- gateway endpoints: `/api/miner` and `/api/extension/miner`
+- Chrome extension options page miner controls
+
+Core env:
+
+```bash
+BITAXE_ENABLED=true
+BITAXE_HOST=192.168.1.42
+BITAXE_POLL_INTERVAL=10
+BITAXE_ALERTS_ENABLED=true
+BITAXE_TEMP_WARNING=60
+BITAXE_TEMP_CRITICAL=70
+```
+
+Supported actions:
+
+- refresh miner status
+- restart the device
+- set ASIC frequency
+- set core voltage
+- set fan speed
+- set pool URL and port
+- set payout wallet / stratum user
 
 ## Go-to-TypeScript Adaptation
 

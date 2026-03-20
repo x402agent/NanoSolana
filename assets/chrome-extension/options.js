@@ -62,6 +62,19 @@ const ui = {
     walletGenerate: /** @type {HTMLButtonElement} */ (el('wallet-generate')),
     walletStatus: el('wallet-status'),
     walletOutput: el('wallet-output'),
+    minerRefresh: /** @type {HTMLButtonElement} */ (el('miner-refresh')),
+    minerRestart: /** @type {HTMLButtonElement} */ (el('miner-restart')),
+    minerFreq500: /** @type {HTMLButtonElement} */ (el('miner-freq-500')),
+    minerFreq575: /** @type {HTMLButtonElement} */ (el('miner-freq-575')),
+    minerFanAuto: /** @type {HTMLButtonElement} */ (el('miner-fan-auto')),
+    minerFan100: /** @type {HTMLButtonElement} */ (el('miner-fan-100')),
+    minerPoolUrl: /** @type {HTMLInputElement} */ (el('miner-pool-url')),
+    minerPoolPort: /** @type {HTMLInputElement} */ (el('miner-pool-port')),
+    minerWallet: /** @type {HTMLInputElement} */ (el('miner-wallet')),
+    minerSetPool: /** @type {HTMLButtonElement} */ (el('miner-set-pool')),
+    minerSetWallet: /** @type {HTMLButtonElement} */ (el('miner-set-wallet')),
+    minerStatus: el('miner-status'),
+    minerOutput: el('miner-output'),
     chatId: /** @type {HTMLInputElement} */ (el('chat-id')),
     chatUserId: /** @type {HTMLInputElement} */ (el('chat-user-id')),
     chatUserName: /** @type {HTMLInputElement} */ (el('chat-user-name')),
@@ -110,6 +123,14 @@ function sanitizePort(value) {
     const parsed = Number.parseInt(String(value || '').trim(), 10)
     if (!Number.isFinite(parsed) || parsed <= 0 || parsed > 65535) {
         return DEFAULTS.relayPort
+    }
+    return parsed
+}
+
+function sanitizeMinerPort(value) {
+    const parsed = Number.parseInt(String(value || '').trim(), 10)
+    if (!Number.isFinite(parsed) || parsed <= 0 || parsed > 65535) {
+        return 3333
     }
     return parsed
 }
@@ -359,6 +380,88 @@ async function runWalletAction(action) {
     }
 }
 
+function applyMinerConfigPayload(payload) {
+    const miner = payload?.miner || payload
+    const latest = miner?.latest || {}
+
+    ui.minerPoolUrl.value = String(latest.stratumURL || ui.minerPoolUrl.value || '')
+    ui.minerPoolPort.value = String(latest.stratumPort || ui.minerPoolPort.value || '3333')
+    ui.minerWallet.value = String(latest.stratumUser || ui.minerWallet.value || '')
+}
+
+async function refreshMinerStatus() {
+    ui.minerRefresh.disabled = true
+    setStatus(ui.minerStatus, '', 'Refreshing miner status...')
+
+    try {
+        const res = await requestGateway('GET', '/api/extension/miner')
+        if (!res?.ok) {
+            setStatus(ui.minerStatus, 'error', describeGatewayApiFailure(res, 'Could not load miner status'))
+            setJsonOutput(ui.minerOutput, res?.json || res || {})
+            return
+        }
+
+        applyMinerConfigPayload(res.json || {})
+        const miner = res.json?.miner
+        if (miner?.configured) {
+            const latest = miner.latest || {}
+            setStatus(
+                ui.minerStatus,
+                'ok',
+                `Miner ${String(miner.host || '')} · ${String(miner.health || 'unknown')} · ${Number(latest.hashRate || 0).toFixed(1)} GH/s`,
+            )
+        } else {
+            setStatus(ui.minerStatus, '', 'Bitaxe not configured in the NanoSolana runtime.')
+        }
+        setJsonOutput(ui.minerOutput, res.json || {})
+    } catch (err) {
+        setStatus(ui.minerStatus, 'error', `Could not load miner status: ${String(err)}`)
+    } finally {
+        ui.minerRefresh.disabled = false
+    }
+}
+
+async function runMinerAction(action, payload = {}) {
+    const buttons = [
+        ui.minerRestart,
+        ui.minerFreq500,
+        ui.minerFreq575,
+        ui.minerFanAuto,
+        ui.minerFan100,
+        ui.minerSetPool,
+        ui.minerSetWallet,
+    ]
+    buttons.forEach((button) => { button.disabled = true })
+    setStatus(ui.minerStatus, '', `Running miner action: ${action}...`)
+
+    try {
+        const res = await requestGateway('POST', '/api/extension/miner', {
+            action,
+            ...payload,
+        })
+
+        if (!res?.ok) {
+            setStatus(ui.minerStatus, 'error', describeGatewayApiFailure(res, `Miner action failed: ${action}`))
+            setJsonOutput(ui.minerOutput, res?.json || res || {})
+            return
+        }
+
+        applyMinerConfigPayload(res.json || {})
+        const miner = res.json?.miner
+        const latest = miner?.latest || {}
+        setStatus(
+            ui.minerStatus,
+            'ok',
+            `Miner action complete: ${action} · ${Number(latest.hashRate || 0).toFixed(1)} GH/s`,
+        )
+        setJsonOutput(ui.minerOutput, res.json || {})
+    } catch (err) {
+        setStatus(ui.minerStatus, 'error', `Miner action failed: ${String(err)}`)
+    } finally {
+        buttons.forEach((button) => { button.disabled = false })
+    }
+}
+
 async function onSaveTelegramConfig() {
     ui.saveTelegram.disabled = true
     setStatus(ui.chatStatus, '', 'Saving Telegram relay config...')
@@ -480,6 +583,43 @@ function bindEvents() {
         void runWalletAction('generate')
     })
 
+    ui.minerRefresh.addEventListener('click', () => {
+        void refreshMinerStatus()
+    })
+
+    ui.minerRestart.addEventListener('click', () => {
+        void runMinerAction('restart')
+    })
+
+    ui.minerFreq500.addEventListener('click', () => {
+        void runMinerAction('set_frequency', { frequency: 500 })
+    })
+
+    ui.minerFreq575.addEventListener('click', () => {
+        void runMinerAction('set_frequency', { frequency: 575 })
+    })
+
+    ui.minerFanAuto.addEventListener('click', () => {
+        void runMinerAction('set_fan', { fanPercent: 0 })
+    })
+
+    ui.minerFan100.addEventListener('click', () => {
+        void runMinerAction('set_fan', { fanPercent: 100 })
+    })
+
+    ui.minerSetPool.addEventListener('click', () => {
+        void runMinerAction('set_pool', {
+            stratumURL: String(ui.minerPoolUrl.value || '').trim(),
+            stratumPort: sanitizeMinerPort(ui.minerPoolPort.value),
+        })
+    })
+
+    ui.minerSetWallet.addEventListener('click', () => {
+        void runMinerAction('set_wallet', {
+            stratumUser: String(ui.minerWallet.value || '').trim(),
+        })
+    })
+
     ui.saveTelegram.addEventListener('click', () => {
         void onSaveTelegramConfig()
     })
@@ -497,6 +637,7 @@ async function init() {
     bindEvents()
 
     setJsonOutput(ui.walletOutput, {})
+    setJsonOutput(ui.minerOutput, {})
     setJsonOutput(ui.chatOutput, {})
     setJsonOutput(ui.tradeOutput, {})
 
@@ -514,6 +655,7 @@ async function init() {
     await Promise.all([
         checkRelayConnectivity(settings),
         checkGatewayConnectivity(),
+        refreshMinerStatus(),
     ])
 }
 

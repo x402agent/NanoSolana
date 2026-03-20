@@ -433,6 +433,7 @@ export class NanoGateway extends EventEmitter<GatewayEvents> {
               "memory-engine",
               "wallet-manager",
               "mesh-network",
+              "bitaxe-miner",
             ],
           },
         }));
