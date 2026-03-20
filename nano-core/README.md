@@ -15,6 +15,16 @@
 
 `nano-core` is the package published to npm as `nanosolana`. It is the main runtime for the current TypeScript build.
 
+## Latest Release
+
+The current npm release line includes the TypeScript runtime refresh:
+
+- published package: `nanosolana@1.0.3`
+- explicit runtime alias: `nanosolana daemon`
+- explicit bootstrap alias: `nanosolana bootstrap`
+- packaged operator documents: `SOUL.md`, `RESEARCH.md`, `GO_PARITY.md`
+- packaged prompt resolution so npm installs get the same operator identity and research loop as the repo checkout
+
 ## What It Ships
 
 | Area | Included |
@@ -36,6 +46,12 @@
 npx nanosolana demo
 ```
 
+Published package form:
+
+```bash
+npx nanosolana@latest demo
+```
+
 Runs the runtime in simulation mode. No API keys required.
 
 ### One-shot operator bootstrap
@@ -48,6 +64,13 @@ Alias:
 
 ```bash
 npx nanosolana bootstrap
+```
+
+Published package form:
+
+```bash
+npx nanosolana@latest go
+npx nanosolana@latest bootstrap
 ```
 
 This is the main onboarding path for a new operator. It prompts for required keys, encrypts them into `~/.nanosolana/vault.enc`, creates the local wallet, boots the pet and memory systems, starts the OODA engine, and brings up the gateway.
@@ -64,6 +87,12 @@ Alias:
 npx nanosolana run
 ```
 
+Published package form:
+
+```bash
+npx nanosolana@latest daemon
+```
+
 This starts the persistent runtime directly if your local state is already initialized.
 
 ## Install
@@ -71,8 +100,9 @@ This starts the persistent runtime directly if your local state is already initi
 ### Run without installing
 
 ```bash
-npx nanosolana demo
-npx nanosolana go
+npx nanosolana@latest demo
+npx nanosolana@latest go
+npx nanosolana@latest daemon
 ```
 
 ### Global install

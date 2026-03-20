@@ -6,6 +6,17 @@ NanoSolana is a TypeScript-first monorepo for building wallet-aware Solana agent
 
 The main runtime lives in [`nano-core/`](nano-core/) and ships to npm as `nanosolana`.
 
+## Latest Runtime Update
+
+The current published package line now reflects the TypeScript-first runtime work:
+
+- `nanosolana@1.0.3` is published on npm
+- `nanosolana daemon` is the explicit long-running runtime alias
+- `nanosolana bootstrap` is the explicit alias for `nanosolana go`
+- the npm package now bundles [`SOUL.md`](nano-core/SOUL.md), [`RESEARCH.md`](nano-core/RESEARCH.md), and [`GO_PARITY.md`](nano-core/GO_PARITY.md)
+- the AI/runtime prompt layer now resolves those packaged operator documents directly
+- the docs set now includes the research-program and system-prompt updates for the TypeScript runtime
+
 ## What This Repo Is
 
 This repo is the TypeScript adaptation of the broader NanoSolana operator model:
@@ -29,6 +40,12 @@ npx nanosolana demo
 
 `demo` runs the local runtime in simulation mode with wallet lifecycle, ClawVault memory, TamaGOchi state, and the OODA loop. No API keys required.
 
+Published package path:
+
+```bash
+npx nanosolana@latest demo
+```
+
 ## One-Shot Bootstrap
 
 ```bash
@@ -37,6 +54,13 @@ cp .env.example .env
 npm install
 npm run build
 npx nanosolana go
+```
+
+Published package path:
+
+```bash
+npx nanosolana@latest go
+npx nanosolana@latest daemon
 ```
 
 `nanosolana go` is the current TypeScript bootstrap path. It:
@@ -102,6 +126,7 @@ The TypeScript runtime now carries its operator-facing docs directly:
 
 - [`nano-core/SOUL.md`](nano-core/SOUL.md)
 - [`nano-core/RESEARCH.md`](nano-core/RESEARCH.md)
+- [`nano-core/GO_PARITY.md`](nano-core/GO_PARITY.md)
 - [`nano-core/README.md`](nano-core/README.md)
 
 ## Developer Workflow
