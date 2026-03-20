@@ -27,6 +27,7 @@ import { TelegramConversationStore } from "../telegram/persistence.js";
 import { getPersona } from "../claw/persona-loader.js";
 import { getTaskSummary, getTasksForPersona, loadAllTasks, searchTasks } from "../claw/task-loader.js";
 import { getNanoHubApiBaseUrl, getNanoHubDiscoveryUrl, getNanoHubSiteUrl } from "../hub/public-client.js";
+import { createBitaxeClientFromEnv, type BitaxeClient } from "../bitaxe/client.js";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -84,6 +85,7 @@ export class NanoGateway extends EventEmitter<GatewayEvents> {
   private rateLimiter = new RateLimiter();
   private secret: string;
   private readonly telegramStore = new TelegramConversationStore();
+  private readonly bitaxe: BitaxeClient | null = createBitaxeClientFromEnv();
   private extensionTelegramConfig: {
     enabled: boolean;
     chatId: string;
@@ -134,6 +136,21 @@ export class NanoGateway extends EventEmitter<GatewayEvents> {
         resolve();
       });
 
+      if (this.bitaxe) {
+        void this.bitaxe.start();
+        this.bitaxe.on("alert", (alert, snapshot) => {
+          this.broadcast({
+            type: "miner:alert",
+            payload: {
+              alert,
+              snapshot,
+            },
+            from: "gateway",
+            timestamp: Date.now(),
+          });
+        });
+      }
+
       // Wire up trading engine events to broadcast
       this.trading.on("signal", (signal) => {
         this.broadcast({
@@ -180,6 +197,7 @@ export class NanoGateway extends EventEmitter<GatewayEvents> {
    */
   async stop(): Promise<void> {
     return new Promise((resolve) => {
+      this.bitaxe?.stop();
       // Close all WebSocket connections
       for (const agent of this.agents.values()) {
         agent.ws.close(1001, "Gateway shutting down");
@@ -713,6 +731,12 @@ export class NanoGateway extends EventEmitter<GatewayEvents> {
         break;
       }
 
+      case "/api/miner":
+      case "/api/extension/miner": {
+        await this.handleMinerRequest(req, res);
+        break;
+      }
+
       default: {
         res.writeHead(404, { "Content-Type": "application/json" });
         res.end(JSON.stringify({ error: "Not found" }));
@@ -746,6 +770,10 @@ export class NanoGateway extends EventEmitter<GatewayEvents> {
         signals: this.trading.getSignals().length,
         executions: this.trading.getExecutions().length,
       },
+      miner: this.bitaxe?.getSnapshot() ?? {
+        enabled: false,
+        configured: false,
+      },
       memory: this.memory.getStats(),
       hub: {
         runtimeUrl: this.config.hub.url,
@@ -772,9 +800,92 @@ export class NanoGateway extends EventEmitter<GatewayEvents> {
         "/api/extension/wallet",
         "/api/extension/chat",
         "/api/extension/trade",
+        "/api/miner",
+        "/api/extension/miner",
       ],
       timestamp: Date.now(),
     };
+  }
+
+  private async handleMinerRequest(req: IncomingMessage, res: ServerResponse): Promise<void> {
+    if (!this.bitaxe) {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({
+        ok: true,
+        miner: {
+          enabled: false,
+          configured: false,
+          host: process.env.BITAXE_HOST?.trim() ?? "",
+        },
+      }));
+      return;
+    }
+
+    if (req.method === "GET") {
+      await this.bitaxe.refresh();
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({
+        ok: true,
+        miner: this.bitaxe.getSnapshot(),
+      }));
+      return;
+    }
+
+    if (req.method !== "POST") {
+      this.respondMethodNotAllowed(res, ["GET", "POST"]);
+      return;
+    }
+
+    const payload = await this.readJsonBody(req);
+    if (!payload || typeof payload !== "object") {
+      this.respondBadRequest(res, "Invalid JSON payload");
+      return;
+    }
+
+    const body = payload as Record<string, unknown>;
+    const action = this.parseString(body.action, "refresh").toLowerCase();
+
+    switch (action) {
+      case "refresh":
+        await this.bitaxe.refresh();
+        break;
+      case "restart":
+        await this.bitaxe.restart();
+        break;
+      case "set_frequency":
+      case "frequency":
+        await this.bitaxe.setFrequency(this.parseNumber(body.frequency, this.parseNumber(body.value, 500)));
+        break;
+      case "set_voltage":
+      case "voltage":
+        await this.bitaxe.setCoreVoltage(this.parseNumber(body.voltage, this.parseNumber(body.value, 1200)));
+        break;
+      case "set_fan":
+      case "fan":
+        await this.bitaxe.setFanSpeed(this.parseNumber(body.fanPercent, this.parseNumber(body.value, 0)));
+        break;
+      case "set_pool":
+      case "pool":
+        await this.bitaxe.setStratumURL(
+          this.parseString(body.stratumURL, this.parseString(body.url, "")),
+          this.parsePositiveIntegerFromUnknown(body.stratumPort ?? body.port, 3333),
+        );
+        break;
+      case "set_wallet":
+      case "wallet":
+        await this.bitaxe.setStratumUser(this.parseString(body.stratumUser, this.parseString(body.wallet, "")));
+        break;
+      default:
+        this.respondBadRequest(res, `Unsupported miner action: ${action}`);
+        return;
+    }
+
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({
+      ok: true,
+      action,
+      miner: this.bitaxe.getSnapshot(),
+    }));
   }
 
   private parseBoolean(value: string | null): boolean {
@@ -792,6 +903,18 @@ export class NanoGateway extends EventEmitter<GatewayEvents> {
     }
 
     return Math.floor(parsed);
+  }
+
+  private parsePositiveIntegerFromUnknown(value: unknown, fallback: number): number {
+    if (typeof value === "string") {
+      return this.parsePositiveInteger(value, fallback);
+    }
+
+    if (typeof value === "number" && Number.isFinite(value) && value > 0) {
+      return Math.floor(value);
+    }
+
+    return fallback;
   }
 
   private parseString(value: unknown, fallback: string): string {

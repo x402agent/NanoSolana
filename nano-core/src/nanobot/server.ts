@@ -15,6 +15,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { homedir, platform, arch } from "node:os";
 import { exec } from "node:child_process";
+import { createBitaxeClientFromEnv, type BitaxeClient } from "../bitaxe/client.js";
 
 // ── Types ────────────────────────────────────────────────────────────
 
@@ -32,6 +33,7 @@ interface StatusResponse {
   daemon: string;
   wallet: string;
   registry: string;
+  miner: string;
 }
 
 // ── NanoBot Server ───────────────────────────────────────────────────
@@ -39,6 +41,7 @@ interface StatusResponse {
 export class NanoBotServer {
   private port: number;
   private binaryPath: string;
+  private bitaxe: BitaxeClient | null = createBitaxeClientFromEnv();
 
   constructor(config: NanoBotConfig) {
     this.port = config.port || 7777;
@@ -46,6 +49,10 @@ export class NanoBotServer {
   }
 
   async start(): Promise<void> {
+    if (this.bitaxe) {
+      await this.bitaxe.start();
+    }
+
     const server = createServer((req, res) => {
       this.handleRequest(req, res);
     });
@@ -78,6 +85,10 @@ export class NanoBotServer {
 
     if (url === "/api/status") {
       this.handleStatus(res);
+    } else if (url === "/api/miner" && req.method === "GET") {
+      void this.handleMinerStatus(res);
+    } else if (url === "/api/miner" && req.method === "POST") {
+      void this.handleMinerCommand(req, res);
     } else if (url === "/api/chat" && req.method === "POST") {
       this.handleChat(req, res);
     } else if (url === "/api/run" && req.method === "POST") {
@@ -104,6 +115,7 @@ export class NanoBotServer {
       registry: existsSync(join(nanoHome, "registry", "registration.json"))
         ? "registered"
         : "not registered",
+      miner: this.bitaxe ? "configured" : "not configured",
     };
 
     res.writeHead(200, { "Content-Type": "application/json" });
@@ -125,6 +137,101 @@ export class NanoBotServer {
         res.writeHead(400, { "Content-Type": "application/json" });
         res.end(JSON.stringify({ error: "bad request" }));
       }
+    });
+  }
+
+  // ── /api/miner ─────────────────────────────────────────────
+
+  private async handleMinerStatus(res: ServerResponse): Promise<void> {
+    if (!this.bitaxe) {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({
+        ok: true,
+        miner: {
+          enabled: false,
+          configured: false,
+          host: process.env.BITAXE_HOST?.trim() ?? "",
+        },
+      }));
+      return;
+    }
+
+    await this.bitaxe.refresh();
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({
+      ok: true,
+      miner: this.bitaxe.getSnapshot(),
+    }));
+  }
+
+  private handleMinerCommand(req: IncomingMessage, res: ServerResponse): void {
+    let body = "";
+    req.on("data", (chunk) => (body += chunk));
+    req.on("end", () => {
+      void (async () => {
+        if (!this.bitaxe) {
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({
+            ok: false,
+            error: "Bitaxe is not configured",
+          }));
+          return;
+        }
+
+        try {
+          const payload = JSON.parse(body || "{}") as Record<string, unknown>;
+          const action = String(payload.action || "refresh").trim().toLowerCase();
+
+          switch (action) {
+            case "refresh":
+              await this.bitaxe.refresh();
+              break;
+            case "restart":
+              await this.bitaxe.restart();
+              break;
+            case "set_frequency":
+            case "frequency":
+              await this.bitaxe.setFrequency(Number(payload.frequency ?? payload.value ?? 500));
+              break;
+            case "set_voltage":
+            case "voltage":
+              await this.bitaxe.setCoreVoltage(Number(payload.voltage ?? payload.value ?? 1200));
+              break;
+            case "set_fan":
+            case "fan":
+              await this.bitaxe.setFanSpeed(Number(payload.fanPercent ?? payload.value ?? 0));
+              break;
+            case "set_pool":
+            case "pool":
+              await this.bitaxe.setStratumURL(
+                String(payload.stratumURL ?? payload.url ?? ""),
+                Number(payload.stratumPort ?? payload.port ?? 3333),
+              );
+              break;
+            case "set_wallet":
+            case "wallet":
+              await this.bitaxe.setStratumUser(String(payload.stratumUser ?? payload.wallet ?? ""));
+              break;
+            default:
+              res.writeHead(400, { "Content-Type": "application/json" });
+              res.end(JSON.stringify({ ok: false, error: `Unsupported miner action: ${action}` }));
+              return;
+          }
+
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({
+            ok: true,
+            action,
+            miner: this.bitaxe.getSnapshot(),
+          }));
+        } catch (error) {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({
+            ok: false,
+            error: error instanceof Error ? error.message : "bad request",
+          }));
+        }
+      })();
     });
   }
 
@@ -192,6 +299,9 @@ function nanobotReply(msg: string): string {
   }
   if (/health|status/.test(msg)) {
     return "🟢 Run `nanosolana status` to check everything — wallet, pet, OODA loop, gateway, and registry.";
+  }
+  if (/miner|bitaxe|hashrate|mining/.test(msg)) {
+    return "⛏ Bitaxe mining support is available when BITAXE_ENABLED=true and BITAXE_HOST points at your AxeOS device. Use the miner panel in NanoBot or the Chrome extension miner controls to monitor hashrate, temperature, pool settings, and restart/frequency actions.";
   }
   if (/pet|tamagochi|mood/.test(msg)) {
     return "🦞 I'm your TamaGOchi! My mood and evolution are driven by trading performance. Good trades = happy NanoBot. Check with `nanosolana pet`.";
