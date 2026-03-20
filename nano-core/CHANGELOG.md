@@ -2,6 +2,14 @@
 
 All notable changes to NanoSolana will be documented in this file.
 
+## [1.0.3] — 2026-03-20
+
+### Improved
+
+- Reframed the published package around the TypeScript runtime, one-shot bootstrap, and explicit daemon workflow.
+- Bundled `SOUL.md`, `RESEARCH.md`, and the Go-to-TypeScript parity map in the npm package.
+- Added clearer `daemon` and `bootstrap` aliases for the long-running runtime and one-shot setup paths.
+
 ## [1.0.2] — 2026-03-16
 
 ### Fixed

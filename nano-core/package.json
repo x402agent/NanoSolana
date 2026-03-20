@@ -1,6 +1,6 @@
 {
   "name": "nanosolana",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "TypeScript runtime and CLI for launching Solana trading agents, autonomous daemons, and one-shot operator workflows.",
   "keywords": [
     "solana",
