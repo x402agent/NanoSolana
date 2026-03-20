@@ -46,6 +46,12 @@ Want one command? Use:
 npx nanosolana go
 ```
 
+Want the long-running daemon surface explicitly?
+
+```bash
+npx nanosolana daemon
+```
+
 Want startup with the DVD-style intro animation?
 
 ```bash
@@ -108,6 +114,7 @@ Use `npx nanosolana tasks`, then inspect [Tools](/tools) and
 - [System Prompt (SOUL.md)](/concepts/system-prompt)
 - [TamaGOchi](/concepts/tamagochi)
 - [Sessions](/concepts/sessions)
+- [Research Program](/trading/research-program)
 
 ### CLI
 

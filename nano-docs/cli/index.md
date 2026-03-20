@@ -36,6 +36,12 @@ Or enable DVD intro by environment variable:
 NANO_DVD_INTRO=1 npx nanosolana go
 ```
 
+Explicit daemon startup:
+
+```bash
+npx nanosolana daemon
+```
+
 ### Track C — Explicit manual startup
 
 ```bash
@@ -73,6 +79,7 @@ npx nanosolana vault
 nanosolana init
 nanosolana birth
 nanosolana run
+nanosolana daemon
 nanosolana status
 nanosolana pet
 nanosolana send
@@ -83,6 +90,7 @@ nanosolana vault [query]
 nanosolana docs [query]
 nanosolana tasks [query]
 nanosolana go [--dvd-intro] [--skip-init]
+nanosolana bootstrap [--dvd-intro] [--skip-init]
 nanosolana demo [--duration]
 nanosolana dvd
 nanosolana lobster [--static]
@@ -103,7 +111,10 @@ nanosolana hub skills|inspect|register|list|search|heartbeat|status|deregister
 - `nanosolana birth` — create wallet + hatch pet
 - `nanosolana run` — start wallet heartbeat, ClawVault, trading engine, and
   gateway
+- `nanosolana daemon` — alias for `run` when you want the long-lived runtime
+  described explicitly
 - `nanosolana go` — one-shot initialization + runtime startup
+- `nanosolana bootstrap` — alias for `go`
 - `nanosolana demo` — simulation mode without API keys
 
 ### Startup visuals and terminal UX

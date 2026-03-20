@@ -1,10 +1,12 @@
 /**
- * NanoSolana TamaGObot — Main Entry
+ * NanoSolana — Main Entry
  *
- * A GoBot on Solana · Physical Companion: TamaGOchi · By NanoSolana Labs
+ * TypeScript runtime for Solana agents, daemons, and operator tooling.
  *
  * Exports all core modules for programmatic usage.
  */
+
+export { readNanoRuntimeAsset, resolveNanoRuntimeAsset } from "./runtime/assets.js";
 
 // Config & Security
 export { loadConfig, saveSecrets, loadSecrets, redactConfig, ensureNanoHome, encrypt, decrypt } from "./config/vault.js";

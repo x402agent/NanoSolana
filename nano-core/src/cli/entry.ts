@@ -2,8 +2,8 @@
 
 /**
  * ╔══════════════════════════════════════════════════════════════════════╗
- * ║              NANOSOLANA TAMAGOBOT — CLI Entry                     ║
- * ║  A GoBot on Solana · Physical Companion: TamaGOchi               ║
+ * ║                 NANOSOLANA — TypeScript CLI Entry                 ║
+ * ║   Terminal runtime · autonomous daemon · TamaGOchi companion      ║
  * ║  By NanoSolana Labs                                               ║
  * ╚══════════════════════════════════════════════════════════════════════╝
  *
@@ -73,8 +73,8 @@ function printBanner(): void {
   ██║ ╚████║██║  ██║██║ ╚████║╚██████╔╝███████║╚██████╔╝███████╗██║  ██║██║ ╚████║██║  ██║
   ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝
   `));
-  console.log(chalk.white("  🦞 NanoSolana TamaGObot"));
-  console.log(chalk.gray("  Autonomous Financial Intelligence on Solana · By NanoSolana Labs\n"));
+  console.log(chalk.white("  🦞 NanoSolana Runtime"));
+  console.log(chalk.gray("  TypeScript Solana operator runtime · By NanoSolana Labs\n"));
 }
 
 // ── Helpers ────────────────────────────────────────────────────
@@ -260,14 +260,15 @@ program
 
 program
   .command("run")
-  .description("Run the nano agent (gateway + trading + memory)")
+  .alias("daemon")
+  .description("Run the autonomous NanoSolana daemon (gateway + trading + memory)")
   .option("-n, --name <name>", "Agent name", "NanoSolana")
   .option("--pet-name <petName>", "TamaGOchi pet name")
   .option("--no-trade", "Disable trading engine (--no-ooda)")
   .option("--no-gateway", "Disable gateway server")
   .action(async (opts) => {
     printBanner();
-    console.log(chalk.white.bold(`  🚀 Starting NanoSolana TamaGObot "${opts.name}"...\n`));
+    console.log(chalk.white.bold(`  🚀 Starting NanoSolana daemon "${opts.name}"...\n`));
 
     try {
       const config = loadConfig();
@@ -417,7 +418,7 @@ program
       const vaultStats = vault.getStats();
       const pet = new TamaGOchi(config.agent.name);
 
-      console.log(chalk.cyan("\n  ── NanoSolana TamaGObot Status ───────────────\n"));
+      console.log(chalk.cyan("\n  ── NanoSolana Runtime Status ─────────────────\n"));
       console.log(chalk.white("  Agent:      ") + chalk.cyan(config.agent.name));
       console.log(chalk.white("  Wallet:     ") + chalk.cyan(wallet.getPublicKey()));
       console.log(chalk.white("  Balance:    ") + chalk.yellow(`${wallet.getInfo().balance} SOL`));
@@ -887,7 +888,8 @@ program
 
 program
   .command("go")
-  .description("One-shot: init + birth + wallet + run — everything in one command")
+  .alias("bootstrap")
+  .description("One-shot bootstrap: configure, birth, and launch your Solana trading daemon")
   .option("-n, --name <name>", "Agent name", "NanoSolana")
   .option("--pet-name <petName>", "TamaGOchi pet name")
   .option("--skip-init", "Skip API key prompts if already configured")

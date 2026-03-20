@@ -11,6 +11,7 @@ OODA loop plus a strategy engine built around RSI, EMA, and ATR signals.
 ## What exists today
 
 - `nanosolana run` starts the runtime and trading engine
+- `nanosolana daemon` is an alias for the same long-lived runtime
 - `nanosolana go` performs the one-shot bootstrap and starts trading
 - `nanosolana demo` runs a synthetic simulation without live keys
 - `nanosolana status` reports runtime state
@@ -29,6 +30,7 @@ The current docs and code describe:
 - confidence scoring before execution
 - Jupiter-backed execution when configured
 - ClawVault memory feedback after trade outcomes
+- research mutations defined in [`nano-core/RESEARCH.md`](../../nano-core/RESEARCH.md)
 
 ## Execution flow
 

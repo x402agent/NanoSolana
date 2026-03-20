@@ -1,61 +1,34 @@
 <div align="center">
 
-# 🦞 NanoSolana
+# NanoSolana
 
-**TypeScript runtime and CLI for autonomous financial agents on Solana.**
+**TypeScript runtime and CLI for autonomous Solana agents, trading daemons, and one-shot operator setup.**
 
 [![npm version](https://img.shields.io/npm/v/nanosolana?color=14F195&style=flat-square)](https://npmjs.com/package/nanosolana)
 [![npm downloads](https://img.shields.io/npm/dm/nanosolana?color=9945FF&style=flat-square)](https://npmjs.com/package/nanosolana)
-[![GitHub stars](https://img.shields.io/github/stars/x402agent/NanoSolana?color=14F195&style=flat-square)](https://github.com/x402agent/NanoSolana)
-[![License: MIT](https://img.shields.io/badge/License-MIT-14F195.svg?style=flat-square)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Solana](https://img.shields.io/badge/Solana-Native-9945FF?style=flat-square&logo=solana&logoColor=white)](https://solana.com)
 [![Node](https://img.shields.io/badge/Node-%E2%89%A522-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)
-[![GitHub last commit](https://img.shields.io/github/last-commit/x402agent/NanoSolana?color=14F195&style=flat-square)](https://github.com/x402agent/NanoSolana)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-14F195?style=flat-square)](https://github.com/x402agent/NanoSolana/blob/main/CONTRIBUTING.md)
-[![Discord](https://img.shields.io/badge/Discord-Join-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/nanosolana)
 
-`nano-core` is published to npm as `nanosolana`.
-It bundles the local agent runtime, encrypted config vault, wallet lifecycle, OODA trading engine, ClawVault memory, TamaGOchi state machine, gateway server, docs integration, and devnet on-chain identity registration.
-
-[Website](https://nanosolana.com) · [Hub](https://hub.nanosolana.com) · [Docs](https://docs.nanosolana.com) · [GitHub](https://github.com/x402agent/NanoSolana) · [Discord](https://discord.gg/nanosolana)
+[Website](https://nanosolana.com) · [Hub](https://hub.nanosolana.com) · [Docs](https://docs.nanosolana.com) · [GitHub](https://github.com/x402agent/NanoSolana)
 
 </div>
 
----
+`nano-core` is the package published to npm as `nanosolana`. It is the main runtime for the current TypeScript build.
 
-## What This Package Ships
+## What It Ships
 
-| Area | Included in `nanosolana` |
+| Area | Included |
 | --- | --- |
-| CLI | `init`, `birth`, `run`, `go`, `demo`, `scan`, `register`, `registry`, `nanobot`, `status`, `pet`, `docs`, `tasks`, `vault`, `config`, `nodes`, `send`, `bots`, `hub`, `pay` |
-| Trading runtime | Helius RPC ingestion, Birdeye market data, Jupiter execution, signal events |
-| Memory | ClawVault 3-tier memory: known, learned, inferred |
-| Security | AES-256-GCM local vault, HMAC-SHA256 gateway auth, timing-safe signature checks |
-| Agent state | Solana wallet manager, TamaGOchi lifecycle, local persistence under `~/.nanosolana/` |
-| Networking | Gateway server plus optional Tailscale-backed mesh messaging |
-| UI | Local NanoBot web UI on `127.0.0.1:7777` by default |
-| Registry | Devnet NFT-based on-chain identity via Metaplex-compatible minting flow |
+| Bootstrap | `go`, `bootstrap`, `init`, `birth`, `daemon`, `run`, `demo` |
+| Runtime | wallet lifecycle, heartbeat, trading engine, gateway, NanoBot |
+| Memory | ClawVault with `known`, `learned`, and `inferred` tiers |
+| Strategy | RSI, EMA, ATR, signal scoring |
+| Security | AES-256-GCM local secret vault |
+| Discovery | NanoHub public skill discovery and one-shot manifests |
+| Registry | local registry flows and on-chain identity helpers |
+| Pump | integrated Pump SDK exports and swarm helpers |
 
-## Runtime Structure
-
-`nano-core` is the runtime. There is no separate `nanoclaw-main` workspace in this checkout.
-
-- [`src/claw/`](src/claw/) is the integrated orchestrator layer for swarm management, Pump bridge logic, personas, and container-backed agent execution.
-- [`src/hub/`](src/hub/) contains the NanoHub public client plus the registry server used for agent registration flows.
-- [`src/claw/pump/sdk/`](src/claw/pump/sdk/) contains the integrated Pump SDK and IDLs mirrored from the vendored upstream Pump source tree.
-
-That means users installing `nanosolana` get the integrated core directly, rather than a thin wrapper around a second nested project.
-
-## Requirements
-
-- Node.js `22+`
-- npm `10+`
-- A burner wallet and test-sized balances for first live runs
-- For live mode: `HELIUS_RPC_URL`, `HELIUS_API_KEY`, and `OPENROUTER_API_KEY` or `AI_API_KEY`
-- For better live behavior: `HELIUS_WSS_URL`, `BIRDEYE_API_KEY`, `JUPITER_API_KEY`, `NANO_GATEWAY_SECRET`
-
-## Quick Start
+## Fastest Start
 
 ### Demo mode
 
@@ -63,51 +36,35 @@ That means users installing `nanosolana` get the integrated core directly, rathe
 npx nanosolana demo
 ```
 
-This runs the full OODA loop in simulation mode with synthetic prices, a local ClawVault instance, and a demo TamaGOchi. No API keys are required.
+Runs the runtime in simulation mode. No API keys required.
 
-### Live mode
+### One-shot operator bootstrap
 
 ```bash
 npx nanosolana go
 ```
 
-On first run, `go` will:
-
-1. Prompt for required credentials.
-2. Encrypt secrets into `~/.nanosolana/vault.enc`.
-3. Create or load the local wallet.
-4. Start TamaGOchi, ClawVault, trading, and the gateway.
-5. Attempt a blockchain scan when Helius is configured.
-6. Attempt devnet registration for the agent identity NFT.
-
-If secrets are already present, skip the prompts:
+Alias:
 
 ```bash
-npx nanosolana go --skip-init
+npx nanosolana bootstrap
 ```
 
-### NanoHub skill discovery
+This is the main onboarding path for a new operator. It prompts for required keys, encrypts them into `~/.nanosolana/vault.enc`, creates the local wallet, boots the pet and memory systems, starts the OODA engine, and brings up the gateway.
 
-Use the published `nanosolana` package to browse public NanoHub skills without
-installing the separate registry CLI:
+### Long-running daemon
 
 ```bash
-npx nanosolana hub skills
-npx nanosolana hub skills telegram --limit 5
-npx nanosolana hub inspect token-tracker
-npx nanosolana oneshot token-tracker
+npx nanosolana daemon
 ```
 
-`nanosolana oneshot <slug>` is the new bootstrap scaffold command. It resolves
-the NanoHub manifest for a skill, checks env and OAuth blockers, and emits a
-launch plan without mutating your system yet.
-
-When you want install, publish, or sync flows, drop into the dedicated NanoHub CLI:
+Alias:
 
 ```bash
-npx nanohub@latest install token-tracker
-npx nanohub@latest publish ./skills/my-agent --slug my-agent --name "My Agent" --version 1.0.0
+npx nanosolana run
 ```
+
+This starts the persistent runtime directly if your local state is already initialized.
 
 ## Install
 
@@ -118,19 +75,11 @@ npx nanosolana demo
 npx nanosolana go
 ```
 
-### Global npm install
+### Global install
 
 ```bash
 npm install -g nanosolana
 nanosolana demo
-```
-
-### One-shot shell installer
-
-```bash
-curl -fsSL https://nanosolana.com/install.sh | bash
-export PATH="$HOME/.nanosolana/bin:$PATH"
-nanosolana go
 ```
 
 ### From source
@@ -143,194 +92,102 @@ npm run build
 node dist/cli/entry.js demo
 ```
 
-## Configuration
+## Minimal Live Configuration
 
-Secrets can come from the encrypted local vault, environment variables, or both. The runtime supports the following primary variables:
+The minimum practical live setup is:
 
-| Variable | Purpose | Notes |
-| --- | --- | --- |
-| `OPENROUTER_API_KEY` or `AI_API_KEY` | AI provider key | Required for live trading |
-| `OPENROUTER_MODEL` or `AI_MODEL` | Model selection | Defaults to `openrouter/healer-alpha` |
-| `HELIUS_RPC_URL` | Solana RPC | Required for live mode and scans |
-| `HELIUS_API_KEY` | Helius API key | Required for live mode and scans |
-| `HELIUS_WSS_URL` | Helius WebSocket endpoint | Optional but recommended |
-| `BIRDEYE_API_KEY` | Market data | Optional in config, important for richer signals |
-| `JUPITER_API_KEY` | Swap execution | Required for live execution paths |
-| `NANO_GATEWAY_PORT` | Gateway port | Defaults to `18790` |
-| `NANO_GATEWAY_HOST` | Gateway bind host | Defaults to `0.0.0.0` |
-| `NANO_GATEWAY_SECRET` | Shared HMAC secret | Strongly recommended |
-| `NANO_HUB_URL` | NanoHub site URL | Public skill discovery defaults to `https://hub.nanosolana.com`; local bridge defaults may point at your dev server |
-| `NANO_VAULT_PASSWORD` | Override vault password source | Recommended for deterministic multi-session setups |
-| `TAILSCALE_AUTH_KEY` | Mesh networking | Needed for automated Tailscale enrollment |
+```bash
+OPENROUTER_API_KEY=...
+HELIUS_API_KEY=...
+HELIUS_RPC_URL=https://mainnet.helius-rpc.com/?api-key=...
+```
 
-`nanosolana init` writes non-sensitive defaults to a local `.env` and stores prompted secrets in the encrypted vault.
+Better live behavior usually also wants:
 
-## CLI Reference
+```bash
+BIRDEYE_API_KEY=...
+JUPITER_API_KEY=...
+NANO_GATEWAY_SECRET=...
+```
 
-### Core runtime
+Use [`./.env.example`](./.env.example) as the full template.
 
-| Command | Description |
-| --- | --- |
-| `nanosolana init` | Prompt for credentials and save them to the encrypted vault |
-| `nanosolana birth` | Create or load the agent wallet and initialize the local TamaGOchi |
-| `nanosolana run` | Start wallet heartbeat, ClawVault, trading engine, and gateway |
-| `nanosolana go` | Full one-shot flow: configure, birth, run, scan, and attempt registration |
-| `nanosolana demo` | Simulation mode with no API keys |
-| `nanosolana status` | Show wallet, pet, memory, gateway, Tailscale, and tmux summary |
-| `nanosolana pet` | Print the current TamaGOchi status display |
+## One-Shot Skill Plans
 
-### Ops and inspection
+The runtime can resolve NanoHub manifests into a launch plan:
 
-| Command | Description |
-| --- | --- |
-| `nanosolana scan [address]` | Scan the default wallet or a supplied address via Helius |
-| `nanosolana register` | Mint the devnet on-chain identity NFT |
-| `nanosolana registry` | Show local registration status and explorer links |
-| `nanosolana config` | Print the redacted runtime configuration |
-| `nanosolana vault [query]` | Search the ClawVault tiers |
-| `nanosolana docs [query]` | Search integrated docs and extension metadata |
-| `nanosolana tasks [query]` | Inspect the automated repo task registry used by personas |
-| `nanosolana nanobot --port 7777` | Start the local NanoBot companion UI |
+```bash
+npx nanosolana oneshot token-tracker
+npx nanosolana oneshot token-tracker --json
+```
 
-### Mesh and multi-bot tooling
+That flow:
 
-| Command | Description |
-| --- | --- |
-| `nanosolana nodes` | List discovered Tailscale peers |
-| `nanosolana send "message"` | Send a one-shot message to local or mesh-connected agents |
-| `nanosolana bots list` | List tmux-backed bot sessions |
-| `nanosolana bots spawn <name>` | Spawn a bot in a tmux session |
-| `nanosolana bots attach <name>` | Attach to a tmux session |
-| `nanosolana bots kill <name>` | Terminate a tmux session |
-| `nanosolana dvd` | Terminal DVD-style screensaver |
-| `nanosolana lobster` | Animated or static lobster banner |
+- resolves the public NanoHub manifest
+- checks required env vars
+- reports OAuth blockers
+- shows install packages and linked extensions
+- emits a machine-readable launch plan
 
-### NanoHub
+## Current CLI
 
-| Command | Description |
-| --- | --- |
-| `nanosolana hub skills [query]` | Browse or search public NanoHub skills |
-| `nanosolana hub inspect <slug>` | Inspect a skill and preview `SKILL.md` |
-| `nanosolana oneshot <slug>` | Build a one-shot launch plan from the skill manifest |
-| `nanosolana hub register` | Register this agent in the NanoHub agent registry |
-| `nanosolana hub list` | List agents in the NanoHub agent registry |
-| `nanosolana hub search <query>` | Search the NanoHub agent registry |
-| `nanosolana hub heartbeat` | Send a registry heartbeat |
-| `nanosolana hub status` | Show registry statistics plus public Hub URLs |
-| `nanosolana hub deregister` | Mark the current agent inactive in the registry |
+```text
+init
+birth
+run
+daemon
+status
+pet
+send
+bots
+nodes
+config
+vault
+docs
+tasks
+hub
+pay
+go
+bootstrap
+demo
+scan
+register
+registry
+nanobot
+oneshot
+```
 
 ## SDK Usage
 
-`nanosolana` can also be used as a library:
-
 ```ts
 import {
+  AIProvider,
   ClawVault,
   NanoWallet,
+  StrategyEngine,
   TamaGOchi,
   TradingEngine,
   loadConfig,
 } from "nanosolana";
 
 const config = loadConfig();
-
 const wallet = new NanoWallet("my-agent");
 await wallet.birth();
 
 const vault = new ClawVault();
 vault.startAutonomous();
 
-const pet = new TamaGOchi("MyPet");
-pet.recordWalletCreated(wallet.getInfo().balance);
-
+const pet = new TamaGOchi("MyAgent");
 const engine = new TradingEngine(config, wallet);
-engine.on("signal", (signal) => {
-  console.log(`${signal.type} ${signal.symbol} ${(signal.confidence * 100).toFixed(0)}%`);
-});
-
 await engine.start();
 ```
 
-Additional runnable examples live in [`examples/`](https://github.com/x402agent/NanoSolana/tree/main/nano-core/examples):
+## Operator Documents
 
-- `basic-agent.ts`
-- `custom-strategy.ts`
-- `multi-agent-mesh.ts`
-- `sdk-programmatic.ts`
-- `webhook-alerts.ts`
+- [`SOUL.md`](./SOUL.md)
+- [`RESEARCH.md`](./RESEARCH.md)
+- [`GO_PARITY.md`](./GO_PARITY.md)
 
-## Pump SDK Usage
+## Go Parity
 
-The package also re-exports the integrated Pump SDK surface directly:
-
-```ts
-import {
-  OnlinePumpSdk,
-  PumpFunSdk,
-  PUMP_PROGRAM_ID,
-  getBuyTokenAmountFromSolAmount,
-  getPumpSdkTokenPrice,
-} from "nanosolana";
-```
-
-This comes from [`src/claw/pump/sdk/`](src/claw/pump/sdk/) and gives agents direct access to Pump program IDLs, bonding curve math, analytics helpers, fee calculations, and online RPC-backed state fetchers for launching, trading, and fee-oriented workflows.
-
-## Architecture
-
-```text
-┌───────────────────────────────────────────────────────┐
-│                    Agent Runtime                      │
-│     OODA loop · ClawVault · TamaGOchi · Strategy      │
-├───────────────────────────────────────────────────────┤
-│                  Local Infrastructure                 │
-│   Vault · Wallet · Gateway · Registry · Persistence   │
-├───────────────────────────────────────────────────────┤
-│                 External Integrations                 │
-│   Helius · Birdeye · Jupiter · Tailscale · Docs       │
-└───────────────────────────────────────────────────────┘
-```
-
-Source layout:
-
-```text
-nano-core/src/
-├── claw/       Integrated swarm orchestration, personas, Pump bridge, containers
-├── ai/         OpenRouter-backed AI provider
-├── cli/        CLI entrypoint and terminal UX
-├── config/     Local encrypted vault and config loading
-├── docs/       Repo docs and extension corpus integration
-├── gateway/    HTTP + WebSocket gateway
-├── hub/        NanoHub public client and registry integration
-├── memory/     ClawVault and legacy memory engine
-├── nanobot/    Local companion UI server
-├── network/    Tailscale and tmux helpers
-├── nft/        Birth certificate support
-├── onchain/    Helius readers and wallet scans
-├── pet/        TamaGOchi state machine
-├── registry/   Devnet identity registration
-├── strategy/   Indicators and signal logic
-├── trading/    OODA trading engine
-└── wallet/     Solana wallet management
-```
-
-## Security Notes
-
-- Secrets are stored in `~/.nanosolana/vault.enc` with AES-256-GCM encryption.
-- Gateway signatures use HMAC-SHA256 and constant-time comparison via `crypto.timingSafeEqual`.
-- HTTP and WebSocket surfaces are rate-limited per source address.
-- The default vault password source is local-machine oriented. Set `NANO_VAULT_PASSWORD` explicitly if you need a stable password across shells or hosts.
-- On-chain registration uses Solana devnet today. Do not treat devnet identity as production custody or compliance infrastructure.
-- The trading engine is experimental software. Start with `demo`, then a burner wallet, then very small live balances.
-
-## Package Scope
-
-This README covers the published TypeScript package in `nano-core`.
-For the broader monorepo, including NanoHub, extensions, apps, and site assets, see the main repository README:
-
-- [Monorepo guide](https://github.com/x402agent/NanoSolana/blob/main/README.md)
-- [Docs site source](https://github.com/x402agent/NanoSolana/tree/main/nano-docs)
-- [Contributing guide](https://github.com/x402agent/NanoSolana/blob/main/CONTRIBUTING.md)
-
-## License
-
-MIT. See [LICENSE](LICENSE).
+The old Go daemon package graph is being adapted into the TypeScript runtime, not copied line-for-line. The parity map lives in [`GO_PARITY.md`](./GO_PARITY.md).

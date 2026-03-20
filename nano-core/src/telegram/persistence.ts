@@ -1,5 +1,5 @@
 /**
- * NanoSolana TamaGObot — Telegram Persistence Layer
+ * NanoSolana — Telegram Persistence Layer
  *
  * SQLite-backed conversation memory so the Telegram bot remembers:
  *   - Every chat's full message history

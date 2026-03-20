@@ -1,5 +1,5 @@
 /**
- * NanoSolana TamaGObot — RSI + EMA + ATR Strategy Engine
+ * NanoSolana — RSI + EMA + ATR Strategy Engine
  *
  * Three conditions must all fire simultaneously:
  *

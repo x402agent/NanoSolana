@@ -185,7 +185,7 @@ function nanobotReply(msg: string): string {
     return "Hey there! 🦞 I'm NanoBot, your Solana trading companion. What can I help you with?";
   }
   if (/trade|swap/.test(msg)) {
-    return "Ready to trade! 📈 Use `nanosolana go` for one-shot launch, or `nanosolana dvd` for fun. I use Jupiter DEX for swaps with real-time Helius data.";
+    return "Ready to trade! 📈 Use `nanosolana go` for one-shot launch or `nanosolana daemon` for an explicit long-running runtime. I use Jupiter DEX for swaps with real-time Helius data.";
   }
   if (/wallet|balance/.test(msg)) {
     return "💰 Your agent wallet was generated at birth. Run `nanosolana status` to check balance. Private key is encrypted in AES-256-GCM vault.";
@@ -203,10 +203,10 @@ function nanobotReply(msg: string): string {
     return "I can help with:\n• 📊 Wallet balance & health\n• 📈 Trading with OODA loop\n• 🦞 TamaGOchi pet status\n• 🆔 On-chain identity\n• 📀 DVD screensaver (`nanosolana dvd`)\n\nJust ask!";
   }
   if (/ooda|loop/.test(msg)) {
-    return "🔄 The OODA loop: Observe (Helius+Birdeye) → Orient (AI reasoning) → Decide (RSI+EMA+ATR) → Act (Jupiter swaps). Run with `nanosolana go`.";
+    return "🔄 The OODA loop: Observe (Helius+Birdeye) → Orient (AI reasoning) → Decide (RSI+EMA+ATR) → Act (Jupiter swaps). Run with `nanosolana go` or keep it online with `nanosolana daemon`.";
   }
   if (/install|setup/.test(msg)) {
-    return "🚀 Fastest install:\n```\nnpx nanosolana go\n```\nOr shell install:\n```\ncurl -fsSL https://nanosolana.com/install.sh | bash\nnanosolana go\n```";
+    return "🚀 Fastest install:\n```\nnpx nanosolana go\n```\nLong-running daemon:\n```\nnpx nanosolana daemon\n```\nOr shell install:\n```\ncurl -fsSL https://nanosolana.com/install.sh | bash\nnanosolana go\n```";
   }
   return "🦞 I'm focused on Solana trading and on-chain ops. Try asking about trading, wallet, health, or my TamaGOchi status!";
 }

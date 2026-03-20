@@ -42,7 +42,7 @@ export const NanoConfigSchema = z.object({
     secret: z.string().optional(),
   }),
   hub: z.object({
-    url: z.string().default("http://localhost:3000"),
+    url: z.string().default("https://hub.nanosolana.com"),
     apiKey: z.string().optional(),
   }),
   tailscale: z.object({
@@ -186,7 +186,7 @@ export function loadConfig(): NanoConfig {
       secret: env.NANO_GATEWAY_SECRET ?? secrets.NANO_GATEWAY_SECRET,
     },
     hub: {
-      url: env.NANO_HUB_URL ?? "http://localhost:3000",
+      url: env.NANO_HUB_URL ?? "https://hub.nanosolana.com",
       apiKey: env.NANO_HUB_API_KEY ?? secrets.NANO_HUB_API_KEY,
     },
     tailscale: {

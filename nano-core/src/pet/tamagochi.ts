@@ -1,5 +1,5 @@
 /**
- * NanoSolana TamaGObot — TamaGOchi Pet Engine
+ * NanoSolana — TamaGOchi Pet Engine
  *
  * Virtual pet whose life is driven by REAL on-chain trading performance.
  *

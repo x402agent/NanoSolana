@@ -1,7 +1,7 @@
 {
   "name": "nanosolana",
   "version": "1.0.2",
-  "description": "🦞 The open-source agentic framework for financial intelligence on Solana. Autonomous OODA trading, epistemological memory, mesh coordination, and a virtual pet soul — deploy in 30 seconds.",
+  "description": "TypeScript runtime and CLI for launching Solana trading agents, autonomous daemons, and one-shot operator workflows.",
   "keywords": [
     "solana",
     "trading-bot",
@@ -32,7 +32,11 @@
     "metaplex",
     "swap",
     "dex",
-    "agentic-framework"
+    "agentic-framework",
+    "autonomous-daemon",
+    "one-shot",
+    "typescript-runtime",
+    "solana-cli"
   ],
   "license": "MIT",
   "author": "NanoSolana Labs <team@nanosolana.com> (https://nanosolana.com)",
@@ -54,6 +58,10 @@
   "files": [
     "dist",
     "README.md",
+    ".env.example",
+    "SOUL.md",
+    "RESEARCH.md",
+    "GO_PARITY.md",
     "LICENSE",
     "CHANGELOG.md"
   ],
@@ -81,6 +89,8 @@
     "dev": "tsx watch src/cli/entry.ts",
     "build": "tsup src/index.ts src/cli/entry.ts --format esm --dts --sourcemap --out-dir dist --clean",
     "start": "node dist/cli/entry.js",
+    "daemon": "tsx src/cli/entry.ts daemon",
+    "bootstrap": "tsx src/cli/entry.ts bootstrap",
     "demo": "tsx src/cli/entry.ts demo",
     "install:one-shot": "bash scripts/install-cli.sh",
     "test": "vitest run",

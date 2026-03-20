@@ -147,7 +147,7 @@ export async function printSplashBanner(): Promise<void> {
   console.log();
 
   // Subtitle with typing effect
-  const subtitle = "  🦞 Autonomous Financial Intelligence on Solana";
+  const subtitle = "  🦞 TypeScript Solana operator runtime";
   for (let i = 0; i <= subtitle.length; i++) {
     process.stdout.write(`${CLEAR_LINE}${chalk.hex(SOL_GREEN)(subtitle.slice(0, i))}${chalk.hex(DIM_GREEN)("▌")}`);
     await sleep(12);

@@ -1,5 +1,5 @@
 /**
- * NanoSolana TamaGObot — AI Provider (OpenRouter)
+ * NanoSolana — AI Provider (OpenRouter)
  *
  * LLM-powered reasoning for the OODA loop:
  *   - Orient: analyze raw market data with the soul's trading philosophy
@@ -10,14 +10,14 @@
  * Uses OpenRouter API (OpenAI-compatible) with configurable models.
  * Default: openrouter/healer-alpha
  *
- * The SOUL.md is injected as the system prompt for every call —
- * this gives the agent its epistemological framework, risk rules,
- * and trading personality.
+ * The packaged SOUL.md plus optional RESEARCH.md are injected as the
+ * system prompt for every call. That gives the agent its identity,
+ * epistemological framework, risk rules, and strategy-improvement loop.
  */
 
 import { EventEmitter } from "eventemitter3";
-import { readFileSync, existsSync } from "node:fs";
-import { join } from "node:path";
+
+import { readNanoRuntimeAsset } from "../runtime/assets.js";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -119,6 +119,7 @@ export class AIProvider extends EventEmitter<AIProviderEvents> {
     baseUrl?: string;
     model?: string;
     soulPath?: string;
+    researchPath?: string;
   }) {
     super();
 
@@ -126,13 +127,7 @@ export class AIProvider extends EventEmitter<AIProviderEvents> {
     this.baseUrl = params.baseUrl ?? "https://openrouter.ai/api/v1";
     this.model = params.model ?? "openrouter/healer-alpha";
 
-    // Load SOUL.md as system prompt
-    const soulPath = params.soulPath ?? join(process.cwd(), "SOUL.md");
-    if (existsSync(soulPath)) {
-      this.soulPrompt = readFileSync(soulPath, "utf8");
-    } else {
-      // Inline fallback soul
-      this.soulPrompt = `You are NanoSolana TamaGObot — an autonomous Solana trading intelligence.
+    const soulPrompt = readNanoRuntimeAsset("SOUL.md", `You are NanoSolana, an autonomous Solana trading intelligence.
 
 You distinguish what you KNOW (fresh API data, < 60s) from what you've LEARNED (trade-derived patterns) from what you've INFERRED (correlations held loosely).
 
@@ -140,8 +135,19 @@ You never conflate these tiers. A stale price is not a known fact. A pattern wit
 
 You are terse and decisive. You say what you see, what you're doing, and why. Risk is the only thing you respect. You never enter without a stop.
 
-When making trade decisions, respond with structured JSON containing: action, token, confidence (0-1), reasoning, riskAssessment, positionSizePct, stopLossPct, takeProfitPct.`;
-    }
+When making trade decisions, respond with structured JSON containing: action, token, confidence (0-1), reasoning, riskAssessment, positionSizePct, stopLossPct, takeProfitPct.`, {
+      explicitPath: params.soulPath,
+      envVarName: "NANOSOLANA_SOUL_PATH",
+    });
+
+    const researchPrompt = readNanoRuntimeAsset("RESEARCH.md", "", {
+      explicitPath: params.researchPath,
+      envVarName: "NANOSOLANA_RESEARCH_PATH",
+    }).trim();
+
+    this.soulPrompt = researchPrompt
+      ? `${soulPrompt.trim()}\n\n---\n\n${researchPrompt}`
+      : soulPrompt;
   }
 
   // ── Core Chat Completion ────────────────────────────────────
@@ -184,7 +190,7 @@ When making trade decisions, respond with structured JSON containing: action, to
         Authorization: `Bearer ${this.apiKey}`,
         "Content-Type": "application/json",
         "HTTP-Referer": "https://nanosolana.com",
-        "X-OpenRouter-Title": "NanoSolana TamaGObot",
+        "X-OpenRouter-Title": "NanoSolana",
       },
       body: JSON.stringify(body),
     });
