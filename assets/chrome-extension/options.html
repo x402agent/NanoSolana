@@ -206,7 +206,7 @@
             <div>
                 <h1>NanoSolana Browser Agent Relay</h1>
                 <p class="subtitle">
-                    Relay browser tabs, manage wallet state, chat via gateway/Telegram, and trigger manual trades.
+                    Relay browser tabs, manage wallet state, chat via gateway/Telegram, trigger manual trades, and control a connected Bitaxe miner.
                 </p>
             </div>
         </header>
@@ -271,6 +271,40 @@
                 </div>
                 <div class="status" id="wallet-status"></div>
                 <pre id="wallet-output" class="mono-output">{}</pre>
+            </div>
+
+            <div class="card">
+                <h2>Bitaxe miner</h2>
+                <div class="row">
+                    <button id="miner-refresh" type="button">Refresh miner status</button>
+                    <button id="miner-restart" type="button">Restart miner</button>
+                    <button id="miner-freq-500" type="button">500 MHz</button>
+                    <button id="miner-freq-575" type="button">575 MHz</button>
+                    <button id="miner-fan-auto" type="button">Fan auto</button>
+                    <button id="miner-fan-100" type="button">Fan 100%</button>
+                </div>
+
+                <div class="split" style="margin-top: 10px">
+                    <div>
+                        <label for="miner-pool-url">Pool URL</label>
+                        <input id="miner-pool-url" autocomplete="off" placeholder="solo.ckpool.org" />
+                    </div>
+                    <div>
+                        <label for="miner-pool-port">Pool port</label>
+                        <input id="miner-pool-port" inputmode="numeric" pattern="[0-9]*" placeholder="3333" />
+                    </div>
+                </div>
+
+                <label for="miner-wallet" style="margin-top: 10px">BTC payout address</label>
+                <input id="miner-wallet" autocomplete="off" />
+
+                <div class="row" style="margin-top: 10px">
+                    <button id="miner-set-pool" type="button">Set pool</button>
+                    <button id="miner-set-wallet" type="button">Set wallet</button>
+                </div>
+
+                <div class="status" id="miner-status"></div>
+                <pre id="miner-output" class="mono-output">{}</pre>
             </div>
 
             <div class="card">
