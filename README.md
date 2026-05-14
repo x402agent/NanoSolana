@@ -1,188 +1,161 @@
-# NanoSolana
+<div align="center">
 
-> One-shot Solana trading agents and autonomous daemons in TypeScript.
-
-NanoSolana is a TypeScript-first monorepo for building wallet-aware Solana agents, local operator daemons, NanoHub-powered skill installs, Pump integrations, and lightweight control surfaces.
-
-The main runtime lives in [`nano-core/`](nano-core/) and ships to npm as `nanosolana`.
-
-## Latest Runtime Update
-
-The current published package line now reflects the TypeScript-first runtime work:
-
-- `nanosolana@1.0.3` is published on npm
-- `nanosolana daemon` is the explicit long-running runtime alias
-- `nanosolana bootstrap` is the explicit alias for `nanosolana go`
-- the npm package now bundles [`SOUL.md`](nano-core/SOUL.md), [`RESEARCH.md`](nano-core/RESEARCH.md), and [`GO_PARITY.md`](nano-core/GO_PARITY.md)
-- the AI/runtime prompt layer now resolves those packaged operator documents directly
-- the docs set now includes the research-program and system-prompt updates for the TypeScript runtime
-
-## What This Repo Is
-
-This repo is the TypeScript adaptation of the broader NanoSolana operator model:
-
-- a wallet that boots itself
-- a daemon you can leave running
-- memory that compounds across sessions
-- a strategy loop that can improve over time
-- a one-shot command that gets a developer from install to a live local runtime
-
-That story now belongs to the TypeScript build, not just the older Go materials.
-
-## 30-Second Start
-
-```bash
-cd nano-core
-npm install
-npm run build
-npx nanosolana demo
+```
+  ██████╗██╗      █████╗ ██╗    ██╗██████╗
+ ██╔════╝██║     ██╔══██╗██║    ██║██╔══██╗
+ ██║     ██║     ███████║██║ █╗ ██║██║  ██║
+ ██║     ██║     ██╔══██║██║███╗██║██║  ██║
+ ╚██████╗███████╗██║  ██║╚███╔███╔╝██████╔╝
+  ╚═════╝╚══════╝╚═╝  ╚═╝ ╚══╝╚══╝ ╚═════╝
 ```
 
-`demo` runs the local runtime in simulation mode with wallet lifecycle, ClawVault memory, TamaGOchi state, and the OODA loop. No API keys required.
+### 🦞 SOVEREIGN AI LOBSTERS ON SOLANA
 
-Published package path:
+**AI AGENTS THAT EARN. PAY. SURVIVE.**
 
-```bash
-npx nanosolana@latest demo
+[![npm](https://img.shields.io/npm/v/solana-clawd?color=14F195&style=flat-square&label=npm)](https://npmjs.com/package/solana-clawd)
+[![license](https://img.shields.io/badge/license-MIT-orange?style=flat-square)](./LICENSE)
+[![Solana](https://img.shields.io/badge/SOLANA-9945FF?style=flat-square&logo=solana&logoColor=white)](https://solana.com)
+[![x402](https://img.shields.io/badge/x402-FF6B35?style=flat-square)](https://x402.org)
+
+[solanaclawd.com](https://solanaclawd.com) · [pay.solanaclawd.com](https://pay.solanaclawd.com) · [@clawddevs](https://x.com/clawddevs)
+
+*BORN TO EARN · BEACH WITH DIGNITY*
+
+</div>
+
+---
+
+## What This Is
+
+**Clawd** is a Solana-native agent stack built to move like Hermes in Web3: messenger, scout, trader, payer, vault, and recall engine in one shell.
+
+This monorepo contains the TypeScript runtime that is the **complementary counterpart** to the [`solana-clawd`](https://github.com/x402agent/solana-clawd) Go binary. Together they form a full sovereign agent node:
+
+| Layer | Repo | Role |
+|---|---|---|
+| **TypeScript runtime** | `NanoSolana` (this repo) | AI reasoning, memory, trading strategy, UX, extensions |
+| **Go binary** | [`solana-clawd`](https://github.com/x402agent/solana-clawd) | Keypair management, tx signing, low-level RPC, hardware |
+
+---
+
+## $CLAWD
+
+```
+Token CA :: 8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump
+Chain    :: Solana
+Protocol :: x402
+Pay      :: pay.solanaclawd.com
 ```
 
-## One-Shot Bootstrap
+---
+
+## 30-Second Deploy
 
 ```bash
-cd nano-core
-cp .env.example .env
-npm install
-npm run build
-npx nanosolana go
+# Sovereign node via install script
+curl -fsSL https://install.solanaclawd.com | bash
+
+# Or via npx (demo mode — no keys needed)
+npx solana-clawd demo
+
+# Full one-shot bootstrap
+npx solana-clawd go
+
+# Persistent daemon
+npx solana-clawd daemon
 ```
 
-Published package path:
-
-```bash
-npx nanosolana@latest go
-npx nanosolana@latest daemon
-```
-
-`nanosolana go` is the current TypeScript bootstrap path. It:
-
-- collects and encrypts secrets into `~/.nanosolana/vault.enc`
-- creates or restores the local wallet
-- boots the TamaGOchi companion state
-- starts ClawVault memory
-- starts the OODA trading runtime
-- starts the local gateway
-- attempts a Helius wallet scan and registry flow when configured
-
-If you already have state initialized, run the daemon directly:
-
-```bash
-npx nanosolana daemon
-```
+---
 
 ## Monorepo Layout
 
-| Path | Purpose |
-| --- | --- |
-| [`nano-core/`](nano-core/) | Published runtime, CLI, wallet, gateway, trading engine, vault, NanoBot |
-| [`nanohub/`](nanohub/) | Registry, marketplace, and installer-facing web app |
-| [`skills/`](skills/) | Skill packs in `SKILL.md` format |
-| [`extensions/`](extensions/) | Channel and tool extensions |
-| [`pump/`](pump/) | Pump-facing bridge layer, swarm helpers, and Telegram control plane |
-| [`ui/`](ui/) | Standalone UI assets |
-| [`apps/`](apps/) | macOS and Android workspaces |
-| [`nano-docs/`](nano-docs/) | Product and operator documentation |
-
-## TypeScript Runtime Surface
-
-The current runtime in [`nano-core/src/`](nano-core/src/) already includes:
-
-- encrypted config and secret storage
-- wallet creation and heartbeat
-- ClawVault epistemological memory
-- RSI/EMA/ATR strategy and trading loop
-- AI-guided OODA reasoning
-- gateway server
-- NanoBot local UI
-- NanoHub skill discovery and one-shot manifests
-- Pump SDK integration and swarm tooling
-- Bitaxe Gamma / AxeOS mining integration with polling, control actions, alert tracking, NanoBot UI, and Chrome extension controls
-
-## Bitaxe Integration
-
-The TypeScript runtime now includes a Bitaxe client ported from the Go runtime model and exposed through both the gateway and NanoBot.
-
-Current surfaces:
-
-- `NanoBot` local dashboard at `nanosolana nanobot`
-- gateway endpoints: `/api/miner` and `/api/extension/miner`
-- Chrome extension options page miner controls
-
-Core env:
-
-```bash
-BITAXE_ENABLED=true
-BITAXE_HOST=192.168.1.42
-BITAXE_POLL_INTERVAL=10
-BITAXE_ALERTS_ENABLED=true
-BITAXE_TEMP_WARNING=60
-BITAXE_TEMP_CRITICAL=70
+```
+NanoSolana/
+├── nano-core/          # npm package: solana-clawd  · binary: clawd
+│   ├── src/
+│   │   ├── cli/        # clawd CLI entry + animations
+│   │   ├── config/     # ClawdConfig + AES-256-GCM vault
+│   │   ├── wallet/     # ClawdWallet — Ed25519 keypair + heartbeat
+│   │   ├── trading/    # OODA engine — Birdeye + Jupiter
+│   │   ├── strategy/   # RSI · EMA · ATR signal scoring
+│   │   ├── memory/     # ClawVault — known/learned/inferred
+│   │   ├── gateway/    # ClawdGateway — WebSocket + HTTP API
+│   │   ├── go-bridge/  # GoBridgeClient — TS ↔ Go protocol
+│   │   ├── hub/        # ClawdHub skill marketplace client
+│   │   ├── nanobot/    # ClawdBotServer — local web UI
+│   │   ├── network/    # ClawdNetworkClient — Tailscale + tmux
+│   │   ├── pet/        # TamaGOchi companion
+│   │   ├── payments/   # ClawdPaymentAgent — x402 / pump.fun
+│   │   ├── bitaxe/     # Bitaxe AxeOS miner client
+│   │   ├── claw/       # Clawd orchestrator + personas + pump swarm
+│   │   └── ai/         # AIProvider — OpenRouter / Claude
+│   └── package.json    # name: "solana-clawd", bin: "clawd"
+│
+├── extensions/         # 40+ communication channel plugins
+├── skills/             # 70+ ClawdHub SKILL.md manifests
+├── nanohub/            # ClawdHub marketplace web app
+├── pump/               # Pump.fun bridge layer
+├── ui/                 # Control surface UI
+└── apps/               # Android · macOS native apps
 ```
 
-Supported actions:
+---
 
-- refresh miner status
-- restart the device
-- set ASIC frequency
-- set core voltage
-- set fan speed
-- set pool URL and port
-- set payout wallet / stratum user
+## The Sovereign Loop
 
-## Go-to-TypeScript Adaptation
+```
+  EARN ──▶ PAY ──▶ EXECUTE ──▶ SCALE
+   │                              │
+   └─────────── compound ─────────┘
+```
 
-The Go daemon package tree is being mapped into the TypeScript runtime instead of copied line-for-line.
+Agents earn USDC providing value on-chain, pay for their own compute via x402, execute strategy autonomously, and scale without human permission.
 
-Use:
+> *An agent is not truly sovereign until it can pay for its own inference.*
 
-- [`nano-core/GO_PARITY.md`](nano-core/GO_PARITY.md)
+---
 
-That document marks each Go package as:
+## Key Classes
 
-- `covered` when the TypeScript runtime already has a clear equivalent
-- `partial` when the concept exists but parity is incomplete
-- `planned` when the Go capability still needs a dedicated TS module
+```ts
+import {
+  ClawdWallet,          // Ed25519 wallet + heartbeat
+  ClawVault,            // 3-tier epistemological memory
+  TradingEngine,        // OODA loop — RSI/EMA/ATR
+  TamaGOchi,            // Trade-driven companion
+  ClawdGateway,         // WebSocket + HTTP gateway
+  GoBridgeClient,       // TS ↔ Go binary bridge
+  ClawdPaymentAgent,    // x402 payment flows
+  AIProvider,           // OpenRouter / Claude
+  loadConfig,           // ClawdConfig loader
+} from "solana-clawd";
+```
+
+---
 
 ## Operator Documents
 
-The TypeScript runtime now carries its operator-facing docs directly:
+| File | Purpose |
+|---|---|
+| [`nano-core/SOUL.md`](nano-core/SOUL.md) | Agent philosophy, risk posture, market participant identity |
+| [`nano-core/RESEARCH.md`](nano-core/RESEARCH.md) | Research agenda and knowledge integration |
+| [`nano-core/GO_PARITY.md`](nano-core/GO_PARITY.md) | Go binary package map + GoBridgeClient protocol |
 
-- [`nano-core/SOUL.md`](nano-core/SOUL.md)
-- [`nano-core/RESEARCH.md`](nano-core/RESEARCH.md)
-- [`nano-core/GO_PARITY.md`](nano-core/GO_PARITY.md)
-- [`nano-core/README.md`](nano-core/README.md)
+---
 
-## Developer Workflow
+<div align="center">
 
-Core runtime:
+**$CLAWD · x402 · SOLANA**
 
-```bash
-cd nano-core
-npm install
-npm run build
-npm test
+```
+SENSE · THINK · STRIKE · DRIFT
 ```
 
-NanoHub:
+[solanaclawd.com](https://solanaclawd.com) · [@clawddevs](https://x.com/clawddevs)
 
-```bash
-cd nanohub
-bun install
-bun run dev
-```
+*OPEN SOURCE AI · DECENTRALIZED FUTURE · EST. 2026*
 
-## Next Entry Points
+🦞
 
-- Package runtime: [`nano-core/README.md`](nano-core/README.md)
-- Hub and registry: [`nanohub/README.md`](nanohub/README.md)
-- Contribution guide: [`CONTRIBUTING.md`](CONTRIBUTING.md)
-- Security policy: [`SECURITY.md`](SECURITY.md)
+</div>
