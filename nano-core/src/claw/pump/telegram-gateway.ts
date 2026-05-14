@@ -1,4 +1,4 @@
-// ── NanoSolana × PumpFun — Telegram Gateway ─────────────────────────────────
+// ── Solana clawd × PumpFun — Telegram Gateway ─────────────────────────────────
 //
 // The Telegram Gateway connects the swarm to Telegram, allowing users
 // to spawn, manage, and monitor financial agents via chat commands.
@@ -231,7 +231,7 @@ export class TelegramGateway {
     const health = this.swarm.getSwarmHealth();
     const agents = this.swarm.getAllAgents();
 
-    let msg = '🐝 <b>NanoSolana Swarm Dashboard</b>\n\n';
+    let msg = '🐝 <b>Solana clawd Swarm Dashboard</b>\n\n';
     msg += `🤖 Agents: <b>${health.activeAgents}</b>/${health.totalAgents}\n`;
     msg += `❌ Errors: <b>${health.errorAgents}</b>\n`;
     msg += `⏱ Uptime: <b>${formatUptime(health.uptimeSeconds)}</b>\n`;
@@ -693,7 +693,7 @@ export class TelegramGateway {
   }
 
   private async cmdHelp(cmd: GatewayCommand): Promise<void> {
-    let msg = '🐝 <b>NanoSolana Pump.Fun Swarm</b>\n\n';
+    let msg = '🐝 <b>Solana clawd Pump.Fun Swarm</b>\n\n';
     msg += '<b>Swarm Management:</b>\n';
     msg += '  /swarm — Dashboard overview\n';
     msg += '  /spawn &lt;role&gt; — Spawn agent\n';

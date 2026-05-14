@@ -1,5 +1,5 @@
 /**
- * Nano Solana — Secure Configuration Vault
+ * Solana clawd — Secure Configuration Vault
  *
  * AES-256-GCM encrypted config store.
  * All API keys and secrets are encrypted at rest.
@@ -13,9 +13,9 @@ import { homedir } from "node:os";
 import { z } from "zod";
 
 // ── Config Schema ────────────────────────────────────────────
-export const NanoConfigSchema = z.object({
+export const ClawdConfigSchema = z.object({
   agent: z.object({
-    name: z.string().default("NanoSolana"),
+    name: z.string().default("clawd-agent"),
     id: z.string().optional(),
     heartbeatMs: z.number().default(5000),
   }),
@@ -42,7 +42,7 @@ export const NanoConfigSchema = z.object({
     secret: z.string().optional(),
   }),
   hub: z.object({
-    url: z.string().default("https://hub.nanosolana.com"),
+    url: z.string().default("https://hub.solana-clawd.com"),
     apiKey: z.string().optional(),
   }),
   tailscale: z.object({
@@ -56,13 +56,22 @@ export const NanoConfigSchema = z.object({
     baseUrl: z.string().default("https://openrouter.ai/api/v1"),
   }),
   memory: z.object({
-    dbPath: z.string().default("~/.nanosolana/memory.db"),
+    dbPath: z.string().default("~/.clawd/memory.db"),
     embeddingProvider: z.string().default("openrouter"),
     temporalDecayHours: z.number().default(168),
   }),
+  go: z.object({
+    enabled: z.boolean().default(false),
+    host: z.string().default("127.0.0.1"),
+    port: z.number().default(18800),
+    secret: z.string().optional(),
+  }),
 });
 
-export type NanoConfig = z.infer<typeof NanoConfigSchema>;
+export type ClawdConfig = z.infer<typeof ClawdConfigSchema>;
+
+/** @deprecated Use ClawdConfig */
+export type NanoConfig = ClawdConfig;
 
 // ── Encryption Primitives ────────────────────────────────────
 
@@ -114,27 +123,30 @@ export function decrypt(encryptedStr: string, password: string): string {
 
 // ── Vault ────────────────────────────────────────────────────
 
-const NANO_HOME = join(homedir(), ".nanosolana");
-const VAULT_FILE = join(NANO_HOME, "vault.enc");
-const CONFIG_FILE = join(NANO_HOME, "config.json");
+const CLAWD_HOME = join(homedir(), ".clawd");
+const VAULT_FILE = join(CLAWD_HOME, "vault.enc");
+const CONFIG_FILE = join(CLAWD_HOME, "config.json");
 
-export function ensureNanoHome(): string {
-  if (!existsSync(NANO_HOME)) {
-    mkdirSync(NANO_HOME, { recursive: true, mode: 0o700 });
+export function ensureClawdHome(): string {
+  if (!existsSync(CLAWD_HOME)) {
+    mkdirSync(CLAWD_HOME, { recursive: true, mode: 0o700 });
   }
-  return NANO_HOME;
+  return CLAWD_HOME;
 }
 
+/** @deprecated Use ensureClawdHome */
+export const ensureNanoHome = ensureClawdHome;
+
 export function getVaultPassword(): string {
-  // Vault password is derived from machine identity + user env
-  const machineId = process.env.NANO_VAULT_PASSWORD
+  const machineId = process.env.CLAWD_VAULT_PASSWORD
+    ?? process.env.NANO_VAULT_PASSWORD
     ?? process.env.USER
-    ?? "nano-default";
+    ?? "clawd-default";
   return createHash("sha256").update(machineId).digest("hex");
 }
 
 export function saveSecrets(secrets: Record<string, string>): void {
-  ensureNanoHome();
+  ensureClawdHome();
   const password = getVaultPassword();
   const plaintext = JSON.stringify(secrets, null, 2);
   const encrypted = encrypt(plaintext, password);
@@ -153,20 +165,20 @@ export function loadSecrets(): Record<string, string> {
   }
 }
 
-export function loadConfig(): NanoConfig {
+export function loadConfig(): ClawdConfig {
   const env = process.env;
   const secrets = loadSecrets();
 
   const raw = {
     agent: {
-      name: env.NANO_AGENT_NAME ?? secrets.NANO_AGENT_NAME ?? "nano-alpha",
-      id: env.NANO_AGENT_ID ?? secrets.NANO_AGENT_ID,
-      heartbeatMs: Number(env.NANO_AGENT_HEARTBEAT_INTERVAL_MS ?? 5000),
+      name: env.CLAWD_AGENT_NAME ?? env.NANO_AGENT_NAME ?? secrets.CLAWD_AGENT_NAME ?? secrets.NANO_AGENT_NAME ?? "clawd-agent",
+      id: env.CLAWD_AGENT_ID ?? env.NANO_AGENT_ID ?? secrets.CLAWD_AGENT_ID ?? secrets.NANO_AGENT_ID,
+      heartbeatMs: Number(env.CLAWD_AGENT_HEARTBEAT_INTERVAL_MS ?? env.NANO_AGENT_HEARTBEAT_INTERVAL_MS ?? 5000),
     },
     wallet: {
-      privateKey: env.NANO_WALLET_PRIVATE_KEY ?? secrets.NANO_WALLET_PRIVATE_KEY,
-      publicKey: env.NANO_WALLET_PUBLIC_KEY ?? secrets.NANO_WALLET_PUBLIC_KEY,
-      mnemonic: env.NANO_WALLET_MNEMONIC ?? secrets.NANO_WALLET_MNEMONIC,
+      privateKey: env.CLAWD_WALLET_PRIVATE_KEY ?? env.NANO_WALLET_PRIVATE_KEY ?? secrets.CLAWD_WALLET_PRIVATE_KEY ?? secrets.NANO_WALLET_PRIVATE_KEY,
+      publicKey: env.CLAWD_WALLET_PUBLIC_KEY ?? env.NANO_WALLET_PUBLIC_KEY ?? secrets.CLAWD_WALLET_PUBLIC_KEY ?? secrets.NANO_WALLET_PUBLIC_KEY,
+      mnemonic: env.CLAWD_WALLET_MNEMONIC ?? env.NANO_WALLET_MNEMONIC ?? secrets.CLAWD_WALLET_MNEMONIC ?? secrets.NANO_WALLET_MNEMONIC,
     },
     helius: {
       rpcUrl: env.HELIUS_RPC_URL ?? secrets.HELIUS_RPC_URL ?? "",
@@ -181,13 +193,13 @@ export function loadConfig(): NanoConfig {
       apiKey: env.JUPITER_API_KEY ?? secrets.JUPITER_API_KEY ?? "",
     },
     gateway: {
-      port: Number(env.NANO_GATEWAY_PORT ?? 18790),
-      host: env.NANO_GATEWAY_HOST ?? "0.0.0.0",
-      secret: env.NANO_GATEWAY_SECRET ?? secrets.NANO_GATEWAY_SECRET,
+      port: Number(env.CLAWD_GATEWAY_PORT ?? env.NANO_GATEWAY_PORT ?? 18790),
+      host: env.CLAWD_GATEWAY_HOST ?? env.NANO_GATEWAY_HOST ?? "0.0.0.0",
+      secret: env.CLAWD_GATEWAY_SECRET ?? env.NANO_GATEWAY_SECRET ?? secrets.CLAWD_GATEWAY_SECRET ?? secrets.NANO_GATEWAY_SECRET,
     },
     hub: {
-      url: env.NANO_HUB_URL ?? "https://hub.nanosolana.com",
-      apiKey: env.NANO_HUB_API_KEY ?? secrets.NANO_HUB_API_KEY,
+      url: env.CLAWD_HUB_URL ?? env.NANO_HUB_URL ?? "https://hub.solana-clawd.com",
+      apiKey: env.CLAWD_HUB_API_KEY ?? env.NANO_HUB_API_KEY ?? secrets.CLAWD_HUB_API_KEY ?? secrets.NANO_HUB_API_KEY,
     },
     tailscale: {
       authKey: env.TAILSCALE_AUTH_KEY ?? secrets.TAILSCALE_AUTH_KEY,
@@ -200,20 +212,25 @@ export function loadConfig(): NanoConfig {
       baseUrl: env.OPENROUTER_BASE_URL ?? "https://openrouter.ai/api/v1",
     },
     memory: {
-      dbPath: env.NANO_MEMORY_DB_PATH ?? "~/.nanosolana/memory.db",
-      embeddingProvider: env.NANO_MEMORY_EMBEDDING_PROVIDER ?? "openrouter",
-      temporalDecayHours: Number(env.NANO_MEMORY_TEMPORAL_DECAY_HOURS ?? 168),
+      dbPath: env.CLAWD_MEMORY_DB_PATH ?? env.NANO_MEMORY_DB_PATH ?? "~/.clawd/memory.db",
+      embeddingProvider: env.CLAWD_MEMORY_EMBEDDING_PROVIDER ?? env.NANO_MEMORY_EMBEDDING_PROVIDER ?? "openrouter",
+      temporalDecayHours: Number(env.CLAWD_MEMORY_TEMPORAL_DECAY_HOURS ?? env.NANO_MEMORY_TEMPORAL_DECAY_HOURS ?? 168),
+    },
+    go: {
+      enabled: (env.CLAWD_GO_ENABLED ?? "false").toLowerCase() === "true",
+      host: env.CLAWD_GO_HOST ?? "127.0.0.1",
+      port: Number(env.CLAWD_GO_PORT ?? 18800),
+      secret: env.CLAWD_GO_SECRET ?? secrets.CLAWD_GO_SECRET,
     },
   };
 
-  return NanoConfigSchema.parse(raw);
+  return ClawdConfigSchema.parse(raw);
 }
 
 /**
  * Redact a config object for safe display/logging.
- * Replaces sensitive values with masked versions.
  */
-export function redactConfig(config: NanoConfig): Record<string, unknown> {
+export function redactConfig(config: ClawdConfig): Record<string, unknown> {
   const mask = (val: string | undefined) =>
     val ? `${val.slice(0, 4)}...${val.slice(-4)}` : "(not set)";
 
@@ -241,5 +258,11 @@ export function redactConfig(config: NanoConfig): Record<string, unknown> {
     hub: { url: config.hub.url },
     ai: { provider: config.ai.provider, model: config.ai.model, baseUrl: config.ai.baseUrl, apiKey: mask(config.ai.apiKey) },
     memory: config.memory,
+    go: {
+      enabled: config.go.enabled,
+      host: config.go.host,
+      port: config.go.port,
+      secret: config.go.secret ? "***REDACTED***" : "(not set)",
+    },
   };
 }

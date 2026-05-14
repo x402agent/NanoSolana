@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 
 import { afterEach, describe, expect, it } from "vitest";
 
-import { readNanoRuntimeAsset, resolveNanoRuntimeAsset } from "./assets.js";
+import { readClawdRuntimeAsset, resolveClawdRuntimeAsset } from "./assets.js";
 
 const tempRoots: string[] = [];
 
@@ -29,7 +29,7 @@ describe("runtime/assets", () => {
     const explicitPath = join(root, "SOUL.md");
     writeFileSync(explicitPath, "explicit soul\n");
 
-    const resolved = resolveNanoRuntimeAsset("SOUL.md", {
+    const resolved = resolveClawdRuntimeAsset("SOUL.md", {
       explicitPath,
       cwd: join(root, "workspace"),
       startDir: join(root, "dist"),
@@ -46,7 +46,7 @@ describe("runtime/assets", () => {
     writeFileSync(join(packageRoot, "package.json"), "{}\n");
     writeFileSync(join(packageRoot, "RESEARCH.md"), "package research\n");
 
-    const resolved = resolveNanoRuntimeAsset("RESEARCH.md", {
+    const resolved = resolveClawdRuntimeAsset("RESEARCH.md", {
       cwd: join(root, "workspace"),
       startDir,
     });
@@ -64,7 +64,7 @@ describe("runtime/assets", () => {
     writeFileSync(join(packageRoot, "SOUL.md"), "package soul\n");
     writeFileSync(join(cwd, "SOUL.md"), "workspace soul\n");
 
-    const content = readNanoRuntimeAsset("SOUL.md", "fallback soul\n", {
+    const content = readClawdRuntimeAsset("SOUL.md", "fallback soul\n", {
       cwd,
       startDir: join(packageRoot, "dist"),
     });

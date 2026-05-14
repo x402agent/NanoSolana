@@ -1,5 +1,5 @@
 /**
- * NanoSolana On-Chain Financial Engine
+ * Solana clawd On-Chain Financial Engine
  *
  * Powered by @solana/web3.js + Helius RPC/WSS for real-time data.
  * This is the agent's direct connection to the Solana blockchain.

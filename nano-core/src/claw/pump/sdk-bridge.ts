@@ -1,4 +1,4 @@
-// ── NanoSolana × PumpFun — SDK Bridge ────────────────────────────────────────
+// ── Solana clawd × PumpFun — SDK Bridge ────────────────────────────────────────
 //
 // PumpKit-friendly wrappers around the pump-fun-sdk.
 // Provides token price queries, graduation progress, buy/sell quotes,

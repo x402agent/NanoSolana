@@ -1,5 +1,5 @@
 /**
- * Nano Solana — Solana Wallet Manager
+ * Solana clawd — Wallet Manager
  *
  * Creates an Ed25519 keypair at "agent birth" — the wallet is the
  * agent's on-chain identity, tied to its heartbeat.
@@ -12,7 +12,7 @@ import { Keypair, Connection, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.j
 import bs58 from "bs58";
 import { randomBytes, createHash } from "node:crypto";
 import { EventEmitter } from "eventemitter3";
-import { loadConfig, saveSecrets, loadSecrets, ensureNanoHome } from "../config/vault.js";
+import { loadConfig, saveSecrets, loadSecrets, ensureClawdHome } from "../config/vault.js";
 import { writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { homedir } from "node:os";
@@ -35,7 +35,7 @@ export interface WalletEvents {
 
 // ── Wallet Manager ────────────────────────────────────────────
 
-export class NanoWallet extends EventEmitter<WalletEvents> {
+export class ClawdWallet extends EventEmitter<WalletEvents> {
   private keypair: Keypair | null = null;
   private connection: Connection | null = null;
   private balance = 0;
@@ -70,14 +70,14 @@ export class NanoWallet extends EventEmitter<WalletEvents> {
       this.keypair = Keypair.generate();
       // Persist to vault immediately
       const secrets = loadSecrets();
-      secrets.NANO_WALLET_PRIVATE_KEY = bs58.encode(this.keypair.secretKey);
-      secrets.NANO_WALLET_PUBLIC_KEY = this.keypair.publicKey.toBase58();
+      secrets.CLAWD_WALLET_PRIVATE_KEY = bs58.encode(this.keypair.secretKey);
+      secrets.CLAWD_WALLET_PUBLIC_KEY = this.keypair.publicKey.toBase58();
       saveSecrets(secrets);
 
       // Also save public key as plaintext identity file
-      const nanoHome = ensureNanoHome();
+      const clawdHome = ensureClawdHome();
       writeFileSync(
-        join(nanoHome, "wallet.pub"),
+        join(clawdHome, "wallet.pub"),
         this.keypair.publicKey.toBase58(),
         { mode: 0o644 }
       );
@@ -169,7 +169,6 @@ export class NanoWallet extends EventEmitter<WalletEvents> {
    */
   sign(message: Uint8Array): Uint8Array {
     if (!this.keypair) throw new Error("Wallet not birthed yet");
-    // Use tweetnacl signing via the keypair's secretKey
     const { sign } = require("tweetnacl") as typeof import("tweetnacl");
     return sign.detached(message, this.keypair.secretKey);
   }
@@ -218,3 +217,6 @@ export class NanoWallet extends EventEmitter<WalletEvents> {
     return createHash("sha256").update(raw).digest("hex").slice(0, 16);
   }
 }
+
+/** @deprecated Use ClawdWallet */
+export const NanoWallet = ClawdWallet;

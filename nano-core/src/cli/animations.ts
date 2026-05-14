@@ -1,5 +1,5 @@
 /**
- * NanoSolana Terminal Animations v2
+ * Solana clawd Terminal Animations v2
  *
  * Epic startup experience with `unicode-animations` braille spinners,
  * gradient banners, animated lobsters, progress bars, phase transitions,
@@ -26,10 +26,10 @@ function clearLineAt(row: number) { return `${moveTo(row, 1)}${ESC}[2K`; }
 
 const SOL_GREEN  = "#14F195";
 const SOL_PURPLE = "#9945FF";
-const NANO_CYAN  = "#00E5FF";
-const NANO_GOLD  = "#FFD700";
-const NANO_RED   = "#FF3864";
-const NANO_BLUE  = "#4FC3F7";
+const CLAWD_CYAN  = "#00E5FF";
+const CLAWD_GOLD  = "#FFD700";
+const CLAWD_RED   = "#FF3864";
+const CLAWD_BLUE  = "#4FC3F7";
 const DIM_GREEN  = "#0A7B4A";
 
 const GRADIENT_COLORS = [
@@ -76,7 +76,7 @@ export function createSpinner(msg: string, name: keyof typeof spinners = "braill
   let text = msg;
   const timer = setInterval(() => {
     process.stdout.write(
-      `${CLEAR_LINE}  ${chalk.hex(NANO_CYAN)(frames[i++ % frames.length])} ${chalk.white(text)}`,
+      `${CLEAR_LINE}  ${chalk.hex(CLAWD_CYAN)(frames[i++ % frames.length])} ${chalk.white(text)}`,
     );
   }, interval);
 
@@ -90,7 +90,7 @@ export function createSpinner(msg: string, name: keyof typeof spinners = "braill
     },
     fail(errMsg: string) {
       clearInterval(timer);
-      process.stdout.write(`${CLEAR_LINE}  ${chalk.hex(NANO_RED)("✗")} ${chalk.hex(NANO_RED)(errMsg)}\n`);
+      process.stdout.write(`${CLEAR_LINE}  ${chalk.hex(CLAWD_RED)("✗")} ${chalk.hex(CLAWD_RED)(errMsg)}\n`);
     },
   };
 }
@@ -294,7 +294,7 @@ const LOBSTER_BIG = `
 const LOBSTER_COLORS = [
   chalk.hex(SOL_GREEN),
   chalk.hex("#14F195"),
-  chalk.hex(NANO_CYAN),
+  chalk.hex(CLAWD_CYAN),
   chalk.hex("#00C9A7"),
   chalk.hex("#14F195"),
   chalk.hex(SOL_GREEN),
@@ -321,7 +321,7 @@ export function animateLobster(durationMs = 2400): Promise<void> {
       // Animated name with sparkles
       const sparkles = frame % 3 === 0 ? "✦" : frame % 3 === 1 ? "✧" : "⋆";
       process.stdout.write(
-        `${CLEAR_LINE}  ${chalk.hex(SOL_GREEN)(sparkles)} ${gradientText("  NanoSolana", SOLANA_GRADIENT)} ${chalk.hex(SOL_GREEN)(sparkles)}\n`,
+        `${CLEAR_LINE}  ${chalk.hex(SOL_GREEN)(sparkles)} ${gradientText("  Solana clawd", SOLANA_GRADIENT)} ${chalk.hex(SOL_GREEN)(sparkles)}\n`,
       );
       process.stdout.write(
         `${CLEAR_LINE}  ${chalk.gray("    v1.0.1 · Solana Agent Framework")}\n`,
@@ -354,20 +354,20 @@ export async function printMegaLobster(): Promise<void> {
 
 const DVD_LOGO = [
   "╔═══════════════════════════════╗",
-  "║      🦞 NanoSolana 🦞         ║",
+  "║      🦞 Solana clawd 🦞         ║",
   "║   ════════════════════════    ║",
   "║  Autonomous Solana Agent      ║",
   "║  OODA · ClawVault · TamaGOchi ║",
-  "║      nanosolana.com           ║",
+  "║      clawd.com           ║",
   "╚═══════════════════════════════╝",
 ];
 
 const DVD_COLORS = [
   chalk.hex(SOL_GREEN),
   chalk.hex(SOL_PURPLE),
-  chalk.hex(NANO_CYAN),
-  chalk.hex(NANO_GOLD),
-  chalk.hex(NANO_BLUE),
+  chalk.hex(CLAWD_CYAN),
+  chalk.hex(CLAWD_GOLD),
+  chalk.hex(CLAWD_BLUE),
   chalk.hex("#FF6B6B"),
   chalk.hex("#C084FC"),
   chalk.hex("#34D399"),
@@ -437,7 +437,7 @@ export function startDvdScreensaver(): { stop: () => void } {
     const cornerText = cornerHits > 0 ? ` │ 🎯 Corner: ${cornerHits}` : "";
     process.stdout.write(
       chalk.bgHex("#0a0a1a").hex(SOL_GREEN)(
-        ` 🦞 NanoSolana DVD │ Bounces: ${hits}${cornerText} │ ${new Date().toLocaleTimeString()} │ Ctrl+C to exit `.padEnd(cols),
+        ` 🦞 Solana clawd DVD │ Bounces: ${hits}${cornerText} │ ${new Date().toLocaleTimeString()} │ Ctrl+C to exit `.padEnd(cols),
       ),
     );
   }, 50);
@@ -561,7 +561,7 @@ export async function playStartupAnimation(): Promise<void> {
 
     // Start spinner
     const timer = setInterval(() => {
-      const spin = chalk.hex(NANO_CYAN)(frames[i++ % frames.length]);
+      const spin = chalk.hex(CLAWD_CYAN)(frames[i++ % frames.length]);
       const bar = progressBar(percent);
       process.stdout.write(
         `${CLEAR_LINE}  ${spin} ${chalk.white(step.icon)} ${chalk.white(step.label)}  ${bar}`,
@@ -589,7 +589,7 @@ export async function lobsterWalk(message: string): Promise<void> {
   for (let i = 0; i < walkLen; i++) {
     const pad = " ".repeat(i);
     const trail = gradientText("·".repeat(Math.min(i, 8)), GRADIENT_COLORS);
-    const spin = chalk.hex(NANO_CYAN)(frames[fi++ % frames.length]);
+    const spin = chalk.hex(CLAWD_CYAN)(frames[fi++ % frames.length]);
     process.stdout.write(`${CLEAR_LINE}  ${pad}${trail} ${spin} 🦞`);
     await sleep(interval);
   }
@@ -623,7 +623,7 @@ export function printCommandHeader(command: string, description: string): void {
   const lineW = Math.min(cols - 4, 70);
 
   console.log();
-  console.log(`  ${chalk.hex(SOL_GREEN).bold(`🦞 nanosolana ${command}`)}  ${chalk.gray(description)}`);
+  console.log(`  ${chalk.hex(SOL_GREEN).bold(`🦞 clawd ${command}`)}  ${chalk.gray(description)}`);
   console.log(`  ${chalk.hex(DIM_GREEN)("━".repeat(lineW))}`);
   console.log();
 }
@@ -635,15 +635,15 @@ export function printSuccess(message: string): void {
 }
 
 export function printError(message: string): void {
-  console.log(`  ${chalk.hex(NANO_RED)("✗")} ${chalk.hex(NANO_RED)(message)}`);
+  console.log(`  ${chalk.hex(CLAWD_RED)("✗")} ${chalk.hex(CLAWD_RED)(message)}`);
 }
 
 export function printWarning(message: string): void {
-  console.log(`  ${chalk.hex(NANO_GOLD)("⚠")} ${chalk.hex(NANO_GOLD)(message)}`);
+  console.log(`  ${chalk.hex(CLAWD_GOLD)("⚠")} ${chalk.hex(CLAWD_GOLD)(message)}`);
 }
 
 export function printInfo(message: string): void {
-  console.log(`  ${chalk.hex(NANO_CYAN)("ℹ")} ${chalk.white(message)}`);
+  console.log(`  ${chalk.hex(CLAWD_CYAN)("ℹ")} ${chalk.white(message)}`);
 }
 
 // ── Complete Banner ─────────────────────────────────────────────
@@ -663,20 +663,20 @@ export async function printCompleteBanner(stats: {
   console.log();
   console.log(`  ${chalk.hex(SOL_GREEN)("━".repeat(lineW))}`);
   console.log();
-  console.log(gradientText("  🦞 NanoSolana Agent Online", SOLANA_GRADIENT));
+  console.log(gradientText("  🦞 Solana clawd Agent Online", SOLANA_GRADIENT));
   console.log();
 
   await systemBootReadout([
-    { label: "Wallet",   value: stats.publicKey, color: NANO_CYAN },
+    { label: "Wallet",   value: stats.publicKey, color: CLAWD_CYAN },
     { label: "Pet",      value: `${stats.stage} ${stats.petName} ${stats.mood}`, color: SOL_GREEN },
-    { label: "Balance",  value: `${stats.balance.toFixed(4)} SOL`, color: NANO_GOLD },
+    { label: "Balance",  value: `${stats.balance.toFixed(4)} SOL`, color: CLAWD_GOLD },
     { label: "Memory",   value: stats.memory, color: SOL_PURPLE },
     { label: "Status",   value: "OODA loop active · Gateway connected", color: SOL_GREEN },
   ]);
 
   console.log();
   console.log(`  ${chalk.hex(SOL_GREEN)("━".repeat(lineW))}`);
-  console.log(chalk.gray("  Press Ctrl+C to stop · nanosolana.com\n"));
+  console.log(chalk.gray("  Press Ctrl+C to stop · clawd.com\n"));
 }
 
 // ── Payment Animation ───────────────────────────────────────────
@@ -693,7 +693,7 @@ export async function paymentAnimation(action: "invoice" | "verify" | "status"):
   let i = 0;
 
   const timer = setInterval(() => {
-    const spin = chalk.hex(NANO_CYAN)(frames[i++ % frames.length]);
+    const spin = chalk.hex(CLAWD_CYAN)(frames[i++ % frames.length]);
     process.stdout.write(`${CLEAR_LINE}  ${spin} ${icon} ${chalk.white(text)}...`);
   }, interval);
 
@@ -733,7 +733,7 @@ export async function demoIntro(): Promise<void> {
   printCommandHeader("demo", "Synthetic simulation mode");
   printCompactLobster();
   console.log();
-  console.log(chalk.hex(NANO_GOLD)("  ⚡ Demo mode — no API keys required"));
+  console.log(chalk.hex(CLAWD_GOLD)("  ⚡ Demo mode — no API keys required"));
   console.log(chalk.gray("  Simulating OODA trading cycles with synthetic data\n"));
 }
 
@@ -746,5 +746,5 @@ export function printInitHeader(): void {
 }
 
 export function printSectionHeader(title: string): void {
-  console.log(chalk.hex(NANO_CYAN)(`  ── ${title} ${"─".repeat(Math.max(0, 50 - title.length))}\n`));
+  console.log(chalk.hex(CLAWD_CYAN)(`  ── ${title} ${"─".repeat(Math.max(0, 50 - title.length))}\n`));
 }

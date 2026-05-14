@@ -2,29 +2,29 @@
 
 /**
  * ╔══════════════════════════════════════════════════════════════════════╗
- * ║                 NANOSOLANA — TypeScript CLI Entry                 ║
- * ║   Terminal runtime · autonomous daemon · TamaGOchi companion      ║
- * ║  By NanoSolana Labs                                               ║
+ * ║                 SOLANA CLAWD — TypeScript CLI Entry                 ║
+ * ║   Terminal runtime · autonomous daemon · clawd-go bridge          ║
+ * ║  By x402agent                                               ║
  * ╚══════════════════════════════════════════════════════════════════════╝
  *
- * The `nanosolana` command — one-shot interface for:
+ * The `clawd` command — one-shot interface for:
  *   - Birthing agents with Solana wallets + TamaGOchi pets
  *   - Starting the OODA trading engine (RSI + EMA + ATR)
- *   - Communicating with nano bots across Tailscale mesh
+ *   - Communicating with clawd agents across Tailscale mesh
  *   - ClawVault 3-tier memory (known → learned → inferred)
  *   - TamaGOchi pet whose mood/evolution is driven by trades
  */
 
 import { Command } from "commander";
 import chalk from "chalk";
-import { loadConfig, saveSecrets, loadSecrets, redactConfig, ensureNanoHome } from "../config/vault.js";
-import { NanoWallet } from "../wallet/manager.js";
+import { loadConfig, saveSecrets, loadSecrets, redactConfig, ensureClawdHome } from "../config/vault.js";
+import { ClawdWallet } from "../wallet/manager.js";
 import { TradingEngine } from "../trading/engine.js";
 import { ClawVault } from "../memory/clawvault.js";
-import { NanoGateway } from "../gateway/server.js";
+import { ClawdGateway } from "../gateway/server.js";
 import { TamaGOchi, STAGE_EMOJI, MOOD_EMOJI } from "../pet/tamagochi.js";
-import { TailscaleDiscovery, TmuxManager, NanoNetworkClient } from "../network/mesh.js";
-import { getNanoKnowledgeSnapshot, getNanoKnowledgeSummary, searchNanoKnowledge } from "../docs/integration.js";
+import { TailscaleDiscovery, TmuxManager, ClawdNetworkClient } from "../network/mesh.js";
+import { getClawdKnowledgeSnapshot, getClawdKnowledgeSummary, searchClawdKnowledge } from "../docs/integration.js";
 import {
   playStartupAnimation, animateLobster, printLobster, startDvdScreensaver,
   printSplashBanner, phaseTransition, matrixRain,
@@ -35,7 +35,7 @@ import {
 } from "./animations.js";
 import { HeliusClient, printWalletSnapshot } from "../onchain/helius-client.js";
 import { AgentRegistry, registerOnHeartbeat } from "../registry/agent-registry.js";
-import { NanoBotServer } from "../nanobot/server.js";
+import { ClawdBotServer } from "../nanobot/server.js";
 import {
   getTask,
   getTaskSummary,
@@ -45,17 +45,17 @@ import {
 } from "../claw/task-loader.js";
 import { getPersona, getPersonaTasks } from "../claw/persona-loader.js";
 import {
-  clampNanoHubLimit,
-  getNanoHubDiscoveryUrl,
-  getNanoHubSiteUrl,
-  getNanoHubSkill,
-  getNanoHubSkillFile,
-  getNanoHubSkillManifest,
-  getNanoHubSkillUrl,
-  listNanoHubSkills,
-  searchNanoHubSkills,
+  clampClawdHubLimit,
+  getClawdHubDiscoveryUrl,
+  getClawdHubSiteUrl,
+  getClawdHubSkill,
+  getClawdHubSkillFile,
+  getClawdHubSkillManifest,
+  getClawdHubSkillUrl,
+  listClawdHubSkills,
+  searchClawdHubSkills,
 } from "../hub/public-client.js";
-import { buildNanoSolanaOneShotPlan } from "../hub/oneshot.js";
+import { buildClawdOneShotPlan } from "../hub/oneshot.js";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { homedir } from "node:os";
@@ -73,8 +73,8 @@ function printBanner(): void {
   ██║ ╚████║██║  ██║██║ ╚████║╚██████╔╝███████║╚██████╔╝███████╗██║  ██║██║ ╚████║██║  ██║
   ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝
   `));
-  console.log(chalk.white("  🦞 NanoSolana Runtime"));
-  console.log(chalk.gray("  TypeScript Solana operator runtime · By NanoSolana Labs\n"));
+  console.log(chalk.white("  🦞 Solana clawd Runtime"));
+  console.log(chalk.gray("  TypeScript Solana operator runtime · By x402agent\n"));
 }
 
 // ── Helpers ────────────────────────────────────────────────────
@@ -146,9 +146,9 @@ function isTruthy(value: string | undefined): boolean {
 const program = new Command();
 
 program
-  .name("nanosolana")
-  .description("🦞 NanoSolana — Autonomous Solana trading intelligence with a virtual pet soul")
-  .version("1.0.2");
+  .name("clawd")
+  .description("🦞 Solana clawd — Autonomous Solana trading intelligence with a virtual pet soul")
+  .version("1.0.3");
 
 // ── nano init ────────────────────────────────────────────────
 
@@ -159,7 +159,7 @@ program
     printBanner();
     console.log(chalk.white.bold("  🔧 Initializing Nano Solana...\n"));
 
-    ensureNanoHome();
+    ensureClawdHome();
     const secrets = loadSecrets();
 
     // Prompt for API keys
@@ -184,15 +184,15 @@ program
     // Save encrypted
     saveSecrets(secrets);
 
-    console.log(chalk.green("\n  ✅ Secrets encrypted and saved to ~/.nanosolana/vault.enc"));
+    console.log(chalk.green("\n  ✅ Secrets encrypted and saved to ~/.clawd/vault.enc"));
     console.log(chalk.gray("  Keys are AES-256-GCM encrypted at rest.\n"));
 
     // Create .env template
     const envPath = join(process.cwd(), ".env");
     if (!existsSync(envPath)) {
-      const envContent = `# Nano Solana Configuration
-NANO_AGENT_NAME=nano-alpha
-NANO_GATEWAY_PORT=18790
+      const envContent = `# Solana clawd Configuration
+CLAWD_AGENT_NAME=nano-alpha
+CLAWD_GATEWAY_PORT=18790
 AI_PROVIDER=gemini
 AI_MODEL=gemini-2.5-pro
 NANO_LOG_LEVEL=info
@@ -201,8 +201,8 @@ NANO_LOG_LEVEL=info
       console.log(chalk.gray("  Created .env with non-sensitive defaults.\n"));
     }
 
-    console.log(chalk.white("  Run ") + chalk.cyan("nanosolana birth") + chalk.white(" to create your agent."));
-    console.log(chalk.white("  Or run ") + chalk.cyan("nanosolana go") + chalk.white(" to do everything at once.\n"));
+    console.log(chalk.white("  Run ") + chalk.cyan("clawd birth") + chalk.white(" to create your agent."));
+    console.log(chalk.white("  Or run ") + chalk.cyan("clawd go") + chalk.white(" to do everything at once.\n"));
   });
 
 // ── nano birth ────────────────────────────────────────────────
@@ -210,7 +210,7 @@ NANO_LOG_LEVEL=info
 program
   .command("birth")
   .description("Birth a new nano agent with a Solana wallet")
-  .option("-n, --name <name>", "Agent name", "NanoSolana")
+  .option("-n, --name <name>", "Agent name", "Solana clawd")
   .option("--pet-name <petName>", "TamaGOchi pet name")
   .action(async (opts) => {
     printBanner();
@@ -218,7 +218,7 @@ program
 
     try {
       const config = loadConfig();
-      const wallet = new NanoWallet(opts.name);
+      const wallet = new ClawdWallet(opts.name);
       const info = await wallet.birth();
 
       // Birth the TamaGOchi pet
@@ -247,9 +247,9 @@ program
         }
       }
 
-      console.log(chalk.gray("  Wallet saved to ~/.nanosolana/vault.enc (encrypted)"));
-      console.log(chalk.gray("  Pet state saved to ~/.nanosolana/tamagochi.json\n"));
-      console.log(chalk.white("  Run ") + chalk.cyan("nanosolana run") + chalk.white(" to start the agent.\n"));
+      console.log(chalk.gray("  Wallet saved to ~/.clawd/vault.enc (encrypted)"));
+      console.log(chalk.gray("  Pet state saved to ~/.clawd/tamagochi.json\n"));
+      console.log(chalk.white("  Run ") + chalk.cyan("clawd run") + chalk.white(" to start the agent.\n"));
     } catch (err) {
       console.error(chalk.red(`  ❌ Birth failed: ${(err as Error).message}\n`));
       process.exit(1);
@@ -261,20 +261,20 @@ program
 program
   .command("run")
   .alias("daemon")
-  .description("Run the autonomous NanoSolana daemon (gateway + trading + memory)")
-  .option("-n, --name <name>", "Agent name", "NanoSolana")
+  .description("Run the autonomous Solana clawd daemon (gateway + trading + memory)")
+  .option("-n, --name <name>", "Agent name", "Solana clawd")
   .option("--pet-name <petName>", "TamaGOchi pet name")
   .option("--no-trade", "Disable trading engine (--no-ooda)")
   .option("--no-gateway", "Disable gateway server")
   .action(async (opts) => {
     printBanner();
-    console.log(chalk.white.bold(`  🚀 Starting NanoSolana daemon "${opts.name}"...\n`));
+    console.log(chalk.white.bold(`  🚀 Starting Solana clawd daemon "${opts.name}"...\n`));
 
     try {
       const config = loadConfig();
 
       // 1. Birth wallet
-      const wallet = new NanoWallet(opts.name);
+      const wallet = new ClawdWallet(opts.name);
       const walletInfo = await wallet.birth();
       wallet.startHeartbeat(config.agent.heartbeatMs);
       console.log(chalk.green(`  ✅ Wallet: ${walletInfo.publicKey.slice(0, 8)}...${walletInfo.publicKey.slice(-8)}`));
@@ -337,7 +337,7 @@ program
         // Gateway still uses the legacy MemoryEngine interface for now
         const { MemoryEngine } = await import("../memory/engine.js");
         const legacyMemory = new MemoryEngine(config.memory.temporalDecayHours);
-        const gateway = new NanoGateway(config, wallet, trading, legacyMemory);
+        const gateway = new ClawdGateway(config, wallet, trading, legacyMemory);
         await gateway.start();
         console.log(chalk.green(`  ✅ Gateway: ws://${config.gateway.host}:${config.gateway.port}`));
       }
@@ -411,14 +411,14 @@ program
   .action(async () => {
     try {
       const config = loadConfig();
-      const wallet = new NanoWallet(config.agent.name);
+      const wallet = new ClawdWallet(config.agent.name);
       await wallet.birth();
 
       const vault = new ClawVault();
       const vaultStats = vault.getStats();
       const pet = new TamaGOchi(config.agent.name);
 
-      console.log(chalk.cyan("\n  ── NanoSolana Runtime Status ─────────────────\n"));
+      console.log(chalk.cyan("\n  ── Solana clawd Runtime Status ─────────────────\n"));
       console.log(chalk.white("  Agent:      ") + chalk.cyan(config.agent.name));
       console.log(chalk.white("  Wallet:     ") + chalk.cyan(wallet.getPublicKey()));
       console.log(chalk.white("  Balance:    ") + chalk.yellow(`${wallet.getInfo().balance} SOL`));
@@ -467,7 +467,7 @@ program
 
 program
   .command("send")
-  .description("One-shot: send a message to nano bots across the mesh")
+  .description("One-shot: send a message to clawd agents across the mesh")
   .argument("<message>", "Message to send")
   .option("-t, --target <hostname>", "Target specific node (default: broadcast)")
   .action(async (message, opts) => {
@@ -479,7 +479,7 @@ program
         console.log(chalk.yellow("  ⚠️  Tailscale not available. Sending to local gateway only.\n"));
 
         // Connect to local gateway
-        const client = new NanoNetworkClient(gatewaySecret);
+        const client = new ClawdNetworkClient(gatewaySecret);
         const localNode = { hostname: "localhost", ip: "127.0.0.1", online: true, os: process.platform, tailscaleId: "local", lastSeen: Date.now(), gatewayPort: config.gateway.port };
         await client.connectToNode(localNode, config.agent.name);
         client.sendToNode("localhost", message, config.agent.name);
@@ -489,7 +489,7 @@ program
       }
 
       const nodes = TailscaleDiscovery.discoverNodes().filter((n) => n.online);
-      const client = new NanoNetworkClient(gatewaySecret);
+      const client = new ClawdNetworkClient(gatewaySecret);
 
       if (opts.target) {
         const target = nodes.find((n) => n.hostname === opts.target);
@@ -523,22 +523,22 @@ program
     }
   });
 
-// ── nano bots ────────────────────────────────────────────────
+// ── clawd agents ────────────────────────────────────────────────
 
 program
   .command("bots")
-  .description("Manage nano bots (tmux sessions)")
+  .description("Manage clawd agents (tmux sessions)")
   .addCommand(
     new Command("list")
-      .description("List running nano bot sessions")
+      .description("List running clawd agent sessions")
       .action(() => {
         const sessions = TmuxManager.listNanoSessions();
         if (sessions.length === 0) {
-          console.log(chalk.gray("\n  No nano bot sessions running.\n"));
+          console.log(chalk.gray("\n  No clawd agent sessions running.\n"));
           return;
         }
 
-        console.log(chalk.cyan("\n  ── Nano Bots ────────────────────────────────\n"));
+        console.log(chalk.cyan("\n  ── Clawd Agents ────────────────────────────────\n"));
         for (const s of sessions) {
           const status = s.attached ? chalk.green("attached") : chalk.gray("detached");
           console.log(`  ${chalk.white(s.name)}  ${status}  (${s.windows} windows)`);
@@ -548,12 +548,12 @@ program
   )
   .addCommand(
     new Command("spawn")
-      .description("Spawn a new nano bot in a tmux session")
+      .description("Spawn a new clawd agent in a tmux session")
       .argument("<name>", "Bot name")
       .action((name) => {
-        const ok = TmuxManager.createSession(name, `nanosolana run --name ${name}`);
+        const ok = TmuxManager.createSession(name, `clawd run --name ${name}`);
         if (ok) {
-          console.log(chalk.green(`\n  ✅ Spawned nano bot "${name}" in tmux session "nano-${name}"\n`));
+          console.log(chalk.green(`\n  ✅ Spawned clawd agent "${name}" in tmux session "clawd-${name}"\n`));
         } else {
           console.log(chalk.red(`\n  ❌ Failed to spawn bot "${name}"\n`));
         }
@@ -561,19 +561,19 @@ program
   )
   .addCommand(
     new Command("attach")
-      .description("Attach to a nano bot session")
+      .description("Attach to a clawd agent session")
       .argument("<name>", "Bot name")
       .action((name) => {
-        const sessionName = name.startsWith("nano-") ? name : `nano-${name}`;
+        const sessionName = name.startsWith("nano-") ? name : `clawd-${name}`;
         TmuxManager.attachSession(sessionName);
       }),
   )
   .addCommand(
     new Command("kill")
-      .description("Kill a nano bot session")
+      .description("Kill a clawd agent session")
       .argument("<name>", "Bot name")
       .action((name) => {
-        const sessionName = name.startsWith("nano-") ? name : `nano-${name}`;
+        const sessionName = name.startsWith("nano-") ? name : `clawd-${name}`;
         const ok = TmuxManager.killSession(sessionName);
         if (ok) {
           console.log(chalk.green(`\n  ✅ Killed bot "${sessionName}"\n`));
@@ -595,7 +595,7 @@ program
     }
 
     const nodes = TailscaleDiscovery.discoverNodes();
-    console.log(chalk.cyan("\n  ── Nano Network Nodes ───────────────────────\n"));
+    console.log(chalk.cyan("\n  ── Clawd Network Nodes ───────────────────────\n"));
 
     for (const node of nodes) {
       const status = node.online ? chalk.green("● online") : chalk.red("○ offline");
@@ -613,7 +613,7 @@ program
     try {
       const config = loadConfig();
       const redacted = redactConfig(config);
-      console.log(chalk.cyan("\n  ── Nano Solana Config ────────────────────────\n"));
+      console.log(chalk.cyan("\n  ── Solana clawd Config ────────────────────────\n"));
       console.log(JSON.stringify(redacted, null, 2).split("\n").map((l) => `  ${l}`).join("\n"));
       console.log();
     } catch (err) {
@@ -690,10 +690,10 @@ program
       const refresh = Boolean(opts.refresh);
       const limit = parsePositiveInteger(opts.limit as string | undefined, 10);
 
-      const snapshot = getNanoKnowledgeSnapshot({ refresh });
-      const summary = getNanoKnowledgeSummary(snapshot);
+      const snapshot = getClawdKnowledgeSnapshot({ refresh });
+      const summary = getClawdKnowledgeSummary(snapshot);
       const matches = query
-        ? searchNanoKnowledge(snapshot, String(query), limit)
+        ? searchClawdKnowledge(snapshot, String(query), limit)
         : [];
 
       if (opts.json) {
@@ -728,7 +728,7 @@ program
         return;
       }
 
-      console.log(chalk.cyan("\n  ── NanoSolana Knowledge Integration ──────────\n"));
+      console.log(chalk.cyan("\n  ── Solana clawd Knowledge Integration ──────────\n"));
       console.log(chalk.white("  Generated:  ") + chalk.gray(new Date(summary.generatedAt).toISOString()));
       console.log(chalk.white("  Docs:       ") + chalk.green(`${summary.docs.files} files`) + chalk.gray(` (${summary.docs.markdownFiles} markdown, ${formatBytes(summary.docs.bytes)})`));
       console.log(
@@ -884,13 +884,13 @@ program
     }
   });
 
-// ── nanosolana go (one-shot everything) ──────────────────────
+// ── clawd go (one-shot everything) ──────────────────────
 
 program
   .command("go")
   .alias("bootstrap")
   .description("One-shot bootstrap: configure, birth, and launch your Solana trading daemon")
-  .option("-n, --name <name>", "Agent name", "NanoSolana")
+  .option("-n, --name <name>", "Agent name", "Solana clawd")
   .option("--pet-name <petName>", "TamaGOchi pet name")
   .option("--skip-init", "Skip API key prompts if already configured")
   .option("--dvd-intro", "Play DVD intro animation before startup")
@@ -910,7 +910,7 @@ program
     try {
       // Phase 1: Init (ensure home + check config)
       await phaseTransition("init", "Phase 1 — Initialization");
-      ensureNanoHome();
+      ensureClawdHome();
       const secrets = loadSecrets();
       const needsInit = !opts.skipInit && (!secrets.HELIUS_RPC_URL || !secrets.AI_API_KEY);
 
@@ -943,7 +943,7 @@ program
         }
 
         saveSecrets(secrets);
-        printSuccess("Secrets encrypted → ~/.nanosolana/vault.enc\n");
+        printSuccess("Secrets encrypted → ~/.clawd/vault.enc\n");
       } else {
         printSuccess("Configuration found — skipping init\n");
       }
@@ -953,7 +953,7 @@ program
       await playStartupAnimation();
 
       const config = loadConfig();
-      const wallet = new NanoWallet(opts.name);
+      const wallet = new ClawdWallet(opts.name);
       const walletInfo = await wallet.birth();
       wallet.startHeartbeat(config.agent.heartbeatMs);
 
@@ -1022,7 +1022,7 @@ program
       await phaseTransition("gateway", "Phase 6 — Gateway");
       const { MemoryEngine } = await import("../memory/engine.js");
       const legacyMemory = new MemoryEngine(config.memory.temporalDecayHours);
-      const gateway = new NanoGateway(config, wallet, trading, legacyMemory);
+      const gateway = new ClawdGateway(config, wallet, trading, legacyMemory);
       await gateway.start();
       printSuccess(`Gateway: ws://${config.gateway.host}:${config.gateway.port}`);
 
@@ -1193,10 +1193,10 @@ program
         console.log(chalk.gray(`    Pet mood: ${MOOD_EMOJI[pet.getState().mood]} ${pet.getState().mood}`));
         console.log();
         console.log(chalk.white("  Ready to go live?"));
-        console.log(chalk.cyan("    npx nanosolana go"));
+        console.log(chalk.cyan("    npx clawd go"));
         console.log();
         console.log(chalk.gray("  Full docs: https://docs.nanosolana.com"));
-        console.log(chalk.gray("  GitHub: https://github.com/x402agent/NanoSolana"));
+        console.log(chalk.gray("  GitHub: https://github.com/x402agent/Solana clawd"));
         console.log();
         process.exit(0);
       }
@@ -1214,7 +1214,7 @@ program
       clearInterval(loop);
       vault.stopAutonomous();
       console.log(chalk.yellow("\n\n  ⏹  Demo stopped."));
-      console.log(chalk.cyan("  Try the real thing: npx nanosolana go\n"));
+      console.log(chalk.cyan("  Try the real thing: npx clawd go\n"));
       process.exit(0);
     });
 
@@ -1225,7 +1225,7 @@ program
 
 program
   .command("dvd")
-  .description("Floating DVD-style NanoSolana screensaver in the terminal")
+  .description("Floating DVD-style Solana clawd screensaver in the terminal")
   .action(() => {
     const dvd = startDvdScreensaver();
 
@@ -1243,7 +1243,7 @@ program
 
 program
   .command("lobster")
-  .description("Show the animated NanoSolana lobster mascot")
+  .description("Show the animated Solana clawd lobster mascot")
   .option("--static", "Show static version")
   .action(async (opts) => {
     if (opts.static) {
@@ -1264,13 +1264,13 @@ program
       const config = loadConfig();
       if (!config.helius?.rpcUrl || !config.helius?.apiKey) {
         console.log(chalk.red("\n  ❌ Helius RPC URL and API key required."));
-        console.log(chalk.gray("  Run: nanosolana init\n"));
+        console.log(chalk.gray("  Run: clawd init\n"));
         process.exit(1);
       }
 
       const pubkey = address ?? (() => {
         try {
-          const wallet = new NanoWallet("NanoSolana");
+          const wallet = new ClawdWallet("Solana clawd");
           // Try loading existing wallet pubkey from file
           const pubPath = join(homedir(), ".nanosolana", "wallet.pub");
           if (existsSync(pubPath)) return readFileSync(pubPath, "utf-8").trim();
@@ -1279,7 +1279,7 @@ program
       })();
 
       if (!pubkey) {
-        console.log(chalk.red("\n  ❌ No wallet found. Run: nanosolana birth\n"));
+        console.log(chalk.red("\n  ❌ No wallet found. Run: clawd birth\n"));
         process.exit(1);
       }
 
@@ -1306,7 +1306,7 @@ program
   .action(async () => {
     try {
       const config = loadConfig();
-      const wallet = new NanoWallet("NanoSolana");
+      const wallet = new ClawdWallet("Solana clawd");
       await wallet.birth();
 
       const registry = new AgentRegistry();
@@ -1341,7 +1341,7 @@ program
       console.log(chalk.white("  Tx:           ") + chalk.gray(result.txSignature.slice(0, 20) + "..."));
       console.log(chalk.white("  Token Acct:   ") + chalk.gray(result.tokenAccount));
       console.log(chalk.white("  Network:      ") + chalk.gray(result.network));
-      console.log(chalk.white("  Saved:        ") + chalk.gray("~/.nanosolana/registry/registration.json"));
+      console.log(chalk.white("  Saved:        ") + chalk.gray("~/.clawd/registry/registration.json"));
       console.log();
       console.log(chalk.hex("#FFAA00")(`  Explorer: https://explorer.solana.com/tx/${result.txSignature}?cluster=devnet\n`));
     } catch (err) {
@@ -1381,13 +1381,13 @@ program
 
 program
   .command("nanobot")
-  .description("Launch the interactive NanoBot web UI (localhost companion)")
+  .description("Launch the interactive ClawdBot web UI (localhost companion)")
   .option("-p, --port <port>", "Port number", "7777")
   .action(async (opts) => {
     const port = parseInt(opts.port, 10) || 7777;
-    console.log(chalk.hex("#14F195")(`\n  🤖 Starting NanoBot on http://127.0.0.1:${port}\n`));
+    console.log(chalk.hex("#14F195")(`\n  🤖 Starting ClawdBot on http://127.0.0.1:${port}\n`));
 
-    const server = new NanoBotServer({ port });
+    const server = new ClawdBotServer({ port });
     await server.start();
 
     // Keep alive
@@ -1512,16 +1512,16 @@ payCmd
 
 program
   .command("oneshot")
-  .description("Resolve a NanoHub skill manifest into a one-shot NanoSolana launch plan")
+  .description("Resolve a NanoHub skill manifest into a one-shot Solana clawd launch plan")
   .argument("<slug>", "NanoHub skill slug")
   .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? "https://hub.nanosolana.com")
   .option("--write <path>", "Write the generated plan to a JSON file")
   .option("--json", "Emit machine-readable JSON")
   .action(async (slug, opts) => {
     try {
-      const siteUrl = getNanoHubSiteUrl(opts.site);
-      const { manifest } = await getNanoHubSkillManifest(String(slug), { siteUrl });
-      const plan = buildNanoSolanaOneShotPlan(manifest, {
+      const siteUrl = getClawdHubSiteUrl(opts.site);
+      const { manifest } = await getClawdHubSkillManifest(String(slug), { siteUrl });
+      const plan = buildClawdOneShotPlan(manifest, {
         env: process.env,
         siteUrl,
       });
@@ -1540,7 +1540,7 @@ program
       }
 
       printBanner();
-      console.log(chalk.white.bold("  ⚡ NanoSolana One-Shot Plan\n"));
+      console.log(chalk.white.bold("  ⚡ Solana clawd One-Shot Plan\n"));
       console.log(chalk.cyan(`  Skill:       ${plan.displayName} (${plan.slug})`));
       console.log(chalk.cyan(`  Version:     ${plan.version}`));
       console.log(chalk.cyan(`  Site:        ${siteUrl}`));
@@ -1600,7 +1600,7 @@ const hubCmd = program
 
 hubCmd
   .command("skills")
-  .description("Browse or search public NanoHub skills from the NanoSolana CLI")
+  .description("Browse or search public NanoHub skills from the Solana clawd CLI")
   .argument("[query]", "Optional query to search NanoHub skills")
   .option("-l, --limit <n>", "Max results", "10")
   .option("-s, --sort <sort>", "Sort: newest|downloads|rating|installs|installsAllTime|trending", "newest")
@@ -1609,11 +1609,11 @@ hubCmd
   .option("--json", "Emit machine-readable JSON")
   .action(async (query, opts) => {
     try {
-      const siteUrl = getNanoHubSiteUrl(opts.site);
-      const limit = clampNanoHubLimit(parsePositiveInteger(opts.limit as string | undefined, 10));
+      const siteUrl = getClawdHubSiteUrl(opts.site);
+      const limit = clampClawdHubLimit(parsePositiveInteger(opts.limit as string | undefined, 10));
 
       if (query) {
-        const result = await searchNanoHubSkills({
+        const result = await searchClawdHubSkills({
           query: String(query),
           siteUrl,
           limit,
@@ -1623,7 +1623,7 @@ hubCmd
         if (opts.json) {
           console.log(JSON.stringify({
             siteUrl,
-            discoveryUrl: getNanoHubDiscoveryUrl(siteUrl),
+            discoveryUrl: getClawdHubDiscoveryUrl(siteUrl),
             query: String(query),
             results: result.results,
           }, null, 2));
@@ -1632,7 +1632,7 @@ hubCmd
 
         console.log(chalk.cyan(`\n  ── NanoHub Search ── "${query}" ───────────────────\n`));
         console.log(chalk.gray(`  Site: ${siteUrl}`));
-        console.log(chalk.gray(`  Discovery: ${getNanoHubDiscoveryUrl(siteUrl)}\n`));
+        console.log(chalk.gray(`  Discovery: ${getClawdHubDiscoveryUrl(siteUrl)}\n`));
 
         if (result.results.length === 0) {
           console.log(chalk.gray("  No skills matched your query.\n"));
@@ -1648,13 +1648,13 @@ hubCmd
           if (entry.summary) {
             console.log(`     ${chalk.gray(entry.summary)}`);
           }
-          console.log(`     ${chalk.gray(getNanoHubSkillUrl(slug, { siteUrl }))}`);
+          console.log(`     ${chalk.gray(getClawdHubSkillUrl(slug, { siteUrl }))}`);
         }
         console.log();
         return;
       }
 
-      const result = await listNanoHubSkills({
+      const result = await listClawdHubSkills({
         siteUrl,
         limit,
         sort: String(opts.sort),
@@ -1664,7 +1664,7 @@ hubCmd
       if (opts.json) {
         console.log(JSON.stringify({
           siteUrl,
-          discoveryUrl: getNanoHubDiscoveryUrl(siteUrl),
+          discoveryUrl: getClawdHubDiscoveryUrl(siteUrl),
           sort: opts.sort,
           highlightedOnly: Boolean(opts.highlighted),
           ...result,
@@ -1674,7 +1674,7 @@ hubCmd
 
       console.log(chalk.cyan("\n  ── NanoHub Skills ────────────────────────────\n"));
       console.log(chalk.gray(`  Site: ${siteUrl}`));
-      console.log(chalk.gray(`  Discovery: ${getNanoHubDiscoveryUrl(siteUrl)}`));
+      console.log(chalk.gray(`  Discovery: ${getClawdHubDiscoveryUrl(siteUrl)}`));
       console.log(chalk.gray(`  Sort: ${opts.sort}${opts.highlighted ? " · highlighted only" : ""}\n`));
 
       if (result.items.length === 0) {
@@ -1690,7 +1690,7 @@ hubCmd
         if (item.summary) {
           console.log(`     ${chalk.gray(item.summary)}`);
         }
-        console.log(`     ${chalk.gray(getNanoHubSkillUrl(item.slug, { siteUrl }))}`);
+        console.log(`     ${chalk.gray(getClawdHubSkillUrl(item.slug, { siteUrl }))}`);
       }
       console.log();
     } catch (err) {
@@ -1709,15 +1709,15 @@ hubCmd
   .option("--json", "Emit machine-readable JSON")
   .action(async (slug, opts) => {
     try {
-      const siteUrl = getNanoHubSiteUrl(opts.site);
-      const detail = await getNanoHubSkill(String(slug), { siteUrl });
+      const siteUrl = getClawdHubSiteUrl(opts.site);
+      const detail = await getClawdHubSkill(String(slug), { siteUrl });
 
       if (!detail.skill) {
         throw new Error(`Skill not found: ${slug}`);
       }
 
       const ownerHandle = detail.owner?.handle ?? undefined;
-      const skillUrl = getNanoHubSkillUrl(detail.skill.slug, {
+      const skillUrl = getClawdHubSkillUrl(detail.skill.slug, {
         siteUrl,
         ownerHandle,
       });
@@ -1725,7 +1725,7 @@ hubCmd
       let filePreview: string | undefined;
       if (opts.file !== false) {
         try {
-          const file = await getNanoHubSkillFile(detail.skill.slug, {
+          const file = await getClawdHubSkillFile(detail.skill.slug, {
             siteUrl,
             path: String(opts.file || "SKILL.md"),
           });
@@ -1738,7 +1738,7 @@ hubCmd
       if (opts.json) {
         console.log(JSON.stringify({
           siteUrl,
-          discoveryUrl: getNanoHubDiscoveryUrl(siteUrl),
+          discoveryUrl: getClawdHubDiscoveryUrl(siteUrl),
           skillUrl,
           ...detail,
           filePreview,
@@ -1806,8 +1806,8 @@ hubCmd
     try {
       // Load wallet for public key
       const config = loadConfig();
-      const agentName = opts.name ?? config.agent.name ?? "NanoSolana";
-      const wallet = new NanoWallet(agentName);
+      const agentName = opts.name ?? config.agent.name ?? "Solana clawd";
+      const wallet = new ClawdWallet(agentName);
       const walletInfo = await wallet.birth();
 
       console.log(chalk.cyan(`  Agent:      ${agentName}`));
@@ -1989,8 +1989,8 @@ hubCmd
       };
 
       console.log(chalk.cyan("\n  ── NanoHub Registry Stats ────────────────────\n"));
-      console.log(chalk.white("  Public Site:   ") + chalk.cyan(getNanoHubSiteUrl()));
-      console.log(chalk.white("  Discovery:     ") + chalk.gray(getNanoHubDiscoveryUrl()));
+      console.log(chalk.white("  Public Site:   ") + chalk.cyan(getClawdHubSiteUrl()));
+      console.log(chalk.white("  Discovery:     ") + chalk.gray(getClawdHubDiscoveryUrl()));
       console.log(chalk.white("  Total Agents:  ") + chalk.green(String(data.totalAgents)));
       console.log(chalk.white("  Active:        ") + chalk.green(String(data.activeAgents)));
       console.log(chalk.white("  Categories:"));

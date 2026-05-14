@@ -44,7 +44,7 @@ function findPackageRoot(startDir: string): string | null {
   }
 }
 
-export function resolveNanoRuntimeAsset(filename: string, options: RuntimeAssetOptions = {}): string | null {
+export function resolveClawdRuntimeAsset(filename: string, options: RuntimeAssetOptions = {}): string | null {
   const env = options.env ?? process.env;
   const cwd = options.cwd ?? process.cwd();
   const packageRoot = findPackageRoot(options.startDir ?? RUNTIME_MODULE_DIR);
@@ -67,12 +67,12 @@ export function resolveNanoRuntimeAsset(filename: string, options: RuntimeAssetO
   return null;
 }
 
-export function readNanoRuntimeAsset(
+export function readClawdRuntimeAsset(
   filename: string,
   fallback: string,
   options: RuntimeAssetOptions = {},
 ): string {
-  const resolved = resolveNanoRuntimeAsset(filename, options);
+  const resolved = resolveClawdRuntimeAsset(filename, options);
   if (!resolved) {
     return fallback;
   }

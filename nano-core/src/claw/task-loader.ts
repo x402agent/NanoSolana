@@ -1,4 +1,4 @@
-// ── NanoSolana — Agent Task Loader ────────────────────────────────────────────
+// ── Solana clawd — Agent Task Loader ────────────────────────────────────────────
 //
 // Loads agent tasks from the agent-tasks/ directory and provides
 // persona-aware task matching. When an agent is spawned with a persona,
@@ -18,7 +18,7 @@
 
 import { readdirSync, readFileSync } from 'node:fs';
 import { join, basename, resolve } from 'node:path';
-import { resolveNanoRepositoryRoot } from '../extensions/catalog.js';
+import { resolveClawdRepositoryRoot } from '../extensions/catalog.js';
 import type { PersonaDefinition } from './persona-loader.js';
 
 // ── Task Schema ─────────────────────────────────────────────────────────────
@@ -111,7 +111,7 @@ const PERSONA_DOMAIN_MAP: Record<string, string[]> = {
 let cachedTasks: AgentTask[] | null = null;
 
 function getTasksDir(): string {
-  return join(resolveNanoRepositoryRoot(), 'agent-tasks');
+  return join(resolveClawdRepositoryRoot(), 'agent-tasks');
 }
 
 /**

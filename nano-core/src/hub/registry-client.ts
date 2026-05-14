@@ -1,13 +1,13 @@
 /**
- * NanoHub — Supabase Registry Client
+ * ClawdHub — Supabase Registry Client
  *
- * Provides programmatic access to the NanoHub agent registry
+ * Provides programmatic access to the ClawdHub agent registry
  * backed by Supabase PostgreSQL + Storage.
  *
  * Used by:
- *   - CLI `nanosolana hub register`
+ *   - CLI `clawd hub register`
  *   - Registration API server
- *   - NanoHub web UI (read-only)
+ *   - ClawdHub web UI (read-only)
  */
 
 import { createHash, randomUUID } from "node:crypto";
@@ -155,7 +155,7 @@ export class HubRegistryClient {
   }
 
   /**
-   * Register a new agent in the NanoHub registry.
+   * Register a new agent in the ClawdHub registry.
    */
   async registerAgent(input: RegisterAgentInput): Promise<{
     agent: HubAgent;

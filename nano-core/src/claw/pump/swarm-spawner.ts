@@ -1,4 +1,4 @@
-// ── NanoSolana × PumpFun — Swarm Spawner ─────────────────────────────────────
+// ── Solana clawd × PumpFun — Swarm Spawner ─────────────────────────────────────
 //
 // The SwarmSpawner manages the lifecycle of autonomous financial agents.
 // Each agent runs as an isolated async task with its own wallet, strategy,
@@ -152,7 +152,7 @@ export class SwarmSpawner {
    * Spawn a new agent in the swarm.
    * Validates risk limits, creates the agent state, and starts its run loop.
    * If payment gating is enabled, the caller is responsible for verifying
-   * payment via NanoPaymentAgent before calling spawn.
+   * payment via ClawdPaymentAgent before calling spawn.
    */
   async spawn(request: SpawnAgentRequest): Promise<AgentState> {
     // Enforce max agents
