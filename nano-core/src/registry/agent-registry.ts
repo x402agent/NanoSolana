@@ -1,10 +1,10 @@
 /**
- * NanoSolana Agent On-Chain Registry via Metaplex Token Metadata.
+ * Solana clawd Agent On-Chain Registry via Metaplex Token Metadata.
  *
  * Mints a gasless devnet NFT that serves as the agent's on-chain identity.
  * The NFT contains:
  *   - Agent public key
- *   - NanoSolana version
+ *   - Solana clawd version
  *   - Registered capabilities (skills)
  *   - Fingerprint (SHA-256 of pubkey + version + skills)
  *   - Timestamp
@@ -82,7 +82,7 @@ export class AgentRegistry {
 
   constructor(rpcUrl?: string) {
     this.connection = new Connection(rpcUrl || DEVNET_RPC, "confirmed");
-    this.registryDir = join(homedir(), ".nanosolana", "registry");
+    this.registryDir = join(homedir(), ".clawd", "registry");
     mkdirSync(this.registryDir, { recursive: true });
   }
 
@@ -125,10 +125,10 @@ export class AgentRegistry {
 
     // Step 3: Build metadata
     const metadata: AgentMetadata = {
-      name: `NanoSolana Agent #${agentPubkey.toBase58().slice(0, 6)}`,
+      name: `Solana clawd Agent #${agentPubkey.toBase58().slice(0, 6)}`,
       symbol: "NANO",
-      description: `NanoSolana autonomous trading agent. Version ${version}. Fingerprint: ${fingerprint.slice(0, 12)}`,
-      image: "https://nanosolana.com/agent-nft.png",
+      description: `Solana clawd autonomous trading agent. Version ${version}. Fingerprint: ${fingerprint.slice(0, 12)}`,
+      image: "https://solana-clawd.com/agent-nft.png",
       agentPubkey: agentPubkey.toBase58(),
       version,
       skills,

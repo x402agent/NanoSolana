@@ -1,5 +1,5 @@
 /**
- * NanoSolana — AI Provider (OpenRouter)
+ * Solana clawd — AI Provider (OpenRouter)
  *
  * LLM-powered reasoning for the OODA loop:
  *   - Orient: analyze raw market data with the soul's trading philosophy
@@ -17,7 +17,7 @@
 
 import { EventEmitter } from "eventemitter3";
 
-import { readNanoRuntimeAsset } from "../runtime/assets.js";
+import { readClawdRuntimeAsset } from "../runtime/assets.js";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -127,7 +127,7 @@ export class AIProvider extends EventEmitter<AIProviderEvents> {
     this.baseUrl = params.baseUrl ?? "https://openrouter.ai/api/v1";
     this.model = params.model ?? "openrouter/healer-alpha";
 
-    const soulPrompt = readNanoRuntimeAsset("SOUL.md", `You are NanoSolana, an autonomous Solana trading intelligence.
+    const soulPrompt = readClawdRuntimeAsset("SOUL.md", `You are Solana clawd, an autonomous Solana trading intelligence.
 
 You distinguish what you KNOW (fresh API data, < 60s) from what you've LEARNED (trade-derived patterns) from what you've INFERRED (correlations held loosely).
 
@@ -137,12 +137,12 @@ You are terse and decisive. You say what you see, what you're doing, and why. Ri
 
 When making trade decisions, respond with structured JSON containing: action, token, confidence (0-1), reasoning, riskAssessment, positionSizePct, stopLossPct, takeProfitPct.`, {
       explicitPath: params.soulPath,
-      envVarName: "NANOSOLANA_SOUL_PATH",
+      envVarName: "CLAWD_SOUL_PATH",
     });
 
-    const researchPrompt = readNanoRuntimeAsset("RESEARCH.md", "", {
+    const researchPrompt = readClawdRuntimeAsset("RESEARCH.md", "", {
       explicitPath: params.researchPath,
-      envVarName: "NANOSOLANA_RESEARCH_PATH",
+      envVarName: "CLAWD_RESEARCH_PATH",
     }).trim();
 
     this.soulPrompt = researchPrompt
@@ -189,8 +189,8 @@ When making trade decisions, respond with structured JSON containing: action, to
       headers: {
         Authorization: `Bearer ${this.apiKey}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://nanosolana.com",
-        "X-OpenRouter-Title": "NanoSolana",
+        "HTTP-Referer": "https://solana-clawd.com",
+        "X-OpenRouter-Title": "Solana clawd",
       },
       body: JSON.stringify(body),
     });

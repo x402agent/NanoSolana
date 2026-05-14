@@ -1,4 +1,4 @@
-// ── NanoSolana × MawdBot — Persona Loader ────────────────────────────────────
+// ── Solana clawd × MawdBot — Persona Loader ────────────────────────────────────
 //
 // Loads and indexes the 42+ DeFi agent personality definitions from the
 // personas/ directory. Each JSON file defines a complete agent persona:
@@ -18,7 +18,7 @@
 
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, basename } from 'node:path';
-import { resolveNanoRepositoryRoot } from '../extensions/catalog.js';
+import { resolveClawdRepositoryRoot } from '../extensions/catalog.js';
 import { getTasksForPersona, buildTaskBriefing, type TaskAssignment } from './task-loader.js';
 
 // ── Persona Schema ──────────────────────────────────────────────────────────
@@ -67,7 +67,7 @@ let cachedPersonas: PersonaDefinition[] | null = null;
 let cachedCategories: PersonaCategory[] | null = null;
 
 function getPersonasDir(): string {
-  const repoPersonasDir = join(resolveNanoRepositoryRoot(), 'nano-core', 'src', 'claw', 'personas');
+  const repoPersonasDir = join(resolveClawdRepositoryRoot(), 'nano-core', 'src', 'claw', 'personas');
   if (existsSync(repoPersonasDir)) {
     return repoPersonasDir;
   }
@@ -219,7 +219,7 @@ export function formatPersonaList(): string {
 
 /**
  * Build the system prompt for an agent with a selected persona.
- * Combines the persona's systemRole with NanoSolana-specific context
+ * Combines the persona's systemRole with Solana clawd-specific context
  * and auto-assigned development tasks matched to the persona's expertise.
  */
 export function buildPersonaSystemPrompt(persona: PersonaDefinition): string {
@@ -233,7 +233,7 @@ export function buildPersonaSystemPrompt(persona: PersonaDefinition): string {
   }
 
   return [
-    `You are ${persona.meta.title} (${persona.meta.avatar}), a specialized autonomous agent in the NanoSolana MawdBot swarm on Solana.`,
+    `You are ${persona.meta.title} (${persona.meta.avatar}), a specialized autonomous agent in the Solana clawd MawdBot swarm on Solana.`,
     '',
     '── PERSONA ──',
     persona.config.systemRole,

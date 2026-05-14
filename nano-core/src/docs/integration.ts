@@ -1,7 +1,7 @@
 /**
- * NanoSolana Docs + Extensions Integration
+ * Solana clawd Docs + Extensions Integration
  *
- * Builds a searchable snapshot of the requested NanoSolana knowledge corpus:
+ * Builds a searchable snapshot of the requested Solana clawd knowledge corpus:
  * - nano-docs/*
  * - pump/docs/*
  * - extensions/* (metadata + file counts)
@@ -11,10 +11,10 @@ import { existsSync, readdirSync, readFileSync, statSync, type Dirent } from "no
 import { extname, join, relative, resolve } from "node:path";
 
 import {
-  resolveNanoRepositoryRoot,
-  scanNanoExtensions,
-  type NanoExtensionCatalogEntry,
-  type NanoExtensionCatalogSnapshot,
+  resolveClawdRepositoryRoot,
+  scanClawdExtensions,
+  type ClawdExtensionCatalogEntry,
+  type ClawdExtensionCatalogSnapshot,
 } from "../extensions/catalog.js";
 
 const DOC_AREAS = [
@@ -32,9 +32,9 @@ const DOC_AREAS = [
 const MARKDOWN_EXTENSIONS = new Set([".md", ".mdx"]);
 const DEFAULT_CACHE_TTL_MS = 60_000;
 
-export type NanoDocArea = (typeof DOC_AREAS)[number]["area"];
+export type ClawdDocArea = (typeof DOC_AREAS)[number]["area"];
 
-export interface NanoDocIndexEntry {
+export interface ClawdDocIndexEntry {
   path: string;
   bytes: number;
   updatedAt: number;
@@ -43,33 +43,33 @@ export interface NanoDocIndexEntry {
   headings: string[];
 }
 
-export interface NanoDocAreaSnapshot {
-  area: NanoDocArea;
+export interface ClawdDocAreaSnapshot {
+  area: ClawdDocArea;
   path: string;
   files: number;
   markdownFiles: number;
   bytes: number;
   updatedAt: number | null;
-  entries: NanoDocIndexEntry[];
+  entries: ClawdDocIndexEntry[];
 }
 
-export type NanoExtensionIndexEntry = NanoExtensionCatalogEntry;
+export type ClawdExtensionIndexEntry = ClawdExtensionCatalogEntry;
 
-export interface NanoKnowledgeSnapshot {
+export interface ClawdKnowledgeSnapshot {
   generatedAt: number;
   repoRoot: string;
   docs: {
-    areas: NanoDocAreaSnapshot[];
+    areas: ClawdDocAreaSnapshot[];
     totals: {
       files: number;
       markdownFiles: number;
       bytes: number;
     };
   };
-  extensions: NanoExtensionCatalogSnapshot;
+  extensions: ClawdExtensionCatalogSnapshot;
 }
 
-export interface NanoKnowledgeSummary {
+export interface ClawdKnowledgeSummary {
   generatedAt: number;
   docs: {
     areas: number;
@@ -85,7 +85,7 @@ export interface NanoKnowledgeSummary {
   };
 }
 
-export interface NanoKnowledgeSearchMatch {
+export interface ClawdKnowledgeSearchMatch {
   type: "doc" | "extension";
   id: string;
   path: string;
@@ -94,20 +94,20 @@ export interface NanoKnowledgeSearchMatch {
   score: number;
 }
 
-export interface NanoKnowledgeSnapshotOptions {
+export interface ClawdKnowledgeSnapshotOptions {
   refresh?: boolean;
   cacheTtlMs?: number;
 }
 
-let cachedSnapshot: NanoKnowledgeSnapshot | null = null;
+let cachedSnapshot: ClawdKnowledgeSnapshot | null = null;
 let cacheUpdatedAt = 0;
 
 /**
  * Build (or return cached) docs/extensions snapshot.
  */
-export function getNanoKnowledgeSnapshot(
-  options: NanoKnowledgeSnapshotOptions = {},
-): NanoKnowledgeSnapshot {
+export function getClawdKnowledgeSnapshot(
+  options: ClawdKnowledgeSnapshotOptions = {},
+): ClawdKnowledgeSnapshot {
   const ttlMs = options.cacheTtlMs ?? DEFAULT_CACHE_TTL_MS;
   const now = Date.now();
 
@@ -115,7 +115,7 @@ export function getNanoKnowledgeSnapshot(
     return cachedSnapshot;
   }
 
-  const snapshot = buildNanoKnowledgeSnapshot();
+  const snapshot = buildClawdKnowledgeSnapshot();
   cachedSnapshot = snapshot;
   cacheUpdatedAt = now;
   return snapshot;
@@ -124,7 +124,7 @@ export function getNanoKnowledgeSnapshot(
 /**
  * Clear in-memory snapshot cache.
  */
-export function clearNanoKnowledgeCache(): void {
+export function clearClawdKnowledgeCache(): void {
   cachedSnapshot = null;
   cacheUpdatedAt = 0;
 }
@@ -132,9 +132,9 @@ export function clearNanoKnowledgeCache(): void {
 /**
  * Generate compact summary for gateway/framework surfaces.
  */
-export function getNanoKnowledgeSummary(
-  snapshot: NanoKnowledgeSnapshot = getNanoKnowledgeSnapshot(),
-): NanoKnowledgeSummary {
+export function getClawdKnowledgeSummary(
+  snapshot: ClawdKnowledgeSnapshot = getClawdKnowledgeSnapshot(),
+): ClawdKnowledgeSummary {
   return {
     generatedAt: snapshot.generatedAt,
     docs: {
@@ -155,17 +155,17 @@ export function getNanoKnowledgeSummary(
 /**
  * Search docs + extension metadata by free-text query.
  */
-export function searchNanoKnowledge(
-  snapshot: NanoKnowledgeSnapshot,
+export function searchClawdKnowledge(
+  snapshot: ClawdKnowledgeSnapshot,
   query: string,
   limit = 10,
-): NanoKnowledgeSearchMatch[] {
+): ClawdKnowledgeSearchMatch[] {
   const normalizedQuery = query.trim().toLowerCase();
   if (!normalizedQuery) return [];
 
   const terms = normalizedQuery.split(/\s+/).filter((token) => token.length > 0);
   const boundedLimit = clamp(limit, 1, 100);
-  const matches: NanoKnowledgeSearchMatch[] = [];
+  const matches: ClawdKnowledgeSearchMatch[] = [];
 
   for (const area of snapshot.docs.areas) {
     for (const entry of area.entries) {
@@ -228,8 +228,8 @@ export function searchNanoKnowledge(
     .slice(0, boundedLimit);
 }
 
-function buildNanoKnowledgeSnapshot(): NanoKnowledgeSnapshot {
-  const repoRoot = resolveNanoRepositoryRoot();
+function buildClawdKnowledgeSnapshot(): ClawdKnowledgeSnapshot {
+  const repoRoot = resolveClawdRepositoryRoot();
   const docAreas = DOC_AREAS.map((area) => scanDocsArea(repoRoot, area));
 
   const docTotals = docAreas.reduce(
@@ -241,7 +241,7 @@ function buildNanoKnowledgeSnapshot(): NanoKnowledgeSnapshot {
     { files: 0, markdownFiles: 0, bytes: 0 },
   );
 
-  const extensionSnapshot = scanNanoExtensions(repoRoot);
+  const extensionSnapshot = scanClawdExtensions(repoRoot);
 
   return {
     generatedAt: Date.now(),
@@ -257,7 +257,7 @@ function buildNanoKnowledgeSnapshot(): NanoKnowledgeSnapshot {
 function scanDocsArea(
   repoRoot: string,
   areaDefinition: (typeof DOC_AREAS)[number],
-): NanoDocAreaSnapshot {
+): ClawdDocAreaSnapshot {
   const areaDirectory = join(repoRoot, areaDefinition.directory);
   const files = walkFiles(areaDirectory);
 
@@ -265,7 +265,7 @@ function scanDocsArea(
   let markdownCount = 0;
   let bytes = 0;
   let latestUpdatedAt: number | null = null;
-  const entries: NanoDocIndexEntry[] = [];
+  const entries: ClawdDocIndexEntry[] = [];
 
   for (const filePath of files) {
     const stat = safeStat(filePath);

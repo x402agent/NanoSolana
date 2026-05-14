@@ -1,1 +1,1 @@
-export { NanoBotServer } from "./server.js";
+export { ClawdBotServer } from "./server.js";

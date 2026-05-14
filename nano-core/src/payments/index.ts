@@ -1,10 +1,10 @@
-// ── NanoSolana — Payments Module ──────────────────────────────────────────────
+// ── Solana clawd — Payments Module ──────────────────────────────────────────────
 //
 // Tokenized agent payment system built on @pump-fun/agent-payments-sdk.
 // Enables agents to charge users for actions via on-chain invoice payments.
 //
 // Architecture:
-//   NanoPaymentAgent wraps PumpAgent with:
+//   ClawdPaymentAgent wraps PumpAgent with:
 //     - Invoice creation with auto-generated memos
 //     - Payment instruction building for USDC and SOL
 //     - Server-side verification with retry logic
@@ -18,7 +18,7 @@
 //   - Amount validation before any instruction building
 // ─────────────────────────────────────────────────────────────────────────────
 
-export { NanoPaymentAgent } from './agent.js';
+export { ClawdPaymentAgent } from './agent.js';
 
 export type {
   PaymentCurrency,
@@ -36,13 +36,13 @@ export { CURRENCY_MINTS, CURRENCY_DECIMALS } from './types.js';
 // ── Factory ─────────────────────────────────────────────────────────────────
 
 import type { PaymentConfig } from './types.js';
-import { NanoPaymentAgent } from './agent.js';
+import { ClawdPaymentAgent } from './agent.js';
 
 /**
- * Create a NanoPaymentAgent from environment variables.
+ * Create a ClawdPaymentAgent from environment variables.
  * Reads AGENT_TOKEN_MINT_ADDRESS, CURRENCY_MINT, SOLANA_RPC_URL.
  */
-export function createPaymentAgent(overrides?: Partial<PaymentConfig>): NanoPaymentAgent {
+export function createPaymentAgent(overrides?: Partial<PaymentConfig>): ClawdPaymentAgent {
   const agentTokenMint = overrides?.agentTokenMint ?? process.env.AGENT_TOKEN_MINT_ADDRESS;
   if (!agentTokenMint) {
     throw new Error(
@@ -71,5 +71,5 @@ export function createPaymentAgent(overrides?: Partial<PaymentConfig>): NanoPaym
     environment: overrides?.environment ?? 'mainnet',
   };
 
-  return new NanoPaymentAgent(config);
+  return new ClawdPaymentAgent(config);
 }

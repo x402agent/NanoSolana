@@ -1,4 +1,4 @@
-// ── NanoSolana × PumpFun — Bot Registry ──────────────────────────────────────
+// ── Solana clawd × PumpFun — Bot Registry ──────────────────────────────────────
 //
 // Registry for all PumpFun bots, PumpKit packages, and DeFi agent definitions.
 // Provides a unified interface for discovering, configuring, and launching

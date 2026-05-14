@@ -1,8 +1,8 @@
 /**
- * NanoBot — Interactive Local UI Server
+ * ClawdBot — Interactive Local UI Server
  *
  * Serves a local web UI on localhost that provides:
- *   - Animated NanoBot lobster character
+ *   - Animated ClawdBot lobster character
  *   - Real-time system status (wallet, OODA, pet)
  *   - Chat interface for interacting with the agent
  *   - One-click commands for wallet, health, registry
@@ -19,7 +19,7 @@ import { createBitaxeClientFromEnv, type BitaxeClient } from "../bitaxe/client.j
 
 // ── Types ────────────────────────────────────────────────────────────
 
-interface NanoBotConfig {
+interface ClawdBotConfig {
   port: number;
   binaryPath?: string;
 }
@@ -36,16 +36,16 @@ interface StatusResponse {
   miner: string;
 }
 
-// ── NanoBot Server ───────────────────────────────────────────────────
+// ── ClawdBot Server ───────────────────────────────────────────────────
 
-export class NanoBotServer {
+export class ClawdBotServer {
   private port: number;
   private binaryPath: string;
   private bitaxe: BitaxeClient | null = createBitaxeClientFromEnv();
 
-  constructor(config: NanoBotConfig) {
+  constructor(config: ClawdBotConfig) {
     this.port = config.port || 7777;
-    this.binaryPath = config.binaryPath || "nanosolana";
+    this.binaryPath = config.binaryPath || "clawd";
   }
 
   async start(): Promise<void> {
@@ -60,7 +60,7 @@ export class NanoBotServer {
     return new Promise((resolve, reject) => {
       server.listen(this.port, "127.0.0.1", () => {
         const url = `http://127.0.0.1:${this.port}`;
-        console.log(`  🤖 NanoBot UI: ${url}`);
+        console.log(`  🤖 ClawdBot UI: ${url}`);
 
         // Open in browser
         setTimeout(() => openBrowser(url), 300);
@@ -105,7 +105,7 @@ export class NanoBotServer {
     const nanoHome = join(home, ".nanosolana");
 
     const status: StatusResponse = {
-      agent: "NanoSolana",
+      agent: "Solana clawd",
       version: "0.1.0",
       platform: `${platform()}/${arch()}`,
       time: new Date().toISOString(),
@@ -285,11 +285,11 @@ export class NanoBotServer {
   }
 }
 
-// ── NanoBot Reply Engine ─────────────────────────────────────────────
+// ── ClawdBot Reply Engine ─────────────────────────────────────────────
 
 function nanobotReply(msg: string): string {
   if (/hello|hi|hey/.test(msg)) {
-    return "Hey there! 🦞 I'm NanoBot, your Solana trading companion. What can I help you with?";
+    return "Hey there! 🦞 I'm ClawdBot, your Solana trading companion. What can I help you with?";
   }
   if (/trade|swap/.test(msg)) {
     return "Ready to trade! 📈 Use `nanosolana go` for one-shot launch or `nanosolana daemon` for an explicit long-running runtime. I use Jupiter DEX for swaps with real-time Helius data.";
@@ -301,10 +301,10 @@ function nanobotReply(msg: string): string {
     return "🟢 Run `nanosolana status` to check everything — wallet, pet, OODA loop, gateway, and registry.";
   }
   if (/miner|bitaxe|hashrate|mining/.test(msg)) {
-    return "⛏ Bitaxe mining support is available when BITAXE_ENABLED=true and BITAXE_HOST points at your AxeOS device. Use the miner panel in NanoBot or the Chrome extension miner controls to monitor hashrate, temperature, pool settings, and restart/frequency actions.";
+    return "⛏ Bitaxe mining support is available when BITAXE_ENABLED=true and BITAXE_HOST points at your AxeOS device. Use the miner panel in ClawdBot or the Chrome extension miner controls to monitor hashrate, temperature, pool settings, and restart/frequency actions.";
   }
   if (/pet|tamagochi|mood/.test(msg)) {
-    return "🦞 I'm your TamaGOchi! My mood and evolution are driven by trading performance. Good trades = happy NanoBot. Check with `nanosolana pet`.";
+    return "🦞 I'm your TamaGOchi! My mood and evolution are driven by trading performance. Good trades = happy ClawdBot. Check with `nanosolana pet`.";
   }
   if (/register|nft|identity/.test(msg)) {
     return "🆔 Your Birth Certificate NFT was minted on devnet at birth. Run `nanosolana status` to see your on-chain identity.";
@@ -334,14 +334,14 @@ function openBrowser(url: string): void {
   exec(cmd, () => { });
 }
 
-// ── Embedded NanoBot UI HTML ─────────────────────────────────────────
+// ── Embedded ClawdBot UI HTML ─────────────────────────────────────────
 
 const NANOBOT_HTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NanoBot — Solana Trading Companion</title>
+  <title>ClawdBot — Solana Trading Companion</title>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -433,7 +433,7 @@ const NANOBOT_HTML = `<!DOCTYPE html>
 <body>
   <div class="container">
     <div class="lobster" id="lobster">🦞</div>
-    <h1>NanoBot</h1>
+    <h1>ClawdBot</h1>
     <p class="subtitle">Your Solana Trading Companion</p>
 
     <div class="actions">
@@ -444,7 +444,7 @@ const NANOBOT_HTML = `<!DOCTYPE html>
       <div class="btn" onclick="fetchMiner()">⛏ Miner</div>
     </div>
 
-    <div class="output" id="output">🦞 Welcome to NanoBot! Click a button or chat below.</div>
+    <div class="output" id="output">🦞 Welcome to ClawdBot! Click a button or chat below.</div>
 
     <div class="miner-panel">
       <div class="miner-head">
@@ -492,12 +492,12 @@ const NANOBOT_HTML = `<!DOCTYPE html>
     </div>
 
     <div class="chat-box">
-      <input class="chat-input" id="chat-input" placeholder="Ask NanoBot anything..." />
+      <input class="chat-input" id="chat-input" placeholder="Ask ClawdBot anything..." />
       <button class="chat-send" onclick="sendChat()">Send</button>
     </div>
 
     <div class="status-bar">
-      NanoSolana Labs · 🦞 TamaGObot · <span id="clock"></span>
+      Solana clawd · 🦞 ClawdBot · <span id="clock"></span>
     </div>
   </div>
 

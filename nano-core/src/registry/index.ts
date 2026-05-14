@@ -1,5 +1,5 @@
 /**
- * NanoSolana Registry Module — barrel export.
+ * Solana clawd Registry Module — barrel export.
  */
 
 export {

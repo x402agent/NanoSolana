@@ -1,10 +1,10 @@
 import type {
-  NanoHubSkillManifestResponse,
+  ClawdHubSkillManifestResponse,
 } from "./oneshot.js";
 
-const DEFAULT_NANOHUB_SITE_URL = "https://hub.nanosolana.com";
+const DEFAULT_CLAWDHUB_SITE_URL = "https://hub.solana-clawd.com";
 
-export type NanoHubExploreSort =
+export type ClawdHubExploreSort =
   | "newest"
   | "downloads"
   | "rating"
@@ -12,7 +12,7 @@ export type NanoHubExploreSort =
   | "installsAllTime"
   | "trending";
 
-export interface NanoHubSkillListItem {
+export interface ClawdHubSkillListItem {
   slug: string;
   displayName?: string | null;
   summary?: string | null;
@@ -27,7 +27,7 @@ export interface NanoHubSkillListItem {
   } | null;
 }
 
-export interface NanoHubSkillDetail extends NanoHubSkillListItem {
+export interface ClawdHubSkillDetail extends ClawdHubSkillListItem {
   owner?: {
     handle?: string | null;
     displayName?: string | null;
@@ -35,7 +35,7 @@ export interface NanoHubSkillDetail extends NanoHubSkillListItem {
   } | null;
 }
 
-export interface NanoHubSearchResult {
+export interface ClawdHubSearchResult {
   score: number;
   slug?: string | null;
   displayName?: string | null;
@@ -44,13 +44,13 @@ export interface NanoHubSearchResult {
   updatedAt?: number | null;
 }
 
-export interface NanoHubSkillsResponse {
-  items: NanoHubSkillListItem[];
+export interface ClawdHubSkillsResponse {
+  items: ClawdHubSkillListItem[];
   nextCursor?: string | null;
 }
 
-export interface NanoHubSkillResponse {
-  skill: NanoHubSkillDetail | null;
+export interface ClawdHubSkillResponse {
+  skill: ClawdHubSkillDetail | null;
   latestVersion?: {
     version: string;
     createdAt?: number;
@@ -63,42 +63,42 @@ export interface NanoHubSkillResponse {
   } | null;
 }
 
-export interface NanoHubSearchResponse {
-  results: NanoHubSearchResult[];
+export interface ClawdHubSearchResponse {
+  results: ClawdHubSearchResult[];
 }
 
-export interface NanoHubSkillFileResponse {
+export interface ClawdHubSkillFileResponse {
   content: string;
   contentType?: string | null;
   path?: string | null;
   version?: string | null;
 }
 
-export function normalizeNanoHubSiteUrl(raw?: string | null): string {
-  const candidate = raw?.trim() || DEFAULT_NANOHUB_SITE_URL;
+export function normalizeClawdHubSiteUrl(raw?: string | null): string {
+  const candidate = raw?.trim() || DEFAULT_CLAWDHUB_SITE_URL;
   const normalized = candidate.startsWith("http://") || candidate.startsWith("https://")
     ? candidate
     : `https://${candidate}`;
   return normalized.replace(/\/+$/, "");
 }
 
-export function getNanoHubSiteUrl(override?: string | null): string {
-  return normalizeNanoHubSiteUrl(override ?? process.env.NANO_HUB_URL ?? DEFAULT_NANOHUB_SITE_URL);
+export function getClawdHubSiteUrl(override?: string | null): string {
+  return normalizeClawdHubSiteUrl(override ?? process.env.CLAWD_HUB_URL ?? DEFAULT_CLAWDHUB_SITE_URL);
 }
 
-export function getNanoHubApiBaseUrl(override?: string | null): string {
-  return `${getNanoHubSiteUrl(override)}/api/v1`;
+export function getClawdHubApiBaseUrl(override?: string | null): string {
+  return `${getClawdHubSiteUrl(override)}/api/v1`;
 }
 
-export function getNanoHubDiscoveryUrl(override?: string | null): string {
-  return `${getNanoHubSiteUrl(override)}/.well-known/nanohub.json`;
+export function getClawdHubDiscoveryUrl(override?: string | null): string {
+  return `${getClawdHubSiteUrl(override)}/.well-known/nanohub.json`;
 }
 
-export function getNanoHubSkillUrl(
+export function getClawdHubSkillUrl(
   slug: string,
   options: { siteUrl?: string | null; ownerHandle?: string | null } = {},
 ): string {
-  const siteUrl = getNanoHubSiteUrl(options.siteUrl);
+  const siteUrl = getClawdHubSiteUrl(options.siteUrl);
   const safeSlug = encodeURIComponent(slug.trim());
   if (options.ownerHandle?.trim()) {
     return `${siteUrl}/${encodeURIComponent(options.ownerHandle.trim())}/${safeSlug}`;
@@ -106,7 +106,7 @@ export function getNanoHubSkillUrl(
   return `${siteUrl}/skills/${safeSlug}`;
 }
 
-export function getNanoHubApiSort(sort?: string | null): string {
+export function getClawdHubApiSort(sort?: string | null): string {
   const normalized = sort?.trim().toLowerCase();
   if (!normalized || normalized === "newest" || normalized === "updated") {
     return "updated";
@@ -137,53 +137,53 @@ export function getNanoHubApiSort(sort?: string | null): string {
   );
 }
 
-export async function listNanoHubSkills(options: {
+export async function listClawdHubSkills(options: {
   siteUrl?: string | null;
   limit?: number;
   sort?: string | null;
   highlightedOnly?: boolean;
-} = {}): Promise<NanoHubSkillsResponse> {
-  const url = new URL(`${getNanoHubApiBaseUrl(options.siteUrl)}/skills`);
+} = {}): Promise<ClawdHubSkillsResponse> {
+  const url = new URL(`${getClawdHubApiBaseUrl(options.siteUrl)}/skills`);
   if (options.limit) {
-    url.searchParams.set("limit", String(clampNanoHubLimit(options.limit)));
+    url.searchParams.set("limit", String(clampClawdHubLimit(options.limit)));
   }
-  const apiSort = getNanoHubApiSort(options.sort);
+  const apiSort = getClawdHubApiSort(options.sort);
   if (apiSort !== "updated") {
     url.searchParams.set("sort", apiSort);
   }
   if (options.highlightedOnly) {
     url.searchParams.set("highlightedOnly", "true");
   }
-  return fetchNanoHubJson<NanoHubSkillsResponse>(url.toString());
+  return fetchClawdHubJson<ClawdHubSkillsResponse>(url.toString());
 }
 
-export async function searchNanoHubSkills(options: {
+export async function searchClawdHubSkills(options: {
   query: string;
   siteUrl?: string | null;
   limit?: number;
   highlightedOnly?: boolean;
-}): Promise<NanoHubSearchResponse> {
-  const url = new URL(`${getNanoHubApiBaseUrl(options.siteUrl)}/search`);
+}): Promise<ClawdHubSearchResponse> {
+  const url = new URL(`${getClawdHubApiBaseUrl(options.siteUrl)}/search`);
   url.searchParams.set("q", options.query.trim());
   if (options.limit) {
-    url.searchParams.set("limit", String(clampNanoHubLimit(options.limit)));
+    url.searchParams.set("limit", String(clampClawdHubLimit(options.limit)));
   }
   if (options.highlightedOnly) {
     url.searchParams.set("highlightedOnly", "true");
   }
-  return fetchNanoHubJson<NanoHubSearchResponse>(url.toString());
+  return fetchClawdHubJson<ClawdHubSearchResponse>(url.toString());
 }
 
-export async function getNanoHubSkill(
+export async function getClawdHubSkill(
   slug: string,
   options: { siteUrl?: string | null } = {},
-): Promise<NanoHubSkillResponse> {
-  return fetchNanoHubJson<NanoHubSkillResponse>(
-    `${getNanoHubApiBaseUrl(options.siteUrl)}/skills/${encodeURIComponent(slug.trim())}`,
+): Promise<ClawdHubSkillResponse> {
+  return fetchClawdHubJson<ClawdHubSkillResponse>(
+    `${getClawdHubApiBaseUrl(options.siteUrl)}/skills/${encodeURIComponent(slug.trim())}`,
   );
 }
 
-export async function getNanoHubSkillFile(
+export async function getClawdHubSkillFile(
   slug: string,
   options: {
     path?: string;
@@ -191,8 +191,8 @@ export async function getNanoHubSkillFile(
     version?: string | null;
     tag?: string | null;
   } = {},
-): Promise<NanoHubSkillFileResponse> {
-  const url = new URL(`${getNanoHubApiBaseUrl(options.siteUrl)}/skills/${encodeURIComponent(slug.trim())}/file`);
+): Promise<ClawdHubSkillFileResponse> {
+  const url = new URL(`${getClawdHubApiBaseUrl(options.siteUrl)}/skills/${encodeURIComponent(slug.trim())}/file`);
   url.searchParams.set("path", options.path?.trim() || "SKILL.md");
   if (options.version?.trim()) {
     url.searchParams.set("version", options.version.trim());
@@ -200,24 +200,24 @@ export async function getNanoHubSkillFile(
   if (options.tag?.trim()) {
     url.searchParams.set("tag", options.tag.trim());
   }
-  return fetchNanoHubJson<NanoHubSkillFileResponse>(url.toString());
+  return fetchClawdHubJson<ClawdHubSkillFileResponse>(url.toString());
 }
 
-export async function getNanoHubSkillManifest(
+export async function getClawdHubSkillManifest(
   slug: string,
   options: { siteUrl?: string | null } = {},
-): Promise<NanoHubSkillManifestResponse> {
-  return fetchNanoHubJson<NanoHubSkillManifestResponse>(
-    `${getNanoHubApiBaseUrl(options.siteUrl)}/skills/${encodeURIComponent(slug.trim())}/manifest`,
+): Promise<ClawdHubSkillManifestResponse> {
+  return fetchClawdHubJson<ClawdHubSkillManifestResponse>(
+    `${getClawdHubApiBaseUrl(options.siteUrl)}/skills/${encodeURIComponent(slug.trim())}/manifest`,
   );
 }
 
-export function clampNanoHubLimit(limit: number, fallback = 10): number {
+export function clampClawdHubLimit(limit: number, fallback = 10): number {
   if (!Number.isFinite(limit)) return fallback;
   return Math.max(1, Math.min(200, Math.floor(limit)));
 }
 
-async function fetchNanoHubJson<T>(url: string): Promise<T> {
+async function fetchClawdHubJson<T>(url: string): Promise<T> {
   const response = await fetch(url, {
     headers: {
       Accept: "application/json",
@@ -231,7 +231,7 @@ async function fetchNanoHubJson<T>(url: string): Promise<T> {
     const message = payload && typeof payload === "object" && payload !== null
       ? ("error" in payload && payload.error) || ("message" in payload && payload.message)
       : undefined;
-    throw new Error(message || `NanoHub request failed (${response.status})`);
+    throw new Error(message || `ClawdHub request failed (${response.status})`);
   }
 
   return payload as T;

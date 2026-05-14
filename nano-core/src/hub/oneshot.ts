@@ -1,30 +1,30 @@
-export interface NanoHubManifestFile {
+export interface ClawdHubManifestFile {
   path: string;
   size: number;
   sha256?: string | null;
   contentType?: string | null;
 }
 
-export interface NanoHubManifestOwner {
+export interface ClawdHubManifestOwner {
   handle?: string | null;
   displayName?: string | null;
   image?: string | null;
 }
 
-export interface NanoHubManifestEnvVar {
+export interface ClawdHubManifestEnvVar {
   name: string;
   required?: boolean;
   description?: string | null;
 }
 
-export interface NanoHubManifestDependency {
+export interface ClawdHubManifestDependency {
   name?: string;
   kind?: string;
   package?: string;
   version?: string;
 }
 
-export interface NanoHubManifestInstallSpec {
+export interface ClawdHubManifestInstallSpec {
   kind?: string;
   package?: string;
   version?: string;
@@ -33,18 +33,18 @@ export interface NanoHubManifestInstallSpec {
   bins?: string[];
 }
 
-export interface NanoHubSkillManifest {
+export interface ClawdHubSkillManifest {
   schemaVersion: number;
   kind: "skill";
   slug: string;
   displayName: string;
   summary?: string | null;
   version: string;
-  owner?: NanoHubManifestOwner | null;
+  owner?: ClawdHubManifestOwner | null;
   tags?: string[];
-  files?: NanoHubManifestFile[];
-  install?: NanoHubManifestInstallSpec[];
-  dependencies?: NanoHubManifestDependency[];
+  files?: ClawdHubManifestFile[];
+  install?: ClawdHubManifestInstallSpec[];
+  dependencies?: ClawdHubManifestDependency[];
   nix?: {
     plugin?: string | null;
     systems?: string[];
@@ -55,7 +55,7 @@ export interface NanoHubSkillManifest {
     example?: string | null;
   } | null;
   requirements?: {
-    env?: NanoHubManifestEnvVar[];
+    env?: ClawdHubManifestEnvVar[];
     bins?: string[];
     anyBins?: string[];
     config?: string[];
@@ -76,11 +76,11 @@ export interface NanoHubSkillManifest {
   };
 }
 
-export interface NanoHubSkillManifestResponse {
-  manifest: NanoHubSkillManifest;
+export interface ClawdHubSkillManifestResponse {
+  manifest: ClawdHubSkillManifest;
 }
 
-export interface NanoSolanaOneShotStep {
+export interface ClawdOneShotStep {
   key: string;
   title: string;
   status: "ready" | "needs_input" | "optional";
@@ -88,7 +88,7 @@ export interface NanoSolanaOneShotStep {
   data?: Record<string, unknown>;
 }
 
-export interface NanoSolanaOneShotPlan {
+export interface ClawdOneShotPlan {
   slug: string;
   displayName: string;
   version: string;
@@ -105,20 +105,20 @@ export interface NanoSolanaOneShotPlan {
   linkedSkills: string[];
   installPackages: string[];
   warnings: string[];
-  steps: NanoSolanaOneShotStep[];
+  steps: ClawdOneShotStep[];
 }
 
 function uniqueStrings(values: Array<string | null | undefined>): string[] {
   return [...new Set(values.map((value) => value?.trim()).filter((value): value is string => Boolean(value)))];
 }
 
-export function buildNanoSolanaOneShotPlan(
-  manifest: NanoHubSkillManifest,
+export function buildClawdOneShotPlan(
+  manifest: ClawdHubSkillManifest,
   options: {
     env?: Record<string, string | undefined>;
     siteUrl?: string | null;
   } = {},
-): NanoSolanaOneShotPlan {
+): ClawdOneShotPlan {
   const env = options.env ?? process.env;
   const requiredEnv = (manifest.requirements?.env ?? [])
     .filter((item) => item.required !== false)
@@ -144,7 +144,7 @@ export function buildNanoSolanaOneShotPlan(
 
   const warnings: string[] = [];
   if (!entryCommand) {
-    warnings.push("No entry command declared in the NanoHub manifest.");
+    warnings.push("No entry command declared in the ClawdHub manifest.");
   }
   if (extensions.length === 0) {
     warnings.push("No extension graph declared for this skill.");
@@ -154,12 +154,12 @@ export function buildNanoSolanaOneShotPlan(
     if (trimmed) warnings.push(trimmed);
   }
 
-  const steps: NanoSolanaOneShotStep[] = [
+  const steps: ClawdOneShotStep[] = [
     {
       key: "resolve",
-      title: "Resolve NanoHub bundle",
+      title: "Resolve ClawdHub bundle",
       status: "ready",
-      details: `Resolved ${manifest.slug}@${manifest.version} from NanoHub.`,
+      details: `Resolved from ClawdHub.`,
       data: {
         slug: manifest.slug,
         version: manifest.version,

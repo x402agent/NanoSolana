@@ -1,4 +1,4 @@
-// ── NanoSolana × PumpFun — Barrel Export ─────────────────────────────────────
+// ── Solana clawd × PumpFun — Barrel Export ─────────────────────────────────────
 //
 // Main entry point for the Pump.Fun integration module.
 // Exports the SDK bridge, swarm spawner, Telegram gateway, bot registry,

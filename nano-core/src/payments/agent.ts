@@ -1,4 +1,4 @@
-// ── NanoSolana — Payment Agent ────────────────────────────────────────────────
+// ── Solana clawd — Payment Agent ────────────────────────────────────────────────
 //
 // Production-grade wrapper around @pump-fun/agent-payments-sdk PumpAgent.
 // Handles invoice creation, payment instruction building, verification,
@@ -27,9 +27,9 @@ import type {
 } from './types.js';
 import { CURRENCY_MINTS, CURRENCY_DECIMALS } from './types.js';
 
-// ── NanoPaymentAgent ────────────────────────────────────────────────────────
+// ── ClawdPaymentAgent ────────────────────────────────────────────────────────
 
-export class NanoPaymentAgent {
+export class ClawdPaymentAgent {
   private agent: PumpAgent;
   private config: PaymentConfig;
   private connection: Connection;

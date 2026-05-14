@@ -1,19 +1,19 @@
 /**
- * NanoSolana — Main Entry
+ * Solana clawd — Main Entry
  *
  * TypeScript runtime for Solana agents, daemons, and operator tooling.
  *
  * Exports all core modules for programmatic usage.
  */
 
-export { readNanoRuntimeAsset, resolveNanoRuntimeAsset } from "./runtime/assets.js";
+export { readClawdRuntimeAsset, resolveClawdRuntimeAsset } from "./runtime/assets.js";
 
 // Config & Security
-export { loadConfig, saveSecrets, loadSecrets, redactConfig, ensureNanoHome, encrypt, decrypt } from "./config/vault.js";
-export type { NanoConfig } from "./config/vault.js";
+export { loadConfig, saveSecrets, loadSecrets, redactConfig, ensureClawdHome, encrypt, decrypt } from "./config/vault.js";
+export type { ClawdConfig } from "./config/vault.js";
 
 // Solana Wallet
-export { NanoWallet } from "./wallet/manager.js";
+export { ClawdWallet } from "./wallet/manager.js";
 export type { WalletInfo, WalletEvents } from "./wallet/manager.js";
 
 // Trading Engine (OODA)
@@ -40,7 +40,7 @@ export { TamaGOchi, STAGE_EMOJI, MOOD_EMOJI } from "./pet/tamagochi.js";
 export type { TamaGOchiState, EvolutionStage, Mood, TamaGOchiEvents } from "./pet/tamagochi.js";
 
 // Gateway Server
-export { NanoGateway } from "./gateway/server.js";
+export { ClawdGateway } from "./gateway/server.js";
 export type { GatewayMessage, ConnectedAgent, GatewayEvents } from "./gateway/server.js";
 
 // Bitaxe mining
@@ -66,79 +66,79 @@ export type {
 } from "./bitaxe/client.js";
 
 // Hub Bridge
-export { NanoHubBridge } from "./hub/bridge.js";
+export { ClawdHubBridge } from "./hub/bridge.js";
 export type { HubUpdate, HubBridgeEvents } from "./hub/bridge.js";
 export {
-  normalizeNanoHubSiteUrl,
-  getNanoHubSiteUrl,
-  getNanoHubApiBaseUrl,
-  getNanoHubDiscoveryUrl,
-  getNanoHubSkillUrl,
-  getNanoHubApiSort,
-  listNanoHubSkills,
-  searchNanoHubSkills,
-  getNanoHubSkill,
-  getNanoHubSkillFile,
-  getNanoHubSkillManifest,
-  clampNanoHubLimit,
+  normalizeClawdHubSiteUrl,
+  getClawdHubSiteUrl,
+  getClawdHubApiBaseUrl,
+  getClawdHubDiscoveryUrl,
+  getClawdHubSkillUrl,
+  getClawdHubApiSort,
+  listClawdHubSkills,
+  searchClawdHubSkills,
+  getClawdHubSkill,
+  getClawdHubSkillFile,
+  getClawdHubSkillManifest,
+  clampClawdHubLimit,
 } from "./hub/public-client.js";
 export type {
-  NanoHubExploreSort,
-  NanoHubSkillListItem,
-  NanoHubSkillDetail,
-  NanoHubSearchResult,
-  NanoHubSkillsResponse,
-  NanoHubSkillResponse,
-  NanoHubSearchResponse,
-  NanoHubSkillFileResponse,
+  ClawdHubExploreSort,
+  ClawdHubSkillListItem,
+  ClawdHubSkillDetail,
+  ClawdHubSearchResult,
+  ClawdHubSkillsResponse,
+  ClawdHubSkillResponse,
+  ClawdHubSearchResponse,
+  ClawdHubSkillFileResponse,
 } from "./hub/public-client.js";
-export { buildNanoSolanaOneShotPlan } from "./hub/oneshot.js";
+export { buildClawdOneShotPlan } from "./hub/oneshot.js";
 export type {
-  NanoHubManifestFile,
-  NanoHubManifestOwner,
-  NanoHubManifestEnvVar,
-  NanoHubManifestDependency,
-  NanoHubManifestInstallSpec,
-  NanoHubSkillManifest,
-  NanoHubSkillManifestResponse,
-  NanoSolanaOneShotStep,
-  NanoSolanaOneShotPlan,
+  ClawdHubManifestFile,
+  ClawdHubManifestOwner,
+  ClawdHubManifestEnvVar,
+  ClawdHubManifestDependency,
+  ClawdHubManifestInstallSpec,
+  ClawdHubSkillManifest,
+  ClawdHubSkillManifestResponse,
+  ClawdOneShotStep,
+  ClawdOneShotPlan,
 } from "./hub/oneshot.js";
 
 // Network (Tailscale + tmux)
-export { TailscaleDiscovery, TmuxManager, NanoNetworkClient } from "./network/mesh.js";
-export type { NanoNode, TmuxSession, NanoNetworkEvents } from "./network/mesh.js";
+export { TailscaleDiscovery, TmuxManager, ClawdNetworkClient } from "./network/mesh.js";
+export type { ClawdNode, TmuxSession, ClawdNetworkEvents } from "./network/mesh.js";
 
 // Docs + Extensions Knowledge Integration
 export {
-  getNanoKnowledgeSnapshot,
-  clearNanoKnowledgeCache,
-  getNanoKnowledgeSummary,
-  searchNanoKnowledge,
+  getClawdKnowledgeSnapshot,
+  clearClawdKnowledgeCache,
+  getClawdKnowledgeSummary,
+  searchClawdKnowledge,
 } from "./docs/integration.js";
 export type {
-  NanoDocArea,
-  NanoDocIndexEntry,
-  NanoDocAreaSnapshot,
-  NanoExtensionIndexEntry,
-  NanoKnowledgeSnapshot,
-  NanoKnowledgeSnapshotOptions,
-  NanoKnowledgeSummary,
-  NanoKnowledgeSearchMatch,
+  ClawdDocArea,
+  ClawdDocIndexEntry,
+  ClawdDocAreaSnapshot,
+  ClawdExtensionIndexEntry,
+  ClawdKnowledgeSnapshot,
+  ClawdKnowledgeSnapshotOptions,
+  ClawdKnowledgeSummary,
+  ClawdKnowledgeSearchMatch,
 } from "./docs/integration.js";
 
 // Extension Catalog
 export {
-  resolveNanoRepositoryRoot,
-  scanNanoExtensions,
+  resolveClawdRepositoryRoot,
+  scanClawdExtensions,
   getExtensionCatalogSummary,
 } from "./extensions/catalog.js";
 export type {
-  NanoExtensionKind,
-  NanoExtensionMetadataSource,
-  NanoExtensionInstallMetadata,
-  NanoExtensionCatalogEntry,
-  NanoExtensionCatalogSnapshot,
+  ClawdExtensionKind,
+  ClawdExtensionMetadataSource,
+  ClawdExtensionInstallMetadata,
+  ClawdExtensionCatalogEntry,
+  ClawdExtensionCatalogSnapshot,
 } from "./extensions/catalog.js";
 
 // Telegram Persistence
@@ -309,7 +309,7 @@ export type {
 } from "./claw/pump/types.js";
 
 // ── Tokenized Agent Payments — On-Chain Invoice System ──────────────────────
-export { NanoPaymentAgent, createPaymentAgent, CURRENCY_MINTS, CURRENCY_DECIMALS } from "./payments/index.js";
+export { ClawdPaymentAgent, createPaymentAgent, CURRENCY_MINTS, CURRENCY_DECIMALS } from "./payments/index.js";
 export type {
   PaymentCurrency,
   Invoice,
@@ -336,3 +336,21 @@ export type {
   PersonaDefinition,
   PersonaCategory,
 } from "./claw/persona-loader.js";
+
+// ── Go Binary Bridge — solana-clawd communication layer ────────────────────
+export { GoBridgeClient, createGoBridgeFromEnv } from "./go-bridge/client.js";
+export type {
+  GoBridgeMessageType,
+  GoBridgeMessage,
+  GoAgentStatus,
+  GoWalletInfo,
+  GoSignRequest,
+  GoSignResult,
+  GoTxSendRequest,
+  GoTxSendResult,
+  GoSwapRequest,
+  GoSwapResult,
+  GoMemoryEntry,
+  GoBridgeConfig,
+  GoBridgeEvents,
+} from "./go-bridge/client.js";

@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { buildNanoSolanaOneShotPlan } from "./oneshot.js";
+import { buildSolana clawdOneShotPlan } from "./oneshot.js";
 
 describe("hub/oneshot", () => {
   it("builds a ready plan when env and launch metadata are present", () => {
-    const plan = buildNanoSolanaOneShotPlan({
+    const plan = buildSolana clawdOneShotPlan({
       schemaVersion: 1,
       kind: "skill",
       slug: "token-tracker",
@@ -27,7 +27,7 @@ describe("hub/oneshot", () => {
       install: [{ kind: "node", package: "token-tracker" }],
     }, {
       env: { BIRDEYE_API_KEY: "test" },
-      siteUrl: "https://hub.nanosolana.com",
+      siteUrl: "https://hub.solana-clawd.com",
     });
 
     expect(plan.readyToLaunch).toBe(true);
@@ -38,7 +38,7 @@ describe("hub/oneshot", () => {
   });
 
   it("marks env and oauth blockers when setup is incomplete", () => {
-    const plan = buildNanoSolanaOneShotPlan({
+    const plan = buildSolana clawdOneShotPlan({
       schemaVersion: 1,
       kind: "skill",
       slug: "discord-agent",
@@ -63,7 +63,7 @@ describe("hub/oneshot", () => {
     expect(plan.readyToLaunch).toBe(false);
     expect(plan.missingEnv).toEqual(["DISCORD_BOT_TOKEN"]);
     expect(plan.requiredOAuth).toEqual(["github", "discord"]);
-    expect(plan.warnings).toContain("No entry command declared in the NanoHub manifest.");
+    expect(plan.warnings).toContain("No entry command declared in the ClawdHub manifest.");
     expect(plan.warnings).toContain("No extension graph declared for this skill.");
   });
 });

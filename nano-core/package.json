@@ -1,7 +1,7 @@
 {
-  "name": "nanosolana",
+  "name": "solana-clawd",
   "version": "1.0.3",
-  "description": "TypeScript runtime and CLI for launching Solana trading agents, autonomous daemons, and one-shot operator workflows.",
+  "description": "TypeScript runtime and CLI for launching Solana clawd agents, autonomous daemons, and one-shot operator workflows — complementary to the solana-clawd Go binary.",
   "keywords": [
     "solana",
     "trading-bot",
@@ -36,11 +36,14 @@
     "autonomous-daemon",
     "one-shot",
     "typescript-runtime",
-    "solana-cli"
+    "solana-cli",
+    "clawd",
+    "go-binary",
+    "solana-clawd"
   ],
   "license": "MIT",
-  "author": "NanoSolana Labs <team@nanosolana.com> (https://nanosolana.com)",
-  "homepage": "https://nanosolana.com",
+  "author": "x402agent (https://github.com/x402agent/solana-clawd)",
+  "homepage": "https://github.com/x402agent/solana-clawd",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/x402agent/NanoSolana.git",
@@ -67,7 +70,7 @@
   ],
   "type": "module",
   "bin": {
-    "nanosolana": "dist/cli/entry.js"
+    "clawd": "dist/cli/entry.js"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -101,7 +104,7 @@
     "hub:dev": "cd ../nanohub && bun run dev",
     "hub:serve": "tsx src/hub/registry-server.ts",
     "hub:register": "tsx src/cli/entry.ts hub register",
-    "nanosolana": "tsx src/cli/entry.ts",
+    "clawd": "tsx src/cli/entry.ts",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
