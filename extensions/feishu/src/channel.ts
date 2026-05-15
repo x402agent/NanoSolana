@@ -2,15 +2,15 @@ import {
   collectAllowlistProviderRestrictSendersWarnings,
   formatAllowFromLowercase,
   mapAllowFromEntries,
-} from "nanosolana/plugin-sdk/compat";
-import type { ChannelMeta, ChannelPlugin, TamaGObotConfig } from "nanosolana/plugin-sdk/feishu";
+} from "nanoclawd/plugin-sdk/compat";
+import type { ChannelMeta, ChannelPlugin, TamaGObotConfig } from "nanoclawd/plugin-sdk/feishu";
 import {
   buildProbeChannelStatusSummary,
   buildRuntimeAccountStatusSnapshot,
   createDefaultChannelRuntimeState,
   DEFAULT_ACCOUNT_ID,
   PAIRING_APPROVED_MESSAGE,
-} from "nanosolana/plugin-sdk/feishu";
+} from "nanoclawd/plugin-sdk/feishu";
 import {
   resolveFeishuAccount,
   resolveFeishuCredentials,

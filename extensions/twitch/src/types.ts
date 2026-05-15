@@ -2,7 +2,7 @@
  * Twitch channel plugin types.
  *
  * This file defines Twitch-specific types. Generic channel types are imported
- * from NanoSolana core.
+ * from NanoClawd core.
  */
 
 import type {
@@ -19,10 +19,10 @@ import type {
   ChannelResolveKind,
   ChannelResolveResult,
   ChannelStatusAdapter,
-  NanoSolanaConfig,
+  NanoClawdConfig,
   OutboundDeliveryResult,
   RuntimeEnv,
-} from "nanosolana/plugin-sdk/twitch";
+} from "nanoclawd/plugin-sdk/twitch";
 
 // ============================================================================
 // Twitch-Specific Types
@@ -137,5 +137,5 @@ import type { z } from "zod";
 import type { TwitchConfigSchema } from "./config-schema.js";
 export type TwitchConfig = z.infer<typeof TwitchConfigSchema>;
 
-export type { NanoSolanaConfig };
+export type { NanoClawdConfig };
 export type { RuntimeEnv };

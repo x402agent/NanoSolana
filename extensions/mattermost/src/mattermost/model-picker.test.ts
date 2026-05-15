@@ -1,8 +1,8 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/mattermost";
-import { buildModelsProviderData } from "nanosolana/plugin-sdk/mattermost";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/mattermost";
+import { buildModelsProviderData } from "nanoclawd/plugin-sdk/mattermost";
 import { describe, expect, it } from "vitest";
 import {
   buildMattermostAllowedModelRefs,
@@ -16,13 +16,13 @@ import {
 
 const data = {
   byProvider: new Map<string, Set<string>>([
-    ["anthropic", new Set(["claude-opus-4-5", "claude-sonnet-4-5"])],
+    ["anthropic", new Set(["clawd-opus-4-5", "clawd-sonnet-4-5"])],
     ["openai", new Set(["gpt-4.1", "gpt-5"])],
   ]),
   providers: ["anthropic", "openai"],
   resolvedDefault: {
     provider: "anthropic",
-    model: "claude-opus-4-5",
+    model: "clawd-opus-4-5",
   },
 };
 
@@ -40,8 +40,8 @@ describe("Mattermost model picker", () => {
   it("builds the allowed model refs set", () => {
     expect(buildMattermostAllowedModelRefs(data)).toEqual(
       new Set([
-        "anthropic/claude-opus-4-5",
-        "anthropic/claude-sonnet-4-5",
+        "anthropic/clawd-opus-4-5",
+        "anthropic/clawd-sonnet-4-5",
         "openai/gpt-4.1",
         "openai/gpt-5",
       ]),
@@ -120,13 +120,13 @@ describe("Mattermost model picker", () => {
   it("falls back to the routed agent default model when no override is stored", async () => {
     const testDir = fs.mkdtempSync(path.join(os.tmpdir(), "mm-model-picker-"));
     try {
-      const cfg: NanoSolanaConfig = {
+      const cfg: NanoClawdConfig = {
         session: {
           store: path.join(testDir, "{agentId}.json"),
         },
         agents: {
           defaults: {
-            model: "anthropic/claude-opus-4-5",
+            model: "anthropic/clawd-opus-4-5",
           },
           list: [
             {

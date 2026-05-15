@@ -360,12 +360,12 @@ Send wake-up signal to {worker_name}:
 3. Log nudge to activity feed
 4. Return confirmation
 
-The nudge bypasses Claude Code's politeness - worker will
+The nudge bypasses Clawd Code's politeness - worker will
 check hook regardless of what you type.
 """
 
 # gt seance: Talk to a worker's predecessor (dead ancestor)
-# Uses Claude Code's /resume to communicate with previous sessions
+# Uses Clawd Code's /resume to communicate with previous sessions
 block gt_seance(worker_name, question):
   session "Seance: {worker_name} talking to predecessor"
     prompt: """

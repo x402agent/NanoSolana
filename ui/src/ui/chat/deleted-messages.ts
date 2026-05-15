@@ -1,4 +1,4 @@
-const PREFIX = "nanosolana:deleted:";
+const PREFIX = "nanoclawd:deleted:";
 
 export class DeletedMessages {
   private key: string;

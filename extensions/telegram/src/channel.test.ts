@@ -1,16 +1,16 @@
 import type {
   ChannelAccountSnapshot,
   ChannelGatewayContext,
-  NanoSolanaConfig,
+  NanoClawdConfig,
   PluginRuntime,
   ResolvedTelegramAccount,
-} from "nanosolana/plugin-sdk/telegram";
+} from "nanoclawd/plugin-sdk/telegram";
 import { describe, expect, it, vi } from "vitest";
 import { createRuntimeEnv } from "../../test-utils/runtime-env.js";
 import { telegramPlugin } from "./channel.js";
 import { setTelegramRuntime } from "./runtime.js";
 
-function createCfg(): NanoSolanaConfig {
+function createCfg(): NanoClawdConfig {
   return {
     channels: {
       telegram: {
@@ -22,11 +22,11 @@ function createCfg(): NanoSolanaConfig {
         },
       },
     },
-  } as NanoSolanaConfig;
+  } as NanoClawdConfig;
 }
 
 function createStartAccountCtx(params: {
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   accountId: string;
   runtime: ReturnType<typeof createRuntimeEnv>;
 }): ChannelGatewayContext<ResolvedTelegramAccount> {

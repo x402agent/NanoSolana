@@ -1,11 +1,11 @@
 ---
-summary: "Solana Claude Go strategy mutation loop and research constraints"
+summary: "Solana Clawd Go strategy mutation loop and research constraints"
 title: "Research Program"
 ---
 
 # Research Program
 
-Solana Claude Go ships with a separate research loop document in
+Solana Clawd Go ships with a separate research loop document in
 [`nano-core/RESEARCH.md`](../../nano-core/RESEARCH.md).
 
 Use it for the evolving strategy agenda, not for the runtime's core identity.

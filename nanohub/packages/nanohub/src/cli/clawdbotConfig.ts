@@ -43,21 +43,21 @@ export async function resolveTamaGObotSkillRoots(): Promise<TamaGObotSkillRoots>
   const sharedSkills = resolveUserPath(join(tamagobotStateDir, 'skills'))
   pushRoot(roots, labels, sharedSkills, 'Shared skills')
 
-  const nanosolanaStateDir = resolveNanoSolanaStateDir()
-  const nanosolanaShared = resolveUserPath(join(nanosolanaStateDir, 'skills'))
-  pushRoot(roots, labels, nanosolanaShared, 'NanoSolana: Shared skills')
+  const nanoclawdStateDir = resolveNanoClawdStateDir()
+  const nanoclawdShared = resolveUserPath(join(nanoclawdStateDir, 'skills'))
+  pushRoot(roots, labels, nanoclawdShared, 'NanoClawd: Shared skills')
 
-  const [tamagobotConfig, nanosolanaConfig] = await Promise.all([
+  const [tamagobotConfig, nanoclawdConfig] = await Promise.all([
     readTamaGObotConfig(),
-    readNanoSolanaConfig(),
+    readNanoClawdConfig(),
   ])
-  if (!tamagobotConfig && !nanosolanaConfig) return { roots, labels }
+  if (!tamagobotConfig && !nanoclawdConfig) return { roots, labels }
 
   if (tamagobotConfig) {
     addConfigRoots(tamagobotConfig, roots, labels)
   }
-  if (nanosolanaConfig) {
-    addConfigRoots(nanosolanaConfig, roots, labels, 'NanoSolana')
+  if (nanoclawdConfig) {
+    addConfigRoots(nanoclawdConfig, roots, labels, 'NanoClawd')
   }
 
   return { roots, labels }
@@ -65,8 +65,8 @@ export async function resolveTamaGObotSkillRoots(): Promise<TamaGObotSkillRoots>
 
 export async function resolveTamaGObotDefaultWorkspace(): Promise<string | null> {
   const config = await readTamaGObotConfig()
-  const nanosolanaConfig = await readNanoSolanaConfig()
-  if (!config && !nanosolanaConfig) return null
+  const nanoclawdConfig = await readNanoClawdConfig()
+  if (!config && !nanoclawdConfig) return null
 
   const defaultsWorkspace = resolveUserPath(
     config?.agents?.defaults?.workspace ?? config?.agent?.workspace ?? '',
@@ -79,17 +79,17 @@ export async function resolveTamaGObotDefaultWorkspace(): Promise<string | null>
   const listWorkspace = resolveUserPath(defaultAgent?.workspace ?? '')
   if (listWorkspace) return listWorkspace
 
-  if (!nanosolanaConfig) return null
-  const nanosolanaDefaults = resolveUserPath(
-    nanosolanaConfig.agents?.defaults?.workspace ?? nanosolanaConfig.agent?.workspace ?? '',
+  if (!nanoclawdConfig) return null
+  const nanoclawdDefaults = resolveUserPath(
+    nanoclawdConfig.agents?.defaults?.workspace ?? nanoclawdConfig.agent?.workspace ?? '',
   )
-  if (nanosolanaDefaults) return nanosolanaDefaults
-  const nanosolanaAgents = nanosolanaConfig.agents?.list ?? []
-  const nanosolanaDefaultAgent =
-    nanosolanaAgents.find((entry) => entry.default) ??
-    nanosolanaAgents.find((entry) => entry.id === 'main')
-  const nanosolanaWorkspace = resolveUserPath(nanosolanaDefaultAgent?.workspace ?? '')
-  return nanosolanaWorkspace || null
+  if (nanoclawdDefaults) return nanoclawdDefaults
+  const nanoclawdAgents = nanoclawdConfig.agents?.list ?? []
+  const nanoclawdDefaultAgent =
+    nanoclawdAgents.find((entry) => entry.default) ??
+    nanoclawdAgents.find((entry) => entry.id === 'main')
+  const nanoclawdWorkspace = resolveUserPath(nanoclawdDefaultAgent?.workspace ?? '')
+  return nanoclawdWorkspace || null
 }
 
 function resolveTamaGObotStateDir() {
@@ -104,16 +104,16 @@ function resolveTamaGObotConfigPath() {
   return join(resolveTamaGObotStateDir(), 'tamagobot.json')
 }
 
-function resolveNanoSolanaStateDir() {
-  const override = process.env.NANOSOLANA_STATE_DIR?.trim()
+function resolveNanoClawdStateDir() {
+  const override = process.env.NANOCLAWD_STATE_DIR?.trim()
   if (override) return resolveUserPath(override)
-  return join(resolveHome(), '.nanosolana')
+  return join(resolveHome(), '.nanoclawd')
 }
 
-function resolveNanoSolanaConfigPath() {
-  const override = process.env.NANOSOLANA_CONFIG_PATH?.trim()
+function resolveNanoClawdConfigPath() {
+  const override = process.env.NANOCLAWD_CONFIG_PATH?.trim()
   if (override) return resolveUserPath(override)
-  return join(resolveNanoSolanaStateDir(), 'nanosolana.json')
+  return join(resolveNanoClawdStateDir(), 'nanoclawd.json')
 }
 
 function resolveUserPath(input: string) {
@@ -129,8 +129,8 @@ async function readTamaGObotConfig(): Promise<TamaGObotConfig | null> {
   return readConfigFile(resolveTamaGObotConfigPath())
 }
 
-async function readNanoSolanaConfig(): Promise<TamaGObotConfig | null> {
-  return readConfigFile(resolveNanoSolanaConfigPath())
+async function readNanoClawdConfig(): Promise<TamaGObotConfig | null> {
+  return readConfigFile(resolveNanoClawdConfigPath())
 }
 
 async function readConfigFile(path: string): Promise<TamaGObotConfig | null> {

@@ -1,7 +1,7 @@
 {
   "id": "discord",
   "name": "Discord",
-  "description": "NanoSolana Discord channel — trading signals, alerts, and TamaGOchi status",
+  "description": "NanoClawd Discord channel — trading signals, alerts, and TamaGOchi status",
   "channels": ["discord"],
   "configSchema": {
     "type": "object",

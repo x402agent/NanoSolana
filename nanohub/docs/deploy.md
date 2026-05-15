@@ -147,7 +147,7 @@ Drift checks:
 
 ```bash
 bun run verify:convex-contract -- --prod
-PLAYWRIGHT_BASE_URL=https://nanosolana.netlify.app bunx playwright test e2e/menu-smoke.pw.test.ts e2e/upload-auth-smoke.pw.test.ts
+PLAYWRIGHT_BASE_URL=https://nanoclawd.netlify.app bunx playwright test e2e/menu-smoke.pw.test.ts e2e/upload-auth-smoke.pw.test.ts
 ```
 
 The Playwright smoke suite should fail on visible error UI, page errors, and

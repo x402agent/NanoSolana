@@ -1,10 +1,10 @@
-# @nanosolana/nostr
+# @nanoclawd/nostr
 
-Nostr DM channel plugin for NanoSolana using NIP-04 encrypted direct messages.
+Nostr DM channel plugin for NanoClawd using NIP-04 encrypted direct messages.
 
 ## Overview
 
-This extension adds Nostr as a messaging channel to NanoSolana. It enables your bot to:
+This extension adds Nostr as a messaging channel to NanoClawd. It enables your bot to:
 
 - Receive encrypted DMs from Nostr users
 - Send encrypted responses back
@@ -13,7 +13,7 @@ This extension adds Nostr as a messaging channel to NanoSolana. It enables your 
 ## Installation
 
 ```bash
-nanosolana plugins install @nanosolana/nostr
+nanoclawd plugins install @nanoclawd/nostr
 ```
 
 ## Quick Setup
@@ -90,7 +90,7 @@ nanosolana plugins install @nanosolana/nostr
 # Using strfry
 docker run -p 7777:7777 ghcr.io/hoytech/strfry
 
-# Configure nanosolana to use local relay
+# Configure nanoclawd to use local relay
 "relays": ["ws://localhost:7777"]
 ```
 

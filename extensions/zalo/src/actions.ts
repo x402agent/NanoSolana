@@ -1,15 +1,15 @@
 import type {
   ChannelMessageActionAdapter,
   ChannelMessageActionName,
-  NanoSolanaConfig,
-} from "nanosolana/plugin-sdk/zalo";
-import { extractToolSend, jsonResult, readStringParam } from "nanosolana/plugin-sdk/zalo";
+  NanoClawdConfig,
+} from "nanoclawd/plugin-sdk/zalo";
+import { extractToolSend, jsonResult, readStringParam } from "nanoclawd/plugin-sdk/zalo";
 import { listEnabledZaloAccounts } from "./accounts.js";
 import { sendMessageZalo } from "./send.js";
 
 const providerId = "zalo";
 
-function listEnabledAccounts(cfg: NanoSolanaConfig) {
+function listEnabledAccounts(cfg: NanoClawdConfig) {
   return listEnabledZaloAccounts(cfg).filter(
     (account) => account.enabled && account.tokenSource !== "none",
   );

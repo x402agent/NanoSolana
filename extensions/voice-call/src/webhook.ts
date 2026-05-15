@@ -4,7 +4,7 @@ import {
   isRequestBodyLimitError,
   readRequestBodyWithLimit,
   requestBodyErrorToText,
-} from "nanosolana/plugin-sdk/voice-call";
+} from "nanoclawd/plugin-sdk/voice-call";
 import { normalizeVoiceCallConfig, type VoiceCallConfig } from "./config.js";
 import type { CoreConfig } from "./core-bridge.js";
 import type { CallManager } from "./manager.js";

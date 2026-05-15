@@ -1,7 +1,7 @@
-package ai.nanosolana.app.node
+package ai.nanoclawd.app.node
 
-import ai.nanosolana.app.SecurePrefs
-import ai.nanosolana.app.gateway.GatewaySession
+import ai.nanoclawd.app.SecurePrefs
+import ai.nanoclawd.app.gateway.GatewaySession
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

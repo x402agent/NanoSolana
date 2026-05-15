@@ -14,6 +14,6 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "NanoSolanaNodeAndroid"
+rootProject.name = "NanoClawdNodeAndroid"
 include(":app")
 include(":benchmark")

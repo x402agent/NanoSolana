@@ -1,4 +1,4 @@
-import NanoSolanaProtocol
+import NanoClawdProtocol
 import SwiftUI
 
 extension ChannelsSettings {

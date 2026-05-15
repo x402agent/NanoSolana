@@ -8,7 +8,7 @@ function createHost() {
     connectGeneration: 0,
     connected: true,
     tab: "chat",
-    assistantName: "NanoSolana",
+    assistantName: "NanoClawd",
     assistantAvatar: null,
     assistantAgentId: null,
     chatHasAutoScrolled: false,

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-// ── Solana Claude Go × PumpFun — Swarm Entrypoint ─────────────────────────────────
+// ── Solana Clawd Go × PumpFun — Swarm Entrypoint ─────────────────────────────────
 //
-// Standalone entrypoint to launch the Solana Claude Go Pump.Fun swarm.
+// Standalone entrypoint to launch the Solana Clawd Go Pump.Fun swarm.
 // Initializes the SwarmSpawner and Telegram Gateway, then enters
 // the main loop. Can be run directly or imported as a module.
 //
@@ -143,7 +143,7 @@ async function main(): Promise<void> {
   process.on('SIGINT', () => shutdown('SIGINT'));
   process.on('SIGTERM', () => shutdown('SIGTERM'));
 
-  console.log('\n✅ Solana Claude Go × Pump.Fun Swarm is LIVE');
+  console.log('\n✅ Solana Clawd Go × Pump.Fun Swarm is LIVE');
   console.log('   Use /help in Telegram to get started\n');
 
   // Keep alive

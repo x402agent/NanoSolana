@@ -1,6 +1,6 @@
 import Foundation
 
-public struct NanoSolanaDateRangeLimitParams: Codable, Sendable, Equatable {
+public struct NanoClawdDateRangeLimitParams: Codable, Sendable, Equatable {
     public var startISO: String?
     public var endISO: String?
     public var limit: Int?

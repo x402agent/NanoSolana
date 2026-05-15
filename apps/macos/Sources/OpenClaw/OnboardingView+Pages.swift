@@ -1,8 +1,8 @@
 import AppKit
-import NanoSolanaChatUI
-import NanoSolanaDiscovery
-import NanoSolanaIPC
-import NanoSolanaKit
+import NanoClawdChatUI
+import NanoClawdDiscovery
+import NanoClawdIPC
+import NanoClawdKit
 import SwiftUI
 
 extension OnboardingView {
@@ -31,9 +31,9 @@ extension OnboardingView {
     func welcomePage() -> some View {
         self.onboardingPage {
             VStack(spacing: 22) {
-                Text("Welcome to NanoSolana")
+                Text("Welcome to NanoClawd")
                     .font(.largeTitle.weight(.semibold))
-                Text("NanoSolana is a powerful personal AI assistant that can connect to WhatsApp or Telegram.")
+                Text("NanoClawd is a powerful personal AI assistant that can connect to WhatsApp or Telegram.")
                     .font(.body)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -53,10 +53,10 @@ extension OnboardingView {
                             Text("Security notice")
                                 .font(.headline)
                             Text(
-                                "The connected AI agent (e.g. Claude) can trigger powerful actions on your Mac, " +
+                                "The connected AI agent (e.g. Clawd) can trigger powerful actions on your Mac, " +
                                     "including running commands, reading/writing files, and capturing screenshots — " +
                                     "depending on the permissions you grant.\n\n" +
-                                    "Only enable NanoSolana if you understand the risks and trust the prompts and " +
+                                    "Only enable NanoClawd if you understand the risks and trust the prompts and " +
                                     "integrations you use.")
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
@@ -75,7 +75,7 @@ extension OnboardingView {
             Text("Choose your Gateway")
                 .font(.largeTitle.weight(.semibold))
             Text(
-                "NanoSolana uses a single Gateway that stays running. Pick this Mac, " +
+                "NanoClawd uses a single Gateway that stays running. Pick this Mac, " +
                     "connect to a discovered gateway nearby, or configure later.")
                 .font(.body)
                 .foregroundStyle(.secondary)
@@ -264,7 +264,7 @@ extension OnboardingView {
                             Text("Project root")
                                 .font(.callout.weight(.semibold))
                                 .frame(width: labelWidth, alignment: .leading)
-                            TextField("/home/you/Projects/nanosolana", text: self.$state.remoteProjectRoot)
+                            TextField("/home/you/Projects/nanoclawd", text: self.$state.remoteProjectRoot)
                                 .textFieldStyle(.roundedBorder)
                                 .frame(width: fieldWidth)
                         }
@@ -273,7 +273,7 @@ extension OnboardingView {
                                 .font(.callout.weight(.semibold))
                                 .frame(width: labelWidth, alignment: .leading)
                             TextField(
-                                "/Applications/NanoSolana.app/.../nanosolana",
+                                "/Applications/NanoClawd.app/.../nanoclawd",
                                 text: self.$state.remoteCliPath)
                                 .textFieldStyle(.roundedBorder)
                                 .frame(width: fieldWidth)
@@ -399,7 +399,7 @@ extension OnboardingView {
                 .foregroundStyle(.secondary)
             if self.state.remoteTokenUnsupported {
                 Text(
-                    "The current gateway.remote.token value is not plain text. NanoSolana for macOS cannot use it directly; enter a plaintext token here to replace it.")
+                    "The current gateway.remote.token value is not plain text. NanoClawd for macOS cannot use it directly; enter a plaintext token here to replace it.")
                     .font(.caption)
                     .foregroundStyle(.orange)
                     .fixedSize(horizontal: false, vertical: true)
@@ -590,7 +590,7 @@ extension OnboardingView {
         self.onboardingPage {
             Text("Grant permissions")
                 .font(.largeTitle.weight(.semibold))
-            Text("These macOS permissions let NanoSolana automate apps and capture context on this Mac.")
+            Text("These macOS permissions let NanoClawd automate apps and capture context on this Mac.")
                 .font(.body)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -631,7 +631,7 @@ extension OnboardingView {
         self.onboardingPage {
             Text("Install the CLI")
                 .font(.largeTitle.weight(.semibold))
-            Text("Required for local mode: installs `nanosolana` so launchd can run the gateway.")
+            Text("Required for local mode: installs `nanoclawd` so launchd can run the gateway.")
                 .font(.body)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -691,7 +691,7 @@ extension OnboardingView {
             Text("Agent workspace")
                 .font(.largeTitle.weight(.semibold))
             Text(
-                "NanoSolana runs the agent from a dedicated workspace so it can load `AGENTS.md` " +
+                "NanoClawd runs the agent from a dedicated workspace so it can load `AGENTS.md` " +
                     "and write files there without mixing into your other projects.")
                 .font(.body)
                 .foregroundStyle(.secondary)
@@ -718,7 +718,7 @@ extension OnboardingView {
                         Text("Workspace folder")
                             .font(.headline)
                         TextField(
-                            AgentWorkspace.displayPath(for: NanoSolanaConfigFile.defaultWorkspaceURL()),
+                            AgentWorkspace.displayPath(for: NanoClawdConfigFile.defaultWorkspaceURL()),
                             text: self.$workspacePath)
                             .textFieldStyle(.roundedBorder)
 
@@ -748,7 +748,7 @@ extension OnboardingView {
                                     let saved = await self.saveAgentWorkspace(AgentWorkspace.displayPath(for: url))
                                     if saved {
                                         self.workspaceStatus =
-                                            "Saved to ~/.nanosolana/nanosolana.json (agents.defaults.workspace)"
+                                            "Saved to ~/.nanoclawd/nanoclawd.json (agents.defaults.workspace)"
                                     }
                                 }
                             }
@@ -790,7 +790,7 @@ extension OnboardingView {
                 .fixedSize(horizontal: false, vertical: true)
 
             self.onboardingGlassCard(padding: 8) {
-                NanoSolanaChatView(viewModel: self.onboardingChatModel, style: .onboarding)
+                NanoClawdChatView(viewModel: self.onboardingChatModel, style: .onboarding)
                     .frame(maxHeight: .infinity)
             }
             .frame(maxHeight: .infinity)
@@ -816,8 +816,8 @@ extension OnboardingView {
                     self.featureRow(
                         title: "Remote gateway checklist",
                         subtitle: """
-                        On your gateway host: install/update the `nanosolana` package and make sure credentials exist
-                        (typically `~/.nanosolana/credentials/oauth.json`). Then connect again if needed.
+                        On your gateway host: install/update the `nanoclawd` package and make sure credentials exist
+                        (typically `~/.nanoclawd/credentials/oauth.json`). Then connect again if needed.
                         """,
                         systemImage: "network")
                     Divider()
@@ -825,7 +825,7 @@ extension OnboardingView {
                 }
                 self.featureRow(
                     title: "Open the menu bar panel",
-                    subtitle: "Click the NanoSolana menu bar icon for quick chat and status.",
+                    subtitle: "Click the NanoClawd menu bar icon for quick chat and status.",
                     systemImage: "bubble.left.and.bubble.right")
                 self.featureActionRow(
                     title: "Connect WhatsApp or Telegram",

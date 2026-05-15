@@ -1,4 +1,4 @@
-import type { NanoSolanaPluginApi } from "nanosolana/plugin-sdk/talk-voice";
+import type { NanoClawdPluginApi } from "nanoclawd/plugin-sdk/talk-voice";
 
 type ElevenLabsVoice = {
   voice_id: string;
@@ -81,7 +81,7 @@ function resolveCommandLabel(channel: string): string {
   return channel === "discord" ? "/talkvoice" : "/voice";
 }
 
-export default function register(api: NanoSolanaPluginApi) {
+export default function register(api: NanoClawdPluginApi) {
   api.registerCommand({
     name: "voice",
     nativeNames: {

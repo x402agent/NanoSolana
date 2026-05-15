@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import NanoSolanaChatUI
+@testable import NanoClawdChatUI
 
 #if os(macOS)
 import AppKit
@@ -19,8 +19,8 @@ private func luminance(_ color: NSColor) throws -> CGFloat {
         let lightAppearance = try #require(NSAppearance(named: .aqua))
         let darkAppearance = try #require(NSAppearance(named: .darkAqua))
 
-        let lightResolved = NanoSolanaChatTheme.resolvedAssistantBubbleColor(for: lightAppearance)
-        let darkResolved = NanoSolanaChatTheme.resolvedAssistantBubbleColor(for: darkAppearance)
+        let lightResolved = NanoClawdChatTheme.resolvedAssistantBubbleColor(for: lightAppearance)
+        let darkResolved = NanoClawdChatTheme.resolvedAssistantBubbleColor(for: darkAppearance)
         #expect(try luminance(lightResolved) > luminance(darkResolved))
         #else
         #expect(Bool(true))

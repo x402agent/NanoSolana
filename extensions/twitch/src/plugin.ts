@@ -1,12 +1,12 @@
 /**
- * Twitch channel plugin for NanoSolana.
+ * Twitch channel plugin for NanoClawd.
  *
  * Main plugin export combining all adapters (outbound, actions, status, gateway).
  * This is the primary entry point for the Twitch channel integration.
  */
 
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/twitch";
-import { buildChannelConfigSchema } from "nanosolana/plugin-sdk/twitch";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/twitch";
+import { buildChannelConfigSchema } from "nanoclawd/plugin-sdk/twitch";
 import { twitchMessageActions } from "./actions.js";
 import { removeClientManager } from "./client-manager-registry.js";
 import { TwitchConfigSchema } from "./config-schema.js";
@@ -33,7 +33,7 @@ import { isAccountConfigured } from "./utils/twitch.js";
  * Twitch channel plugin.
  *
  * Implements the ChannelPlugin interface to provide Twitch chat integration
- * for NanoSolana. Supports message sending, receiving, access control, and
+ * for NanoClawd. Supports message sending, receiving, access control, and
  * status monitoring.
  */
 export const twitchPlugin: ChannelPlugin<TwitchAccountConfig> = {
@@ -75,10 +75,10 @@ export const twitchPlugin: ChannelPlugin<TwitchAccountConfig> = {
   /** Account configuration management */
   config: {
     /** List all configured account IDs */
-    listAccountIds: (cfg: NanoSolanaConfig): string[] => listAccountIds(cfg),
+    listAccountIds: (cfg: NanoClawdConfig): string[] => listAccountIds(cfg),
 
     /** Resolve an account config by ID */
-    resolveAccount: (cfg: NanoSolanaConfig, accountId?: string | null): TwitchAccountConfig => {
+    resolveAccount: (cfg: NanoClawdConfig, accountId?: string | null): TwitchAccountConfig => {
       const account = getAccountConfig(cfg, accountId ?? DEFAULT_ACCOUNT_ID);
       if (!account) {
         // Return a default/empty account if not configured
@@ -96,7 +96,7 @@ export const twitchPlugin: ChannelPlugin<TwitchAccountConfig> = {
     defaultAccountId: (): string => DEFAULT_ACCOUNT_ID,
 
     /** Check if an account is configured */
-    isConfigured: (_account: unknown, cfg: NanoSolanaConfig): boolean => {
+    isConfigured: (_account: unknown, cfg: NanoClawdConfig): boolean => {
       const account = getAccountConfig(cfg, DEFAULT_ACCOUNT_ID);
       const tokenResolution = resolveTwitchToken(cfg, { accountId: DEFAULT_ACCOUNT_ID });
       return account ? isAccountConfigured(account, tokenResolution.token) : false;
@@ -130,7 +130,7 @@ export const twitchPlugin: ChannelPlugin<TwitchAccountConfig> = {
       kind,
       runtime,
     }: {
-      cfg: NanoSolanaConfig;
+      cfg: NanoClawdConfig;
       accountId?: string | null;
       inputs: string[];
       kind: ChannelResolveKind;
@@ -198,7 +198,7 @@ export const twitchPlugin: ChannelPlugin<TwitchAccountConfig> = {
       probe,
     }: {
       account: TwitchAccountConfig;
-      cfg: NanoSolanaConfig;
+      cfg: NanoClawdConfig;
       runtime?: ChannelAccountSnapshot;
       probe?: unknown;
     }): ChannelAccountSnapshot => {

@@ -1,6 +1,6 @@
 import CoreLocation
 import Foundation
-import NanoSolanaKit
+import NanoClawdKit
 
 @MainActor
 protocol MacNodeRuntimeMainActorServices: Sendable {
@@ -14,7 +14,7 @@ protocol MacNodeRuntimeMainActorServices: Sendable {
     func locationAuthorizationStatus() -> CLAuthorizationStatus
     func locationAccuracyAuthorization() -> CLAccuracyAuthorization
     func currentLocation(
-        desiredAccuracy: NanoSolanaLocationAccuracy,
+        desiredAccuracy: NanoClawdLocationAccuracy,
         maxAgeMs: Int?,
         timeoutMs: Int?) async throws -> CLLocation
 }
@@ -48,7 +48,7 @@ final class LiveMacNodeRuntimeMainActorServices: MacNodeRuntimeMainActorServices
     }
 
     func currentLocation(
-        desiredAccuracy: NanoSolanaLocationAccuracy,
+        desiredAccuracy: NanoClawdLocationAccuracy,
         maxAgeMs: Int?,
         timeoutMs: Int?) async throws -> CLLocation
     {

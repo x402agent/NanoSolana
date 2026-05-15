@@ -1,4 +1,4 @@
-import NanoSolanaProtocol
+import NanoClawdProtocol
 
-public typealias AnyCodable = NanoSolanaProtocol.AnyCodable
+public typealias AnyCodable = NanoClawdProtocol.AnyCodable
 

@@ -3,15 +3,15 @@
 import PackageDescription
 
 let package = Package(
-    name: "NanoSolanaKit",
+    name: "NanoClawdKit",
     platforms: [
         .iOS(.v18),
         .macOS(.v15),
     ],
     products: [
-        .library(name: "NanoSolanaProtocol", targets: ["NanoSolanaProtocol"]),
-        .library(name: "NanoSolanaKit", targets: ["NanoSolanaKit"]),
-        .library(name: "NanoSolanaChatUI", targets: ["NanoSolanaChatUI"]),
+        .library(name: "NanoClawdProtocol", targets: ["NanoClawdProtocol"]),
+        .library(name: "NanoClawdKit", targets: ["NanoClawdKit"]),
+        .library(name: "NanoClawdChatUI", targets: ["NanoClawdChatUI"]),
     ],
     dependencies: [
         .package(url: "https://github.com/steipete/ElevenLabsKit", exact: "0.1.0"),
@@ -19,18 +19,18 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "NanoSolanaProtocol",
-            path: "Sources/NanoSolanaProtocol",
+            name: "NanoClawdProtocol",
+            path: "Sources/NanoClawdProtocol",
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),
             ]),
         .target(
-            name: "NanoSolanaKit",
+            name: "NanoClawdKit",
             dependencies: [
-                "NanoSolanaProtocol",
+                "NanoClawdProtocol",
                 .product(name: "ElevenLabsKit", package: "ElevenLabsKit"),
             ],
-            path: "Sources/NanoSolanaKit",
+            path: "Sources/NanoClawdKit",
             resources: [
                 .process("Resources"),
             ],
@@ -38,22 +38,22 @@ let package = Package(
                 .enableUpcomingFeature("StrictConcurrency"),
             ]),
         .target(
-            name: "NanoSolanaChatUI",
+            name: "NanoClawdChatUI",
             dependencies: [
-                "NanoSolanaKit",
+                "NanoClawdKit",
                 .product(
                     name: "Textual",
                     package: "textual",
                     condition: .when(platforms: [.macOS, .iOS])),
             ],
-            path: "Sources/NanoSolanaChatUI",
+            path: "Sources/NanoClawdChatUI",
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),
             ]),
         .testTarget(
-            name: "NanoSolanaKitTests",
-            dependencies: ["NanoSolanaKit", "NanoSolanaChatUI"],
-            path: "Tests/NanoSolanaKitTests",
+            name: "NanoClawdKitTests",
+            dependencies: ["NanoClawdKit", "NanoClawdChatUI"],
+            path: "Tests/NanoClawdKitTests",
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),
                 .enableExperimentalFeature("SwiftTesting"),

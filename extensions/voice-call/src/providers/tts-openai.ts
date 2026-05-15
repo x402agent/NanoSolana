@@ -1,4 +1,4 @@
-import { resolveOpenAITtsInstructions } from "nanosolana/plugin-sdk/voice-call";
+import { resolveOpenAITtsInstructions } from "nanoclawd/plugin-sdk/voice-call";
 import { pcmToMulaw } from "../telephony-audio.js";
 
 /**

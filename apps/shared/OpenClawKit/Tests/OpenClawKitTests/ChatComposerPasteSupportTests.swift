@@ -2,7 +2,7 @@
 import AppKit
 import Foundation
 import Testing
-@testable import NanoSolanaChatUI
+@testable import NanoClawdChatUI
 
 @Suite(.serialized)
 @MainActor

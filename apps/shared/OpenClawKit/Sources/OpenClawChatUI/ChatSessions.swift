@@ -1,6 +1,6 @@
 import Foundation
 
-public struct NanoSolanaChatModelChoice: Identifiable, Codable, Sendable, Hashable {
+public struct NanoClawdChatModelChoice: Identifiable, Codable, Sendable, Hashable {
     public var id: String { self.selectionID }
 
     public let modelID: String
@@ -31,12 +31,12 @@ public struct NanoSolanaChatModelChoice: Identifiable, Codable, Sendable, Hashab
     }
 }
 
-public struct NanoSolanaChatSessionsDefaults: Codable, Sendable {
+public struct NanoClawdChatSessionsDefaults: Codable, Sendable {
     public let model: String?
     public let contextTokens: Int?
 }
 
-public struct NanoSolanaChatSessionEntry: Codable, Identifiable, Sendable, Hashable {
+public struct NanoClawdChatSessionEntry: Codable, Identifiable, Sendable, Hashable {
     public var id: String { self.key }
 
     public let key: String
@@ -63,10 +63,10 @@ public struct NanoSolanaChatSessionEntry: Codable, Identifiable, Sendable, Hasha
     public let contextTokens: Int?
 }
 
-public struct NanoSolanaChatSessionsListResponse: Codable, Sendable {
+public struct NanoClawdChatSessionsListResponse: Codable, Sendable {
     public let ts: Double?
     public let path: String?
     public let count: Int?
-    public let defaults: NanoSolanaChatSessionsDefaults?
-    public let sessions: [NanoSolanaChatSessionEntry]
+    public let defaults: NanoClawdChatSessionsDefaults?
+    public let sessions: [NanoClawdChatSessionEntry]
 }

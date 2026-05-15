@@ -3,7 +3,7 @@ import {
   formatLocationText,
   toLocationContext,
   type NormalizedLocation,
-} from "nanosolana/plugin-sdk/matrix";
+} from "nanoclawd/plugin-sdk/matrix";
 import { EventType } from "./types.js";
 
 export type MatrixLocationPayload = {

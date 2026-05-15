@@ -1,9 +1,9 @@
 import {
   emptyPluginConfigSchema,
-  type NanoSolanaPluginApi,
+  type NanoClawdPluginApi,
   type ProviderAuthContext,
   type ProviderAuthResult,
-} from "nanosolana/plugin-sdk/copilot-proxy";
+} from "nanoclawd/plugin-sdk/copilot-proxy";
 
 const DEFAULT_BASE_URL = "http://localhost:3000/v1";
 const DEFAULT_API_KEY = "n/a";
@@ -16,10 +16,10 @@ const DEFAULT_MODEL_IDS = [
   "gpt-5.1-codex",
   "gpt-5.1-codex-max",
   "gpt-5-mini",
-  "claude-opus-4.6",
-  "claude-opus-4.5",
-  "claude-sonnet-4.5",
-  "claude-haiku-4.5",
+  "clawd-opus-4.6",
+  "clawd-opus-4.5",
+  "clawd-sonnet-4.5",
+  "clawd-haiku-4.5",
   "gemini-3-pro",
   "gemini-3-flash",
   "grok-code-fast-1",
@@ -76,7 +76,7 @@ const copilotProxyPlugin = {
   name: "Copilot Proxy",
   description: "Local Copilot Proxy (VS Code LM) provider plugin",
   configSchema: emptyPluginConfigSchema(),
-  register(api: NanoSolanaPluginApi) {
+  register(api: NanoClawdPluginApi) {
     api.registerProvider({
       id: "copilot-proxy",
       label: "Copilot Proxy",

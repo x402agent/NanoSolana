@@ -1,11 +1,11 @@
 ---
-summary: "New-user architecture map for Solana Claude Go runtime, gateway, Pump bridge, and NanoHub"
+summary: "New-user architecture map for Solana Clawd Go runtime, gateway, Pump bridge, and NanoHub"
 title: "Architecture"
 ---
 
 # Architecture
 
-Solana Claude Go is a monorepo. New users usually interact with just one part first:
+Solana Clawd Go is a monorepo. New users usually interact with just one part first:
 the `scg` CLI in `nano-core`.
 
 This page explains how the major pieces fit together, so you know which
@@ -25,12 +25,12 @@ If you remember one flow, remember this:
 ## Top-level map
 
 ```text
-Solana Claude Go/
+Solana Clawd Go/
 ├── nano-core/              # Published scg package
 ├── nano-docs/              # Product docs
 ├── nanohub/                # Registry app + nanohub CLI
 ├── extensions/             # Extension packages and plugin manifests
-├── pump/                   # Solana Claude Go-facing Pump integration layer
+├── pump/                   # Solana Clawd Go-facing Pump integration layer
 ├── pump-fun-sdk-main/      # Vendored Pump ecosystem snapshot
 ├── skills/                 # Agent skills, including 24 pump-focused packs
 ├── apps/                   # macOS and Android workspaces
@@ -134,7 +134,7 @@ There are two extension shapes in this repo:
 The dedicated PumpFun extension at
 [`../extensions/pumpfun/src/index.ts`](../extensions/pumpfun/src/index.ts) is
 currently a scaffolded package for bridging Pump.fun launches, graduations,
-whale trades, and fee claims into the Solana Claude Go message bus.
+whale trades, and fee claims into the Solana Clawd Go message bus.
 
 ## `nanohub/`
 
@@ -147,7 +147,7 @@ NanoHub is separate from the runtime:
 
 ## Knowledge layout
 
-- `nano-docs/` is the concise Solana Claude Go doc site content
+- `nano-docs/` is the concise Solana Clawd Go doc site content
 - `pump/docs/` is the much larger Pump protocol and ecosystem doc set
 - `skills/` contains general skills plus 24 Pump or PumpFun-oriented packs
 - `nano-core` exposes a `scg docs` command that indexes docs and

@@ -1,4 +1,4 @@
-package ai.nanosolana.app.ui
+package ai.nanoclawd.app.ui
 
 import android.Manifest
 import android.app.Activity
@@ -66,9 +66,9 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import ai.nanosolana.app.MainViewModel
-import ai.nanosolana.app.voice.VoiceConversationEntry
-import ai.nanosolana.app.voice.VoiceConversationRole
+import ai.nanoclawd.app.MainViewModel
+import ai.nanoclawd.app.voice.VoiceConversationEntry
+import ai.nanoclawd.app.voice.VoiceConversationRole
 import kotlin.math.max
 
 @Composable
@@ -345,7 +345,7 @@ private fun VoiceTurnBubble(entry: VoiceConversationEntry) {
         verticalArrangement = Arrangement.spacedBy(3.dp),
       ) {
         Text(
-          if (isUser) "You" else "NanoSolana",
+          if (isUser) "You" else "NanoClawd",
           style = mobileCaption2.copy(fontWeight = FontWeight.SemiBold, letterSpacing = 0.6.sp),
           color = if (isUser) mobileAccent else mobileTextSecondary,
         )
@@ -374,7 +374,7 @@ private fun VoiceThinkingBubble() {
         verticalAlignment = Alignment.CenterVertically,
       ) {
         ThinkingDots(color = mobileTextSecondary)
-        Text("NanoSolana is thinking…", style = mobileCallout, color = mobileTextSecondary)
+        Text("NanoClawd is thinking…", style = mobileCallout, color = mobileTextSecondary)
       }
     }
   }

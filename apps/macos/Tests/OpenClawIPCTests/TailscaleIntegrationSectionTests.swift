@@ -1,6 +1,6 @@
 import SwiftUI
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 @Suite(.serialized)
 @MainActor
@@ -17,7 +17,7 @@ struct TailscaleIntegrationSectionTests {
         let service = TailscaleService(
             isInstalled: true,
             isRunning: true,
-            tailscaleHostname: "nanosolana.tailnet.ts.net",
+            tailscaleHostname: "nanoclawd.tailnet.ts.net",
             tailscaleIP: "100.64.0.1")
         var view = TailscaleIntegrationSection(connectionMode: .local, isPaused: false)
         view.setTestingService(service)

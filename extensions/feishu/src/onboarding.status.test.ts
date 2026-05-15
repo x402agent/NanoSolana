@@ -1,4 +1,4 @@
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/feishu";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/feishu";
 import { describe, expect, it } from "vitest";
 import { feishuOnboardingAdapter } from "./onboarding.js";
 
@@ -16,7 +16,7 @@ describe("feishu onboarding status", () => {
             },
           },
         },
-      } as NanoSolanaConfig,
+      } as NanoClawdConfig,
       accountOverrides: {},
     });
 

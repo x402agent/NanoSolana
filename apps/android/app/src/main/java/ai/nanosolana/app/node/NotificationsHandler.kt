@@ -1,7 +1,7 @@
-package ai.nanosolana.app.node
+package ai.nanoclawd.app.node
 
 import android.content.Context
-import ai.nanosolana.app.gateway.GatewaySession
+import ai.nanoclawd.app.gateway.GatewaySession
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject

@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import { Static, Type } from "@sinclair/typebox";
-import type { AnyAgentTool, NanoSolanaPluginApi } from "nanosolana/plugin-sdk/diffs";
+import type { AnyAgentTool, NanoClawdPluginApi } from "nanoclawd/plugin-sdk/diffs";
 import { PlaywrightDiffScreenshotter, type DiffScreenshotter } from "./browser.js";
 import { resolveDiffImageRenderOptions } from "./config.js";
 import { renderDiffDocument } from "./render.js";
@@ -131,7 +131,7 @@ type DiffsToolRawParams = DiffsToolParams & {
 };
 
 export function createDiffsTool(params: {
-  api: NanoSolanaPluginApi;
+  api: NanoClawdPluginApi;
   store: DiffArtifactStore;
   defaults: DiffToolDefaults;
   screenshotter?: DiffScreenshotter;

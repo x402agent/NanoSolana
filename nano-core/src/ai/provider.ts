@@ -1,5 +1,5 @@
 /**
- * Solana Claude Go — AI Provider (OpenRouter)
+ * Solana Clawd Go — AI Provider (OpenRouter)
  *
  * LLM-powered reasoning for the OODA loop:
  *   - Orient: analyze raw market data with the soul's trading philosophy
@@ -127,7 +127,7 @@ export class AIProvider extends EventEmitter<AIProviderEvents> {
     this.baseUrl = params.baseUrl ?? "https://openrouter.ai/api/v1";
     this.model = params.model ?? "openrouter/healer-alpha";
 
-    const soulPrompt = readScgRuntimeAsset("SOUL.md", `You are Solana Claude Go, an autonomous Solana trading intelligence.
+    const soulPrompt = readScgRuntimeAsset("SOUL.md", `You are Solana Clawd Go, an autonomous Solana trading intelligence.
 
 You distinguish what you KNOW (fresh API data, < 60s) from what you've LEARNED (trade-derived patterns) from what you've INFERRED (correlations held loosely).
 
@@ -189,8 +189,8 @@ When making trade decisions, respond with structured JSON containing: action, to
       headers: {
         Authorization: `Bearer ${this.apiKey}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://solana-claude-go.com",
-        "X-OpenRouter-Title": "Solana Claude Go",
+        "HTTP-Referer": "https://solana-clawd-go.com",
+        "X-OpenRouter-Title": "Solana Clawd Go",
       },
       body: JSON.stringify(body),
     });

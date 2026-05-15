@@ -1,6 +1,6 @@
-package ai.nanosolana.app.protocol
+package ai.nanoclawd.app.protocol
 
-enum class NanoSolanaCapability(val rawValue: String) {
+enum class NanoClawdCapability(val rawValue: String) {
   Canvas("canvas"),
   Camera("camera"),
   Sms("sms"),
@@ -15,7 +15,7 @@ enum class NanoSolanaCapability(val rawValue: String) {
   Motion("motion"),
 }
 
-enum class NanoSolanaCanvasCommand(val rawValue: String) {
+enum class NanoClawdCanvasCommand(val rawValue: String) {
   Present("canvas.present"),
   Hide("canvas.hide"),
   Navigate("canvas.navigate"),
@@ -28,7 +28,7 @@ enum class NanoSolanaCanvasCommand(val rawValue: String) {
   }
 }
 
-enum class NanoSolanaCanvasA2UICommand(val rawValue: String) {
+enum class NanoClawdCanvasA2UICommand(val rawValue: String) {
   Push("canvas.a2ui.push"),
   PushJSONL("canvas.a2ui.pushJSONL"),
   Reset("canvas.a2ui.reset"),
@@ -39,7 +39,7 @@ enum class NanoSolanaCanvasA2UICommand(val rawValue: String) {
   }
 }
 
-enum class NanoSolanaCameraCommand(val rawValue: String) {
+enum class NanoClawdCameraCommand(val rawValue: String) {
   List("camera.list"),
   Snap("camera.snap"),
   Clip("camera.clip"),
@@ -50,7 +50,7 @@ enum class NanoSolanaCameraCommand(val rawValue: String) {
   }
 }
 
-enum class NanoSolanaSmsCommand(val rawValue: String) {
+enum class NanoClawdSmsCommand(val rawValue: String) {
   Send("sms.send"),
   ;
 
@@ -59,7 +59,7 @@ enum class NanoSolanaSmsCommand(val rawValue: String) {
   }
 }
 
-enum class NanoSolanaLocationCommand(val rawValue: String) {
+enum class NanoClawdLocationCommand(val rawValue: String) {
   Get("location.get"),
   ;
 
@@ -68,7 +68,7 @@ enum class NanoSolanaLocationCommand(val rawValue: String) {
   }
 }
 
-enum class NanoSolanaDeviceCommand(val rawValue: String) {
+enum class NanoClawdDeviceCommand(val rawValue: String) {
   Status("device.status"),
   Info("device.info"),
   Permissions("device.permissions"),
@@ -80,7 +80,7 @@ enum class NanoSolanaDeviceCommand(val rawValue: String) {
   }
 }
 
-enum class NanoSolanaNotificationsCommand(val rawValue: String) {
+enum class NanoClawdNotificationsCommand(val rawValue: String) {
   List("notifications.list"),
   Actions("notifications.actions"),
   ;
@@ -90,7 +90,7 @@ enum class NanoSolanaNotificationsCommand(val rawValue: String) {
   }
 }
 
-enum class NanoSolanaSystemCommand(val rawValue: String) {
+enum class NanoClawdSystemCommand(val rawValue: String) {
   Notify("system.notify"),
   ;
 
@@ -99,7 +99,7 @@ enum class NanoSolanaSystemCommand(val rawValue: String) {
   }
 }
 
-enum class NanoSolanaPhotosCommand(val rawValue: String) {
+enum class NanoClawdPhotosCommand(val rawValue: String) {
   Latest("photos.latest"),
   ;
 
@@ -108,7 +108,7 @@ enum class NanoSolanaPhotosCommand(val rawValue: String) {
   }
 }
 
-enum class NanoSolanaContactsCommand(val rawValue: String) {
+enum class NanoClawdContactsCommand(val rawValue: String) {
   Search("contacts.search"),
   Add("contacts.add"),
   ;
@@ -118,7 +118,7 @@ enum class NanoSolanaContactsCommand(val rawValue: String) {
   }
 }
 
-enum class NanoSolanaCalendarCommand(val rawValue: String) {
+enum class NanoClawdCalendarCommand(val rawValue: String) {
   Events("calendar.events"),
   Add("calendar.add"),
   ;
@@ -128,7 +128,7 @@ enum class NanoSolanaCalendarCommand(val rawValue: String) {
   }
 }
 
-enum class NanoSolanaMotionCommand(val rawValue: String) {
+enum class NanoClawdMotionCommand(val rawValue: String) {
   Activity("motion.activity"),
   Pedometer("motion.pedometer"),
   ;

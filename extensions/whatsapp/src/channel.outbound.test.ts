@@ -1,4 +1,4 @@
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/whatsapp";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/whatsapp";
 import { describe, expect, it, vi } from "vitest";
 
 const hoisted = vi.hoisted(() => ({
@@ -22,7 +22,7 @@ import { whatsappPlugin } from "./channel.js";
 
 describe("whatsappPlugin outbound sendPoll", () => {
   it("threads cfg into runtime sendPollWhatsApp call", async () => {
-    const cfg = { marker: "resolved-cfg" } as NanoSolanaConfig;
+    const cfg = { marker: "resolved-cfg" } as NanoClawdConfig;
     const poll = {
       question: "Lunch?",
       options: ["Pizza", "Sushi"],

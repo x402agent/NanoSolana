@@ -1,6 +1,6 @@
 # Habit Miner
 # Excavates your AI session history to find recurring workflows worth automating
-# Scans .claude, .opencode, .cursor, etc. — discovers patterns, writes .prose programs
+# Scans .clawd, .opencode, .cursor, etc. — discovers patterns, writes .prose programs
 #
 # BACKEND: Run with sqlite+ or postgres for incremental processing across runs
 #   prose run 48-habit-miner.prose --backend sqlite+
@@ -25,7 +25,7 @@ agent scout:
     You discover AI assistant log files on the user's system.
 
     Check common locations:
-    - ~/.claude/ (Claude Code)
+    - ~/.clawd/ (Clawd Code)
     - ~/.opencode/ (OpenCode)
     - ~/.cursor/ (Cursor)
     - ~/.continue/ (Continue)
@@ -33,7 +33,7 @@ agent scout:
     - ~/.copilot/ (GitHub Copilot)
     - ~/.codeium/ (Codeium)
     - ~/.tabnine/ (Tabnine)
-    - ~/.config/claude-code/
+    - ~/.config/clawd-code/
     - ~/.config/github-copilot/
     - ~/.local/share/*/
 
@@ -49,7 +49,7 @@ agent scout:
   """
   permissions:
     bash: allow
-    read: ["~/.claude/**", "~/.opencode/**", "~/.cursor/**", "~/.continue/**",
+    read: ["~/.clawd/**", "~/.opencode/**", "~/.cursor/**", "~/.continue/**",
            "~/.aider/**", "~/.copilot/**", "~/.codeium/**", "~/.tabnine/**",
            "~/.config/**", "~/.local/share/**"]
 
@@ -59,7 +59,7 @@ agent parser:
     You parse AI assistant log files into normalized conversation format.
 
     Handle formats:
-    - JSONL: one JSON object per line (Claude Code, many others)
+    - JSONL: one JSON object per line (Clawd Code, many others)
     - SQLite: query conversation tables
     - JSON: array of messages or nested structure
     - Markdown: conversation exports
@@ -75,7 +75,7 @@ agent parser:
   """
   permissions:
     bash: allow
-    read: ["~/.claude/**", "~/.opencode/**", "~/.cursor/**", "~/.continue/**",
+    read: ["~/.clawd/**", "~/.opencode/**", "~/.cursor/**", "~/.continue/**",
            "~/.aider/**", "~/.copilot/**", "~/.codeium/**", "~/.tabnine/**"]
 
 agent miner:

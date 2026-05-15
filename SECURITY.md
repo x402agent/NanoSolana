@@ -12,7 +12,7 @@
 
 ### Contact
 
-Email **security@nanosolana.com** with:
+Email **security@nanoclawd.com** with:
 
 1. Description of the vulnerability
 2. Steps to reproduce
@@ -47,7 +47,7 @@ The following are in scope for security reports:
 
 ## Security Design Principles
 
-NanoSolana follows these principles:
+NanoClawd follows these principles:
 
 1. **Defense in depth** — multiple layers of protection
 2. **Least privilege** — components only access what they need
@@ -70,7 +70,7 @@ We don't currently have a formal bug bounty program, but we deeply appreciate se
 - **Never commit `.env` files** — they are gitignored at all levels (`**/.env`)
 - **Use `.env.example`** templates — copy and fill with your own credentials
 - **Rotate keys if exposed** — if a `.env` file was ever committed or shared, rotate ALL credentials immediately
-- **Use the encrypted vault in production** — `nanosolana init` encrypts all API keys with AES-256-GCM
+- **Use the encrypted vault in production** — `nanoclawd init` encrypts all API keys with AES-256-GCM
 
 ### Container Security
 - Agent containers run with filesystem isolation
@@ -80,6 +80,6 @@ We don't currently have a formal bug bounty program, but we deeply appreciate se
 
 ### Automated Security Scanning
 ```bash
-nanosolana security audit --deep    # Full security scan
-nanosolana doctor                   # Diagnostics including security checks
+nanoclawd security audit --deep    # Full security scan
+nanoclawd doctor                   # Diagnostics including security checks
 ```

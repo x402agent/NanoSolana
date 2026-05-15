@@ -1,4 +1,4 @@
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/bluebubbles";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/bluebubbles";
 import { resolveBlueBubblesServerAccount } from "./account-resolve.js";
 import { blueBubblesFetchWithTimeout, buildBlueBubblesApiUrl } from "./types.js";
 
@@ -37,7 +37,7 @@ export type BlueBubblesChatOpts = {
   password?: string;
   accountId?: string;
   timeoutMs?: number;
-  cfg?: NanoSolanaConfig;
+  cfg?: NanoClawdConfig;
 };
 
 function resolveAccount(params: BlueBubblesChatOpts) {

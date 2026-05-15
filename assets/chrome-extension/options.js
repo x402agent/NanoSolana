@@ -411,7 +411,7 @@ async function refreshMinerStatus() {
                 `Miner ${String(miner.host || '')} · ${String(miner.health || 'unknown')} · ${Number(latest.hashRate || 0).toFixed(1)} GH/s`,
             )
         } else {
-            setStatus(ui.minerStatus, '', 'Bitaxe not configured in the NanoSolana runtime.')
+            setStatus(ui.minerStatus, '', 'Bitaxe not configured in the NanoClawd runtime.')
         }
         setJsonOutput(ui.minerOutput, res.json || {})
     } catch (err) {
@@ -502,7 +502,7 @@ async function onSendChat() {
         return
     }
 
-    setStatus(ui.chatStatus, '', 'Sending message through NanoSolana gateway...')
+    setStatus(ui.chatStatus, '', 'Sending message through NanoClawd gateway...')
 
     try {
         const settings = await saveSettingsToStorage()
@@ -553,7 +553,7 @@ async function onSubmitTrade() {
             return
         }
 
-        setStatus(ui.tradeStatus, 'ok', 'Manual trade submitted to NanoSolana gateway.')
+        setStatus(ui.tradeStatus, 'ok', 'Manual trade submitted to NanoClawd gateway.')
         setJsonOutput(ui.tradeOutput, res.json || {})
     } catch (err) {
         setStatus(ui.tradeStatus, 'error', `Trade submission failed: ${String(err)}`)

@@ -1,9 +1,9 @@
 import type {
   ChannelOnboardingAdapter,
   ChannelOnboardingDmPolicy,
-  NanoSolanaConfig,
+  NanoClawdConfig,
   WizardPrompter,
-} from "nanosolana/plugin-sdk/zalouser";
+} from "nanoclawd/plugin-sdk/zalouser";
 import {
   DEFAULT_ACCOUNT_ID,
   formatResolvedUnresolvedNote,
@@ -13,7 +13,7 @@ import {
   promptChannelAccessConfig,
   resolveAccountIdForConfigure,
   setTopLevelChannelDmPolicyWithAllowFrom,
-} from "nanosolana/plugin-sdk/zalouser";
+} from "nanoclawd/plugin-sdk/zalouser";
 import {
   listZalouserAccountIds,
   resolveDefaultZalouserAccountId,
@@ -32,29 +32,29 @@ import {
 const channel = "zalouser" as const;
 
 function setZalouserAccountScopedConfig(
-  cfg: NanoSolanaConfig,
+  cfg: NanoClawdConfig,
   accountId: string,
   defaultPatch: Record<string, unknown>,
   accountPatch: Record<string, unknown> = defaultPatch,
-): NanoSolanaConfig {
+): NanoClawdConfig {
   return patchScopedAccountConfig({
     cfg,
     channelKey: channel,
     accountId,
     patch: defaultPatch,
     accountPatch,
-  }) as NanoSolanaConfig;
+  }) as NanoClawdConfig;
 }
 
 function setZalouserDmPolicy(
-  cfg: NanoSolanaConfig,
+  cfg: NanoClawdConfig,
   dmPolicy: "pairing" | "allowlist" | "open" | "disabled",
-): NanoSolanaConfig {
+): NanoClawdConfig {
   return setTopLevelChannelDmPolicyWithAllowFrom({
     cfg,
     channel: "zalouser",
     dmPolicy,
-  }) as NanoSolanaConfig;
+  }) as NanoClawdConfig;
 }
 
 async function noteZalouserHelp(prompter: WizardPrompter): Promise<void> {
@@ -64,17 +64,17 @@ async function noteZalouserHelp(prompter: WizardPrompter): Promise<void> {
       "",
       "This plugin uses zca-js directly (no external CLI dependency).",
       "",
-      "Docs: https://docs.nanosolana.ai/channels/zalouser",
+      "Docs: https://docs.nanoclawd.ai/channels/zalouser",
     ].join("\n"),
     "Zalo Personal Setup",
   );
 }
 
 async function promptZalouserAllowFrom(params: {
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   prompter: WizardPrompter;
   accountId: string;
-}): Promise<NanoSolanaConfig> {
+}): Promise<NanoClawdConfig> {
   const { cfg, prompter, accountId } = params;
   const resolved = resolveZalouserAccountSync({ cfg, accountId });
   const existingAllowFrom = resolved.config.allowFrom ?? [];
@@ -126,20 +126,20 @@ async function promptZalouserAllowFrom(params: {
 }
 
 function setZalouserGroupPolicy(
-  cfg: NanoSolanaConfig,
+  cfg: NanoClawdConfig,
   accountId: string,
   groupPolicy: "open" | "allowlist" | "disabled",
-): NanoSolanaConfig {
+): NanoClawdConfig {
   return setZalouserAccountScopedConfig(cfg, accountId, {
     groupPolicy,
   });
 }
 
 function setZalouserGroupAllowlist(
-  cfg: NanoSolanaConfig,
+  cfg: NanoClawdConfig,
   accountId: string,
   groupKeys: string[],
-): NanoSolanaConfig {
+): NanoClawdConfig {
   const groups = Object.fromEntries(groupKeys.map((key) => [key, { allow: true }]));
   return setZalouserAccountScopedConfig(cfg, accountId, {
     groups,

@@ -1,10 +1,10 @@
 {
-  "name": "@nanosolana/whatsapp",
+  "name": "@nanoclawd/whatsapp",
   "version": "2026.3.11",
   "private": true,
-  "description": "NanoSolana WhatsApp channel plugin",
+  "description": "NanoClawd WhatsApp channel plugin",
   "type": "module",
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./index.ts"
     ]

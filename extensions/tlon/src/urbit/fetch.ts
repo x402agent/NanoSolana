@@ -1,5 +1,5 @@
-import type { LookupFn, SsrFPolicy } from "nanosolana/plugin-sdk/tlon";
-import { fetchWithSsrFGuard } from "nanosolana/plugin-sdk/tlon";
+import type { LookupFn, SsrFPolicy } from "nanoclawd/plugin-sdk/tlon";
+import { fetchWithSsrFGuard } from "nanoclawd/plugin-sdk/tlon";
 import { validateUrbitBaseUrl } from "./base-url.js";
 import { UrbitUrlError } from "./errors.js";
 

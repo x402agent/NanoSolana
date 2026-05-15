@@ -1,13 +1,13 @@
 import Foundation
 
-public enum NanoSolanaTalkCommand: String, Codable, Sendable {
+public enum NanoClawdTalkCommand: String, Codable, Sendable {
     case pttStart = "talk.ptt.start"
     case pttStop = "talk.ptt.stop"
     case pttCancel = "talk.ptt.cancel"
     case pttOnce = "talk.ptt.once"
 }
 
-public struct NanoSolanaTalkPTTStartPayload: Codable, Sendable, Equatable {
+public struct NanoClawdTalkPTTStartPayload: Codable, Sendable, Equatable {
     public var captureId: String
 
     public init(captureId: String) {
@@ -15,7 +15,7 @@ public struct NanoSolanaTalkPTTStartPayload: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaTalkPTTStopPayload: Codable, Sendable, Equatable {
+public struct NanoClawdTalkPTTStopPayload: Codable, Sendable, Equatable {
     public var captureId: String
     public var transcript: String?
     public var status: String

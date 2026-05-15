@@ -1,4 +1,4 @@
-package ai.nanosolana.app
+package ai.nanoclawd.app
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -7,12 +7,12 @@ import org.junit.Test
 class WakeWordsTest {
   @Test
   fun parseCommaSeparatedTrimsAndDropsEmpty() {
-    assertEquals(listOf("nanosolana", "claude"), WakeWords.parseCommaSeparated("  nanosolana , claude, ,  "))
+    assertEquals(listOf("nanoclawd", "clawd"), WakeWords.parseCommaSeparated("  nanoclawd , clawd, ,  "))
   }
 
   @Test
   fun sanitizeTrimsCapsAndFallsBack() {
-    val defaults = listOf("nanosolana", "claude")
+    val defaults = listOf("nanoclawd", "clawd")
     val long = "x".repeat(WakeWords.maxWordLength + 10)
     val words = listOf(" ", "  hello  ", long)
 
@@ -26,7 +26,7 @@ class WakeWordsTest {
 
   @Test
   fun sanitizeLimitsWordCount() {
-    val defaults = listOf("nanosolana")
+    val defaults = listOf("nanoclawd")
     val words = (1..(WakeWords.maxWords + 5)).map { "w$it" }
     val sanitized = WakeWords.sanitize(words, defaults)
     assertEquals(WakeWords.maxWords, sanitized.size)
@@ -36,15 +36,15 @@ class WakeWordsTest {
 
   @Test
   fun parseIfChangedSkipsWhenUnchanged() {
-    val current = listOf("nanosolana", "claude")
-    val parsed = WakeWords.parseIfChanged(" nanosolana , claude ", current)
+    val current = listOf("nanoclawd", "clawd")
+    val parsed = WakeWords.parseIfChanged(" nanoclawd , clawd ", current)
     assertNull(parsed)
   }
 
   @Test
   fun parseIfChangedReturnsUpdatedList() {
-    val current = listOf("nanosolana")
-    val parsed = WakeWords.parseIfChanged(" nanosolana , jarvis ", current)
-    assertEquals(listOf("nanosolana", "jarvis"), parsed)
+    val current = listOf("nanoclawd")
+    val parsed = WakeWords.parseIfChanged(" nanoclawd , jarvis ", current)
+    assertEquals(listOf("nanoclawd", "jarvis"), parsed)
   }
 }

@@ -1,4 +1,4 @@
-// ── Solana Claude Go — Payments Module ──────────────────────────────────────────────
+// ── Solana Clawd Go — Payments Module ──────────────────────────────────────────────
 //
 // Tokenized agent payment system built on @pump-fun/agent-payments-sdk.
 // Enables agents to charge users for actions via on-chain invoice payments.

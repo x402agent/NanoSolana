@@ -1,5 +1,5 @@
-import type { NanoSolanaPluginApi } from "nanosolana/plugin-sdk/feishu";
-import { emptyPluginConfigSchema } from "nanosolana/plugin-sdk/feishu";
+import type { NanoClawdPluginApi } from "nanoclawd/plugin-sdk/feishu";
+import { emptyPluginConfigSchema } from "nanoclawd/plugin-sdk/feishu";
 import { registerFeishuBitableTools } from "./src/bitable.js";
 import { feishuPlugin } from "./src/channel.js";
 import { registerFeishuChatTools } from "./src/chat.js";
@@ -50,7 +50,7 @@ const plugin = {
   name: "Feishu",
   description: "Feishu/Lark channel plugin",
   configSchema: emptyPluginConfigSchema(),
-  register(api: NanoSolanaPluginApi) {
+  register(api: NanoClawdPluginApi) {
     setFeishuRuntime(api.runtime);
     api.registerChannel({ plugin: feishuPlugin });
     registerFeishuDocTools(api);

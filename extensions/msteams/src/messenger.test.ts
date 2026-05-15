@@ -1,7 +1,7 @@
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { SILENT_REPLY_TOKEN, type PluginRuntime } from "nanosolana/plugin-sdk/msteams";
+import { SILENT_REPLY_TOKEN, type PluginRuntime } from "nanoclawd/plugin-sdk/msteams";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createPluginRuntimeMock } from "../../test-utils/plugin-runtime-mock.js";
 import type { StoredConversationReference } from "./conversation-store.js";
@@ -17,7 +17,7 @@ vi.mock("./graph-upload.js", async () => {
   };
 });
 
-import { resolvePreferredNanoSolanaTmpDir } from "../../../src/infra/tmp-nanosolana-dir.js";
+import { resolvePreferredNanoClawdTmpDir } from "../../../src/infra/tmp-nanoclawd-dir.js";
 import {
   type MSTeamsAdapter,
   renderReplyPayloadsToMessages,
@@ -201,7 +201,7 @@ describe("msteams messenger", () => {
     });
 
     it("preserves parsed mentions when appending OneDrive fallback file links", async () => {
-      const tmpDir = await mkdtemp(path.join(resolvePreferredNanoSolanaTmpDir(), "msteams-mention-"));
+      const tmpDir = await mkdtemp(path.join(resolvePreferredNanoClawdTmpDir(), "msteams-mention-"));
       const localFile = path.join(tmpDir, "note.txt");
       await writeFile(localFile, "hello");
 

@@ -3,21 +3,21 @@ import Foundation
 import SwiftUI
 
 @MainActor
-struct NanoSolanaGatewaySettings: View {
+struct NanoClawdGatewaySettings: View {
     @AppStorage(nanoSolanaGatewayURLKey) private var gatewayURL: String = nanoSolanaDefaultGatewayURL
     @AppStorage(nanoSolanaGatewaySecretKey) private var gatewaySecret: String = ""
     @State private var isChecking = false
-    @State private var connectionState: NanoSolanaConnectionState = .idle
-    @State private var snapshot: NanoSolanaGatewaySnapshot?
+    @State private var connectionState: NanoClawdConnectionState = .idle
+    @State private var snapshot: NanoClawdGatewaySnapshot?
     @State private var lastCheckedAt: Date?
 
     var body: some View {
         ScrollView(.vertical) {
             VStack(alignment: .leading, spacing: 14) {
-                Text("Nano Solana Gateway")
+                Text("Nano Clawd Gateway")
                     .font(.title3.weight(.semibold))
 
-                Text("Connect this macOS app to your NanoSolana agent gateway (`nano-core`) and verify the framework is healthy.")
+                Text("Connect this macOS app to your NanoClawd agent gateway (`nano-core`) and verify the framework is healthy.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
 
@@ -102,7 +102,7 @@ struct NanoSolanaGatewaySettings: View {
         }
     }
 
-    private func snapshotCard(_ snapshot: NanoSolanaGatewaySnapshot) -> some View {
+    private func snapshotCard(_ snapshot: NanoClawdGatewaySnapshot) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text("Connected agent")
                 .font(.headline)
@@ -200,30 +200,30 @@ struct NanoSolanaGatewaySettings: View {
             let healthRequest = self.makeRequest(baseURL: baseURL, path: "/health")
             let (healthData, healthResponse) = try await session.data(for: healthRequest)
             guard let healthHTTP = healthResponse as? HTTPURLResponse else {
-                throw NanoSolanaProbeError.invalidResponse
+                throw NanoClawdProbeError.invalidResponse
             }
             guard healthHTTP.statusCode == 200 else {
-                throw NanoSolanaProbeError.http(statusCode: healthHTTP.statusCode)
+                throw NanoClawdProbeError.http(statusCode: healthHTTP.statusCode)
             }
 
             let statusRequest = self.makeRequest(baseURL: baseURL, path: "/api/status")
             let (statusData, statusResponse) = try await session.data(for: statusRequest)
             guard let statusHTTP = statusResponse as? HTTPURLResponse else {
-                throw NanoSolanaProbeError.invalidResponse
+                throw NanoClawdProbeError.invalidResponse
             }
 
             if statusHTTP.statusCode == 401 {
-                throw NanoSolanaProbeError.authRequired
+                throw NanoClawdProbeError.authRequired
             }
             guard statusHTTP.statusCode == 200 else {
-                throw NanoSolanaProbeError.http(statusCode: statusHTTP.statusCode)
+                throw NanoClawdProbeError.http(statusCode: statusHTTP.statusCode)
             }
 
             let decoder = JSONDecoder()
-            let health = try decoder.decode(NanoSolanaHealthResponse.self, from: healthData)
-            let status = try decoder.decode(NanoSolanaStatusResponse.self, from: statusData)
+            let health = try decoder.decode(NanoClawdHealthResponse.self, from: healthData)
+            let status = try decoder.decode(NanoClawdStatusResponse.self, from: statusData)
 
-            self.snapshot = NanoSolanaGatewaySnapshot(health: health, status: status, endpoint: baseURL.absoluteString)
+            self.snapshot = NanoClawdGatewaySnapshot(health: health, status: status, endpoint: baseURL.absoluteString)
             self.connectionState = .connected("Gateway connected")
         } catch {
             self.snapshot = nil
@@ -239,7 +239,7 @@ struct NanoSolanaGatewaySettings: View {
 
         let trimmedSecret = self.gatewaySecret.trimmingCharacters(in: .whitespacesAndNewlines)
         if !trimmedSecret.isEmpty {
-            request.setValue(trimmedSecret, forHTTPHeaderField: "X-NanoSolana-Secret")
+            request.setValue(trimmedSecret, forHTTPHeaderField: "X-NanoClawd-Secret")
             request.setValue("Bearer \(trimmedSecret)", forHTTPHeaderField: "Authorization")
         }
 
@@ -271,7 +271,7 @@ struct NanoSolanaGatewaySettings: View {
     }
 
     private func friendlyMessage(for error: Error) -> String {
-        if let probeError = error as? NanoSolanaProbeError {
+        if let probeError = error as? NanoClawdProbeError {
             return probeError.errorDescription
         }
         if let urlError = error as? URLError {
@@ -304,14 +304,14 @@ struct NanoSolanaGatewaySettings: View {
     }
 }
 
-private enum NanoSolanaConnectionState: Equatable {
+private enum NanoClawdConnectionState: Equatable {
     case idle
     case checking
     case connected(String)
     case failed(String)
 }
 
-private enum NanoSolanaProbeError: LocalizedError {
+private enum NanoClawdProbeError: LocalizedError {
     case invalidResponse
     case authRequired
     case http(statusCode: Int)
@@ -328,7 +328,7 @@ private enum NanoSolanaProbeError: LocalizedError {
     }
 }
 
-private struct NanoSolanaHealthResponse: Decodable {
+private struct NanoClawdHealthResponse: Decodable {
     let status: String?
     let agentId: String?
     let publicKey: String?
@@ -337,7 +337,7 @@ private struct NanoSolanaHealthResponse: Decodable {
     let uptime: Double?
 }
 
-private struct NanoSolanaStatusResponse: Decodable {
+private struct NanoClawdStatusResponse: Decodable {
     struct Wallet: Decodable {
         let publicKey: String?
         let balance: Double?
@@ -364,7 +364,7 @@ private struct NanoSolanaStatusResponse: Decodable {
     let framework: Framework?
 }
 
-private struct NanoSolanaGatewaySnapshot {
+private struct NanoClawdGatewaySnapshot {
     let endpoint: String
     let agentID: String
     let walletPublicKey: String
@@ -379,7 +379,7 @@ private struct NanoSolanaGatewaySnapshot {
     let frameworkFeatures: [String]
     let authRequired: Bool
 
-    init(health: NanoSolanaHealthResponse, status: NanoSolanaStatusResponse, endpoint: String) {
+    init(health: NanoClawdHealthResponse, status: NanoClawdStatusResponse, endpoint: String) {
         self.endpoint = endpoint
         self.agentID = health.agentId ?? "unknown"
         self.walletPublicKey = status.wallet?.publicKey ?? health.publicKey ?? "unknown"
@@ -397,9 +397,9 @@ private struct NanoSolanaGatewaySnapshot {
 }
 
 #if DEBUG
-struct NanoSolanaGatewaySettings_Previews: PreviewProvider {
+struct NanoClawdGatewaySettings_Previews: PreviewProvider {
     static var previews: some View {
-        NanoSolanaGatewaySettings()
+        NanoClawdGatewaySettings()
             .frame(width: SettingsTab.windowWidth, height: SettingsTab.windowHeight)
     }
 }

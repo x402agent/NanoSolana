@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct SessionDataTests {
     @Test func `session kind from key detects common kinds`() {

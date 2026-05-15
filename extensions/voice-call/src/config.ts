@@ -3,7 +3,7 @@ import {
   TtsConfigSchema,
   TtsModeSchema,
   TtsProviderSchema,
-} from "nanosolana/plugin-sdk/voice-call";
+} from "nanoclawd/plugin-sdk/voice-call";
 import { z } from "zod";
 import { deepMergeDefined } from "./deep-merge.js";
 
@@ -339,7 +339,7 @@ export const VoiceCallConfigSchema = z
     /** Store path for call logs */
     store: z.string().optional(),
 
-    /** Model for generating voice responses (e.g., "anthropic/claude-sonnet-4", "openai/gpt-4o") */
+    /** Model for generating voice responses (e.g., "anthropic/clawd-sonnet-4", "openai/gpt-4o") */
     responseModel: z.string().default("openai/gpt-4o-mini"),
 
     /** System prompt for voice responses */

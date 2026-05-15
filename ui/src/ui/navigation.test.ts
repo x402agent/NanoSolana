@@ -72,7 +72,7 @@ describe("subtitleForTab", () => {
 
   it("returns descriptive subtitles", () => {
     expect(subtitleForTab("chat")).toContain("chat session");
-    expect(subtitleForTab("config")).toContain("nanosolana.json");
+    expect(subtitleForTab("config")).toContain("nanoclawd.json");
   });
 });
 
@@ -94,7 +94,7 @@ describe("normalizeBasePath", () => {
   });
 
   it("handles nested paths", () => {
-    expect(normalizeBasePath("/apps/nanosolana")).toBe("/apps/nanosolana");
+    expect(normalizeBasePath("/apps/nanoclawd")).toBe("/apps/nanoclawd");
   });
 });
 
@@ -121,7 +121,7 @@ describe("pathForTab", () => {
 
   it("prepends base path", () => {
     expect(pathForTab("chat", "/ui")).toBe("/ui/chat");
-    expect(pathForTab("sessions", "/apps/nanosolana")).toBe("/apps/nanosolana/sessions");
+    expect(pathForTab("sessions", "/apps/nanoclawd")).toBe("/apps/nanoclawd/sessions");
   });
 });
 
@@ -138,7 +138,7 @@ describe("tabFromPath", () => {
 
   it("handles base paths", () => {
     expect(tabFromPath("/ui/chat", "/ui")).toBe("chat");
-    expect(tabFromPath("/apps/nanosolana/sessions", "/apps/nanosolana")).toBe("sessions");
+    expect(tabFromPath("/apps/nanoclawd/sessions", "/apps/nanoclawd")).toBe("sessions");
   });
 
   it("returns null for unknown path", () => {
@@ -163,7 +163,7 @@ describe("inferBasePathFromPathname", () => {
 
   it("infers base path from nested paths", () => {
     expect(inferBasePathFromPathname("/ui/chat")).toBe("/ui");
-    expect(inferBasePathFromPathname("/apps/nanosolana/sessions")).toBe("/apps/nanosolana");
+    expect(inferBasePathFromPathname("/apps/nanoclawd/sessions")).toBe("/apps/nanoclawd");
   });
 
   it("handles index.html suffix", () => {

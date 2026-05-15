@@ -5,7 +5,7 @@ import {
   type TamaGObotConfig,
   type ReplyPayload,
   type RuntimeEnv,
-} from "nanosolana/plugin-sdk/feishu";
+} from "nanoclawd/plugin-sdk/feishu";
 import { resolveFeishuAccount } from "./accounts.js";
 import { createFeishuClient } from "./client.js";
 import { sendMediaFeishu } from "./media.js";

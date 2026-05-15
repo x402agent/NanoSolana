@@ -5,7 +5,7 @@ import {
   readNumberParam,
   readReactionParams,
   readStringParam,
-} from "nanosolana/plugin-sdk/matrix";
+} from "nanoclawd/plugin-sdk/matrix";
 import {
   deleteMatrixMessage,
   editMatrixMessage,

@@ -1,6 +1,6 @@
-package ai.nanosolana.app.gateway
+package ai.nanoclawd.app.gateway
 
-import ai.nanosolana.app.SecurePrefs
+import ai.nanoclawd.app.SecurePrefs
 
 interface DeviceAuthTokenStore {
   fun loadToken(deviceId: String, role: String): String?

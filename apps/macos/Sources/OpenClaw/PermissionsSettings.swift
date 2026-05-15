@@ -1,6 +1,6 @@
 import CoreLocation
-import NanoSolanaIPC
-import NanoSolanaKit
+import NanoClawdIPC
+import NanoClawdKit
 import SwiftUI
 
 struct PermissionsSettings: View {
@@ -13,7 +13,7 @@ struct PermissionsSettings: View {
             VStack(alignment: .leading, spacing: 14) {
                 SystemRunSettingsView()
 
-                Text("Allow these so NanoSolana can notify and capture when needed.")
+                Text("Allow these so NanoClawd can notify and capture when needed.")
                     .padding(.top, 4)
                     .fixedSize(horizontal: false, vertical: true)
 
@@ -35,9 +35,9 @@ struct PermissionsSettings: View {
 }
 
 private struct LocationAccessSettings: View {
-    @AppStorage(locationModeKey) private var locationModeRaw: String = NanoSolanaLocationMode.off.rawValue
+    @AppStorage(locationModeKey) private var locationModeRaw: String = NanoClawdLocationMode.off.rawValue
     @AppStorage(locationPreciseKey) private var locationPreciseEnabled: Bool = true
-    @State private var lastLocationModeRaw: String = NanoSolanaLocationMode.off.rawValue
+    @State private var lastLocationModeRaw: String = NanoClawdLocationMode.off.rawValue
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -45,9 +45,9 @@ private struct LocationAccessSettings: View {
                 .font(.body)
 
             Picker("", selection: self.$locationModeRaw) {
-                Text("Off").tag(NanoSolanaLocationMode.off.rawValue)
-                Text("While Using").tag(NanoSolanaLocationMode.whileUsing.rawValue)
-                Text("Always").tag(NanoSolanaLocationMode.always.rawValue)
+                Text("Off").tag(NanoClawdLocationMode.off.rawValue)
+                Text("While Using").tag(NanoClawdLocationMode.whileUsing.rawValue)
+                Text("Always").tag(NanoClawdLocationMode.always.rawValue)
             }
             .labelsHidden()
             .pickerStyle(.menu)
@@ -66,7 +66,7 @@ private struct LocationAccessSettings: View {
         .onChange(of: self.locationModeRaw) { _, newValue in
             let previous = self.lastLocationModeRaw
             self.lastLocationModeRaw = newValue
-            guard let mode = NanoSolanaLocationMode(rawValue: newValue) else { return }
+            guard let mode = NanoClawdLocationMode(rawValue: newValue) else { return }
             Task {
                 let granted = await self.requestLocationAuthorization(mode: mode)
                 if !granted {
@@ -79,11 +79,11 @@ private struct LocationAccessSettings: View {
         }
     }
 
-    private var locationMode: NanoSolanaLocationMode {
-        NanoSolanaLocationMode(rawValue: self.locationModeRaw) ?? .off
+    private var locationMode: NanoClawdLocationMode {
+        NanoClawdLocationMode(rawValue: self.locationModeRaw) ?? .off
     }
 
-    private func requestLocationAuthorization(mode: NanoSolanaLocationMode) async -> Bool {
+    private func requestLocationAuthorization(mode: NanoClawdLocationMode) async -> Bool {
         guard mode != .off else { return true }
         guard CLLocationManager.locationServicesEnabled() else {
             await MainActor.run { LocationPermissionHelper.openSettings() }

@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct ExecApprovalHelpersTests {
     @Test func `parse decision trims and rejects invalid`() {

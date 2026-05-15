@@ -10,7 +10,7 @@ struct AboutSettings: View {
         VStack(spacing: 8) {
             let appIcon = NSApplication.shared.applicationIconImage ?? CritterIconRenderer.makeIcon(blink: 0)
             Button {
-                if let url = URL(string: "https://github.com/nanosolana/nanosolana") {
+                if let url = URL(string: "https://github.com/nanoclawd/nanoclawd") {
                     NSWorkspace.shared.open(url)
                 }
             } label: {
@@ -29,7 +29,7 @@ struct AboutSettings: View {
             }
 
             VStack(spacing: 3) {
-                Text("NanoSolana")
+                Text("NanoClawd")
                     .font(.title3.bold())
                 Text("Version \(self.versionString)")
                     .foregroundStyle(.secondary)
@@ -49,8 +49,8 @@ struct AboutSettings: View {
                 AboutLinkRow(
                     icon: "chevron.left.slash.chevron.right",
                     title: "GitHub",
-                    url: "https://github.com/nanosolana/nanosolana")
-                AboutLinkRow(icon: "globe", title: "Website", url: "https://nanosolana.ai")
+                    url: "https://github.com/nanoclawd/nanoclawd")
+                AboutLinkRow(icon: "globe", title: "Website", url: "https://nanoclawd.ai")
                 AboutLinkRow(icon: "bird", title: "Twitter", url: "https://twitter.com/steipete")
                 AboutLinkRow(icon: "envelope", title: "Email", url: "mailto:peter@steipete.me")
             }
@@ -110,8 +110,8 @@ struct AboutSettings: View {
     private var buildTimestamp: String? {
         guard
             let raw =
-            (Bundle.main.object(forInfoDictionaryKey: "NanoSolanaBuildTimestamp") as? String) ??
-            (Bundle.main.object(forInfoDictionaryKey: "NanoSolanaBuildTimestamp") as? String)
+            (Bundle.main.object(forInfoDictionaryKey: "NanoClawdBuildTimestamp") as? String) ??
+            (Bundle.main.object(forInfoDictionaryKey: "NanoClawdBuildTimestamp") as? String)
         else { return nil }
         let parser = ISO8601DateFormatter()
         parser.formatOptions = [.withInternetDateTime]
@@ -125,8 +125,8 @@ struct AboutSettings: View {
     }
 
     private var gitCommit: String {
-        (Bundle.main.object(forInfoDictionaryKey: "NanoSolanaGitCommit") as? String) ??
-            (Bundle.main.object(forInfoDictionaryKey: "NanoSolanaGitCommit") as? String) ??
+        (Bundle.main.object(forInfoDictionaryKey: "NanoClawdGitCommit") as? String) ??
+            (Bundle.main.object(forInfoDictionaryKey: "NanoClawdGitCommit") as? String) ??
             "unknown"
     }
 

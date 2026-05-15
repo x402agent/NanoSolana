@@ -1,5 +1,5 @@
-import type { NanoSolanaPluginApi } from "nanosolana/plugin-sdk/imessage";
-import { emptyPluginConfigSchema } from "nanosolana/plugin-sdk/imessage";
+import type { NanoClawdPluginApi } from "nanoclawd/plugin-sdk/imessage";
+import { emptyPluginConfigSchema } from "nanoclawd/plugin-sdk/imessage";
 import { imessagePlugin } from "./src/channel.js";
 import { setIMessageRuntime } from "./src/runtime.js";
 
@@ -8,7 +8,7 @@ const plugin = {
   name: "iMessage",
   description: "iMessage channel plugin",
   configSchema: emptyPluginConfigSchema(),
-  register(api: NanoSolanaPluginApi) {
+  register(api: NanoClawdPluginApi) {
     setIMessageRuntime(api.runtime);
     api.registerChannel({ plugin: imessagePlugin });
   },

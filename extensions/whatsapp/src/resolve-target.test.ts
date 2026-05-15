@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 import { installCommonResolveTargetErrorCases } from "../../shared/resolve-target-test-helpers.js";
 
-vi.mock("nanosolana/plugin-sdk/whatsapp", async () => {
-  const actual = await vi.importActual<typeof import("nanosolana/plugin-sdk/whatsapp")>(
-    "nanosolana/plugin-sdk/whatsapp",
+vi.mock("nanoclawd/plugin-sdk/whatsapp", async () => {
+  const actual = await vi.importActual<typeof import("nanoclawd/plugin-sdk/whatsapp")>(
+    "nanoclawd/plugin-sdk/whatsapp",
   );
   const normalizeWhatsAppTarget = (value: string) => {
     if (value === "invalid-target") return null;

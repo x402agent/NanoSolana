@@ -13,26 +13,26 @@ import {
 
 describe("hub/public-client", () => {
   it("normalizes the canonical ScgHub site URL", () => {
-    expect(normalizeScgHubSiteUrl()).toBe("https://hub.solana-claude-go.com");
-    expect(normalizeScgHubSiteUrl("hub.solana-claude-go.com/")).toBe("https://hub.solana-claude-go.com");
+    expect(normalizeScgHubSiteUrl()).toBe("https://hub.solana-clawd-go.com");
+    expect(normalizeScgHubSiteUrl("hub.solana-clawd-go.com/")).toBe("https://hub.solana-clawd-go.com");
     expect(normalizeScgHubSiteUrl("http://localhost:3000/")).toBe("http://localhost:3000");
   });
 
   it("builds site, api, discovery, and skill URLs", () => {
-    expect(getScgHubSiteUrl("https://hub.solana-claude-go.com/")).toBe("https://hub.solana-claude-go.com");
-    expect(getScgHubApiBaseUrl("https://hub.solana-claude-go.com")).toBe("https://hub.solana-claude-go.com/api/v1");
-    expect(getScgHubDiscoveryUrl("https://hub.solana-claude-go.com")).toBe(
-      "https://hub.solana-claude-go.com/.well-known/nanohub.json",
+    expect(getScgHubSiteUrl("https://hub.solana-clawd-go.com/")).toBe("https://hub.solana-clawd-go.com");
+    expect(getScgHubApiBaseUrl("https://hub.solana-clawd-go.com")).toBe("https://hub.solana-clawd-go.com/api/v1");
+    expect(getScgHubDiscoveryUrl("https://hub.solana-clawd-go.com")).toBe(
+      "https://hub.solana-clawd-go.com/.well-known/nanohub.json",
     );
-    expect(getScgHubSkillUrl("sonoscli", { siteUrl: "https://hub.solana-claude-go.com" })).toBe(
-      "https://hub.solana-claude-go.com/skills/sonoscli",
+    expect(getScgHubSkillUrl("sonoscli", { siteUrl: "https://hub.solana-clawd-go.com" })).toBe(
+      "https://hub.solana-clawd-go.com/skills/sonoscli",
     );
     expect(
       getScgHubSkillUrl("sonoscli", {
-        siteUrl: "https://hub.solana-claude-go.com",
+        siteUrl: "https://hub.solana-clawd-go.com",
         ownerHandle: "8bit",
       }),
-    ).toBe("https://hub.solana-claude-go.com/8bit/sonoscli");
+    ).toBe("https://hub.solana-clawd-go.com/8bit/sonoscli");
   });
 
   it("maps sort aliases to the ScgHub API surface", () => {
@@ -77,11 +77,11 @@ describe("hub/public-client", () => {
 
     try {
       const result = await getScgHubSkillManifest("token-tracker", {
-        siteUrl: "https://hub.solana-claude-go.com",
+        siteUrl: "https://hub.solana-clawd-go.com",
       });
       expect(result.manifest.slug).toBe("token-tracker");
       expect(calls).toEqual([
-        "https://hub.solana-claude-go.com/api/v1/skills/token-tracker/manifest",
+        "https://hub.solana-clawd-go.com/api/v1/skills/token-tracker/manifest",
       ]);
     } finally {
       globalThis.fetch = originalFetch;

@@ -1,9 +1,9 @@
 import Foundation
-import NanoSolanaKit
+import NanoClawdKit
 import OSLog
 import WebKit
 
-private let canvasLogger = Logger(subsystem: "ai.nanosolana", category: "Canvas")
+private let canvasLogger = Logger(subsystem: "ai.nanoclawd", category: "Canvas")
 
 final class CanvasSchemeHandler: NSObject, WKURLSchemeHandler {
     private let root: URL
@@ -222,7 +222,7 @@ final class CanvasSchemeHandler: NSObject, WKURLSchemeHandler {
         let name = fileURL.deletingPathExtension().lastPathComponent
         guard !name.isEmpty, !ext.isEmpty else { return nil }
 
-        let bundle = NanoSolanaKitResources.bundle
+        let bundle = NanoClawdKitResources.bundle
         let resourceURL =
             bundle.url(forResource: name, withExtension: ext, subdirectory: subdirectory)
             ?? bundle.url(forResource: name, withExtension: ext)

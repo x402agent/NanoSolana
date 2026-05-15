@@ -1,10 +1,10 @@
 import Foundation
-import NanoSolanaProtocol
+import NanoClawdProtocol
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 @Suite(.serialized) struct VoiceWakeGlobalSettingsSyncTests {
-    private func voiceWakeChangedEvent(payload: NanoSolanaProtocol.AnyCodable) -> EventFrame {
+    private func voiceWakeChangedEvent(payload: NanoClawdProtocol.AnyCodable) -> EventFrame {
         EventFrame(
             type: "event",
             event: "voicewake.changed",
@@ -23,15 +23,15 @@ import Testing
 
     @Test func `applies voice wake changed event to app state`() async {
         let previous = await applyTriggersAndCapturePrevious(["before"])
-        let evt = self.voiceWakeChangedEvent(payload: NanoSolanaProtocol.AnyCodable(["triggers": [
-            "nanosolana",
+        let evt = self.voiceWakeChangedEvent(payload: NanoClawdProtocol.AnyCodable(["triggers": [
+            "nanoclawd",
             "computer",
         ]]))
 
         await VoiceWakeGlobalSettingsSync.shared.handle(push: .event(evt))
 
         let updated = await MainActor.run { AppStateStore.shared.swabbleTriggerWords }
-        #expect(updated == ["nanosolana", "computer"])
+        #expect(updated == ["nanoclawd", "computer"])
 
         await MainActor.run {
             AppStateStore.shared.applyGlobalVoiceWakeTriggers(previous)
@@ -40,7 +40,7 @@ import Testing
 
     @Test func `ignores voice wake changed event with invalid payload`() async {
         let previous = await applyTriggersAndCapturePrevious(["before"])
-        let evt = self.voiceWakeChangedEvent(payload: NanoSolanaProtocol.AnyCodable(["unexpected": 123]))
+        let evt = self.voiceWakeChangedEvent(payload: NanoClawdProtocol.AnyCodable(["unexpected": 123]))
 
         await VoiceWakeGlobalSettingsSync.shared.handle(push: .event(evt))
 

@@ -1,9 +1,9 @@
 import {
   buildOauthProviderAuthResult,
   emptyPluginConfigSchema,
-  type NanoSolanaPluginApi,
+  type NanoClawdPluginApi,
   type ProviderAuthContext,
-} from "nanosolana/plugin-sdk/qwen-portal-auth";
+} from "nanoclawd/plugin-sdk/qwen-portal-auth";
 import { loginQwenPortalOAuth } from "./oauth.js";
 
 const PROVIDER_ID = "qwen-portal";
@@ -41,7 +41,7 @@ const qwenPortalPlugin = {
   name: "Qwen OAuth",
   description: "OAuth flow for Qwen (free-tier) models",
   configSchema: emptyPluginConfigSchema(),
-  register(api: NanoSolanaPluginApi) {
+  register(api: NanoClawdPluginApi) {
     api.registerProvider({
       id: PROVIDER_ID,
       label: PROVIDER_LABEL,

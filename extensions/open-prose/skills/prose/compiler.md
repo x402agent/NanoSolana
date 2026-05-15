@@ -91,7 +91,7 @@ OpenProse provides a declarative syntax for defining multi-agent workflows. Prog
 - **Pattern over framework**: The simplest solution is barely anything at all—just structure for English
 - **Self-evident**: Programs should be understandable with minimal documentation
 - **The OpenProse VM is intelligent**: Design for understanding, not parsing
-- **Framework-agnostic**: Works with Claude Code, OpenCode, and any future agent framework
+- **Framework-agnostic**: Works with Clawd Code, OpenCode, and any future agent framework
 - **Files are artifacts**: `.prose` is the portable unit of work
 
 ### Current Implementation Status
@@ -550,7 +550,7 @@ agent name:
 
 | Property      | Type       | Values                       | Description                         |
 | ------------- | ---------- | ---------------------------- | ----------------------------------- |
-| `model`       | identifier | `sonnet`, `opus`, `haiku`    | The Claude model to use             |
+| `model`       | identifier | `sonnet`, `opus`, `haiku`    | The Clawd model to use             |
 | `prompt`      | string     | Any string                   | System prompt/context for the agent |
 | `persist`     | value      | `true`, `project`, or STRING | Enable persistent memory for agent  |
 | `skills`      | array      | String array                 | Skills assigned to this agent       |
@@ -678,7 +678,7 @@ agent file-handler:
 
 When a session references an agent:
 
-1. The agent's `model` property determines which Claude model is used
+1. The agent's `model` property determines which Clawd model is used
 2. The agent's `prompt` property is included as system context
 3. Session properties can override agent defaults
 
@@ -753,7 +753,7 @@ session: researcher
 When the OpenProse VM encounters a `session` statement:
 
 1. **Resolve Configuration**: Merge agent defaults with session overrides
-2. **Spawn a Subagent**: Create a new Claude subagent with the resolved configuration
+2. **Spawn a Subagent**: Create a new Clawd subagent with the resolved configuration
 3. **Send the Prompt**: Pass the prompt string to the subagent
 4. **Wait for Completion**: Block until the subagent finishes
 5. **Continue**: Proceed to the next statement
@@ -790,7 +790,7 @@ session "Third task"
 
 Each session waits for the previous one to complete before starting.
 
-### Using Claude Code's Task Tool
+### Using Clawd Code's Task Tool
 
 To execute a session, use the Task tool:
 

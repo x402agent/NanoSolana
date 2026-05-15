@@ -1,8 +1,8 @@
 import {
   listDirectoryGroupEntriesFromMapKeysAndAllowFrom,
   listDirectoryUserEntriesFromAllowFromAndMapKeys,
-} from "nanosolana/plugin-sdk/compat";
-import type { TamaGObotConfig } from "nanosolana/plugin-sdk/feishu";
+} from "nanoclawd/plugin-sdk/compat";
+import type { TamaGObotConfig } from "nanoclawd/plugin-sdk/feishu";
 import { resolveFeishuAccount } from "./accounts.js";
 import { createFeishuClient } from "./client.js";
 import { normalizeFeishuTarget } from "./targets.js";

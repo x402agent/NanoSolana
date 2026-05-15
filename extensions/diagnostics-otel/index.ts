@@ -1,5 +1,5 @@
-import type { NanoSolanaPluginApi } from "nanosolana/plugin-sdk/diagnostics-otel";
-import { emptyPluginConfigSchema } from "nanosolana/plugin-sdk/diagnostics-otel";
+import type { NanoClawdPluginApi } from "nanoclawd/plugin-sdk/diagnostics-otel";
+import { emptyPluginConfigSchema } from "nanoclawd/plugin-sdk/diagnostics-otel";
 import { createDiagnosticsOtelService } from "./src/service.js";
 
 const plugin = {
@@ -7,7 +7,7 @@ const plugin = {
   name: "Diagnostics OpenTelemetry",
   description: "Export diagnostics events to OpenTelemetry",
   configSchema: emptyPluginConfigSchema(),
-  register(api: NanoSolanaPluginApi) {
+  register(api: NanoClawdPluginApi) {
     api.registerService(createDiagnosticsOtelService());
   },
 };

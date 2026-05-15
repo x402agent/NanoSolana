@@ -214,7 +214,7 @@ metadata:
     envVars:
       - name: ANTHROPIC_API_KEY
         required: true
-        description: API key for Claude
+        description: API key for Clawd
       - name: MAX_TURNS
         required: false
         description: Max turns per phase
@@ -224,7 +224,7 @@ metadata:
     expect(meta?.envVars?.[0]).toEqual({
       name: 'ANTHROPIC_API_KEY',
       required: true,
-      description: 'API key for Claude',
+      description: 'API key for Clawd',
     })
     expect(meta?.envVars?.[1]?.required).toBe(false)
   })

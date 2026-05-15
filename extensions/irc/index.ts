@@ -1,5 +1,5 @@
-import type { ChannelPlugin, NanoSolanaPluginApi } from "nanosolana/plugin-sdk/irc";
-import { emptyPluginConfigSchema } from "nanosolana/plugin-sdk/irc";
+import type { ChannelPlugin, NanoClawdPluginApi } from "nanoclawd/plugin-sdk/irc";
+import { emptyPluginConfigSchema } from "nanoclawd/plugin-sdk/irc";
 import { ircPlugin } from "./src/channel.js";
 import { setIrcRuntime } from "./src/runtime.js";
 
@@ -8,7 +8,7 @@ const plugin = {
   name: "IRC",
   description: "IRC channel plugin",
   configSchema: emptyPluginConfigSchema(),
-  register(api: NanoSolanaPluginApi) {
+  register(api: NanoClawdPluginApi) {
     setIrcRuntime(api.runtime);
     api.registerChannel({ plugin: ircPlugin as ChannelPlugin });
   },

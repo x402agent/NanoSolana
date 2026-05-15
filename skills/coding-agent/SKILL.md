@@ -1,9 +1,9 @@
 ---
 name: coding-agent
-description: 'Delegate coding tasks to Codex, Claude Code, or Pi agents via background process. Use when: (1) building/creating new features or apps, (2) reviewing PRs (spawn in temp dir), (3) refactoring large codebases, (4) iterative coding that needs file exploration. NOT for: simple one-liner fixes (just edit), reading code (use read tool), thread-bound ACP harness requests in chat (for example spawn/run Codex or Claude Code in a Discord thread; use sessions_spawn with runtime:"acp"), or any work in ~/clawd workspace (never spawn agents here). Claude Code: use --print --permission-mode bypassPermissions (no PTY). Codex/Pi/OpenCode: pty:true required.'
+description: 'Delegate coding tasks to Codex, Clawd Code, or Pi agents via background process. Use when: (1) building/creating new features or apps, (2) reviewing PRs (spawn in temp dir), (3) refactoring large codebases, (4) iterative coding that needs file exploration. NOT for: simple one-liner fixes (just edit), reading code (use read tool), thread-bound ACP harness requests in chat (for example spawn/run Codex or Clawd Code in a Discord thread; use sessions_spawn with runtime:"acp"), or any work in ~/clawd workspace (never spawn agents here). Clawd Code: use --print --permission-mode bypassPermissions (no PTY). Codex/Pi/OpenCode: pty:true required.'
 metadata:
   {
-    "nanosolana": { "emoji": "🧩", "requires": { "anyBins": ["claude", "codex", "opencode", "pi"] } },
+    "nanoclawd": { "emoji": "🧩", "requires": { "anyBins": ["clawd", "codex", "opencode", "pi"] } },
   }
 ---
 
@@ -11,7 +11,7 @@ metadata:
 
 Use **bash** (with optional background mode) for all coding agent work. Simple and effective.
 
-## ⚠️ PTY Mode: Codex/Pi/OpenCode yes, Claude Code no
+## ⚠️ PTY Mode: Codex/Pi/OpenCode yes, Clawd Code no
 
 For **Codex, Pi, and OpenCode**, PTY is still required (interactive terminal apps):
 
@@ -20,18 +20,18 @@ For **Codex, Pi, and OpenCode**, PTY is still required (interactive terminal app
 bash pty:true command:"codex exec 'Your prompt'"
 ```
 
-For **Claude Code** (`claude` CLI), use `--print --permission-mode bypassPermissions` instead.
+For **Clawd Code** (`clawd` CLI), use `--print --permission-mode bypassPermissions` instead.
 `--dangerously-skip-permissions` with PTY can exit after the confirmation dialog.
 `--print` mode keeps full tool access and avoids interactive confirmation:
 
 ```bash
-# ✅ Correct for Claude Code (no PTY needed)
-cd /path/to/project && claude --permission-mode bypassPermissions --print 'Your task'
+# ✅ Correct for Clawd Code (no PTY needed)
+cd /path/to/project && clawd --permission-mode bypassPermissions --print 'Your task'
 
 # For background execution: use background:true on the exec tool
 
-# ❌ Wrong for Claude Code
-bash pty:true command:"claude --dangerously-skip-permissions 'task'"
+# ❌ Wrong for Clawd Code
+bash pty:true command:"clawd --dangerously-skip-permissions 'task'"
 ```
 
 ### Bash Tool Parameters
@@ -129,7 +129,7 @@ bash pty:true workdir:~/project background:true command:"codex --yolo 'Refactor 
 
 ### Reviewing PRs
 
-**⚠️ CRITICAL: Never review PRs in NanoSolana's own project folder!**
+**⚠️ CRITICAL: Never review PRs in NanoClawd's own project folder!**
 Clone to temp folder or use git worktree.
 
 ```bash
@@ -164,14 +164,14 @@ gh pr comment <PR#> --body "<review content>"
 
 ---
 
-## Claude Code
+## Clawd Code
 
 ```bash
 # Foreground
-bash workdir:~/project command:"claude --permission-mode bypassPermissions --print 'Your task'"
+bash workdir:~/project command:"clawd --permission-mode bypassPermissions --print 'Your task'"
 
 # Background
-bash workdir:~/project background:true command:"claude --permission-mode bypassPermissions --print 'Your task'"
+bash workdir:~/project background:true command:"clawd --permission-mode bypassPermissions --print 'Your task'"
 ```
 
 ---
@@ -233,7 +233,7 @@ git worktree remove /tmp/issue-99
 
 1. **Use the right execution mode per agent**:
    - Codex/Pi/OpenCode: `pty:true`
-   - Claude Code: `--print --permission-mode bypassPermissions` (no PTY required)
+   - Clawd Code: `--print --permission-mode bypassPermissions` (no PTY required)
 2. **Respect tool choice** - if user asks for Codex, use Codex.
    - Orchestrator mode: do NOT hand-code patches yourself.
    - If an agent fails/hangs, respawn it or ask the user for direction, but don't silently take over.
@@ -242,8 +242,8 @@ git worktree remove /tmp/issue-99
 5. **--full-auto for building** - auto-approves changes
 6. **vanilla for reviewing** - no special flags needed
 7. **Parallel is OK** - run many Codex processes at once for batch work
-8. **NEVER start Codex in ~/.nanosolana/** - it'll read your soul docs and get weird ideas about the org chart!
-9. **NEVER checkout branches in ~/Projects/nanosolana/** - that's the LIVE NanoSolana instance!
+8. **NEVER start Codex in ~/.nanoclawd/** - it'll read your soul docs and get weird ideas about the org chart!
+9. **NEVER checkout branches in ~/Projects/nanoclawd/** - that's the LIVE NanoClawd instance!
 
 ---
 
@@ -265,13 +265,13 @@ This prevents the user from seeing only "Agent failed before reply" and having n
 
 ## Auto-Notify on Completion
 
-For long-running background tasks, append a wake trigger to your prompt so NanoSolana gets notified immediately when the agent finishes (instead of waiting for the next heartbeat):
+For long-running background tasks, append a wake trigger to your prompt so NanoClawd gets notified immediately when the agent finishes (instead of waiting for the next heartbeat):
 
 ```
 ... your task here.
 
 When completely finished, run this command to notify me:
-nanosolana system event --text "Done: [brief summary of what was built]" --mode now
+nanoclawd system event --text "Done: [brief summary of what was built]" --mode now
 ```
 
 **Example:**
@@ -279,7 +279,7 @@ nanosolana system event --text "Done: [brief summary of what was built]" --mode 
 ```bash
 bash pty:true workdir:~/project background:true command:"codex --yolo exec 'Build a REST API for todos.
 
-When completely finished, run: nanosolana system event --text \"Done: Built todos REST API with CRUD endpoints\" --mode now'"
+When completely finished, run: nanoclawd system event --text \"Done: Built todos REST API with CRUD endpoints\" --mode now'"
 ```
 
 This triggers an immediate wake event — Skippy gets pinged in seconds, not 10 minutes.

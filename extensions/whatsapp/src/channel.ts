@@ -2,7 +2,7 @@ import {
   buildAccountScopedDmSecurityPolicy,
   collectAllowlistProviderGroupPolicyWarnings,
   collectOpenGroupPolicyRouteAllowlistWarnings,
-} from "nanosolana/plugin-sdk/compat";
+} from "nanoclawd/plugin-sdk/compat";
 import {
   applyAccountNameToChannelSection,
   buildChannelConfigSchema,
@@ -35,7 +35,7 @@ import {
   type ChannelMessageActionName,
   type ChannelPlugin,
   type ResolvedWhatsAppAccount,
-} from "nanosolana/plugin-sdk/whatsapp";
+} from "nanoclawd/plugin-sdk/whatsapp";
 import { getWhatsAppRuntime } from "./runtime.js";
 
 const meta = getChatChannelMeta("whatsapp");

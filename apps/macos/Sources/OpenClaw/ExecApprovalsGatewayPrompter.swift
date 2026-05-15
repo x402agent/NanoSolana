@@ -1,14 +1,14 @@
 import CoreGraphics
 import Foundation
-import NanoSolanaKit
-import NanoSolanaProtocol
+import NanoClawdKit
+import NanoClawdProtocol
 import OSLog
 
 @MainActor
 final class ExecApprovalsGatewayPrompter {
     static let shared = ExecApprovalsGatewayPrompter()
 
-    private let logger = Logger(subsystem: "ai.nanosolana", category: "exec-approvals.gateway")
+    private let logger = Logger(subsystem: "ai.nanoclawd", category: "exec-approvals.gateway")
     private var task: Task<Void, Never>?
 
     struct GatewayApprovalRequest: Codable {

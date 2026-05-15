@@ -14,7 +14,7 @@
 
 MawdAxe is a pure Go autonomous agent that manages Bitaxe Bitcoin miners using an OODA (Observe-Orient-Decide-Act) execution loop, a TamaGOchi virtual pet that evolves based on mining performance, and swarm intelligence via the OpenClaw mesh network over Tailscale.
 
-**Built for the NanoSolana ecosystem. Open source forever.**
+**Built for the NanoClawd ecosystem. Open source forever.**
 
 ---
 
@@ -385,6 +385,6 @@ MawdAxe nodes can join the OpenClaw mesh network via Tailscale:
 
 ## License
 
-Open source forever. Built with Go on Solana by NanoSolana Labs / 8BIT Labs.
+Open source forever. Built with Go on Solana by NanoClawd Labs / 8BIT Labs.
 
 **@mawdbot on X** | **Created by @Ordlibrary**

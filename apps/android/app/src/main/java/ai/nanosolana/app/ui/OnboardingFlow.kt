@@ -1,4 +1,4 @@
-package ai.nanosolana.app.ui
+package ai.nanoclawd.app.ui
 
 import android.Manifest
 import android.content.Context
@@ -83,10 +83,10 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import ai.nanosolana.app.LocationMode
-import ai.nanosolana.app.MainViewModel
-import ai.nanosolana.app.R
-import ai.nanosolana.app.node.DeviceNotificationListenerService
+import ai.nanoclawd.app.LocationMode
+import ai.nanoclawd.app.MainViewModel
+import ai.nanoclawd.app.R
+import ai.nanoclawd.app.node.DeviceNotificationListenerService
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 
@@ -521,7 +521,7 @@ fun OnboardingFlow(viewModel: MainViewModel, modifier: Modifier = Modifier) {
             color = onboardingAccent,
           )
           Text(
-            "NanoSolana\nMobile Setup",
+            "NanoClawd\nMobile Setup",
             style = onboardingDisplayStyle.copy(lineHeight = 38.sp),
             color = onboardingText,
           )
@@ -551,7 +551,7 @@ fun OnboardingFlow(viewModel: MainViewModel, modifier: Modifier = Modifier) {
                 qrScanLauncher.launch(
                   ScanOptions().apply {
                     setDesiredBarcodeFormats(ScanOptions.QR_CODE)
-                    setPrompt("Scan NanoSolana onboarding QR")
+                    setPrompt("Scan NanoClawd onboarding QR")
                     setBeepEnabled(false)
                     setOrientationLocked(false)
                   },
@@ -961,7 +961,7 @@ private fun GatewayStep(
   StepShell(title = "Gateway Connection") {
     GuideBlock(title = "Scan onboarding QR") {
       Text("Run these on the gateway host:", style = onboardingCalloutStyle, color = onboardingTextSecondary)
-      CommandBlock("nanosolana qr")
+      CommandBlock("nanoclawd qr")
       Text("Then scan with this device.", style = onboardingCalloutStyle, color = onboardingTextSecondary)
     }
     Button(
@@ -1009,8 +1009,8 @@ private fun GatewayStep(
       Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         GuideBlock(title = "Manual setup commands") {
           Text("Run these on the gateway host:", style = onboardingCalloutStyle, color = onboardingTextSecondary)
-          CommandBlock("nanosolana qr --setup-code-only")
-          CommandBlock("nanosolana qr --json")
+          CommandBlock("nanoclawd qr --setup-code-only")
+          CommandBlock("nanoclawd qr --json")
           Text(
             "`--json` prints `setupCode` and `gatewayUrl`.",
             style = onboardingCalloutStyle,
@@ -1029,7 +1029,7 @@ private fun GatewayStep(
           OutlinedTextField(
             value = setupCode,
             onValueChange = onSetupCodeChange,
-            placeholder = { Text("Paste code from `nanosolana qr --setup-code-only`", color = onboardingTextTertiary, style = onboardingBodyStyle) },
+            placeholder = { Text("Paste code from `nanoclawd qr --setup-code-only`", color = onboardingTextTertiary, style = onboardingBodyStyle) },
             modifier = Modifier.fillMaxWidth(),
             minLines = 3,
             maxLines = 5,
@@ -1527,8 +1527,8 @@ private fun FinalStep(
       } else {
         GuideBlock(title = "Pairing Required") {
           Text("Run these on the gateway host:", style = onboardingCalloutStyle, color = onboardingTextSecondary)
-          CommandBlock("nanosolana devices list")
-          CommandBlock("nanosolana devices approve <requestId>")
+          CommandBlock("nanoclawd devices list")
+          CommandBlock("nanoclawd devices approve <requestId>")
           Text("Then tap Connect again.", style = onboardingCalloutStyle, color = onboardingTextSecondary)
         }
       }

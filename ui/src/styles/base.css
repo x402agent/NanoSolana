@@ -1,12 +1,12 @@
 /*
  * ╔══════════════════════════════════════════════════════════════╗
- * ║  NanoSolana TamaGObot — Cypherpunk Design System           ║
+ * ║  NanoClawd TamaGObot — Cypherpunk Design System           ║
  * ║  Dark · Abstract · Solana-native · Lobster-blessed          ║
  * ╚══════════════════════════════════════════════════════════════╝
  */
 
 :root,
-:root[data-theme="nanosolana"] {
+:root[data-theme="nanoclawd"] {
   /* ─── Background — Abyssal blacks with blue-shift ─── */
   --bg: #060810;
   --bg-accent: #0a0d16;
@@ -183,8 +183,8 @@ body::after {
   );
 }
 
-nanosolana-app,
-nanosolana-app {
+nanoclawd-app,
+nanoclawd-app {
   display: block;
   position: relative;
   z-index: 1;
@@ -350,7 +350,7 @@ select {
 .skeleton-block { height: 48px; border-radius: var(--radius-md); }
 
 /* ═══════════════════════════════════════════════ */
-/* NanoSolana-specific utility classes              */
+/* NanoClawd-specific utility classes              */
 /* ═══════════════════════════════════════════════ */
 
 .ns-neon-text {

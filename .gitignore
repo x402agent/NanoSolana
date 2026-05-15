@@ -77,11 +77,11 @@ yarn-error.log*
 /memory/
 local/
 tmp/
-.nanosolana/
+.nanoclawd/
 coverage/
 
 # ─── Agent/AI Tool Config ───────────────────────────────
-.claude/
+.clawd/
 .agents/
 .serena/
 .agent/*.json

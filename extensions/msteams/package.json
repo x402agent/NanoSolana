@@ -1,13 +1,13 @@
 {
-  "name": "@nanosolana/msteams",
+  "name": "@nanoclawd/msteams",
   "version": "2026.3.11",
-  "description": "NanoSolana Microsoft Teams channel plugin",
+  "description": "NanoClawd Microsoft Teams channel plugin",
   "type": "module",
   "dependencies": {
     "@microsoft/agents-hosting": "^1.3.1",
     "express": "^5.2.1"
   },
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./index.ts"
     ],
@@ -24,7 +24,7 @@
       "order": 60
     },
     "install": {
-      "npmSpec": "@nanosolana/msteams",
+      "npmSpec": "@nanoclawd/msteams",
       "localPath": "extensions/msteams",
       "defaultChoice": "npm"
     },

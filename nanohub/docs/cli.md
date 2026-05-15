@@ -19,8 +19,8 @@ bun nanohub --help
 
 - `--workdir <dir>`: working directory (default: cwd; falls back to TamaGObot workspace if configured)
 - `--dir <dir>`: install dir under workdir (default: `skills`)
-- `--site <url>`: base URL for browser login (default: `https://nanosolana.netlify.app`)
-- `--registry <url>`: API base URL (default: discovered, else `https://nanosolana.netlify.app`)
+- `--site <url>`: base URL for browser login (default: `https://nanoclawd.netlify.app`)
+- `--registry <url>`: API base URL (default: discovered, else `https://nanoclawd.netlify.app`)
 - `--no-input`: disable prompts
 
 Env equivalents:
@@ -204,7 +204,7 @@ Stores your API token + cached registry URL.
   - `routing.agents.*.workspace/skills` (per-agent)
   - `~/.tamagobot/skills` (shared)
   - `skills.load.extraDirs` (shared packs)
-- Respects `TAMAGOBOT_CONFIG_PATH` / `TAMAGOBOT_STATE_DIR` and `NANOSOLANA_CONFIG_PATH` / `NANOSOLANA_STATE_DIR`.
+- Respects `TAMAGOBOT_CONFIG_PATH` / `TAMAGOBOT_STATE_DIR` and `NANOCLAWD_CONFIG_PATH` / `NANOCLAWD_STATE_DIR`.
 - Flags:
   - `--root <dir...>` extra scan roots
   - `--all` upload without prompting

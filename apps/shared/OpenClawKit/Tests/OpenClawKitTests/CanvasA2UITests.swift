@@ -1,11 +1,11 @@
-import NanoSolanaKit
+import NanoClawdKit
 import Testing
 
 @Suite struct CanvasA2UITests {
     @Test func commandStringsAreStable() {
-        #expect(NanoSolanaCanvasA2UICommand.push.rawValue == "canvas.a2ui.push")
-        #expect(NanoSolanaCanvasA2UICommand.pushJSONL.rawValue == "canvas.a2ui.pushJSONL")
-        #expect(NanoSolanaCanvasA2UICommand.reset.rawValue == "canvas.a2ui.reset")
+        #expect(NanoClawdCanvasA2UICommand.push.rawValue == "canvas.a2ui.push")
+        #expect(NanoClawdCanvasA2UICommand.pushJSONL.rawValue == "canvas.a2ui.pushJSONL")
+        #expect(NanoClawdCanvasA2UICommand.reset.rawValue == "canvas.a2ui.reset")
     }
 
     @Test func jsonlDecodesAndValidatesV0_8() throws {
@@ -16,7 +16,7 @@ import Testing
         {"deleteSurface":{"surfaceId":"main"}}
         """
 
-        let messages = try NanoSolanaCanvasA2UIJSONL.decodeMessagesFromJSONL(jsonl)
+        let messages = try NanoClawdCanvasA2UIJSONL.decodeMessagesFromJSONL(jsonl)
         #expect(messages.count == 4)
     }
 
@@ -26,7 +26,7 @@ import Testing
         """
 
         #expect(throws: Error.self) {
-            _ = try NanoSolanaCanvasA2UIJSONL.decodeMessagesFromJSONL(jsonl)
+            _ = try NanoClawdCanvasA2UIJSONL.decodeMessagesFromJSONL(jsonl)
         }
     }
 
@@ -36,7 +36,7 @@ import Testing
         """
 
         #expect(throws: Error.self) {
-            _ = try NanoSolanaCanvasA2UIJSONL.decodeMessagesFromJSONL(jsonl)
+            _ = try NanoClawdCanvasA2UIJSONL.decodeMessagesFromJSONL(jsonl)
         }
     }
 }

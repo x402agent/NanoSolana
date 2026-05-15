@@ -1,11 +1,11 @@
 import Foundation
 
-public enum NanoSolanaContactsCommand: String, Codable, Sendable {
+public enum NanoClawdContactsCommand: String, Codable, Sendable {
     case search = "contacts.search"
     case add = "contacts.add"
 }
 
-public struct NanoSolanaContactsSearchParams: Codable, Sendable, Equatable {
+public struct NanoClawdContactsSearchParams: Codable, Sendable, Equatable {
     public var query: String?
     public var limit: Int?
 
@@ -15,7 +15,7 @@ public struct NanoSolanaContactsSearchParams: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaContactsAddParams: Codable, Sendable, Equatable {
+public struct NanoClawdContactsAddParams: Codable, Sendable, Equatable {
     public var givenName: String?
     public var familyName: String?
     public var organizationName: String?
@@ -40,7 +40,7 @@ public struct NanoSolanaContactsAddParams: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaContactPayload: Codable, Sendable, Equatable {
+public struct NanoClawdContactPayload: Codable, Sendable, Equatable {
     public var identifier: String
     public var displayName: String
     public var givenName: String
@@ -68,18 +68,18 @@ public struct NanoSolanaContactPayload: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaContactsSearchPayload: Codable, Sendable, Equatable {
-    public var contacts: [NanoSolanaContactPayload]
+public struct NanoClawdContactsSearchPayload: Codable, Sendable, Equatable {
+    public var contacts: [NanoClawdContactPayload]
 
-    public init(contacts: [NanoSolanaContactPayload]) {
+    public init(contacts: [NanoClawdContactPayload]) {
         self.contacts = contacts
     }
 }
 
-public struct NanoSolanaContactsAddPayload: Codable, Sendable, Equatable {
-    public var contact: NanoSolanaContactPayload
+public struct NanoClawdContactsAddPayload: Codable, Sendable, Equatable {
+    public var contact: NanoClawdContactPayload
 
-    public init(contact: NanoSolanaContactPayload) {
+    public init(contact: NanoClawdContactPayload) {
         self.contact = contact
     }
 }

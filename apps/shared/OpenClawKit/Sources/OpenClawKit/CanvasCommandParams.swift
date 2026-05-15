@@ -1,6 +1,6 @@
 import Foundation
 
-public struct NanoSolanaCanvasNavigateParams: Codable, Sendable, Equatable {
+public struct NanoClawdCanvasNavigateParams: Codable, Sendable, Equatable {
     public var url: String
 
     public init(url: String) {
@@ -8,7 +8,7 @@ public struct NanoSolanaCanvasNavigateParams: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaCanvasPlacement: Codable, Sendable, Equatable {
+public struct NanoClawdCanvasPlacement: Codable, Sendable, Equatable {
     public var x: Double?
     public var y: Double?
     public var width: Double?
@@ -22,17 +22,17 @@ public struct NanoSolanaCanvasPlacement: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaCanvasPresentParams: Codable, Sendable, Equatable {
+public struct NanoClawdCanvasPresentParams: Codable, Sendable, Equatable {
     public var url: String?
-    public var placement: NanoSolanaCanvasPlacement?
+    public var placement: NanoClawdCanvasPlacement?
 
-    public init(url: String? = nil, placement: NanoSolanaCanvasPlacement? = nil) {
+    public init(url: String? = nil, placement: NanoClawdCanvasPlacement? = nil) {
         self.url = url
         self.placement = placement
     }
 }
 
-public struct NanoSolanaCanvasEvalParams: Codable, Sendable, Equatable {
+public struct NanoClawdCanvasEvalParams: Codable, Sendable, Equatable {
     public var javaScript: String
 
     public init(javaScript: String) {
@@ -40,7 +40,7 @@ public struct NanoSolanaCanvasEvalParams: Codable, Sendable, Equatable {
     }
 }
 
-public enum NanoSolanaCanvasSnapshotFormat: String, Codable, Sendable {
+public enum NanoClawdCanvasSnapshotFormat: String, Codable, Sendable {
     case png
     case jpeg
 
@@ -63,12 +63,12 @@ public enum NanoSolanaCanvasSnapshotFormat: String, Codable, Sendable {
     }
 }
 
-public struct NanoSolanaCanvasSnapshotParams: Codable, Sendable, Equatable {
+public struct NanoClawdCanvasSnapshotParams: Codable, Sendable, Equatable {
     public var maxWidth: Int?
     public var quality: Double?
-    public var format: NanoSolanaCanvasSnapshotFormat?
+    public var format: NanoClawdCanvasSnapshotFormat?
 
-    public init(maxWidth: Int? = nil, quality: Double? = nil, format: NanoSolanaCanvasSnapshotFormat? = nil) {
+    public init(maxWidth: Int? = nil, quality: Double? = nil, format: NanoClawdCanvasSnapshotFormat? = nil) {
         self.maxWidth = maxWidth
         self.quality = quality
         self.format = format

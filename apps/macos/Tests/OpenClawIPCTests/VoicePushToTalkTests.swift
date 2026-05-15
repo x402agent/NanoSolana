@@ -1,5 +1,5 @@
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct VoicePushToTalkTests {
     @Test func `delta trims committed prefix`() {

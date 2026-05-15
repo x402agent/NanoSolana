@@ -292,7 +292,7 @@ final class AppState {
             UserDefaults.standard.set(IconOverrideSelection.system.rawValue, forKey: iconOverrideKey)
         }
 
-        let configRoot = NanoSolanaConfigFile.loadDict()
+        let configRoot = NanoClawdConfigFile.loadDict()
         let configRemoteUrl = GatewayRemoteConfig.resolveUrlString(root: configRoot)
         let configRemoteToken = GatewayRemoteConfig.resolveTokenValue(root: configRoot)
         let configRemoteTransport = GatewayRemoteConfig.resolveTransport(root: configRoot)
@@ -458,7 +458,7 @@ final class AppState {
     }
 
     private func startConfigWatcher() {
-        let configUrl = NanoSolanaConfigFile.url()
+        let configUrl = NanoClawdConfigFile.url()
         self.configWatcher = ConfigFileWatcher(url: configUrl) { [weak self] in
             Task { @MainActor in
                 self?.applyConfigFromDisk()
@@ -468,7 +468,7 @@ final class AppState {
     }
 
     private func applyConfigFromDisk() {
-        let root = NanoSolanaConfigFile.loadDict()
+        let root = NanoClawdConfigFile.loadDict()
         self.applyConfigOverrides(root)
     }
 
@@ -611,7 +611,7 @@ final class AppState {
 
         // Keep app-only connection settings local to avoid overwriting remote gateway config.
         let synced = Self.syncedGatewayRoot(
-            currentRoot: NanoSolanaConfigFile.loadDict(),
+            currentRoot: NanoClawdConfigFile.loadDict(),
             connectionMode: self.connectionMode,
             remoteTransport: self.remoteTransport,
             remoteTarget: self.remoteTarget,
@@ -620,7 +620,7 @@ final class AppState {
             remoteToken: self.remoteToken,
             remoteTokenDirty: self.remoteTokenDirty)
         guard synced.changed else { return }
-        NanoSolanaConfigFile.saveDict(synced.root)
+        NanoClawdConfigFile.saveDict(synced.root)
     }
 
     func triggerVoiceEars(ttl: TimeInterval? = 5) {
@@ -744,7 +744,7 @@ extension AppState {
         state.onboardingSeen = true
         state.debugPaneEnabled = true
         state.swabbleEnabled = true
-        state.swabbleTriggerWords = ["Claude", "Computer", "Jarvis"]
+        state.swabbleTriggerWords = ["Clawd", "Computer", "Jarvis"]
         state.voiceWakeTriggerChime = .system(name: "Glass")
         state.voiceWakeSendChime = .system(name: "Ping")
         state.iconAnimationsEnabled = true
@@ -764,7 +764,7 @@ extension AppState {
         state.remoteUrl = "wss://gateway.example.ts.net"
         state.remoteToken = "example-token"
         state.remoteIdentity = "~/.ssh/id_ed25519"
-        state.remoteProjectRoot = "~/Projects/nanosolana"
+        state.remoteProjectRoot = "~/Projects/nanoclawd"
         state.remoteCliPath = ""
         return state
     }

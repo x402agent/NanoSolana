@@ -6,7 +6,7 @@ extension ProcessInfo {
         return String(cString: raw) == "1"
     }
 
-    /// Nix deployments may write defaults into a stable suite (`ai.nanosolana.mac`) even if the shipped
+    /// Nix deployments may write defaults into a stable suite (`ai.nanoclawd.mac`) even if the shipped
     /// app bundle identifier changes (and therefore `UserDefaults.standard` domain changes).
     static func resolveNixMode(
         environment: [String: String],
@@ -14,12 +14,12 @@ extension ProcessInfo {
         stableSuite: UserDefaults?,
         isAppBundle: Bool) -> Bool
     {
-        if environment["NANOSOLANA_NIX_MODE"] == "1" { return true }
-        if standard.bool(forKey: "nanosolana.nixMode") { return true }
+        if environment["NANOCLAWD_NIX_MODE"] == "1" { return true }
+        if standard.bool(forKey: "nanoclawd.nixMode") { return true }
 
         // Only consult the stable suite when running as a .app bundle.
         // This avoids local developer machines accidentally influencing unit tests.
-        if isAppBundle, let stableSuite, stableSuite.bool(forKey: "nanosolana.nixMode") { return true }
+        if isAppBundle, let stableSuite, stableSuite.bool(forKey: "nanoclawd.nixMode") { return true }
 
         return false
     }

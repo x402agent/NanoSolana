@@ -1,4 +1,4 @@
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/mattermost";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/mattermost";
 import { resolveMattermostAccount } from "./accounts.js";
 import {
   createMattermostClient,
@@ -50,7 +50,7 @@ export function parseMattermostApiStatus(err: unknown): number | undefined {
 
 export async function resolveMattermostOpaqueTarget(params: {
   input: string;
-  cfg?: NanoSolanaConfig;
+  cfg?: NanoClawdConfig;
   accountId?: string | null;
   token?: string;
   baseUrl?: string;

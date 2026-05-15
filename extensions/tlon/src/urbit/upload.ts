@@ -2,7 +2,7 @@
  * Upload an image from a URL to Tlon storage.
  */
 import { uploadFile } from "@tloncorp/api";
-import { fetchWithSsrFGuard } from "nanosolana/plugin-sdk/tlon";
+import { fetchWithSsrFGuard } from "nanoclawd/plugin-sdk/tlon";
 import { getDefaultSsrFPolicy } from "./context.js";
 
 /**

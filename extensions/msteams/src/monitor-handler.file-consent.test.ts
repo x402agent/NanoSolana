@@ -1,4 +1,4 @@
-import type { NanoSolanaConfig, PluginRuntime, RuntimeEnv } from "nanosolana/plugin-sdk/msteams";
+import type { NanoClawdConfig, PluginRuntime, RuntimeEnv } from "nanoclawd/plugin-sdk/msteams";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { MSTeamsConversationStore } from "./conversation-store.js";
 import type { MSTeamsAdapter } from "./messenger.js";
@@ -56,7 +56,7 @@ function createDeps(): MSTeamsMessageHandlerDeps {
     recordVote: async () => null,
   };
   return {
-    cfg: {} as NanoSolanaConfig,
+    cfg: {} as NanoClawdConfig,
     runtime: {
       error: vi.fn(),
     } as unknown as RuntimeEnv,

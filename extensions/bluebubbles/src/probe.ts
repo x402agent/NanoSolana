@@ -1,4 +1,4 @@
-import type { BaseProbeResult } from "nanosolana/plugin-sdk/bluebubbles";
+import type { BaseProbeResult } from "nanoclawd/plugin-sdk/bluebubbles";
 import { normalizeSecretInputString } from "./secret-input.js";
 import { buildBlueBubblesApiUrl, blueBubblesFetchWithTimeout } from "./types.js";
 

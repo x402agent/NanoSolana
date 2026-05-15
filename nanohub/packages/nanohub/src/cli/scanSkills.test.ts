@@ -60,7 +60,7 @@ describe('scanSkills', () => {
     expect(roots.some((p) => p.endsWith('/clawdis/skills'))).toBe(true)
     expect(roots.some((p) => p.endsWith('/clawd/skills'))).toBe(true)
     expect(roots.some((p) => p.endsWith('/tamagobot/skills'))).toBe(true)
-    expect(roots.some((p) => p.endsWith('/nanosolana/skills'))).toBe(true)
+    expect(roots.some((p) => p.endsWith('/nanoclawd/skills'))).toBe(true)
     expect(roots.some((p) => p.endsWith('/tamagobot/skills'))).toBe(true)
   })
 })

@@ -19,7 +19,7 @@ function normalizeBase(input: string): string {
 }
 
 export default defineConfig(() => {
-  const envBase = process.env.NANOSOLANA_CONTROL_UI_BASE_PATH?.trim();
+  const envBase = process.env.NANOCLAWD_CONTROL_UI_BASE_PATH?.trim();
   const base = envBase ? normalizeBase(envBase) : "./";
   return {
     base,
@@ -43,7 +43,7 @@ export default defineConfig(() => {
       {
         name: "control-ui-dev-stubs",
         configureServer(server) {
-          server.middlewares.use("/__nanosolana/control-ui-config.json", (_req, res) => {
+          server.middlewares.use("/__nanoclawd/control-ui-config.json", (_req, res) => {
             res.setHeader("Content-Type", "application/json");
             res.end(
               JSON.stringify({

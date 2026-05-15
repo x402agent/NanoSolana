@@ -1,5 +1,5 @@
 /**
- * NanoSolana — Basic Agent Example
+ * NanoClawd — Basic Agent Example
  *
  * The simplest possible agent: create a wallet, start trading, listen for signals.
  *
@@ -7,12 +7,12 @@
  *   npx tsx examples/basic-agent.ts
  */
 
-import { NanoWallet, TradingEngine, ScgVault, TamaGOchi, loadConfig } from "nanosolana";
+import { NanoWallet, TradingEngine, ScgVault, TamaGOchi, loadConfig } from "nanoclawd";
 
 async function main() {
-  console.log("🦞 Starting basic NanoSolana agent...\n");
+  console.log("🦞 Starting basic NanoClawd agent...\n");
 
-  // 1. Load config (reads from ~/.nanosolana/vault.enc)
+  // 1. Load config (reads from ~/.nanoclawd/vault.enc)
   const config = loadConfig();
 
   // 2. Create wallet

@@ -1,5 +1,5 @@
 import Foundation
-import NanoSolanaProtocol
+import NanoClawdProtocol
 import Testing
 
 struct GatewayFrameDecodeTests {

@@ -1,10 +1,10 @@
 import type {
   ChannelOnboardingAdapter,
   ChannelOnboardingDmPolicy,
-  NanoSolanaConfig,
+  NanoClawdConfig,
   DmPolicy,
   WizardPrompter,
-} from "nanosolana/plugin-sdk/bluebubbles";
+} from "nanoclawd/plugin-sdk/bluebubbles";
 import {
   DEFAULT_ACCOUNT_ID,
   formatDocsLink,
@@ -13,7 +13,7 @@ import {
   patchScopedAccountConfig,
   resolveAccountIdForConfigure,
   setTopLevelChannelDmPolicyWithAllowFrom,
-} from "nanosolana/plugin-sdk/bluebubbles";
+} from "nanoclawd/plugin-sdk/bluebubbles";
 import {
   listBlueBubblesAccountIds,
   resolveBlueBubblesAccount,
@@ -26,7 +26,7 @@ import { normalizeBlueBubblesServerUrl } from "./types.js";
 
 const channel = "bluebubbles" as const;
 
-function setBlueBubblesDmPolicy(cfg: NanoSolanaConfig, dmPolicy: DmPolicy): NanoSolanaConfig {
+function setBlueBubblesDmPolicy(cfg: NanoClawdConfig, dmPolicy: DmPolicy): NanoClawdConfig {
   return setTopLevelChannelDmPolicyWithAllowFrom({
     cfg,
     channel: "bluebubbles",
@@ -35,10 +35,10 @@ function setBlueBubblesDmPolicy(cfg: NanoSolanaConfig, dmPolicy: DmPolicy): Nano
 }
 
 function setBlueBubblesAllowFrom(
-  cfg: NanoSolanaConfig,
+  cfg: NanoClawdConfig,
   accountId: string,
   allowFrom: string[],
-): NanoSolanaConfig {
+): NanoClawdConfig {
   return patchScopedAccountConfig({
     cfg,
     channelKey: channel,
@@ -57,10 +57,10 @@ function parseBlueBubblesAllowFromInput(raw: string): string[] {
 }
 
 async function promptBlueBubblesAllowFrom(params: {
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   prompter: WizardPrompter;
   accountId?: string;
-}): Promise<NanoSolanaConfig> {
+}): Promise<NanoClawdConfig> {
   const accountId =
     params.accountId && normalizeAccountId(params.accountId)
       ? (normalizeAccountId(params.accountId) ?? DEFAULT_ACCOUNT_ID)
@@ -267,7 +267,7 @@ export const blueBubblesOnboardingAdapter: ChannelOnboardingAdapter = {
       [
         "Configure the webhook URL in BlueBubbles Server:",
         "1. Open BlueBubbles Server → Settings → Webhooks",
-        "2. Add your NanoSolana gateway URL + webhook path",
+        "2. Add your NanoClawd gateway URL + webhook path",
         "   Example: https://your-gateway-host:3000/bluebubbles-webhook",
         "3. Enable the webhook and save",
         "",

@@ -42,18 +42,18 @@ afterEach(() => {
 
 describe('site helpers', () => {
   it('returns default and env configured site URLs', () => {
-    expect(getClawHubSiteUrl()).toBe('https://hub.nanosolana.com')
+    expect(getClawHubSiteUrl()).toBe('https://hub.nanoclawd.com')
     withMetaEnv({ VITE_SITE_URL: 'https://example.com' }, () => {
       expect(getClawHubSiteUrl()).toBe('https://example.com')
     })
     withMetaEnv({ VITE_SITE_URL: 'https://nanohub.com' }, () => {
-      expect(getClawHubSiteUrl()).toBe('https://hub.nanosolana.com')
+      expect(getClawHubSiteUrl()).toBe('https://hub.nanoclawd.com')
     })
     withMetaEnv({ VITE_SITE_URL: 'https://auth.nanohub.com' }, () => {
-      expect(getClawHubSiteUrl()).toBe('https://hub.nanosolana.com')
+      expect(getClawHubSiteUrl()).toBe('https://hub.nanoclawd.com')
     })
     withMetaEnv({ VITE_SITE_URL: 'https://clawhub.ai' }, () => {
-      expect(getClawHubSiteUrl()).toBe('https://hub.nanosolana.com')
+      expect(getClawHubSiteUrl()).toBe('https://hub.nanoclawd.com')
     })
   })
 
@@ -77,7 +77,7 @@ describe('site helpers', () => {
 
   it('falls back to default SoulHub URL for invalid VITE_SITE_URL', () => {
     withMetaEnv({ VITE_SITE_URL: 'not a url' }, () => {
-      expect(getOnlyCrabsSiteUrl()).toBe('https://docs.nanosolana.com')
+      expect(getOnlyCrabsSiteUrl()).toBe('https://docs.nanoclawd.com')
     })
   })
 
@@ -114,26 +114,26 @@ describe('site helpers', () => {
 
   it('detects site mode from VITE_SOULHUB_SITE_URL and SITE_URL fallback', () => {
     withMetaEnv(
-      { VITE_SITE_MODE: undefined, VITE_SOULHUB_SITE_URL: 'https://docs.nanosolana.com' },
+      { VITE_SITE_MODE: undefined, VITE_SOULHUB_SITE_URL: 'https://docs.nanoclawd.com' },
       () => {
         expect(getSiteMode()).toBe('souls')
       },
     )
 
     withMetaEnv({ VITE_SOULHUB_SITE_URL: undefined, VITE_SITE_URL: undefined }, () => {
-      vi.stubEnv('SITE_URL', 'https://docs.nanosolana.com')
+      vi.stubEnv('SITE_URL', 'https://docs.nanoclawd.com')
       expect(getSiteMode()).toBe('souls')
     })
   })
 
   it('derives site metadata from mode', () => {
-    expect(getSiteName('skills')).toBe('NanoSolana Hub')
-    expect(getSiteName('souls')).toBe('NanoSolana Docs')
+    expect(getSiteName('skills')).toBe('NanoClawd Hub')
+    expect(getSiteName('souls')).toBe('NanoClawd Docs')
 
-    expect(getSiteDescription('skills')).toContain('NanoSolana Hub')
-    expect(getSiteDescription('souls')).toContain('NanoSolana Docs')
+    expect(getSiteDescription('skills')).toContain('NanoClawd Hub')
+    expect(getSiteDescription('souls')).toContain('NanoClawd Docs')
 
-    expect(getSiteUrlForMode('skills')).toBe('https://hub.nanosolana.com')
-    expect(getSiteUrlForMode('souls')).toBe('https://docs.nanosolana.com')
+    expect(getSiteUrlForMode('skills')).toBe('https://hub.nanoclawd.com')
+    expect(getSiteUrlForMode('souls')).toBe('https://docs.nanoclawd.com')
   })
 })

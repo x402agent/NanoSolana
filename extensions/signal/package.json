@@ -1,10 +1,10 @@
 {
-  "name": "@nanosolana/signal",
+  "name": "@nanoclawd/signal",
   "version": "2026.3.11",
   "private": true,
-  "description": "NanoSolana Signal channel plugin",
+  "description": "NanoClawd Signal channel plugin",
   "type": "module",
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./index.ts"
     ]

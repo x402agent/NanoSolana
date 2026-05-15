@@ -1,7 +1,7 @@
 {
   "id": "nostr",
   "name": "Nostr",
-  "description": "NanoSolana Nostr protocol — decentralized trading signal relay and identity",
+  "description": "NanoClawd Nostr protocol — decentralized trading signal relay and identity",
   "channels": ["nostr"],
   "configSchema": {
     "type": "object",

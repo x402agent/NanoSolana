@@ -8,11 +8,11 @@ import UniformTypeIdentifiers
 #endif
 
 @MainActor
-struct NanoSolanaChatComposer: View {
+struct NanoClawdChatComposer: View {
     private static let menuThinkingLevels = ["off", "low", "medium", "high"]
 
-    @Bindable var viewModel: NanoSolanaChatViewModel
-    let style: NanoSolanaChatView.Style
+    @Bindable var viewModel: NanoClawdChatViewModel
+    let style: NanoClawdChatView.Style
     let showsSessionSwitcher: Bool
 
     #if !os(macOS)
@@ -60,21 +60,21 @@ struct NanoSolanaChatComposer: View {
                         topTrailing: 0),
                     style: .continuous)
                 shape
-                    .fill(NanoSolanaChatTheme.composerBackground)
-                    .overlay(shape.strokeBorder(NanoSolanaChatTheme.composerBorder, lineWidth: 1))
+                    .fill(NanoClawdChatTheme.composerBackground)
+                    .overlay(shape.strokeBorder(NanoClawdChatTheme.composerBorder, lineWidth: 1))
                     .shadow(color: .black.opacity(0.12), radius: 12, y: 6)
             } else {
                 let shape = RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                 shape
-                    .fill(NanoSolanaChatTheme.composerBackground)
-                    .overlay(shape.strokeBorder(NanoSolanaChatTheme.composerBorder, lineWidth: 1))
+                    .fill(NanoClawdChatTheme.composerBackground)
+                    .overlay(shape.strokeBorder(NanoClawdChatTheme.composerBorder, lineWidth: 1))
                     .shadow(color: .black.opacity(0.12), radius: 12, y: 6)
             }
             #else
             let shape = RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
             shape
-                .fill(NanoSolanaChatTheme.composerBackground)
-                .overlay(shape.strokeBorder(NanoSolanaChatTheme.composerBorder, lineWidth: 1))
+                .fill(NanoClawdChatTheme.composerBackground)
+                .overlay(shape.strokeBorder(NanoClawdChatTheme.composerBorder, lineWidth: 1))
                 .shadow(color: .black.opacity(0.12), radius: 12, y: 6)
             #endif
         }
@@ -116,7 +116,7 @@ struct NanoSolanaChatComposer: View {
                 get: { self.viewModel.modelSelectionID },
                 set: { next in self.viewModel.selectModel(next) }))
         {
-            Text(self.viewModel.defaultModelLabel).tag(NanoSolanaChatViewModel.defaultModelSelectionID)
+            Text(self.viewModel.defaultModelLabel).tag(NanoClawdChatViewModel.defaultModelSelectionID)
             ForEach(self.viewModel.modelChoices) { model in
                 Text(model.displayLabel).tag(model.selectionID)
             }
@@ -177,11 +177,11 @@ struct NanoSolanaChatComposer: View {
             HStack(spacing: 6) {
                 ForEach(
                     self.viewModel.attachments,
-                    id: \NanoSolanaPendingAttachment.id)
-                { (att: NanoSolanaPendingAttachment) in
+                    id: \NanoClawdPendingAttachment.id)
+                { (att: NanoClawdPendingAttachment) in
                     HStack(spacing: 6) {
                         if let img = att.preview {
-                            NanoSolanaPlatformImageFactory.image(img)
+                            NanoClawdPlatformImageFactory.image(img)
                                 .resizable()
                                 .scaledToFill()
                                 .frame(width: 22, height: 22)
@@ -215,7 +215,7 @@ struct NanoSolanaChatComposer: View {
 
             if !self.isComposerCompacted {
                 Rectangle()
-                    .fill(NanoSolanaChatTheme.divider)
+                    .fill(NanoClawdChatTheme.divider)
                     .frame(height: 1)
                     .padding(.horizontal, 2)
             }
@@ -232,10 +232,10 @@ struct NanoSolanaChatComposer: View {
         .padding(.vertical, 8)
         .background(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(NanoSolanaChatTheme.composerField)
+                .fill(NanoClawdChatTheme.composerField)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .strokeBorder(NanoSolanaChatTheme.composerBorder)))
+                        .strokeBorder(NanoClawdChatTheme.composerBorder)))
         .padding(self.editorPadding)
     }
 
@@ -252,7 +252,7 @@ struct NanoSolanaChatComposer: View {
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
-        .background(NanoSolanaChatTheme.subtleCard)
+        .background(NanoClawdChatTheme.subtleCard)
         .clipShape(Capsule())
     }
 
@@ -265,7 +265,7 @@ struct NanoSolanaChatComposer: View {
     private var editorOverlay: some View {
         ZStack(alignment: .topLeading) {
             if self.viewModel.input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                Text("Message NanoSolana…")
+                Text("Message NanoClawd…")
                     .foregroundStyle(.tertiary)
                     .padding(.horizontal, 4)
                     .padding(.vertical, 4)

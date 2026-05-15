@@ -1,7 +1,7 @@
 import Foundation
-import NanoSolanaProtocol
+import NanoClawdProtocol
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct AnyCodableEncodingTests {
     @Test func `encodes swift array and dictionary values`() throws {
@@ -11,7 +11,7 @@ struct AnyCodableEncodingTests {
             "null": NSNull(),
         ]
 
-        let data = try JSONEncoder().encode(NanoSolanaProtocol.AnyCodable(payload))
+        let data = try JSONEncoder().encode(NanoClawdProtocol.AnyCodable(payload))
         let obj = try #require(JSONSerialization.jsonObject(with: data) as? [String: Any])
 
         #expect(obj["tags"] as? [String] == ["node", "ios"])
@@ -24,7 +24,7 @@ struct AnyCodableEncodingTests {
             "items": [1, "two", NSNull(), ["ok": true]],
         ]
 
-        let data = try JSONEncoder().encode(NanoSolanaProtocol.AnyCodable(payload))
+        let data = try JSONEncoder().encode(NanoClawdProtocol.AnyCodable(payload))
         let obj = try #require(JSONSerialization.jsonObject(with: data) as? [String: Any])
 
         let items = try #require(obj["items"] as? [Any])

@@ -102,13 +102,13 @@ export function extractMSTeamsPollVote(
     return null;
   }
   const pollId =
-    readNestedString(value, ["nanosolanaPollId"]) ??
+    readNestedString(value, ["nanoclawdPollId"]) ??
     readNestedString(value, ["pollId"]) ??
-    readNestedString(value, ["nanosolana", "pollId"]) ??
-    readNestedString(value, ["nanosolana", "poll", "id"]) ??
-    readNestedString(value, ["data", "nanosolanaPollId"]) ??
+    readNestedString(value, ["nanoclawd", "pollId"]) ??
+    readNestedString(value, ["nanoclawd", "poll", "id"]) ??
+    readNestedString(value, ["data", "nanoclawdPollId"]) ??
     readNestedString(value, ["data", "pollId"]) ??
-    readNestedString(value, ["data", "nanosolana", "pollId"]);
+    readNestedString(value, ["data", "nanoclawd", "pollId"]);
   if (!pollId) {
     return null;
   }
@@ -185,14 +185,14 @@ export function buildMSTeamsPollCard(params: {
         type: "Action.Submit",
         title: "Vote",
         data: {
-          nanosolanaPollId: pollId,
+          nanoclawdPollId: pollId,
           pollId,
         },
         msteams: {
           type: "messageBack",
-          text: "nanosolana poll vote",
+          text: "nanoclawd poll vote",
           displayText: "Vote recorded",
-          value: { nanosolanaPollId: pollId, pollId },
+          value: { nanoclawdPollId: pollId, pollId },
         },
       },
     ],

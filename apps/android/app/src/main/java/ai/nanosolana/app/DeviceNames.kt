@@ -1,4 +1,4 @@
-package ai.nanosolana.app
+package ai.nanoclawd.app
 
 import android.content.Context
 import android.os.Build

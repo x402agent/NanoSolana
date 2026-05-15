@@ -1,4 +1,4 @@
-import type { PluginRuntime } from "nanosolana/plugin-sdk/nostr";
+import type { PluginRuntime } from "nanoclawd/plugin-sdk/nostr";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createStartAccountContext } from "../../test-utils/start-account-context.js";
 import { nostrPlugin } from "./channel.js";

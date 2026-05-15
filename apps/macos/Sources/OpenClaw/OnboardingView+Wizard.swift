@@ -1,5 +1,5 @@
 import Observation
-import NanoSolanaProtocol
+import NanoClawdProtocol
 import SwiftUI
 
 extension OnboardingView {

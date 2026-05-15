@@ -1,8 +1,8 @@
 import Cocoa
 import Foundation
 import Observation
-import NanoSolanaKit
-import NanoSolanaProtocol
+import NanoClawdKit
+import NanoClawdProtocol
 import OSLog
 
 struct InstanceInfo: Identifiable, Codable {
@@ -41,7 +41,7 @@ final class InstancesStore {
     var statusMessage: String?
     var isLoading = false
 
-    private let logger = Logger(subsystem: "ai.nanosolana", category: "instances")
+    private let logger = Logger(subsystem: "ai.nanoclawd", category: "instances")
     private var task: Task<Void, Never>?
     private let interval: TimeInterval = 30
     private var eventTask: Task<Void, Never>?
@@ -231,7 +231,7 @@ final class InstancesStore {
         }
     }
 
-    func handlePresenceEventPayload(_ payload: NanoSolanaProtocol.AnyCodable) {
+    func handlePresenceEventPayload(_ payload: NanoClawdProtocol.AnyCodable) {
         do {
             let wrapper = try GatewayPayloadDecoding.decode(payload, as: PresenceEventPayload.self)
             self.applyPresence(wrapper.presence)

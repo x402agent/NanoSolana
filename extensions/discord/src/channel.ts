@@ -1,11 +1,11 @@
-import { createScopedChannelConfigBase } from "nanosolana/plugin-sdk/compat";
+import { createScopedChannelConfigBase } from "nanoclawd/plugin-sdk/compat";
 import {
   buildAccountScopedDmSecurityPolicy,
   collectOpenProviderGroupPolicyWarnings,
   collectOpenGroupPolicyConfiguredRouteWarnings,
   createScopedAccountConfigAccessors,
   formatAllowFromLowercase,
-} from "nanosolana/plugin-sdk/compat";
+} from "nanoclawd/plugin-sdk/compat";
 import {
   applyAccountNameToChannelSection,
   buildComputedAccountStatusSnapshot,
@@ -36,7 +36,7 @@ import {
   type ChannelMessageActionAdapter,
   type ChannelPlugin,
   type ResolvedDiscordAccount,
-} from "nanosolana/plugin-sdk/discord";
+} from "nanoclawd/plugin-sdk/discord";
 import { getDiscordRuntime } from "./runtime.js";
 
 const meta = getChatChannelMeta("discord");
@@ -168,7 +168,7 @@ export const discordPlugin: ChannelPlugin<ResolvedDiscordAccount> = {
   agentPrompt: {
     messageToolHints: () => [
       "- Discord components: set `components` when sending messages to include buttons, selects, or v2 containers.",
-      "- Forms: add `components.modal` (title, fields). NanoSolana adds a trigger button and routes submissions as new messages.",
+      "- Forms: add `components.modal` (title, fields). NanoClawd adds a trigger button and routes submissions as new messages.",
     ],
   },
   messaging: {

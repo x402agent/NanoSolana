@@ -1,4 +1,4 @@
-import type { NanoSolanaConfig, PluginRuntime } from "nanosolana/plugin-sdk/googlechat";
+import type { NanoClawdConfig, PluginRuntime } from "nanoclawd/plugin-sdk/googlechat";
 import { describe, expect, it, vi } from "vitest";
 
 const uploadGoogleChatAttachmentMock = vi.hoisted(() => vi.fn());
@@ -12,7 +12,7 @@ vi.mock("./api.js", () => ({
 import { googlechatPlugin } from "./channel.js";
 import { setGoogleChatRuntime } from "./runtime.js";
 
-function createGoogleChatCfg(): NanoSolanaConfig {
+function createGoogleChatCfg(): NanoClawdConfig {
   return {
     channels: {
       googlechat: {

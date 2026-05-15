@@ -1,7 +1,7 @@
 {
-  "name": "@nanosolana/voice-call",
+  "name": "@nanoclawd/voice-call",
   "version": "2026.3.11",
-  "description": "NanoSolana voice-call plugin",
+  "description": "NanoClawd voice-call plugin",
   "type": "module",
   "dependencies": {
     "@sinclair/typebox": "0.34.48",
@@ -9,7 +9,7 @@
     "ws": "^8.19.0",
     "zod": "^4.3.6"
   },
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./index.ts"
     ]

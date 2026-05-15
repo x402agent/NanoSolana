@@ -106,7 +106,7 @@ enum TestIsolation {
 
     nonisolated static func tempConfigPath() -> String {
         FileManager().temporaryDirectory
-            .appendingPathComponent("nanosolana-test-config-\(UUID().uuidString).json")
+            .appendingPathComponent("nanoclawd-test-config-\(UUID().uuidString).json")
             .path
     }
 }

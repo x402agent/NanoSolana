@@ -1,4 +1,4 @@
-import type { BaseProbeResult } from "nanosolana/plugin-sdk/irc";
+import type { BaseProbeResult } from "nanoclawd/plugin-sdk/irc";
 import type {
   BlockStreamingCoalesceConfig,
   DmConfig,
@@ -7,8 +7,8 @@ import type {
   GroupToolPolicyBySenderConfig,
   GroupToolPolicyConfig,
   MarkdownConfig,
-  NanoSolanaConfig,
-} from "nanosolana/plugin-sdk/irc";
+  NanoClawdConfig,
+} from "nanoclawd/plugin-sdk/irc";
 
 export type IrcChannelConfig = {
   requireMention?: boolean;
@@ -71,8 +71,8 @@ export type IrcConfig = IrcAccountConfig & {
   defaultAccount?: string;
 };
 
-export type CoreConfig = NanoSolanaConfig & {
-  channels?: NanoSolanaConfig["channels"] & {
+export type CoreConfig = NanoClawdConfig & {
+  channels?: NanoClawdConfig["channels"] & {
     irc?: IrcConfig;
   };
 };

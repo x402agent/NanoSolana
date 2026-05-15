@@ -131,7 +131,7 @@ function lazyRender<M>(getter: () => M | null, render: (mod: M) => unknown) {
   return mod ? render(mod) : nothing;
 }
 
-const UPDATE_BANNER_DISMISS_KEY = "nanosolana:control-ui:update-banner-dismissed:v1";
+const UPDATE_BANNER_DISMISS_KEY = "nanoclawd:control-ui:update-banner-dismissed:v1";
 const CRON_THINKING_SUGGESTIONS = ["off", "minimal", "low", "medium", "high"];
 const CRON_TIMEZONE_SUGGESTIONS = [
   "UTC",
@@ -336,7 +336,7 @@ export function renderApp(state: AppViewState) {
           background: linear-gradient(180deg, rgba(99, 102, 241, 0.08) 0%, transparent 100%);
           border-bottom: 1px solid rgba(255,255,255,0.06);
         ">
-          <img src="${faviconSrc}" alt="NanoSolana" style="
+          <img src="${faviconSrc}" alt="NanoClawd" style="
             width: 72px; height: 72px; margin-bottom: 20px;
             filter: drop-shadow(0 0 24px rgba(99, 102, 241, 0.4));
           " />
@@ -345,7 +345,7 @@ export function renderApp(state: AppViewState) {
             background: linear-gradient(135deg, #818cf8, #c084fc, #6ee7b7);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-clip: text;
-          ">NanoSolana</h1>
+          ">NanoClawd</h1>
           <p style="
             font-size: 1.15rem; color: #94a3b8; max-width: 600px; margin: 0 auto 28px;
             line-height: 1.6;
@@ -354,7 +354,7 @@ export function renderApp(state: AppViewState) {
             PumpFun integration, 43+ DeFi personas, and ScgVault memory.
           </p>
           <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-            <a href="https://github.com/x402agent/NanoSolana" target="_blank" rel="noreferrer" style="
+            <a href="https://github.com/x402agent/NanoClawd" target="_blank" rel="noreferrer" style="
               display: inline-flex; align-items: center; gap: 8px;
               padding: 12px 28px; border-radius: 10px;
               background: linear-gradient(135deg, #6366f1, #8b5cf6);
@@ -516,7 +516,7 @@ export function renderApp(state: AppViewState) {
             </h2>
             <p style="font-size: 0.85rem; color: #64748b; margin: 0 0 16px; line-height: 1.5;">
               To access the full control panel with live chat, agents, cron, and logs,
-              connect to a running NanoSolana gateway instance.
+              connect to a running NanoClawd gateway instance.
             </p>
             ${renderLoginGate(state)}
           </div>
@@ -528,8 +528,8 @@ export function renderApp(state: AppViewState) {
           border-top: 1px solid rgba(255,255,255,0.06);
           color: #475569; font-size: 0.8rem;
         ">
-          NanoSolana — Security-first autonomous agents for Solana •
-          <a href="https://github.com/x402agent/NanoSolana" target="_blank" rel="noreferrer" style="color: #818cf8; text-decoration: none;">GitHub</a>
+          NanoClawd — Security-first autonomous agents for Solana •
+          <a href="https://github.com/x402agent/NanoClawd" target="_blank" rel="noreferrer" style="color: #818cf8; text-decoration: none;">GitHub</a>
         </footer>
       </div>
     `;
@@ -663,8 +663,8 @@ export function renderApp(state: AppViewState) {
             ? nothing
             : html`
           <div class="sidebar-brand">
-            <img class="sidebar-brand__logo" src="${basePath ? `${basePath}/favicon.svg` : "/favicon.svg"}" alt="NanoSolana" />
-            <span class="sidebar-brand__title">NanoSolana</span>
+            <img class="sidebar-brand__logo" src="${basePath ? `${basePath}/favicon.svg` : "/favicon.svg"}" alt="NanoClawd" />
+            <span class="sidebar-brand__title">NanoClawd</span>
           </div>
         `
         }
@@ -725,7 +725,7 @@ export function renderApp(state: AppViewState) {
           <div class="sidebar-footer__docs-block">
             <a
               class="nav-item nav-item--external"
-              href="https://docs.nanosolana.com"
+              href="https://docs.nanoclawd.com"
               target=${EXTERNAL_LINK_TARGET}
               rel=${buildExternalLinkRel()}
               title="${t("common.docs")} (opens in new tab)"

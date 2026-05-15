@@ -1,5 +1,5 @@
 /**
- * Nano Solana — Gateway Server
+ * Nano Clawd — Gateway Server
  *
  * Secure WebSocket + HTTP gateway for:
  *   - Agent ↔ Nano Hub communication
@@ -426,7 +426,7 @@ export class ScgGateway extends EventEmitter<GatewayEvents> {
             lastHeartbeat: a.lastHeartbeat,
           })),
           framework: {
-            name: "Solana Claude Go",
+            name: "Solana Clawd Go",
             features: [
               "gateway",
               "trading-engine",
@@ -661,7 +661,7 @@ export class ScgGateway extends EventEmitter<GatewayEvents> {
         const assistantMessage = this.telegramStore.addMessage({
           chatId,
           userId: "scg-agent",
-          userName: "Solana Claude Go",
+          userName: "Solana Clawd Go",
           role: "assistant",
           content: replyText,
           metadata: {
@@ -755,7 +755,7 @@ export class ScgGateway extends EventEmitter<GatewayEvents> {
     const publicHubSiteUrl = getScgHubSiteUrl();
 
     return {
-      project: "Solana Claude Go",
+      project: "Solana Clawd Go",
       agent: {
         id: this.wallet.getAgentId(),
         name: this.wallet.getInfo().agentName,
@@ -1010,7 +1010,7 @@ export class ScgGateway extends EventEmitter<GatewayEvents> {
     const lower = trimmed.toLowerCase();
 
     if (!trimmed) {
-      return "I received an empty message. Send a prompt and I will route it through the Solana Claude Go gateway.";
+      return "I received an empty message. Send a prompt and I will route it through the Solana Clawd Go gateway.";
     }
 
     if (lower.includes("status")) {
@@ -1033,7 +1033,7 @@ export class ScgGateway extends EventEmitter<GatewayEvents> {
         : "Telegram relay is currently disabled. Enable it in the extension settings.";
     }
 
-    return `Solana Claude Go received: "${trimmed}". Your message has been stored in gateway memory and can be forwarded to Telegram if enabled.`;
+    return `Solana Clawd Go received: "${trimmed}". Your message has been stored in gateway memory and can be forwarded to Telegram if enabled.`;
   }
 
   /**

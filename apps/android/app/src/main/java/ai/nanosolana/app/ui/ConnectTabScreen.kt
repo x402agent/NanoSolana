@@ -1,4 +1,4 @@
-package ai.nanosolana.app.ui
+package ai.nanoclawd.app.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
@@ -46,7 +46,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import ai.nanosolana.app.MainViewModel
+import ai.nanoclawd.app.MainViewModel
 
 private enum class ConnectInputMode {
   SetupCode,
@@ -267,8 +267,8 @@ fun ConnectTabScreen(viewModel: MainViewModel) {
           }
 
           Text("Run these on the gateway host:", style = mobileCallout, color = mobileTextSecondary)
-          CommandBlock("nanosolana qr --setup-code-only")
-          CommandBlock("nanosolana qr --json")
+          CommandBlock("nanoclawd qr --setup-code-only")
+          CommandBlock("nanoclawd qr --json")
 
           if (inputMode == ConnectInputMode.SetupCode) {
             Text("Setup Code", style = mobileCaption1.copy(fontWeight = FontWeight.SemiBold), color = mobileTextSecondary)

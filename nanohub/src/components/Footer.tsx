@@ -9,8 +9,8 @@ export function Footer() {
         <div className="site-footer-row">
           <div className="site-footer-copy">
             {siteName} · A{' '}
-            <a href="https://nanosolana.com" target="_blank" rel="noreferrer">
-              NanoSolana Labs
+            <a href="https://nanoclawd.com" target="_blank" rel="noreferrer">
+              NanoClawd Labs
             </a>{' '}
             project · Deployed on{' '}
             <a href="https://vercel.com" target="_blank" rel="noreferrer">
@@ -21,7 +21,7 @@ export function Footer() {
               Convex
             </a>{' '}
             ·{' '}
-            <a href="https://github.com/x402agent/NanoSolana" target="_blank" rel="noreferrer">
+            <a href="https://github.com/x402agent/NanoClawd" target="_blank" rel="noreferrer">
               Open source (MIT)
             </a>
             .

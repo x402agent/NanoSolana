@@ -1,8 +1,8 @@
 import { Type } from "@sinclair/typebox";
 import type {
   GatewayRequestHandlerOptions,
-  NanoSolanaPluginApi,
-} from "nanosolana/plugin-sdk/voice-call";
+  NanoClawdPluginApi,
+} from "nanoclawd/plugin-sdk/voice-call";
 import { registerVoiceCallCli } from "./src/cli.js";
 import {
   VoiceCallConfigSchema,
@@ -148,7 +148,7 @@ const voiceCallPlugin = {
   name: "Voice Call",
   description: "Voice-call plugin with Telnyx/Twilio/Plivo providers",
   configSchema: voiceCallConfigSchema,
-  register(api: NanoSolanaPluginApi) {
+  register(api: NanoClawdPluginApi) {
     const config = resolveVoiceCallConfig(voiceCallConfigSchema.parse(api.pluginConfig));
     const validation = validateProviderConfig(config);
 

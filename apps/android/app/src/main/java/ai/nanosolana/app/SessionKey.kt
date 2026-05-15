@@ -1,4 +1,4 @@
-package ai.nanosolana.app
+package ai.nanoclawd.app
 
 internal fun normalizeMainKey(raw: String?): String {
   val trimmed = raw?.trim()

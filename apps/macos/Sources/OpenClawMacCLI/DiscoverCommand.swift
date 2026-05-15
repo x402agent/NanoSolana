@@ -1,5 +1,5 @@
 import Foundation
-import NanoSolanaDiscovery
+import NanoClawdDiscovery
 
 struct DiscoveryOptions {
     var timeoutMs: Int = 2000
@@ -58,10 +58,10 @@ func runDiscover(_ args: [String]) async {
     let opts = DiscoveryOptions.parse(args)
     if opts.help {
         print("""
-        nanosolana-mac discover
+        nanoclawd-mac discover
 
         Usage:
-          nanosolana-mac discover [--timeout <ms>] [--json] [--include-local]
+          nanoclawd-mac discover [--timeout <ms>] [--json] [--include-local]
 
         Options:
           --timeout <ms>     Discovery window in milliseconds (default: 2000)

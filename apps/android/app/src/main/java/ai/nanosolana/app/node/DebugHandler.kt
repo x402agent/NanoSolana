@@ -1,9 +1,9 @@
-package ai.nanosolana.app.node
+package ai.nanoclawd.app.node
 
 import android.content.Context
-import ai.nanosolana.app.BuildConfig
-import ai.nanosolana.app.gateway.DeviceIdentityStore
-import ai.nanosolana.app.gateway.GatewaySession
+import ai.nanoclawd.app.BuildConfig
+import ai.nanoclawd.app.gateway.DeviceIdentityStore
+import ai.nanoclawd.app.gateway.GatewaySession
 import kotlinx.serialization.json.JsonPrimitive
 
 class DebugHandler(

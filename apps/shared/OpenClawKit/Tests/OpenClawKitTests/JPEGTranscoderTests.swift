@@ -1,4 +1,4 @@
-import NanoSolanaKit
+import NanoClawdKit
 import CoreGraphics
 import ImageIO
 import Testing

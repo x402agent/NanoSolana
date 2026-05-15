@@ -11,10 +11,10 @@ import {
   createReplyPrefixOptions,
   createTypingCallbacks,
   logTypingFailure,
-  type NanoSolanaConfig,
+  type NanoClawdConfig,
   type ReplyPayload,
   type RuntimeEnv,
-} from "nanosolana/plugin-sdk/mattermost";
+} from "nanoclawd/plugin-sdk/mattermost";
 import type { ResolvedMattermostAccount } from "../mattermost/accounts.js";
 import { getMattermostRuntime } from "../runtime.js";
 import {
@@ -45,7 +45,7 @@ import {
 
 type SlashHttpHandlerParams = {
   account: ResolvedMattermostAccount;
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   runtime: RuntimeEnv;
   /** Expected token from registered commands (for validation). */
   commandTokens: Set<string>;
@@ -99,7 +99,7 @@ type SlashInvocationAuth = {
 
 async function authorizeSlashInvocation(params: {
   account: ResolvedMattermostAccount;
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   client: ReturnType<typeof createMattermostClient>;
   commandText: string;
   channelId: string;
@@ -331,7 +331,7 @@ export function createSlashCommandHttpHandler(params: SlashHttpHandlerParams) {
 
 async function handleSlashCommandAsync(params: {
   account: ResolvedMattermostAccount;
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   runtime: RuntimeEnv;
   client: ReturnType<typeof createMattermostClient>;
   commandText: string;

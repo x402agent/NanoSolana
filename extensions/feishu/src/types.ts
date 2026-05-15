@@ -1,4 +1,4 @@
-import type { BaseProbeResult } from "nanosolana/plugin-sdk/feishu";
+import type { BaseProbeResult } from "nanoclawd/plugin-sdk/feishu";
 import type {
   FeishuConfigSchema,
   FeishuGroupSchema,

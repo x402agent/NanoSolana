@@ -3,8 +3,8 @@ import {
   buildNestedDmConfigSchema,
   DmPolicySchema,
   GroupPolicySchema,
-} from "nanosolana/plugin-sdk/compat";
-import { MarkdownConfigSchema, ToolPolicySchema } from "nanosolana/plugin-sdk/matrix";
+} from "nanoclawd/plugin-sdk/compat";
+import { MarkdownConfigSchema, ToolPolicySchema } from "nanoclawd/plugin-sdk/matrix";
 import { z } from "zod";
 import { buildSecretInputSchema } from "./secret-input.js";
 

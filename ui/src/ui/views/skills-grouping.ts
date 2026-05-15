@@ -7,10 +7,10 @@ export type SkillGroup = {
 };
 
 const SKILL_SOURCE_GROUPS: Array<{ id: string; label: string; sources: string[] }> = [
-  { id: "workspace", label: "Workspace Skills", sources: ["nanosolana-workspace"] },
-  { id: "built-in", label: "Built-in Skills", sources: ["nanosolana-bundled"] },
-  { id: "installed", label: "Installed Skills", sources: ["nanosolana-managed"] },
-  { id: "extra", label: "Extra Skills", sources: ["nanosolana-extra"] },
+  { id: "workspace", label: "Workspace Skills", sources: ["nanoclawd-workspace"] },
+  { id: "built-in", label: "Built-in Skills", sources: ["nanoclawd-bundled"] },
+  { id: "installed", label: "Installed Skills", sources: ["nanoclawd-managed"] },
+  { id: "extra", label: "Extra Skills", sources: ["nanoclawd-extra"] },
 ];
 
 export function groupSkills(skills: SkillStatusEntry[]): SkillGroup[] {

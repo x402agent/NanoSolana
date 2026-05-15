@@ -1,5 +1,5 @@
-import { createPluginRuntimeStore } from "nanosolana/plugin-sdk/compat";
-import type { PluginRuntime } from "nanosolana/plugin-sdk/nostr";
+import { createPluginRuntimeStore } from "nanoclawd/plugin-sdk/compat";
+import type { PluginRuntime } from "nanoclawd/plugin-sdk/nostr";
 
 const { setRuntime: setNostrRuntime, getRuntime: getNostrRuntime } =
   createPluginRuntimeStore<PluginRuntime>("Nostr runtime not initialized");

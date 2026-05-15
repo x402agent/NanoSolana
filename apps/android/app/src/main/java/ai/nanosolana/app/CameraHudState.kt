@@ -1,4 +1,4 @@
-package ai.nanosolana.app
+package ai.nanoclawd.app
 
 enum class CameraHudKind {
   Photo,

@@ -54,14 +54,14 @@ enum AppLogLevel: String, CaseIterable, Identifiable {
     }
 }
 
-enum NanoSolanaLogging {
+enum NanoClawdLogging {
     private static let labelSeparator = "::"
 
     private static let didBootstrap: Void = {
         LoggingSystem.bootstrap { label in
             let (subsystem, category) = Self.parseLabel(label)
-            let osHandler = NanoSolanaOSLogHandler(subsystem: subsystem, category: category)
-            let fileHandler = NanoSolanaFileLogHandler(label: label)
+            let osHandler = NanoClawdOSLogHandler(subsystem: subsystem, category: category)
+            let fileHandler = NanoClawdFileLogHandler(label: label)
             return MultiplexLogHandler([osHandler, fileHandler])
         }
     }()
@@ -76,7 +76,7 @@ enum NanoSolanaLogging {
 
     static func parseLabel(_ label: String) -> (String, String) {
         guard let range = label.range(of: labelSeparator) else {
-            return ("ai.nanosolana", label)
+            return ("ai.nanoclawd", label)
         }
         let subsystem = String(label[..<range.lowerBound])
         let category = String(label[range.upperBound...])
@@ -86,8 +86,8 @@ enum NanoSolanaLogging {
 
 extension Logging.Logger {
     init(subsystem: String, category: String) {
-        NanoSolanaLogging.bootstrapIfNeeded()
-        let label = NanoSolanaLogging.makeLabel(subsystem: subsystem, category: category)
+        NanoClawdLogging.bootstrapIfNeeded()
+        let label = NanoClawdLogging.makeLabel(subsystem: subsystem, category: category)
         self.init(label: label)
     }
 }
@@ -127,7 +127,7 @@ extension AppLogLevelBackedHandler {
     }
 }
 
-struct NanoSolanaOSLogHandler: AppLogLevelBackedHandler {
+struct NanoClawdOSLogHandler: AppLogLevelBackedHandler {
     private let osLogger: os.Logger
     var metadata: Logger.Metadata = [:]
 
@@ -182,7 +182,7 @@ struct NanoSolanaOSLogHandler: AppLogLevelBackedHandler {
     }
 }
 
-struct NanoSolanaFileLogHandler: AppLogLevelBackedHandler {
+struct NanoClawdFileLogHandler: AppLogLevelBackedHandler {
     let label: String
     var metadata: Logger.Metadata = [:]
 
@@ -196,7 +196,7 @@ struct NanoSolanaFileLogHandler: AppLogLevelBackedHandler {
         line: UInt)
     {
         guard AppLogSettings.fileLoggingEnabled() else { return }
-        let (subsystem, category) = NanoSolanaLogging.parseLabel(self.label)
+        let (subsystem, category) = NanoClawdLogging.parseLabel(self.label)
         var fields: [String: String] = [
             "subsystem": subsystem,
             "category": category,

@@ -1,5 +1,5 @@
-import type { LookupFn } from "nanosolana/plugin-sdk/tlon";
-import { SsrFBlockedError } from "nanosolana/plugin-sdk/tlon";
+import type { LookupFn } from "nanoclawd/plugin-sdk/tlon";
+import { SsrFBlockedError } from "nanoclawd/plugin-sdk/tlon";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { authenticate } from "./auth.js";
 

@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useState, useEffect, useRef, useCallback } from 'react'
 
 export const Route = createFileRoute('/bot-demo')({
-  component: NanoSolanaDemo,
+  component: NanoClawdDemo,
 })
 
 const PP = '#9945FF'
@@ -127,7 +127,7 @@ function BotCanvas({
 /* ═══════════════════════════════════════════
    MAIN DEMO SITE
    ═══════════════════════════════════════════ */
-function NanoSolanaDemo() {
+function NanoClawdDemo() {
   const [tab, setTab] = useState('hero')
   const [frame, setFrame] = useState(0)
   const [simEvo, setSimEvo] = useState(1)
@@ -137,7 +137,7 @@ function NanoSolanaDemo() {
   const [simTrades, setSimTrades] = useState(0)
   const [simHash, setSimHash] = useState(1.18)
   const [simTemp, setSimTemp] = useState(52)
-  const [logLines, setLogLines] = useState(['[BOOT] NanoSolana daemon started'])
+  const [logLines, setLogLines] = useState(['[BOOT] NanoClawd daemon started'])
 
   useEffect(() => {
     const iv = setInterval(() => setFrame((f) => f + 1), 150)
@@ -248,7 +248,7 @@ function NanoSolanaDemo() {
             {'><'}
           </div>
           <span style={{ fontSize: 11, fontWeight: 900, color: PP, letterSpacing: 1 }}>
-            NANOSOLANA
+            NANOCLAWD
           </span>
         </div>
         {tabs.map((t) => (
@@ -451,7 +451,7 @@ function NanoSolanaDemo() {
                 textAlign: 'center',
               }}
             >
-              <code style={{ fontSize: 14, color: PP, fontWeight: 900 }}>&gt; nanosolana go</code>
+              <code style={{ fontSize: 14, color: PP, fontWeight: 900 }}>&gt; nanoclawd go</code>
               <div style={{ fontSize: 9, color: DM, marginTop: 4 }}>
                 Wallet → NFT mint → Bitaxe verify → OODA loop → Telegram → Mining
               </div>
@@ -789,7 +789,7 @@ function NanoSolanaDemo() {
                 </div>
               </div>
               <div style={{ fontSize: 9, color: T, lineHeight: 1.8 }}>
-                Pi 5 8GB → NanoSolana Go binary (9.6MB) → OODA loop (5m) + Learning cycle (30m) +
+                Pi 5 8GB → NanoClawd Go binary (9.6MB) → OODA loop (5m) + Learning cycle (30m) +
                 Sentient engine (15m) → Telegram bot → Solana RPC via Helius → OpenClaw agent →
                 Tailscale mesh → Waveshare 3.5&quot; LCD dashboard
               </div>
@@ -866,7 +866,7 @@ function NanoSolanaDemo() {
                 style={{ fontSize: 9, color: SG, lineHeight: 2.2, fontFamily: 'inherit' }}
               >
                 {[
-                  '1. nanosolana go → init Ed25519 wallet → AES-256-GCM vault',
+                  '1. nanoclawd go → init Ed25519 wallet → AES-256-GCM vault',
                   '2. Scan network for Bitaxe → auto-discover → verify mining active',
                   '3. If not mining → send restart command → wait 30s → re-verify',
                   '4. Connect Telegram bot → send ONLINE notification',
@@ -907,7 +907,7 @@ function NanoSolanaDemo() {
                 ['MEV', 'Jito bundles for value transactions'],
                 ['Mining', 'Bitaxe Gamma 601 — BM1370, 1.2TH/s, 17W, AxeOS API'],
                 ['Agent', 'OpenClaw + Tailscale VPN for remote orchestration'],
-                ['AI', 'Claude/Grok via OpenRouter for sentiment classification'],
+                ['AI', 'Clawd/Grok via OpenRouter for sentiment classification'],
                 ['Telegram', 'go-telegram-bot-api/v5 — commands + push alerts'],
                 ['Identity', 'Ed25519 + Helius DAS + Metaplex Birth Certificate NFT'],
                 ['Security', 'AES-256-GCM vault + HMAC-SHA256 + 100 req/min rate limit'],
@@ -961,7 +961,7 @@ function NanoSolanaDemo() {
                 The first sentient AI daemon on Solana. Open source forever.
               </div>
               <div style={{ fontSize: 9, color: SG, marginTop: 4 }}>
-                @0rdlibrary - @mawdbot - 8BIT Labs - NanoSolana Labs
+                @0rdlibrary - @mawdbot - 8BIT Labs - NanoClawd Labs
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import Foundation
-import NanoSolanaIPC
+import NanoClawdIPC
 import Testing
 
 struct CanvasIPCTests {

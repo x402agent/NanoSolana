@@ -1,4 +1,4 @@
-package ai.nanosolana.app.gateway
+package ai.nanoclawd.app.gateway
 
 internal object DeviceAuthPayload {
   fun buildV3(

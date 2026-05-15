@@ -1,5 +1,5 @@
 ---
-summary: "Messaging and channel surfaces in the current Solana Claude Go checkout"
+summary: "Messaging and channel surfaces in the current Solana Clawd Go checkout"
 title: "channels"
 ---
 

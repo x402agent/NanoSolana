@@ -1,4 +1,4 @@
-import type { TamaGObotConfig, RuntimeEnv } from "nanosolana/plugin-sdk/feishu";
+import type { TamaGObotConfig, RuntimeEnv } from "nanoclawd/plugin-sdk/feishu";
 import { listEnabledFeishuAccounts, resolveFeishuAccount } from "./accounts.js";
 import {
   monitorSingleAccount,

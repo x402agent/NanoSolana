@@ -1,4 +1,4 @@
-# NanoSolana macOS App
+# NanoClawd macOS App
 
 Native macOS companion for your TamaGObot trading agent. Install as a menu bar app or DMG.
 
@@ -16,7 +16,7 @@ Native macOS companion for your TamaGObot trading agent. Install as a menu bar a
 ```bash
 cd apps/macos
 swift build
-swift run NanoSolana
+swift run NanoClawd
 ```
 
 ## Package as DMG
@@ -25,10 +25,10 @@ swift run NanoSolana
 # Build the app bundle
 scripts/package-mac-app.sh
 
-# Creates dist/NanoSolana.app
+# Creates dist/NanoClawd.app
 # Optionally create DMG:
-hdiutil create -volname "NanoSolana" -srcfolder dist/NanoSolana.app \
-  -ov -format UDZO dist/NanoSolana.dmg
+hdiutil create -volname "NanoClawd" -srcfolder dist/NanoClawd.app \
+  -ov -format UDZO dist/NanoClawd.dmg
 ```
 
 ## Signing
@@ -55,16 +55,16 @@ If none found:
 ## Connect to Gateway
 
 ```bash
-nanosolana gateway run
+nanoclawd gateway run
 ```
 
 The macOS app auto-discovers the local gateway. For remote gateways:
 
 ```bash
-nanosolana dashboard --no-open
+nanoclawd dashboard --no-open
 # Copy the tokenized URL into the app
 ```
 
 ---
 
-**NanoSolana Labs** · MIT License
+**NanoClawd Labs** · MIT License

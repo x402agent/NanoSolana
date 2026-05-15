@@ -1,8 +1,8 @@
 import Foundation
-import NanoSolanaKit
+import NanoClawdKit
 import os
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct GatewayConnectionTests {
     private func makeConnection(

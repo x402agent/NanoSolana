@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import type { NanoSolanaConfig, PluginRuntime } from "nanosolana/plugin-sdk/bluebubbles";
+import type { NanoClawdConfig, PluginRuntime } from "nanoclawd/plugin-sdk/bluebubbles";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { sendBlueBubblesMedia } from "./media-send.js";
 import { setBlueBubblesRuntime } from "./runtime.js";
@@ -54,18 +54,18 @@ function createMockRuntime(): { runtime: PluginRuntime; mocks: RuntimeMocks } {
   };
 }
 
-function createConfig(overrides?: Record<string, unknown>): NanoSolanaConfig {
+function createConfig(overrides?: Record<string, unknown>): NanoClawdConfig {
   return {
     channels: {
       bluebubbles: {
         ...overrides,
       },
     },
-  } as unknown as NanoSolanaConfig;
+  } as unknown as NanoClawdConfig;
 }
 
 async function makeTempDir(): Promise<string> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "nanosolana-bb-media-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "nanoclawd-bb-media-"));
   tempDirs.push(dir);
   return dir;
 }

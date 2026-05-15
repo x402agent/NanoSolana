@@ -38,10 +38,10 @@ describe("diffs viewer URL helpers", () => {
     expect(
       buildViewerUrl({
         config: {},
-        baseUrl: "https://example.com/nanosolana",
+        baseUrl: "https://example.com/nanoclawd",
         viewerPath: "/plugins/diffs/view/id/token",
       }),
-    ).toBe("https://example.com/nanosolana/plugins/diffs/view/id/token");
+    ).toBe("https://example.com/nanoclawd/plugins/diffs/view/id/token");
   });
 
   it("rejects base URLs with query/hash", () => {

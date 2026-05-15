@@ -1,11 +1,11 @@
 ---
-summary: "Solana Claude Go mesh networking via Tailscale and the current gateway"
+summary: "Solana Clawd Go mesh networking via Tailscale and the current gateway"
 title: "Mesh Networking"
 ---
 
 # Mesh networking
 
-Solana Claude Go can coordinate agents across a Tailscale-connected mesh.
+Solana Clawd Go can coordinate agents across a Tailscale-connected mesh.
 
 ## Current building blocks
 

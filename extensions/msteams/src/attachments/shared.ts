@@ -4,8 +4,8 @@ import {
   isHttpsUrlAllowedByHostnameSuffixAllowlist,
   isPrivateIpAddress,
   normalizeHostnameSuffixAllowlist,
-} from "nanosolana/plugin-sdk/msteams";
-import type { SsrFPolicy } from "nanosolana/plugin-sdk/msteams";
+} from "nanoclawd/plugin-sdk/msteams";
+import type { SsrFPolicy } from "nanoclawd/plugin-sdk/msteams";
 import type { MSTeamsAttachmentLike } from "./types.js";
 
 type InlineImageCandidate =

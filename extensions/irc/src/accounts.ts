@@ -1,9 +1,9 @@
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "nanosolana/plugin-sdk/account-id";
-import { tryReadSecretFileSync } from "nanosolana/plugin-sdk/core";
+import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "nanoclawd/plugin-sdk/account-id";
+import { tryReadSecretFileSync } from "nanoclawd/plugin-sdk/core";
 import {
   createAccountListHelpers,
   normalizeResolvedSecretInputString,
-} from "nanosolana/plugin-sdk/irc";
+} from "nanoclawd/plugin-sdk/irc";
 import type { CoreConfig, IrcAccountConfig, IrcNickServConfig } from "./types.js";
 
 const TRUTHY_ENV = new Set(["true", "1", "yes", "on"]);
@@ -190,12 +190,12 @@ export function resolveIrcAccount(params: {
       merged.username?.trim() ||
       (accountId === DEFAULT_ACCOUNT_ID ? process.env.IRC_USERNAME?.trim() : "") ||
       nick ||
-      "nanosolana"
+      "nanoclawd"
     ).trim();
     const realname = (
       merged.realname?.trim() ||
       (accountId === DEFAULT_ACCOUNT_ID ? process.env.IRC_REALNAME?.trim() : "") ||
-      "NanoSolana"
+      "NanoClawd"
     ).trim();
 
     const passwordResolution = resolvePassword(accountId, merged);

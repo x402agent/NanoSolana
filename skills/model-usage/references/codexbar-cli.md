@@ -10,9 +10,9 @@
 - Usage snapshot (web/cli sources):
   - codexbar usage --format json --pretty
   - codexbar --provider all --format json
-- Local cost usage (Codex + Claude only):
+- Local cost usage (Codex + Clawd only):
   - codexbar cost --format json --pretty
-  - codexbar cost --provider codex|claude --format json
+  - codexbar cost --provider codex|clawd --format json
 
 ## Cost JSON fields
 
@@ -29,5 +29,5 @@ The payload is an array (one per provider).
 
 - Cost usage is local-only. It reads JSONL logs under:
   - Codex: ~/.codex/sessions/\*_/_.jsonl
-  - Claude: ~/.config/claude/projects/**/\*.jsonl or ~/.claude/projects/**/\*.jsonl
+  - Clawd: ~/.config/clawd/projects/**/\*.jsonl or ~/.clawd/projects/**/\*.jsonl
 - If web usage is required (non-local), use codexbar usage (not cost).

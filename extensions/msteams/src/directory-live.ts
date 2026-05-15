@@ -1,4 +1,4 @@
-import type { ChannelDirectoryEntry } from "nanosolana/plugin-sdk/msteams";
+import type { ChannelDirectoryEntry } from "nanoclawd/plugin-sdk/msteams";
 import { searchGraphUsers } from "./graph-users.js";
 import {
   type GraphChannel,

@@ -1,6 +1,6 @@
 import Speech
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct TalkModeRuntimeSpeechTests {
     @Test func `speech request uses dictation defaults`() {

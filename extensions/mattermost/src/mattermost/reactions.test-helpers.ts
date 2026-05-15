@@ -1,7 +1,7 @@
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/mattermost";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/mattermost";
 import { expect, vi } from "vitest";
 
-export function createMattermostTestConfig(): NanoSolanaConfig {
+export function createMattermostTestConfig(): NanoClawdConfig {
   return {
     channels: {
       mattermost: {

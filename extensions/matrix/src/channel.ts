@@ -4,7 +4,7 @@ import {
   createScopedAccountConfigAccessors,
   createScopedChannelConfigBase,
   createScopedDmSecurityResolver,
-} from "nanosolana/plugin-sdk/compat";
+} from "nanoclawd/plugin-sdk/compat";
 import {
   applyAccountNameToChannelSection,
   buildChannelConfigSchema,
@@ -14,7 +14,7 @@ import {
   normalizeAccountId,
   PAIRING_APPROVED_MESSAGE,
   type ChannelPlugin,
-} from "nanosolana/plugin-sdk/matrix";
+} from "nanoclawd/plugin-sdk/matrix";
 import { matrixMessageActions } from "./actions.js";
 import { MatrixConfigSchema } from "./config-schema.js";
 import { listMatrixDirectoryGroupsLive, listMatrixDirectoryPeersLive } from "./directory-live.js";

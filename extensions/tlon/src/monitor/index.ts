@@ -1,5 +1,5 @@
-import type { RuntimeEnv, ReplyPayload, NanoSolanaConfig } from "nanosolana/plugin-sdk/tlon";
-import { createLoggerBackedRuntime, createReplyPrefixOptions } from "nanosolana/plugin-sdk/tlon";
+import type { RuntimeEnv, ReplyPayload, NanoClawdConfig } from "nanoclawd/plugin-sdk/tlon";
+import { createLoggerBackedRuntime, createReplyPrefixOptions } from "nanoclawd/plugin-sdk/tlon";
 import { getTlonRuntime } from "../runtime.js";
 import { createSettingsManager, type TlonSettingsStore } from "../settings.js";
 import { normalizeShip, parseChannelNest } from "../targets.js";
@@ -55,7 +55,7 @@ type ChannelAuthorization = {
  * Settings store takes precedence for fields it defines.
  */
 function resolveChannelAuthorization(
-  cfg: NanoSolanaConfig,
+  cfg: NanoClawdConfig,
   channelNest: string,
   settings?: TlonSettingsStore,
 ): { mode: "restricted" | "open"; allowedShips: string[] } {
@@ -81,7 +81,7 @@ function resolveChannelAuthorization(
 
 export async function monitorTlonProvider(opts: MonitorTlonOpts = {}): Promise<void> {
   const core = getTlonRuntime();
-  const cfg = core.config.loadConfig() as NanoSolanaConfig;
+  const cfg = core.config.loadConfig() as NanoClawdConfig;
   if (cfg.channels?.tlon?.enabled === false) {
     return;
   }
@@ -960,7 +960,7 @@ export async function monitorTlonProvider(opts: MonitorTlonOpts = {}): Promise<v
         // Log warning
         runtime.log?.(
           `[tlon] ⚠️ SECURITY: Multiple users sharing DM session. ` +
-            `Configure "session.dmScope: per-channel-peer" in NanoSolana config.`,
+            `Configure "session.dmScope: per-channel-peer" in NanoClawd config.`,
         );
 
         // Notify owner via DM (once per monitor session)
@@ -969,9 +969,9 @@ export async function monitorTlonProvider(opts: MonitorTlonOpts = {}): Promise<v
           const warningMsg =
             `⚠️ Security Warning: Multiple users are sharing a DM session with this bot. ` +
             `This can leak conversation context between users.\n\n` +
-            `Fix: Add to your NanoSolana config:\n` +
+            `Fix: Add to your NanoClawd config:\n` +
             `session:\n  dmScope: "per-channel-peer"\n\n` +
-            `Docs: https://docs.nanosolana.ai/concepts/session#secure-dm-mode`;
+            `Docs: https://docs.nanoclawd.ai/concepts/session#secure-dm-mode`;
 
           // Send async, don't block message processing
           sendDm({

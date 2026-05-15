@@ -1,5 +1,5 @@
 import Foundation
-import NanoSolanaKit
+import NanoClawdKit
 
 struct TalkModeGatewayConfigState {
     let activeProvider: String

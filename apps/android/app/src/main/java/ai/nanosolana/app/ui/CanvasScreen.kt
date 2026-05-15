@@ -1,4 +1,4 @@
-package ai.nanosolana.app.ui
+package ai.nanoclawd.app.ui
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -21,7 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
-import ai.nanosolana.app.MainViewModel
+import ai.nanoclawd.app.MainViewModel
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
@@ -59,7 +59,7 @@ fun CanvasScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
           disableForceDarkIfSupported(settings)
         }
         if (isDebuggable) {
-          Log.d("NanoSolanaWebView", "userAgent: ${settings.userAgentString}")
+          Log.d("NanoClawdWebView", "userAgent: ${settings.userAgentString}")
         }
         isScrollContainer = true
         overScrollMode = View.OVER_SCROLL_IF_CONTENT_SCROLLS
@@ -73,7 +73,7 @@ fun CanvasScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
               error: WebResourceError,
             ) {
               if (!isDebuggable || !request.isForMainFrame) return
-              Log.e("NanoSolanaWebView", "onReceivedError: ${error.errorCode} ${error.description} ${request.url}")
+              Log.e("NanoClawdWebView", "onReceivedError: ${error.errorCode} ${error.description} ${request.url}")
             }
 
             override fun onReceivedHttpError(
@@ -83,14 +83,14 @@ fun CanvasScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
             ) {
               if (!isDebuggable || !request.isForMainFrame) return
               Log.e(
-                "NanoSolanaWebView",
+                "NanoClawdWebView",
                 "onReceivedHttpError: ${errorResponse.statusCode} ${errorResponse.reasonPhrase} ${request.url}",
               )
             }
 
             override fun onPageFinished(view: WebView, url: String?) {
               if (isDebuggable) {
-                Log.d("NanoSolanaWebView", "onPageFinished: $url")
+                Log.d("NanoClawdWebView", "onPageFinished: $url")
               }
               viewModel.canvas.onPageFinished()
             }
@@ -101,7 +101,7 @@ fun CanvasScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
             ): Boolean {
               if (isDebuggable) {
                 Log.e(
-                  "NanoSolanaWebView",
+                  "NanoClawdWebView",
                   "onRenderProcessGone didCrash=${detail.didCrash()} priorityAtExit=${detail.rendererPriorityAtExit()}",
                 )
               }
@@ -114,7 +114,7 @@ fun CanvasScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
               if (!isDebuggable) return false
               val msg = consoleMessage ?: return false
               Log.d(
-                "NanoSolanaWebView",
+                "NanoClawdWebView",
                 "console ${msg.messageLevel()} @ ${msg.sourceId()}:${msg.lineNumber()} ${msg.message()}",
               )
               return false
@@ -145,6 +145,6 @@ private class CanvasA2UIActionBridge(private val onMessage: (String) -> Unit) {
   }
 
   companion object {
-    const val interfaceName: String = "nanosolanaCanvasA2UIAction"
+    const val interfaceName: String = "nanoclawdCanvasA2UIAction"
   }
 }

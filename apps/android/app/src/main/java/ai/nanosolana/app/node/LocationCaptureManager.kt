@@ -1,4 +1,4 @@
-package ai.nanosolana.app.node
+package ai.nanoclawd.app.node
 
 import android.Manifest
 import android.content.Context

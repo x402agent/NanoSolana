@@ -1,6 +1,6 @@
 import CoreLocation
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct PermissionManagerLocationTests {
     @Test

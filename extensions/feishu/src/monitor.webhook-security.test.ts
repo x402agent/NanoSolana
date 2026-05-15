@@ -1,6 +1,6 @@
 import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
-import type { TamaGObotConfig } from "nanosolana/plugin-sdk/feishu";
+import type { TamaGObotConfig } from "nanoclawd/plugin-sdk/feishu";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   createFeishuClientMockModule,

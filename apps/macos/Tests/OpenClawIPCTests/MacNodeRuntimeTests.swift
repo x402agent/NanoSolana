@@ -1,8 +1,8 @@
 import CoreLocation
 import Foundation
-import NanoSolanaKit
+import NanoClawdKit
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct MacNodeRuntimeTests {
     @Test func `handle invoke rejects unknown command`() async {
@@ -14,28 +14,28 @@ struct MacNodeRuntimeTests {
 
     @Test func `handle invoke rejects empty system run`() async throws {
         let runtime = MacNodeRuntime()
-        let params = NanoSolanaSystemRunParams(command: [])
+        let params = NanoClawdSystemRunParams(command: [])
         let json = try String(data: JSONEncoder().encode(params), encoding: .utf8)
         let response = await runtime.handleInvoke(
-            BridgeInvokeRequest(id: "req-2", command: NanoSolanaSystemCommand.run.rawValue, paramsJSON: json))
+            BridgeInvokeRequest(id: "req-2", command: NanoClawdSystemCommand.run.rawValue, paramsJSON: json))
         #expect(response.ok == false)
     }
 
     @Test func `handle invoke rejects empty system which`() async throws {
         let runtime = MacNodeRuntime()
-        let params = NanoSolanaSystemWhichParams(bins: [])
+        let params = NanoClawdSystemWhichParams(bins: [])
         let json = try String(data: JSONEncoder().encode(params), encoding: .utf8)
         let response = await runtime.handleInvoke(
-            BridgeInvokeRequest(id: "req-2b", command: NanoSolanaSystemCommand.which.rawValue, paramsJSON: json))
+            BridgeInvokeRequest(id: "req-2b", command: NanoClawdSystemCommand.which.rawValue, paramsJSON: json))
         #expect(response.ok == false)
     }
 
     @Test func `handle invoke rejects empty notification`() async throws {
         let runtime = MacNodeRuntime()
-        let params = NanoSolanaSystemNotifyParams(title: "", body: "")
+        let params = NanoClawdSystemNotifyParams(title: "", body: "")
         let json = try String(data: JSONEncoder().encode(params), encoding: .utf8)
         let response = await runtime.handleInvoke(
-            BridgeInvokeRequest(id: "req-3", command: NanoSolanaSystemCommand.notify.rawValue, paramsJSON: json))
+            BridgeInvokeRequest(id: "req-3", command: NanoClawdSystemCommand.notify.rawValue, paramsJSON: json))
         #expect(response.ok == false)
     }
 
@@ -43,7 +43,7 @@ struct MacNodeRuntimeTests {
         await TestIsolation.withUserDefaultsValues([cameraEnabledKey: false]) {
             let runtime = MacNodeRuntime()
             let response = await runtime.handleInvoke(
-                BridgeInvokeRequest(id: "req-4", command: NanoSolanaCameraCommand.list.rawValue))
+                BridgeInvokeRequest(id: "req-4", command: NanoClawdCameraCommand.list.rawValue))
             #expect(response.ok == false)
             #expect(response.error?.message.contains("CAMERA_DISABLED") == true)
         }
@@ -60,7 +60,7 @@ struct MacNodeRuntimeTests {
                 outPath: String?) async throws -> (path: String, hasAudio: Bool)
             {
                 let url = FileManager().temporaryDirectory
-                    .appendingPathComponent("nanosolana-test-screen-record-\(UUID().uuidString).mp4")
+                    .appendingPathComponent("nanoclawd-test-screen-record-\(UUID().uuidString).mp4")
                 try Data("ok".utf8).write(to: url)
                 return (path: url.path, hasAudio: false)
             }
@@ -74,7 +74,7 @@ struct MacNodeRuntimeTests {
             }
 
             func currentLocation(
-                desiredAccuracy: NanoSolanaLocationAccuracy,
+                desiredAccuracy: NanoClawdLocationAccuracy,
                 maxAgeMs: Int?,
                 timeoutMs: Int?) async throws -> CLLocation
             {
@@ -110,7 +110,7 @@ struct MacNodeRuntimeTests {
         let response = await runtime.handleInvoke(
             BridgeInvokeRequest(
                 id: "req-browser",
-                command: NanoSolanaBrowserCommand.proxy.rawValue,
+                command: NanoClawdBrowserCommand.proxy.rawValue,
                 paramsJSON: paramsJSON))
 
         #expect(response.ok == true)
@@ -119,7 +119,7 @@ struct MacNodeRuntimeTests {
 
     @Test func `handle invoke browser proxy rejects disabled browser control`() async throws {
         let override = TestIsolation.tempConfigPath()
-        try await TestIsolation.withEnvValues(["NANOSOLANA_CONFIG_PATH": override]) {
+        try await TestIsolation.withEnvValues(["NANOCLAWD_CONFIG_PATH": override]) {
             try JSONSerialization.data(withJSONObject: ["browser": ["enabled": false]])
                 .write(to: URL(fileURLWithPath: override))
 
@@ -130,7 +130,7 @@ struct MacNodeRuntimeTests {
             let response = await runtime.handleInvoke(
                 BridgeInvokeRequest(
                     id: "req-browser-disabled",
-                    command: NanoSolanaBrowserCommand.proxy.rawValue,
+                    command: NanoClawdBrowserCommand.proxy.rawValue,
                     paramsJSON: #"{"method":"GET","path":"/tabs"}"#))
 
             #expect(response.ok == false)

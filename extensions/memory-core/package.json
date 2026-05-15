@@ -1,18 +1,18 @@
 {
-  "name": "@nanosolana/memory-core",
+  "name": "@nanoclawd/memory-core",
   "version": "2026.3.11",
   "private": true,
-  "description": "NanoSolana core memory search plugin",
+  "description": "NanoClawd core memory search plugin",
   "type": "module",
   "peerDependencies": {
-    "nanosolana": ">=2026.3.7"
+    "nanoclawd": ">=2026.3.7"
   },
   "peerDependenciesMeta": {
-    "nanosolana": {
+    "nanoclawd": {
       "optional": true
     }
   },
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./index.ts"
     ]

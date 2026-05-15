@@ -1,17 +1,17 @@
 import Foundation
 
-public enum NanoSolanaWatchCommand: String, Codable, Sendable {
+public enum NanoClawdWatchCommand: String, Codable, Sendable {
     case status = "watch.status"
     case notify = "watch.notify"
 }
 
-public enum NanoSolanaWatchRisk: String, Codable, Sendable, Equatable {
+public enum NanoClawdWatchRisk: String, Codable, Sendable, Equatable {
     case low
     case medium
     case high
 }
 
-public struct NanoSolanaWatchAction: Codable, Sendable, Equatable {
+public struct NanoClawdWatchAction: Codable, Sendable, Equatable {
     public var id: String
     public var label: String
     public var style: String?
@@ -23,7 +23,7 @@ public struct NanoSolanaWatchAction: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaWatchStatusPayload: Codable, Sendable, Equatable {
+public struct NanoClawdWatchStatusPayload: Codable, Sendable, Equatable {
     public var supported: Bool
     public var paired: Bool
     public var appInstalled: Bool
@@ -45,29 +45,29 @@ public struct NanoSolanaWatchStatusPayload: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaWatchNotifyParams: Codable, Sendable, Equatable {
+public struct NanoClawdWatchNotifyParams: Codable, Sendable, Equatable {
     public var title: String
     public var body: String
-    public var priority: NanoSolanaNotificationPriority?
+    public var priority: NanoClawdNotificationPriority?
     public var promptId: String?
     public var sessionKey: String?
     public var kind: String?
     public var details: String?
     public var expiresAtMs: Int?
-    public var risk: NanoSolanaWatchRisk?
-    public var actions: [NanoSolanaWatchAction]?
+    public var risk: NanoClawdWatchRisk?
+    public var actions: [NanoClawdWatchAction]?
 
     public init(
         title: String,
         body: String,
-        priority: NanoSolanaNotificationPriority? = nil,
+        priority: NanoClawdNotificationPriority? = nil,
         promptId: String? = nil,
         sessionKey: String? = nil,
         kind: String? = nil,
         details: String? = nil,
         expiresAtMs: Int? = nil,
-        risk: NanoSolanaWatchRisk? = nil,
-        actions: [NanoSolanaWatchAction]? = nil)
+        risk: NanoClawdWatchRisk? = nil,
+        actions: [NanoClawdWatchAction]? = nil)
     {
         self.title = title
         self.body = body
@@ -82,7 +82,7 @@ public struct NanoSolanaWatchNotifyParams: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaWatchNotifyPayload: Codable, Sendable, Equatable {
+public struct NanoClawdWatchNotifyPayload: Codable, Sendable, Equatable {
     public var deliveredImmediately: Bool
     public var queuedForDelivery: Bool
     public var transport: String

@@ -1,12 +1,12 @@
 import AppKit
 import Observation
-import NanoSolanaChatUI
-import NanoSolanaDiscovery
-import NanoSolanaIPC
+import NanoClawdChatUI
+import NanoClawdDiscovery
+import NanoClawdIPC
 import SwiftUI
 
 enum UIStrings {
-    static let welcomeTitle = "Welcome to NanoSolana"
+    static let welcomeTitle = "Welcome to NanoClawd"
 }
 
 enum RemoteOnboardingProbeState: Equatable {
@@ -24,7 +24,7 @@ final class OnboardingController {
     func show() {
         if ProcessInfo.processInfo.isNixMode {
             // Nix mode is fully declarative; onboarding would suggest interactive setup that doesn't apply.
-            UserDefaults.standard.set(true, forKey: "nanosolana.onboardingSeen")
+            UserDefaults.standard.set(true, forKey: "nanoclawd.onboardingSeen")
             UserDefaults.standard.set(currentOnboardingVersion, forKey: onboardingVersionKey)
             AppStateStore.shared.onboardingSeen = true
             return
@@ -83,7 +83,7 @@ struct OnboardingView: View {
     @State var remoteAuthIssue: RemoteGatewayAuthIssue?
     @State var suppressRemoteProbeReset = false
     @State var gatewayDiscovery: GatewayDiscoveryModel
-    @State var onboardingChatModel: NanoSolanaChatViewModel
+    @State var onboardingChatModel: NanoClawdChatViewModel
     @State var onboardingSkillsModel = SkillsSettingsModel()
     @State var onboardingWizard = OnboardingWizardModel()
     @State var didLoadOnboardingSkills = false
@@ -151,7 +151,7 @@ struct OnboardingView: View {
 
     var devLinkCommand: String {
         let version = GatewayEnvironment.expectedGatewayVersionString() ?? "latest"
-        return "npm install -g nanosolana@\(version)"
+        return "npm install -g nanoclawd@\(version)"
     }
 
     struct LocalGatewayProbe: Equatable {
@@ -172,7 +172,7 @@ struct OnboardingView: View {
         self.permissionMonitor = permissionMonitor
         self._gatewayDiscovery = State(initialValue: discoveryModel)
         self._onboardingChatModel = State(
-            initialValue: NanoSolanaChatViewModel(
+            initialValue: NanoClawdChatViewModel(
                 sessionKey: "onboarding",
                 transport: MacGatewayChatTransport()))
     }

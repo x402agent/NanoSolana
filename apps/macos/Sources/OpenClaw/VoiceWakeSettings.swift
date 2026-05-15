@@ -48,7 +48,7 @@ struct VoiceWakeSettings: View {
             VStack(alignment: .leading, spacing: 14) {
                 SettingsToggleRow(
                     title: "Enable Voice Wake",
-                    subtitle: "Listen for a wake phrase (e.g. \"Claude\") before running voice commands. "
+                    subtitle: "Listen for a wake phrase (e.g. \"Clawd\") before running voice commands. "
                         + "Voice recognition runs fully on-device.",
                     binding: self.voiceWakeBinding)
                     .disabled(!voiceWakeSupported)
@@ -203,7 +203,7 @@ struct VoiceWakeSettings: View {
                     .stroke(Color.secondary.opacity(0.25), lineWidth: 1))
 
             Text(
-                "NanoSolana reacts when any trigger appears in a transcription. "
+                "NanoClawd reacts when any trigger appears in a transcription. "
                     + "Keep them short to avoid false positives.")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
@@ -636,7 +636,7 @@ extension VoiceWakeSettings {
         let state = AppState(preview: true)
         state.swabbleEnabled = true
         state.voicePushToTalkEnabled = true
-        state.swabbleTriggerWords = ["Claude", "Hey"]
+        state.swabbleTriggerWords = ["Clawd", "Hey"]
 
         let view = VoiceWakeSettings(state: state, isActive: true)
         view.availableMics = [AudioInputDevice(uid: "mic-1", name: "Built-in")]
@@ -645,7 +645,7 @@ extension VoiceWakeSettings {
         view.meterError = "No input"
         view.testState = .detected("ok")
         view.isTesting = true
-        view.triggerEntries = [TriggerEntry(id: UUID(), value: "Claude")]
+        view.triggerEntries = [TriggerEntry(id: UUID(), value: "Clawd")]
 
         _ = view.body
         _ = view.localePicker

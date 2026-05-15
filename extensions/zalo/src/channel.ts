@@ -5,13 +5,13 @@ import {
   collectOpenProviderGroupPolicyWarnings,
   createAccountStatusSink,
   mapAllowFromEntries,
-} from "nanosolana/plugin-sdk/compat";
+} from "nanoclawd/plugin-sdk/compat";
 import type {
   ChannelAccountSnapshot,
   ChannelDock,
   ChannelPlugin,
-  NanoSolanaConfig,
-} from "nanosolana/plugin-sdk/zalo";
+  NanoClawdConfig,
+} from "nanoclawd/plugin-sdk/zalo";
 import {
   applyAccountNameToChannelSection,
   applySetupAccountConfigPatch,
@@ -31,7 +31,7 @@ import {
   resolveOutboundMediaUrls,
   sendPayloadWithChunkedTextAndMedia,
   setAccountEnabledInConfigSection,
-} from "nanosolana/plugin-sdk/zalo";
+} from "nanoclawd/plugin-sdk/zalo";
 import {
   listZaloAccountIds,
   resolveDefaultZaloAccountId,

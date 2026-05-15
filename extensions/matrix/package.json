@@ -1,7 +1,7 @@
 {
-  "name": "@nanosolana/matrix",
+  "name": "@nanoclawd/matrix",
   "version": "2026.3.11",
-  "description": "NanoSolana Matrix channel plugin",
+  "description": "NanoClawd Matrix channel plugin",
   "type": "module",
   "dependencies": {
     "@mariozechner/pi-agent-core": "0.57.1",
@@ -11,7 +11,7 @@
     "music-metadata": "^11.12.1",
     "zod": "^4.3.6"
   },
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./index.ts"
     ],
@@ -26,7 +26,7 @@
       "quickstartAllowFrom": true
     },
     "install": {
-      "npmSpec": "@nanosolana/matrix",
+      "npmSpec": "@nanoclawd/matrix",
       "localPath": "extensions/matrix",
       "defaultChoice": "npm"
     },

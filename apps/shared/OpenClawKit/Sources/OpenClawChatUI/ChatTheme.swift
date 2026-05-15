@@ -14,7 +14,7 @@ extension NSAppearance {
 }
 #endif
 
-enum NanoSolanaChatTheme {
+enum NanoClawdChatTheme {
     #if os(macOS)
     static func resolvedAssistantBubbleColor(for appearance: NSAppearance) -> NSColor {
         // NSColor semantic colors don't reliably resolve for arbitrary NSAppearance in SwiftPM.
@@ -31,11 +31,11 @@ enum NanoSolanaChatTheme {
     }
 
     static let assistantBubbleDynamicNSColor = NSColor(
-        name: NSColor.Name("NanoSolanaChatTheme.assistantBubble"),
+        name: NSColor.Name("NanoClawdChatTheme.assistantBubble"),
         dynamicProvider: resolvedAssistantBubbleColor(for:))
 
     static let onboardingAssistantBubbleDynamicNSColor = NSColor(
-        name: NSColor.Name("NanoSolanaChatTheme.onboardingAssistantBubble"),
+        name: NSColor.Name("NanoClawdChatTheme.onboardingAssistantBubble"),
         dynamicProvider: resolvedOnboardingAssistantBubbleColor(for:))
     #endif
 
@@ -163,8 +163,8 @@ enum NanoSolanaChatTheme {
     }
 }
 
-enum NanoSolanaPlatformImageFactory {
-    static func image(_ image: NanoSolanaPlatformImage) -> Image {
+enum NanoClawdPlatformImageFactory {
+    static func image(_ image: NanoClawdPlatformImage) -> Image {
         #if os(macOS)
         Image(nsImage: image)
         #else

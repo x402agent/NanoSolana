@@ -1,7 +1,7 @@
 /**
- * NanoSolana — SDK Programmatic Usage
+ * NanoClawd — SDK Programmatic Usage
  *
- * Use NanoSolana modules individually in your own applications.
+ * Use NanoClawd modules individually in your own applications.
  * No CLI required — pure library usage.
  *
  * Usage:
@@ -46,7 +46,7 @@ import {
 
   // Knowledge
   getNanoKnowledgeSummary,
-} from "nanosolana";
+} from "nanoclawd";
 
 // ── Example 1: Direct Birdeye API Access ────────────────────
 
@@ -126,7 +126,7 @@ function securityExample() {
 // ── Run All ─────────────────────────────────────────────────
 
 async function main() {
-  console.log("🦞 NanoSolana SDK — Programmatic Usage Examples\n");
+  console.log("🦞 NanoClawd SDK — Programmatic Usage Examples\n");
   console.log("=" .repeat(50));
 
   console.log("\n📊 Example 1: Birdeye Prices");

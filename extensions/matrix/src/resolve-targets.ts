@@ -1,10 +1,10 @@
-import { mapAllowlistResolutionInputs } from "nanosolana/plugin-sdk/compat";
+import { mapAllowlistResolutionInputs } from "nanoclawd/plugin-sdk/compat";
 import type {
   ChannelDirectoryEntry,
   ChannelResolveKind,
   ChannelResolveResult,
   RuntimeEnv,
-} from "nanosolana/plugin-sdk/matrix";
+} from "nanoclawd/plugin-sdk/matrix";
 import { listMatrixDirectoryGroupsLive, listMatrixDirectoryPeersLive } from "./directory-live.js";
 
 function findExactDirectoryMatches(

@@ -1,5 +1,5 @@
 import Observation
-import NanoSolanaProtocol
+import NanoClawdProtocol
 import SwiftUI
 
 struct SkillsSettings: View {
@@ -225,15 +225,15 @@ private struct SkillRow: View {
 
     private var sourceLabel: String {
         switch self.skill.source {
-        case "nanosolana-bundled":
+        case "nanoclawd-bundled":
             "Bundled"
-        case "nanosolana-managed":
+        case "nanoclawd-managed":
             "Managed"
-        case "nanosolana-workspace":
+        case "nanoclawd-workspace":
             "Workspace"
-        case "nanosolana-extra":
+        case "nanoclawd-extra":
             "Extra"
-        case "nanosolana-plugin":
+        case "nanoclawd-plugin":
             "Plugin"
         default:
             self.skill.source
@@ -573,7 +573,7 @@ extension SkillsSettings {
         let skill = SkillStatus(
             name: "Test Skill",
             description: "Test description",
-            source: "nanosolana-bundled",
+            source: "nanoclawd-bundled",
             filePath: "/tmp/skills/test",
             baseDir: "/tmp/skills",
             skillKey: "test",

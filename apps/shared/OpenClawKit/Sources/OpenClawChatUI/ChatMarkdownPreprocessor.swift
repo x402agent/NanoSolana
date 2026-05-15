@@ -36,7 +36,7 @@ enum ChatMarkdownPreprocessor {
     struct InlineImage: Identifiable {
         let id = UUID()
         let label: String
-        let image: NanoSolanaPlatformImage?
+        let image: NanoClawdPlatformImage?
     }
 
     struct Result {
@@ -89,7 +89,7 @@ enum ChatMarkdownPreprocessor {
         }
 
         let b64 = String(trimmed[trimmed.index(after: comma)...])
-        let image = Data(base64Encoded: b64).flatMap(NanoSolanaPlatformImage.init(data:))
+        let image = Data(base64Encoded: b64).flatMap(NanoClawdPlatformImage.init(data:))
         return InlineImage(label: label, image: image)
     }
 

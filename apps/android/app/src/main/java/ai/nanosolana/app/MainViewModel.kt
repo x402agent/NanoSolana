@@ -1,13 +1,13 @@
-package ai.nanosolana.app
+package ai.nanoclawd.app
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import ai.nanosolana.app.gateway.GatewayEndpoint
-import ai.nanosolana.app.chat.OutgoingAttachment
-import ai.nanosolana.app.node.CameraCaptureManager
-import ai.nanosolana.app.node.CanvasController
-import ai.nanosolana.app.node.SmsManager
-import ai.nanosolana.app.voice.VoiceConversationEntry
+import ai.nanoclawd.app.gateway.GatewayEndpoint
+import ai.nanoclawd.app.chat.OutgoingAttachment
+import ai.nanoclawd.app.node.CameraCaptureManager
+import ai.nanoclawd.app.node.CanvasController
+import ai.nanoclawd.app.node.SmsManager
+import ai.nanoclawd.app.voice.VoiceConversationEntry
 import kotlinx.coroutines.flow.StateFlow
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {

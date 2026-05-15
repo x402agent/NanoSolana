@@ -1,4 +1,4 @@
-package ai.nanosolana.app
+package ai.nanoclawd.app
 
 import android.content.Context
 import org.junit.Assert.assertEquals
@@ -12,7 +12,7 @@ class SecurePrefsTest {
   @Test
   fun loadLocationMode_migratesLegacyAlwaysValue() {
     val context = RuntimeEnvironment.getApplication()
-    val plainPrefs = context.getSharedPreferences("nanosolana.node", Context.MODE_PRIVATE)
+    val plainPrefs = context.getSharedPreferences("nanoclawd.node", Context.MODE_PRIVATE)
     plainPrefs.edit().clear().putString("location.enabledMode", "always").commit()
 
     val prefs = SecurePrefs(context)

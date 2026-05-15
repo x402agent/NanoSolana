@@ -1,11 +1,11 @@
 ---
-summary: "Solana Claude Go trading engine — current runtime surface"
+summary: "Solana Clawd Go trading engine — current runtime surface"
 title: "Trading Engine"
 ---
 
 # Trading engine
 
-Solana Claude Go’s current trading runtime lives in `nano-core` and is centered on the
+Solana Clawd Go’s current trading runtime lives in `nano-core` and is centered on the
 OODA loop plus a strategy engine built around RSI, EMA, and ATR signals.
 
 ## What exists today

@@ -188,16 +188,16 @@ function buildPayloadLanguages(payload: {
 
 function renderDiffCard(payload: DiffViewerPayload): string {
   return `<section class="oc-diff-card">
-    <diffs-container class="oc-diff-host" data-nanosolana-diff-host>
+    <diffs-container class="oc-diff-host" data-nanoclawd-diff-host>
       <template shadowrootmode="open">${payload.prerenderedHTML}</template>
     </diffs-container>
-    <script type="application/json" data-nanosolana-diff-payload>${escapeJsonScript(payload)}</script>
+    <script type="application/json" data-nanoclawd-diff-payload>${escapeJsonScript(payload)}</script>
   </section>`;
 }
 
 function renderStaticDiffCard(prerenderedHTML: string): string {
   return `<section class="oc-diff-card">
-    <diffs-container class="oc-diff-host" data-nanosolana-diff-host>
+    <diffs-container class="oc-diff-host" data-nanoclawd-diff-host>
       <template shadowrootmode="open">${prerenderedHTML}</template>
     </diffs-container>
   </section>`;
@@ -211,7 +211,7 @@ function buildHtmlDocument(params: {
   runtimeMode: "viewer" | "image";
 }): string {
   return `<!doctype html>
-<html lang="en"${params.runtimeMode === "image" ? ' data-nanosolana-diffs-ready="true"' : ""}>
+<html lang="en"${params.runtimeMode === "image" ? ' data-nanoclawd-diffs-ready="true"' : ""}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -259,7 +259,7 @@ function buildHtmlDocument(params: {
         max-width: ${Math.max(640, Math.round(params.imageMaxWidth))}px;
       }
 
-      [data-nanosolana-diff-root] {
+      [data-nanoclawd-diff-root] {
         display: grid;
         gap: 18px;
       }
@@ -291,7 +291,7 @@ function buildHtmlDocument(params: {
           padding: 12px;
         }
 
-        [data-nanosolana-diff-root] {
+        [data-nanoclawd-diff-root] {
           gap: 12px;
         }
       }
@@ -299,7 +299,7 @@ function buildHtmlDocument(params: {
   </head>
   <body data-theme="${params.theme}">
     <main class="oc-frame" data-render-mode="${params.runtimeMode}">
-      <div data-nanosolana-diff-root>
+      <div data-nanoclawd-diff-root>
         ${params.bodyHtml}
       </div>
     </main>

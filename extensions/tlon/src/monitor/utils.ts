@@ -71,9 +71,9 @@ export function formatModelName(modelString?: string | null): string {
   }
   const modelName = modelString.includes("/") ? modelString.split("/")[1] : modelString;
   const modelMappings: Record<string, string> = {
-    "claude-opus-4-5": "Claude Opus 4.5",
-    "claude-sonnet-4-5": "Claude Sonnet 4.5",
-    "claude-sonnet-3-5": "Claude Sonnet 3.5",
+    "clawd-opus-4-5": "Clawd Opus 4.5",
+    "clawd-sonnet-4-5": "Clawd Sonnet 4.5",
+    "clawd-sonnet-3-5": "Clawd Sonnet 3.5",
     "gpt-4o": "GPT-4o",
     "gpt-4-turbo": "GPT-4 Turbo",
     "gpt-4": "GPT-4",

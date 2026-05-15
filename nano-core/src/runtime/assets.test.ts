@@ -25,7 +25,7 @@ afterEach(() => {
 
 describe("runtime/assets", () => {
   it("prefers an explicit asset path", () => {
-    const root = makeTempDir("nanosolana-explicit");
+    const root = makeTempDir("nanoclawd-explicit");
     const explicitPath = join(root, "SOUL.md");
     writeFileSync(explicitPath, "explicit soul\n");
 
@@ -39,7 +39,7 @@ describe("runtime/assets", () => {
   });
 
   it("falls back to the package root asset when cwd has no override", () => {
-    const root = makeTempDir("nanosolana-package");
+    const root = makeTempDir("nanoclawd-package");
     const packageRoot = join(root, "pkg");
     const startDir = join(packageRoot, "dist", "runtime");
     mkdirSync(startDir, { recursive: true });
@@ -55,7 +55,7 @@ describe("runtime/assets", () => {
   });
 
   it("allows cwd assets to override packaged defaults", () => {
-    const root = makeTempDir("nanosolana-cwd");
+    const root = makeTempDir("nanoclawd-cwd");
     const packageRoot = join(root, "pkg");
     const cwd = join(root, "workspace");
     mkdirSync(join(packageRoot, "dist"), { recursive: true });

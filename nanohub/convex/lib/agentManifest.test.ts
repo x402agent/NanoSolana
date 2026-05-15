@@ -13,10 +13,10 @@ describe('buildSkillAgentManifest', () => {
       owner: { handle: '8bit', displayName: '8bit', image: null },
       files: [{ path: 'SKILL.md', size: 10, sha256: 'abc', contentType: 'text/markdown' }],
       metadata: {
-        nanosolana: {
+        nanoclawd: {
           agent: {
             runtime: 'node',
-            entryCommand: 'npx nanosolana go',
+            entryCommand: 'npx nanoclawd go',
             healthEndpoint: '/health',
             oauth: ['github', 'telegram'],
             extensions: ['telegram', 'pumpfun'],
@@ -36,7 +36,7 @@ describe('buildSkillAgentManifest', () => {
           config: ['channels.telegram'],
         },
         envVars: [{ name: 'PUMP_API_KEY', required: true, description: 'Pump API key' }],
-        install: [{ kind: 'node', package: 'nanosolana' }],
+        install: [{ kind: 'node', package: 'nanoclawd' }],
         dependencies: [{ name: '@solana/web3.js', type: 'npm' }],
       },
     })
@@ -49,7 +49,7 @@ describe('buildSkillAgentManifest', () => {
     })
     expect(manifest.requirements.oauth).toEqual(['github', 'telegram'])
     expect(manifest.bootstrap.extensions).toEqual(['telegram', 'pumpfun'])
-    expect(manifest.bootstrap.entryCommand).toBe('npx nanosolana go')
+    expect(manifest.bootstrap.entryCommand).toBe('npx nanoclawd go')
   })
 
   it('derives an entry command from install specs when explicit config is absent', () => {

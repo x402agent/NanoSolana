@@ -55,7 +55,7 @@ describe("resolveConfiguredCronModelSuggestions", () => {
             fallbacks: ["google/gemini-2.5-pro", "openai/gpt-5.2-mini"],
           },
           models: {
-            "anthropic/claude-sonnet-4-5": { alias: "smart" },
+            "anthropic/clawd-sonnet-4-5": { alias: "smart" },
             "openai/gpt-5.2": { alias: "main" },
           },
         },
@@ -71,7 +71,7 @@ describe("resolveConfiguredCronModelSuggestions", () => {
     });
 
     expect(result).toEqual([
-      "anthropic/claude-sonnet-4-5",
+      "anthropic/clawd-sonnet-4-5",
       "google/gemini-2.5-flash",
       "google/gemini-2.5-pro",
       "openai/gpt-5.2",

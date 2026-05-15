@@ -1,14 +1,14 @@
-import type { NanoSolanaPluginApi } from "nanosolana/plugin-sdk/synology-chat";
-import { emptyPluginConfigSchema } from "nanosolana/plugin-sdk/synology-chat";
+import type { NanoClawdPluginApi } from "nanoclawd/plugin-sdk/synology-chat";
+import { emptyPluginConfigSchema } from "nanoclawd/plugin-sdk/synology-chat";
 import { createSynologyChatPlugin } from "./src/channel.js";
 import { setSynologyRuntime } from "./src/runtime.js";
 
 const plugin = {
   id: "synology-chat",
   name: "Synology Chat",
-  description: "Native Synology Chat channel plugin for NanoSolana",
+  description: "Native Synology Chat channel plugin for NanoClawd",
   configSchema: emptyPluginConfigSchema(),
-  register(api: NanoSolanaPluginApi) {
+  register(api: NanoClawdPluginApi) {
     setSynologyRuntime(api.runtime);
     api.registerChannel({ plugin: createSynologyChatPlugin() });
   },

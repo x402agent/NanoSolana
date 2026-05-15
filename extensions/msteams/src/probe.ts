@@ -2,7 +2,7 @@ import {
   normalizeStringEntries,
   type BaseProbeResult,
   type MSTeamsConfig,
-} from "nanosolana/plugin-sdk/msteams";
+} from "nanoclawd/plugin-sdk/msteams";
 import { formatUnknownError } from "./errors.js";
 import { loadMSTeamsSdkWithAuth } from "./sdk.js";
 import { readAccessToken } from "./token-response.js";

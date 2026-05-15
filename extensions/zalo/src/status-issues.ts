@@ -1,4 +1,4 @@
-import type { ChannelAccountSnapshot, ChannelStatusIssue } from "nanosolana/plugin-sdk/zalo";
+import type { ChannelAccountSnapshot, ChannelStatusIssue } from "nanoclawd/plugin-sdk/zalo";
 
 type ZaloAccountStatus = {
   accountId?: unknown;

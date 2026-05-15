@@ -22,5 +22,5 @@ export const GATEWAY_CLIENT_MODES = {
 } as const;
 
 export function parseClientInfo(_raw: unknown): ClientInfo {
-  return { name: "nanosolana-ui", version: "1.0.0" };
+  return { name: "nanoclawd-ui", version: "1.0.0" };
 }

@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct VoiceWakeOverlayTests {
     @Test func `guard token drops when no active`() {

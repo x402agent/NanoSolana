@@ -1,4 +1,4 @@
-const PREFIX = "nanosolana:pinned:";
+const PREFIX = "nanoclawd:pinned:";
 
 export class PinnedMessages {
   private key: string;

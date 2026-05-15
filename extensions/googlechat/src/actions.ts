@@ -1,8 +1,8 @@
 import type {
   ChannelMessageActionAdapter,
   ChannelMessageActionName,
-  NanoSolanaConfig,
-} from "nanosolana/plugin-sdk/googlechat";
+  NanoClawdConfig,
+} from "nanoclawd/plugin-sdk/googlechat";
 import {
   createActionGate,
   extractToolSend,
@@ -10,7 +10,7 @@ import {
   readNumberParam,
   readReactionParams,
   readStringParam,
-} from "nanosolana/plugin-sdk/googlechat";
+} from "nanoclawd/plugin-sdk/googlechat";
 import { listEnabledGoogleChatAccounts, resolveGoogleChatAccount } from "./accounts.js";
 import {
   createGoogleChatReaction,
@@ -24,13 +24,13 @@ import { resolveGoogleChatOutboundSpace } from "./targets.js";
 
 const providerId = "googlechat";
 
-function listEnabledAccounts(cfg: NanoSolanaConfig) {
+function listEnabledAccounts(cfg: NanoClawdConfig) {
   return listEnabledGoogleChatAccounts(cfg).filter(
     (account) => account.enabled && account.credentialSource !== "none",
   );
 }
 
-function isReactionsEnabled(accounts: ReturnType<typeof listEnabledAccounts>, cfg: NanoSolanaConfig) {
+function isReactionsEnabled(accounts: ReturnType<typeof listEnabledAccounts>, cfg: NanoClawdConfig) {
   for (const account of accounts) {
     const gate = createActionGate(
       (account.config.actions ??

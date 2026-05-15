@@ -1,4 +1,4 @@
-# Agent Tasks — NanoSolana Sprint Registry
+# Agent Tasks — NanoClawd Sprint Registry
 
 > Self-contained tasks for autonomous agents. Each task is matched to
 > agent personas at spawn time via the **Task Loader** (`nano-core/src/claw/task-loader.ts`).

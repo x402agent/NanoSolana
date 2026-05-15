@@ -1,4 +1,4 @@
-import type { TamaGObotConfig } from "nanosolana/plugin-sdk/feishu";
+import type { TamaGObotConfig } from "nanoclawd/plugin-sdk/feishu";
 import { resolveFeishuAccount } from "./accounts.js";
 import { createFeishuClient } from "./client.js";
 import type { MentionTarget } from "./mention.js";

@@ -1,87 +1,87 @@
-package ai.nanosolana.app.protocol
+package ai.nanoclawd.app.protocol
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class NanoSolanaProtocolConstantsTest {
+class NanoClawdProtocolConstantsTest {
   @Test
   fun canvasCommandsUseStableStrings() {
-    assertEquals("canvas.present", NanoSolanaCanvasCommand.Present.rawValue)
-    assertEquals("canvas.hide", NanoSolanaCanvasCommand.Hide.rawValue)
-    assertEquals("canvas.navigate", NanoSolanaCanvasCommand.Navigate.rawValue)
-    assertEquals("canvas.eval", NanoSolanaCanvasCommand.Eval.rawValue)
-    assertEquals("canvas.snapshot", NanoSolanaCanvasCommand.Snapshot.rawValue)
+    assertEquals("canvas.present", NanoClawdCanvasCommand.Present.rawValue)
+    assertEquals("canvas.hide", NanoClawdCanvasCommand.Hide.rawValue)
+    assertEquals("canvas.navigate", NanoClawdCanvasCommand.Navigate.rawValue)
+    assertEquals("canvas.eval", NanoClawdCanvasCommand.Eval.rawValue)
+    assertEquals("canvas.snapshot", NanoClawdCanvasCommand.Snapshot.rawValue)
   }
 
   @Test
   fun a2uiCommandsUseStableStrings() {
-    assertEquals("canvas.a2ui.push", NanoSolanaCanvasA2UICommand.Push.rawValue)
-    assertEquals("canvas.a2ui.pushJSONL", NanoSolanaCanvasA2UICommand.PushJSONL.rawValue)
-    assertEquals("canvas.a2ui.reset", NanoSolanaCanvasA2UICommand.Reset.rawValue)
+    assertEquals("canvas.a2ui.push", NanoClawdCanvasA2UICommand.Push.rawValue)
+    assertEquals("canvas.a2ui.pushJSONL", NanoClawdCanvasA2UICommand.PushJSONL.rawValue)
+    assertEquals("canvas.a2ui.reset", NanoClawdCanvasA2UICommand.Reset.rawValue)
   }
 
   @Test
   fun capabilitiesUseStableStrings() {
-    assertEquals("canvas", NanoSolanaCapability.Canvas.rawValue)
-    assertEquals("camera", NanoSolanaCapability.Camera.rawValue)
-    assertEquals("voiceWake", NanoSolanaCapability.VoiceWake.rawValue)
-    assertEquals("location", NanoSolanaCapability.Location.rawValue)
-    assertEquals("sms", NanoSolanaCapability.Sms.rawValue)
-    assertEquals("device", NanoSolanaCapability.Device.rawValue)
-    assertEquals("notifications", NanoSolanaCapability.Notifications.rawValue)
-    assertEquals("system", NanoSolanaCapability.System.rawValue)
-    assertEquals("photos", NanoSolanaCapability.Photos.rawValue)
-    assertEquals("contacts", NanoSolanaCapability.Contacts.rawValue)
-    assertEquals("calendar", NanoSolanaCapability.Calendar.rawValue)
-    assertEquals("motion", NanoSolanaCapability.Motion.rawValue)
+    assertEquals("canvas", NanoClawdCapability.Canvas.rawValue)
+    assertEquals("camera", NanoClawdCapability.Camera.rawValue)
+    assertEquals("voiceWake", NanoClawdCapability.VoiceWake.rawValue)
+    assertEquals("location", NanoClawdCapability.Location.rawValue)
+    assertEquals("sms", NanoClawdCapability.Sms.rawValue)
+    assertEquals("device", NanoClawdCapability.Device.rawValue)
+    assertEquals("notifications", NanoClawdCapability.Notifications.rawValue)
+    assertEquals("system", NanoClawdCapability.System.rawValue)
+    assertEquals("photos", NanoClawdCapability.Photos.rawValue)
+    assertEquals("contacts", NanoClawdCapability.Contacts.rawValue)
+    assertEquals("calendar", NanoClawdCapability.Calendar.rawValue)
+    assertEquals("motion", NanoClawdCapability.Motion.rawValue)
   }
 
   @Test
   fun cameraCommandsUseStableStrings() {
-    assertEquals("camera.list", NanoSolanaCameraCommand.List.rawValue)
-    assertEquals("camera.snap", NanoSolanaCameraCommand.Snap.rawValue)
-    assertEquals("camera.clip", NanoSolanaCameraCommand.Clip.rawValue)
+    assertEquals("camera.list", NanoClawdCameraCommand.List.rawValue)
+    assertEquals("camera.snap", NanoClawdCameraCommand.Snap.rawValue)
+    assertEquals("camera.clip", NanoClawdCameraCommand.Clip.rawValue)
   }
 
   @Test
   fun notificationsCommandsUseStableStrings() {
-    assertEquals("notifications.list", NanoSolanaNotificationsCommand.List.rawValue)
-    assertEquals("notifications.actions", NanoSolanaNotificationsCommand.Actions.rawValue)
+    assertEquals("notifications.list", NanoClawdNotificationsCommand.List.rawValue)
+    assertEquals("notifications.actions", NanoClawdNotificationsCommand.Actions.rawValue)
   }
 
   @Test
   fun deviceCommandsUseStableStrings() {
-    assertEquals("device.status", NanoSolanaDeviceCommand.Status.rawValue)
-    assertEquals("device.info", NanoSolanaDeviceCommand.Info.rawValue)
-    assertEquals("device.permissions", NanoSolanaDeviceCommand.Permissions.rawValue)
-    assertEquals("device.health", NanoSolanaDeviceCommand.Health.rawValue)
+    assertEquals("device.status", NanoClawdDeviceCommand.Status.rawValue)
+    assertEquals("device.info", NanoClawdDeviceCommand.Info.rawValue)
+    assertEquals("device.permissions", NanoClawdDeviceCommand.Permissions.rawValue)
+    assertEquals("device.health", NanoClawdDeviceCommand.Health.rawValue)
   }
 
   @Test
   fun systemCommandsUseStableStrings() {
-    assertEquals("system.notify", NanoSolanaSystemCommand.Notify.rawValue)
+    assertEquals("system.notify", NanoClawdSystemCommand.Notify.rawValue)
   }
 
   @Test
   fun photosCommandsUseStableStrings() {
-    assertEquals("photos.latest", NanoSolanaPhotosCommand.Latest.rawValue)
+    assertEquals("photos.latest", NanoClawdPhotosCommand.Latest.rawValue)
   }
 
   @Test
   fun contactsCommandsUseStableStrings() {
-    assertEquals("contacts.search", NanoSolanaContactsCommand.Search.rawValue)
-    assertEquals("contacts.add", NanoSolanaContactsCommand.Add.rawValue)
+    assertEquals("contacts.search", NanoClawdContactsCommand.Search.rawValue)
+    assertEquals("contacts.add", NanoClawdContactsCommand.Add.rawValue)
   }
 
   @Test
   fun calendarCommandsUseStableStrings() {
-    assertEquals("calendar.events", NanoSolanaCalendarCommand.Events.rawValue)
-    assertEquals("calendar.add", NanoSolanaCalendarCommand.Add.rawValue)
+    assertEquals("calendar.events", NanoClawdCalendarCommand.Events.rawValue)
+    assertEquals("calendar.add", NanoClawdCalendarCommand.Add.rawValue)
   }
 
   @Test
   fun motionCommandsUseStableStrings() {
-    assertEquals("motion.activity", NanoSolanaMotionCommand.Activity.rawValue)
-    assertEquals("motion.pedometer", NanoSolanaMotionCommand.Pedometer.rawValue)
+    assertEquals("motion.activity", NanoClawdMotionCommand.Activity.rawValue)
+    assertEquals("motion.pedometer", NanoClawdMotionCommand.Pedometer.rawValue)
   }
 }

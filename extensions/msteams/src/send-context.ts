@@ -1,8 +1,8 @@
 import {
   resolveChannelMediaMaxBytes,
-  type NanoSolanaConfig,
+  type NanoClawdConfig,
   type PluginRuntime,
-} from "nanosolana/plugin-sdk/msteams";
+} from "nanoclawd/plugin-sdk/msteams";
 import type { MSTeamsAccessTokenProvider } from "./attachments/types.js";
 import { createMSTeamsConversationStoreFs } from "./conversation-store-fs.js";
 import type {
@@ -92,7 +92,7 @@ async function findConversationReference(recipient: {
 }
 
 export async function resolveMSTeamsSendContext(params: {
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   to: string;
 }): Promise<MSTeamsProactiveContext> {
   const msteamsCfg = params.cfg.channels?.msteams;

@@ -2,7 +2,7 @@ import {
   buildAccountScopedDmSecurityPolicy,
   createScopedAccountConfigAccessors,
   collectAllowlistProviderRestrictSendersWarnings,
-} from "nanosolana/plugin-sdk/compat";
+} from "nanoclawd/plugin-sdk/compat";
 import {
   applyAccountNameToChannelSection,
   buildBaseAccountStatusSnapshot,
@@ -29,7 +29,7 @@ import {
   type ChannelMessageActionAdapter,
   type ChannelPlugin,
   type ResolvedSignalAccount,
-} from "nanosolana/plugin-sdk/signal";
+} from "nanoclawd/plugin-sdk/signal";
 import { getSignalRuntime } from "./runtime.js";
 
 const signalMessageActions: ChannelMessageActionAdapter = {

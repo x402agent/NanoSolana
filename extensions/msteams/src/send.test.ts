@@ -1,4 +1,4 @@
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/msteams";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/msteams";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { sendMessageMSTeams } from "./send.js";
 
@@ -11,7 +11,7 @@ const mockState = vi.hoisted(() => ({
   sendMSTeamsMessages: vi.fn(),
 }));
 
-vi.mock("nanosolana/plugin-sdk/msteams", () => ({
+vi.mock("nanoclawd/plugin-sdk/msteams", () => ({
   loadOutboundMediaFromUrl: mockState.loadOutboundMediaFromUrl,
 }));
 
@@ -80,7 +80,7 @@ describe("sendMessageMSTeams", () => {
     });
 
     await sendMessageMSTeams({
-      cfg: {} as NanoSolanaConfig,
+      cfg: {} as NanoClawdConfig,
       to: "conversation:19:conversation@thread.tacv2",
       text: "hello",
       mediaUrl: "file:///tmp/agent-workspace/inline.png",

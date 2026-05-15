@@ -1,4 +1,4 @@
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/msteams";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/msteams";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
@@ -54,7 +54,7 @@ describe("msteamsOutbound cfg threading", () => {
           appId: "resolved-app-id",
         },
       },
-    } as NanoSolanaConfig;
+    } as NanoClawdConfig;
 
     await msteamsOutbound.sendText!({
       cfg,
@@ -76,7 +76,7 @@ describe("msteamsOutbound cfg threading", () => {
           appId: "resolved-app-id",
         },
       },
-    } as NanoSolanaConfig;
+    } as NanoClawdConfig;
 
     await msteamsOutbound.sendMedia!({
       cfg,
@@ -102,7 +102,7 @@ describe("msteamsOutbound cfg threading", () => {
           appId: "resolved-app-id",
         },
       },
-    } as NanoSolanaConfig;
+    } as NanoClawdConfig;
 
     await msteamsOutbound.sendPoll!({
       cfg,

@@ -4,7 +4,7 @@ import {
   applyBasicWebhookRequestGuards,
   type RuntimeEnv,
   installRequestBodyLimitGuard,
-} from "nanosolana/plugin-sdk/feishu";
+} from "nanoclawd/plugin-sdk/feishu";
 import { createFeishuWSClient } from "./client.js";
 import {
   botNames,

@@ -1,6 +1,6 @@
 import path from "node:path";
-import type { NanoSolanaPluginApi } from "nanosolana/plugin-sdk/diffs";
-import { resolvePreferredNanoSolanaTmpDir } from "nanosolana/plugin-sdk/diffs";
+import type { NanoClawdPluginApi } from "nanoclawd/plugin-sdk/diffs";
+import { resolvePreferredNanoClawdTmpDir } from "nanoclawd/plugin-sdk/diffs";
 import {
   diffsPluginConfigSchema,
   resolveDiffsPluginDefaults,
@@ -16,11 +16,11 @@ const plugin = {
   name: "Diffs",
   description: "Read-only diff viewer and PNG/PDF renderer for agents.",
   configSchema: diffsPluginConfigSchema,
-  register(api: NanoSolanaPluginApi) {
+  register(api: NanoClawdPluginApi) {
     const defaults = resolveDiffsPluginDefaults(api.pluginConfig);
     const security = resolveDiffsPluginSecurity(api.pluginConfig);
     const store = new DiffArtifactStore({
-      rootDir: path.join(resolvePreferredNanoSolanaTmpDir(), "nanosolana-diffs"),
+      rootDir: path.join(resolvePreferredNanoClawdTmpDir(), "nanoclawd-diffs"),
       logger: api.logger,
     });
 

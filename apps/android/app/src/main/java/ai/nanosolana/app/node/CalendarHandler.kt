@@ -1,4 +1,4 @@
-package ai.nanosolana.app.node
+package ai.nanoclawd.app.node
 
 import android.Manifest
 import android.content.ContentResolver
@@ -7,7 +7,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.provider.CalendarContract
 import androidx.core.content.ContextCompat
-import ai.nanosolana.app.gateway.GatewaySession
+import ai.nanoclawd.app.gateway.GatewaySession
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.TimeZone

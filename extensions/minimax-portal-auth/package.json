@@ -1,10 +1,10 @@
 {
-  "name": "@nanosolana/minimax-portal-auth",
+  "name": "@nanoclawd/minimax-portal-auth",
   "version": "2026.3.11",
   "private": true,
-  "description": "NanoSolana MiniMax Portal OAuth provider plugin",
+  "description": "NanoClawd MiniMax Portal OAuth provider plugin",
   "type": "module",
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./index.ts"
     ]

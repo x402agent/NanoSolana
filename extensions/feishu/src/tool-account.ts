@@ -1,5 +1,5 @@
 import type * as Lark from "@larksuiteoapi/node-sdk";
-import type { NanoSolanaPluginApi } from "nanosolana/plugin-sdk/feishu";
+import type { NanoClawdPluginApi } from "nanoclawd/plugin-sdk/feishu";
 import { resolveFeishuAccount } from "./accounts.js";
 import { createFeishuClient } from "./client.js";
 import { resolveToolsConfig } from "./tools-config.js";
@@ -12,7 +12,7 @@ function normalizeOptionalAccountId(value: string | undefined): string | undefin
   return trimmed ? trimmed : undefined;
 }
 
-function readConfiguredDefaultAccountId(config: NanoSolanaPluginApi["config"]): string | undefined {
+function readConfiguredDefaultAccountId(config: NanoClawdPluginApi["config"]): string | undefined {
   const value = (config?.channels?.feishu as { defaultAccount?: unknown } | undefined)
     ?.defaultAccount;
   if (typeof value !== "string") {
@@ -22,7 +22,7 @@ function readConfiguredDefaultAccountId(config: NanoSolanaPluginApi["config"]): 
 }
 
 export function resolveFeishuToolAccount(params: {
-  api: Pick<NanoSolanaPluginApi, "config">;
+  api: Pick<NanoClawdPluginApi, "config">;
   executeParams?: AccountAwareParams;
   defaultAccountId?: string;
 }): ResolvedFeishuAccount {
@@ -39,7 +39,7 @@ export function resolveFeishuToolAccount(params: {
 }
 
 export function createFeishuToolClient(params: {
-  api: Pick<NanoSolanaPluginApi, "config">;
+  api: Pick<NanoClawdPluginApi, "config">;
   executeParams?: AccountAwareParams;
   defaultAccountId?: string;
 }): Lark.Client {

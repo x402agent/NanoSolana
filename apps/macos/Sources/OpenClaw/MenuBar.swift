@@ -8,10 +8,10 @@ import Security
 import SwiftUI
 
 @main
-struct NanoSolanaApp: App {
+struct NanoClawdApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var delegate
     @State private var state: AppState
-    private static let logger = Logger(subsystem: "ai.nanosolana", category: "app")
+    private static let logger = Logger(subsystem: "ai.nanoclawd", category: "app")
     private let gatewayManager = GatewayProcessManager.shared
     private let controlChannel = ControlChannel.shared
     private let activityStore = WorkActivityStore.shared
@@ -32,7 +32,7 @@ struct NanoSolanaApp: App {
     }
 
     init() {
-        NanoSolanaLogging.bootstrapIfNeeded()
+        NanoClawdLogging.bootstrapIfNeeded()
 
         Self.applyAttachOnlyOverrideIfNeeded()
         _state = State(initialValue: AppStateStore.shared)
@@ -243,7 +243,7 @@ private final class StatusItemMouseHandlerView: NSView {
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var state: AppState?
-    private let webChatAutoLogger = Logger(subsystem: "ai.nanosolana", category: "Chat")
+    private let webChatAutoLogger = Logger(subsystem: "ai.nanoclawd", category: "Chat")
     let updaterController: UpdaterProviding = makeUpdaterController()
 
     func application(_: NSApplication, open urls: [URL]) {

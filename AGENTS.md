@@ -1,13 +1,13 @@
-# NanoSolana — Repository Guidelines
+# NanoClawd — Repository Guidelines
 
 ## Project Identity
 
-NanoSolana is a modular, security-first framework for building autonomous financial agents on Solana. It ships as a monorepo with a TypeScript runtime (`nano-core`), Go binary (`TamaGObot`), web UI (`nanohub`), and 40+ channel extensions.
+NanoClawd is a modular, security-first framework for building autonomous financial agents on Solana. It ships as a monorepo with a TypeScript runtime (`nano-core`), Go binary (`TamaGObot`), web UI (`nanohub`), and 40+ channel extensions.
 
 ## Repository Structure
 
 ```
-NanoSolana/
+NanoClawd/
 ├── nano-core/                # Core TypeScript runtime and CLI
 ├── nanohub/                  # Agent Registry (React + Convex + Vercel)
 ├── nano-docs/                # Documentation
@@ -54,7 +54,7 @@ bun run dev          # Launch dev server
 
 ## Security Rules
 
-1. **Never commit `.env` files** — all secrets stay local, encrypted in the NanoSolana vault
+1. **Never commit `.env` files** — all secrets stay local, encrypted in the NanoClawd vault
 2. **Never log secrets** — no API keys, private keys, or tokens in console output
 3. **All wallet operations** must be tested with mock keypairs, never real keys
 4. **All API key handling** goes through the encrypted vault in production

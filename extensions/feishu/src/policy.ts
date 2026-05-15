@@ -2,8 +2,8 @@ import type {
   AllowlistMatch,
   ChannelGroupContext,
   GroupToolPolicyConfig,
-} from "nanosolana/plugin-sdk/feishu";
-import { evaluateSenderGroupAccessForPolicy } from "nanosolana/plugin-sdk/feishu";
+} from "nanoclawd/plugin-sdk/feishu";
+import { evaluateSenderGroupAccessForPolicy } from "nanoclawd/plugin-sdk/feishu";
 import { normalizeFeishuTarget } from "./targets.js";
 import type { FeishuConfig, FeishuGroupConfig } from "./types.js";
 

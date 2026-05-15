@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "ai.nanosolana.app.benchmark"
+    namespace = "ai.nanoclawd.app.benchmark"
     compileSdk = 36
 
     defaultConfig {

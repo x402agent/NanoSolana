@@ -1,7 +1,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import type { NanoSolanaPluginApi } from "nanosolana/plugin-sdk/device-pair";
-import { listDevicePairing } from "nanosolana/plugin-sdk/device-pair";
+import type { NanoClawdPluginApi } from "nanoclawd/plugin-sdk/device-pair";
+import { listDevicePairing } from "nanoclawd/plugin-sdk/device-pair";
 
 const NOTIFY_STATE_FILE = "device-pair-notify.json";
 const NOTIFY_POLL_INTERVAL_MS = 10_000;
@@ -219,7 +219,7 @@ function shouldNotifySubscriberForRequest(
 }
 
 async function notifySubscriber(params: {
-  api: NanoSolanaPluginApi;
+  api: NanoClawdPluginApi;
   subscriber: NotifySubscription;
   text: string;
 }): Promise<boolean> {
@@ -248,7 +248,7 @@ async function notifySubscriber(params: {
 }
 
 async function notifyPendingPairingRequests(params: {
-  api: NanoSolanaPluginApi;
+  api: NanoClawdPluginApi;
   statePath: string;
 }): Promise<void> {
   const state = await readNotifyState(params.statePath);
@@ -311,7 +311,7 @@ async function notifyPendingPairingRequests(params: {
 }
 
 export async function armPairNotifyOnce(params: {
-  api: NanoSolanaPluginApi;
+  api: NanoClawdPluginApi;
   ctx: {
     channel: string;
     senderId?: string;
@@ -345,7 +345,7 @@ export async function armPairNotifyOnce(params: {
 }
 
 export async function handleNotifyCommand(params: {
-  api: NanoSolanaPluginApi;
+  api: NanoClawdPluginApi;
   ctx: {
     channel: string;
     senderId?: string;
@@ -424,7 +424,7 @@ export async function handleNotifyCommand(params: {
   return { text: "Usage: /pair notify on|off|once|status" };
 }
 
-export function registerPairingNotifierService(api: NanoSolanaPluginApi): void {
+export function registerPairingNotifierService(api: NanoClawdPluginApi): void {
   let notifyInterval: ReturnType<typeof setInterval> | null = null;
 
   api.registerService({

@@ -1,5 +1,5 @@
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct NodePairingReconcilePolicyTests {
     @Test func `policy polls only when active`() {

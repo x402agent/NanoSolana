@@ -1,17 +1,17 @@
 import Darwin
 import Foundation
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct LogLocatorTests {
     @Test func `launchd gateway log path ensures tmp dir exists`() {
         let fm = FileManager()
         let baseDir = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        let logDir = baseDir.appendingPathComponent("nanosolana-tests-\(UUID().uuidString)")
+        let logDir = baseDir.appendingPathComponent("nanoclawd-tests-\(UUID().uuidString)")
 
-        setenv("NANOSOLANA_LOG_DIR", logDir.path, 1)
+        setenv("NANOCLAWD_LOG_DIR", logDir.path, 1)
         defer {
-            unsetenv("NANOSOLANA_LOG_DIR")
+            unsetenv("NANOCLAWD_LOG_DIR")
             try? fm.removeItem(at: logDir)
         }
 

@@ -1,4 +1,4 @@
-package ai.nanosolana.app.ui
+package ai.nanoclawd.app.ui
 
 import java.util.Base64
 import org.junit.Assert.assertEquals

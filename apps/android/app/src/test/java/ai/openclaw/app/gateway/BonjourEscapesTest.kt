@@ -1,4 +1,4 @@
-package ai.nanosolana.app.gateway
+package ai.nanoclawd.app.gateway
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -12,7 +12,7 @@ class BonjourEscapesTest {
 
   @Test
   fun decodeDecodesDecimalEscapes() {
-    assertEquals("NanoSolana Gateway", BonjourEscapes.decode("NanoSolana\\032Gateway"))
+    assertEquals("NanoClawd Gateway", BonjourEscapes.decode("NanoClawd\\032Gateway"))
     assertEquals("A B", BonjourEscapes.decode("A\\032B"))
     assertEquals("Peter\u2019s Mac", BonjourEscapes.decode("Peter\\226\\128\\153s Mac"))
   }

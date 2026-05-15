@@ -1,6 +1,6 @@
 ---
 name: pump-ai-agents
-description: "AI agent integration layer for the Pump SDK — agent instruction files, .well-known discovery, LLM context documents, 15+ skill files, MCP server prompts, and terminal management rules for GitHub Copilot, Claude, and Gemini."
+description: "AI agent integration layer for the Pump SDK — agent instruction files, .well-known discovery, LLM context documents, 15+ skill files, MCP server prompts, and terminal management rules for GitHub Copilot, Clawd, and Gemini."
 metadata:
   openclaw:
     homepage: https://github.com/nirholas/pump-fun-sdk
@@ -8,14 +8,14 @@ metadata:
 
 # AI Agent Integration — Agent Scaffolding & Discovery
 
-Configure AI agents (GitHub Copilot, Claude, Gemini) to work effectively with the Pump SDK through instruction files, skill registries, and MCP server integration.
+Configure AI agents (GitHub Copilot, Clawd, Gemini) to work effectively with the Pump SDK through instruction files, skill registries, and MCP server integration.
 
 ## Agent Instruction Files
 
 | File | Agent | Purpose |
 |------|-------|---------|
 | `AGENTS.md` | Universal | Project overview, architecture, security rules |
-| `CLAUDE.md` | Claude Code | Key patterns, critical rules |
+| `CLAWD.md` | Clawd Code | Key patterns, critical rules |
 | `COPILOT.md` | GitHub Copilot | Instructions pointer |
 | `GEMINI.md` | Google Gemini | Instructions pointer |
 | `.github/copilot-instructions.md` | Copilot Chat | SDK patterns, security rules |
@@ -89,7 +89,7 @@ Configure AI agents (GitHub Copilot, Claude, Gemini) to work effectively with th
 - Keep agent instruction files concise and actionable
 - Point agents to specific skill files for domain knowledge
 - Update `skills.json` when adding or modifying skill files
-- Maintain consistency between `AGENTS.md`, `CLAUDE.md`, and `COPILOT.md`
+- Maintain consistency between `AGENTS.md`, `CLAWD.md`, and `COPILOT.md`
 
 ## Common Pitfalls
 

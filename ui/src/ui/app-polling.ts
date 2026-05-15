@@ -1,4 +1,4 @@
-import type { NanoSolanaApp } from "./app.ts";
+import type { NanoClawdApp } from "./app.ts";
 import { loadDebug } from "./controllers/debug.ts";
 import { loadLogs } from "./controllers/logs.ts";
 import { loadNodes } from "./controllers/nodes.ts";
@@ -15,7 +15,7 @@ export function startNodesPolling(host: PollingHost) {
     return;
   }
   host.nodesPollInterval = window.setInterval(
-    () => void loadNodes(host as unknown as NanoSolanaApp, { quiet: true }),
+    () => void loadNodes(host as unknown as NanoClawdApp, { quiet: true }),
     5000,
   );
 }
@@ -36,7 +36,7 @@ export function startLogsPolling(host: PollingHost) {
     if (host.tab !== "logs") {
       return;
     }
-    void loadLogs(host as unknown as NanoSolanaApp, { quiet: true });
+    void loadLogs(host as unknown as NanoClawdApp, { quiet: true });
   }, 2000);
 }
 
@@ -56,7 +56,7 @@ export function startDebugPolling(host: PollingHost) {
     if (host.tab !== "debug") {
       return;
     }
-    void loadDebug(host as unknown as NanoSolanaApp);
+    void loadDebug(host as unknown as NanoClawdApp);
   }, 3000);
 }
 

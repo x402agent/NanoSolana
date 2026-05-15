@@ -1,5 +1,5 @@
 import Testing
-@testable import NanoSolanaChatUI
+@testable import NanoClawdChatUI
 
 @Suite("ToolResultTextFormatter")
 struct ToolResultTextFormatterTests {

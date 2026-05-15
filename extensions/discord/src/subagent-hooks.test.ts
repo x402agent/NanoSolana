@@ -1,4 +1,4 @@
-import type { NanoSolanaPluginApi } from "nanosolana/plugin-sdk/discord";
+import type { NanoClawdPluginApi } from "nanoclawd/plugin-sdk/discord";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { registerDiscordSubagentHooks } from "./subagent-hooks.js";
 
@@ -35,7 +35,7 @@ const hookMocks = vi.hoisted(() => ({
   unbindThreadBindingsBySessionKey: vi.fn(() => []),
 }));
 
-vi.mock("nanosolana/plugin-sdk/discord", () => ({
+vi.mock("nanoclawd/plugin-sdk/discord", () => ({
   resolveDiscordAccount: hookMocks.resolveDiscordAccount,
   autoBindSpawnedDiscordSubagent: hookMocks.autoBindSpawnedDiscordSubagent,
   listThreadBindingsBySessionKey: hookMocks.listThreadBindingsBySessionKey,
@@ -59,7 +59,7 @@ function registerHandlersForTest(
     on: (hookName: string, handler: (event: unknown, ctx: unknown) => unknown) => {
       handlers.set(hookName, handler);
     },
-  } as unknown as NanoSolanaPluginApi;
+  } as unknown as NanoClawdPluginApi;
   registerDiscordSubagentHooks(api);
   return handlers;
 }

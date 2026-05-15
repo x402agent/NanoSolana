@@ -1,12 +1,12 @@
 import Foundation
 
-public enum NanoSolanaBonjour {
+public enum NanoClawdBonjour {
     // v0: internal-only, subject to rename.
-    public static let gatewayServiceType = "_nanosolana-gw._tcp"
+    public static let gatewayServiceType = "_nanoclawd-gw._tcp"
     public static let gatewayServiceDomain = "local."
     public static var wideAreaGatewayServiceDomain: String? {
         let env = ProcessInfo.processInfo.environment
-        return resolveWideAreaDomain(env["NANOSOLANA_WIDE_AREA_DOMAIN"])
+        return resolveWideAreaDomain(env["NANOCLAWD_WIDE_AREA_DOMAIN"])
     }
 
     public static var gatewayServiceDomains: [String] {

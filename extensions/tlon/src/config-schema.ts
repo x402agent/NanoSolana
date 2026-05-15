@@ -1,4 +1,4 @@
-import { buildChannelConfigSchema } from "nanosolana/plugin-sdk/tlon";
+import { buildChannelConfigSchema } from "nanoclawd/plugin-sdk/tlon";
 import { z } from "zod";
 
 const ShipSchema = z.string().min(1);

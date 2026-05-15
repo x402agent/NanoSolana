@@ -12,7 +12,7 @@ public enum WebViewJavaScriptSupport {
         let js = """
         (() => {
           try {
-            const api = globalThis.__nanosolana;
+            const api = globalThis.__nanoclawd;
             if (!api) return;
             if (typeof api.setDebugStatusEnabled === 'function') {
               api.setDebugStatusEnabled(\(enabled ? "true" : "false"));

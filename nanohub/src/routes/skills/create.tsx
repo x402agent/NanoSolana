@@ -14,9 +14,9 @@ import { formatBytes, formatPublishError, hashFile, uploadFile } from '../upload
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
 const KNOWN_MODELS = [
-  'claude-sonnet-4-20250514',
-  'claude-opus-4-20250514',
-  'claude-haiku-4-20250514',
+  'clawd-sonnet-4-20250514',
+  'clawd-opus-4-20250514',
+  'clawd-haiku-4-20250514',
   'gpt-4o',
   'gpt-4o-mini',
   'o3',
@@ -722,7 +722,7 @@ function SkillCreator() {
               {PLATFORM_SKILL_LICENSE} -- {PLATFORM_SKILL_LICENSE_NAME}
             </div>
             <p style={{ fontSize: '0.8rem', opacity: 0.8, margin: '0 0 0.75rem' }}>
-              All skills published on NanoSolana Hub are licensed under {PLATFORM_SKILL_LICENSE}.{' '}
+              All skills published on NanoClawd Hub are licensed under {PLATFORM_SKILL_LICENSE}.{' '}
               {PLATFORM_SKILL_LICENSE_SUMMARY}
             </p>
             <label

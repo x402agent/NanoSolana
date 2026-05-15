@@ -35,7 +35,7 @@ describe('og helpers', () => {
       summary: 'Personal north star notes.',
       version: '0.1.0',
     })
-    expect(meta.title).toBe('North Star — NanoSolana Docs')
+    expect(meta.title).toBe('North Star — NanoClawd Docs')
     expect(meta.description).toBe('Personal north star notes.')
     expect(meta.url).toContain('/souls/north-star')
     expect(meta.owner).toBe('someone')
@@ -57,8 +57,8 @@ describe('og helpers', () => {
 
   it('uses soul defaults when owner and summary are missing', () => {
     const meta = buildSoulMeta({ slug: 'signal' })
-    expect(meta.title).toBe('signal — NanoSolana Docs')
-    expect(meta.description).toMatch(/NanoSolana Docs — the home for SOUL.md/i)
+    expect(meta.title).toBe('signal — NanoClawd Docs')
+    expect(meta.description).toMatch(/NanoClawd Docs — the home for SOUL.md/i)
     expect(meta.url).toContain('/souls/signal')
     expect(meta.owner).toBeNull()
     expect(meta.image).toContain('slug=signal')

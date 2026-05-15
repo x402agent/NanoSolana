@@ -4,7 +4,7 @@ import {
   collectAllowlistProviderGroupPolicyWarnings,
   createScopedAccountConfigAccessors,
   formatNormalizedAllowFromEntries,
-} from "nanosolana/plugin-sdk/compat";
+} from "nanoclawd/plugin-sdk/compat";
 import {
   buildBaseAccountStatusSnapshot,
   buildBaseChannelStatusSummary,
@@ -17,7 +17,7 @@ import {
   runPassiveAccountLifecycle,
   setAccountEnabledInConfigSection,
   type ChannelPlugin,
-} from "nanosolana/plugin-sdk/irc";
+} from "nanoclawd/plugin-sdk/irc";
 import {
   listIrcAccountIds,
   resolveDefaultIrcAccountId,

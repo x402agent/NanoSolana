@@ -4,7 +4,7 @@ import {
   readStoreAllowFromForDmPolicy,
   resolveDmGroupAccessWithLists,
   resolveSenderScopedGroupPolicy,
-} from "nanosolana/plugin-sdk/matrix";
+} from "nanoclawd/plugin-sdk/matrix";
 import {
   normalizeMatrixAllowList,
   resolveMatrixAllowListMatch,
@@ -98,12 +98,12 @@ export async function enforceMatrixDirectMessageAccess(params: {
       upsertPairingRequest: params.upsertPairingRequest,
       buildReplyText: ({ code }) =>
         [
-          "NanoSolana: access not configured.",
+          "NanoClawd: access not configured.",
           "",
           `Pairing code: ${code}`,
           "",
           "Ask the bot owner to approve with:",
-          "nanosolana pairing approve matrix <code>",
+          "nanoclawd pairing approve matrix <code>",
         ].join("\n"),
       sendPairingReply: params.sendPairingReply,
       onCreated: () => {

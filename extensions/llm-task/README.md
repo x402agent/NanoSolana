@@ -4,7 +4,7 @@ Adds an **optional** agent tool `llm-task` for running **JSON-only** LLM tasks
 (drafting, summarizing, classifying) with optional JSON Schema validation.
 
 Designed to be called from workflow engines (for example, Lobster via
-`nanosolana.invoke --each`) without adding new NanoSolana code per workflow.
+`nanoclawd.invoke --each`) without adding new NanoClawd code per workflow.
 
 ## Enable
 
@@ -90,9 +90,9 @@ Returns `details.json` containing the parsed JSON (and validates against
 
 ## Bundled extension note
 
-This extension depends on NanoSolana internal modules (the embedded agent runner).
-It is intended to ship as a **bundled** NanoSolana extension (like `lobster`) and
+This extension depends on NanoClawd internal modules (the embedded agent runner).
+It is intended to ship as a **bundled** NanoClawd extension (like `lobster`) and
 be enabled via `plugins.entries` + tool allowlists.
 
 It is **not** currently designed to be copied into
-`~/.nanosolana/extensions` as a standalone plugin directory.
+`~/.nanoclawd/extensions` as a standalone plugin directory.

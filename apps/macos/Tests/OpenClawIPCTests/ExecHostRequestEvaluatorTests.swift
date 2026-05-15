@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct ExecHostRequestEvaluatorTests {
     @Test func `validate request rejects empty command`() {

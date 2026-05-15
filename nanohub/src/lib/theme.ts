@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 export type ThemeMode = 'system' | 'light' | 'dark'
 
-const THEME_KEY = 'nanosolana-theme'
+const THEME_KEY = 'nanoclawd-theme'
 const LEGACY_THEME_KEY = 'clawhub-theme'
 
 export function getStoredTheme(): ThemeMode {

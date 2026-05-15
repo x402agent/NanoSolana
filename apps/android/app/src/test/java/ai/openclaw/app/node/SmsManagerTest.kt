@@ -1,4 +1,4 @@
-package ai.nanosolana.app.node
+package ai.nanoclawd.app.node
 
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive

@@ -4,7 +4,7 @@ import {
   createDedupeCache,
   createPersistentDedupe,
   readJsonFileWithFallback,
-} from "nanosolana/plugin-sdk/feishu";
+} from "nanoclawd/plugin-sdk/feishu";
 
 // Persistent TTL: 24 hours — survives restarts & WebSocket reconnects.
 const DEDUP_TTL_MS = 24 * 60 * 60 * 1000;
@@ -15,14 +15,14 @@ type PersistentDedupeData = Record<string, number>;
 const memoryDedupe = createDedupeCache({ ttlMs: DEDUP_TTL_MS, maxSize: MEMORY_MAX_SIZE });
 
 function resolveStateDirFromEnv(env: NodeJS.ProcessEnv = process.env): string {
-  const stateOverride = env.NANOSOLANA_STATE_DIR?.trim() || env.TAMAGOBOT_STATE_DIR?.trim();
+  const stateOverride = env.NANOCLAWD_STATE_DIR?.trim() || env.TAMAGOBOT_STATE_DIR?.trim();
   if (stateOverride) {
     return stateOverride;
   }
   if (env.VITEST || env.NODE_ENV === "test") {
-    return path.join(os.tmpdir(), ["nanosolana-vitest", String(process.pid)].join("-"));
+    return path.join(os.tmpdir(), ["nanoclawd-vitest", String(process.pid)].join("-"));
   }
-  return path.join(os.homedir(), ".nanosolana");
+  return path.join(os.homedir(), ".nanoclawd");
 }
 
 function resolveNamespaceFilePath(namespace: string): string {

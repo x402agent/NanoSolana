@@ -14,7 +14,7 @@ scg pet
 Example output:
 
 ```text
-🐹 Solana Claude Go  😊
+🐹 Solana Clawd Go  😊
 
 📊 Stage: juvenile · Level 1 · XP 0
 😊 Mood: happy

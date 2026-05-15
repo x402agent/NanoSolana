@@ -1,5 +1,5 @@
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct GatewayAgentChannelTests {
     @Test func `should deliver blocks web chat`() {

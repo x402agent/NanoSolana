@@ -1,11 +1,11 @@
 ---
-summary: "Solana Claude Go model providers and AI integration"
+summary: "Solana Clawd Go model providers and AI integration"
 title: "Model Providers"
 ---
 
 # Model providers
 
-Solana Claude Go uses **OpenRouter** as its primary AI gateway, with the `healer-alpha`
+Solana Clawd Go uses **OpenRouter** as its primary AI gateway, with the `healer-alpha`
 model as the default. The architecture supports multiple providers.
 
 ## Default: OpenRouter + healer-alpha
@@ -53,9 +53,9 @@ const reply = await ai.agentChat("What's my portfolio looking like?");
 
 | Provider | Status | Notes |
 |----------|--------|-------|
-| **OpenRouter** | ✅ Default | healer-alpha, Claude, GPT-5, Gemini |
+| **OpenRouter** | ✅ Default | healer-alpha, Clawd, GPT-5, Gemini |
 | **OpenAI** | ✅ Supported | GPT-5.2, Codex |
-| **Anthropic** | ✅ Supported | Claude Opus 4, Sonnet |
+| **Anthropic** | ✅ Supported | Clawd Opus 4, Sonnet |
 | **Google** | ✅ Supported | Gemini 2.5 Pro |
 | **Local (Ollama)** | ⚡ Experimental | For offline operation |
 
@@ -72,7 +72,7 @@ AI_MODEL=openrouter/healer-alpha
 
 ## Model failover
 
-If the primary model fails, Solana Claude Go can fall back:
+If the primary model fails, Solana Clawd Go can fall back:
 
 ```json5
 {
@@ -80,7 +80,7 @@ If the primary model fails, Solana Claude Go can fall back:
     provider: "openrouter",
     model: "openrouter/healer-alpha",
     fallbacks: [
-      "anthropic/claude-sonnet-4-20250514",
+      "anthropic/clawd-sonnet-4-20250514",
       "openai/gpt-4o"
     ]
   }

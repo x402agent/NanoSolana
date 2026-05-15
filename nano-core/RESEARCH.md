@@ -1,4 +1,4 @@
-# NanoSolana Research Program v1.0
+# NanoClawd Research Program v1.0
 
 This file complements `SOUL.md`.
 

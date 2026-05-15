@@ -1,6 +1,6 @@
 import CoreGraphics
 import Foundation
-import NanoSolanaKit
+import NanoClawdKit
 
 enum SystemPresenceInfo {
     static func lastInputSeconds() -> Int? {

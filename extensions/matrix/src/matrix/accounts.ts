@@ -1,5 +1,5 @@
-import { normalizeAccountId } from "nanosolana/plugin-sdk/account-id";
-import { createAccountListHelpers } from "nanosolana/plugin-sdk/matrix";
+import { normalizeAccountId } from "nanoclawd/plugin-sdk/account-id";
+import { createAccountListHelpers } from "nanoclawd/plugin-sdk/matrix";
 import { hasConfiguredSecretInput } from "../secret-input.js";
 import type { CoreConfig, MatrixConfig } from "../types.js";
 import { resolveMatrixConfigForAccount } from "./client.js";

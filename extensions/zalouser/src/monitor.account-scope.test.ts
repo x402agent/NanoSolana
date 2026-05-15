@@ -1,4 +1,4 @@
-import type { NanoSolanaConfig, PluginRuntime, RuntimeEnv } from "nanosolana/plugin-sdk/zalouser";
+import type { NanoClawdConfig, PluginRuntime, RuntimeEnv } from "nanoclawd/plugin-sdk/zalouser";
 import { describe, expect, it, vi } from "vitest";
 import "./monitor.send-mocks.js";
 import { __testing } from "./monitor.js";
@@ -57,7 +57,7 @@ describe("zalouser monitor pairing account scoping", () => {
       },
     };
 
-    const config: NanoSolanaConfig = {
+    const config: NanoClawdConfig = {
       channels: {
         zalouser: {
           accounts: {

@@ -27,7 +27,7 @@ describe("hub/oneshot", () => {
       install: [{ kind: "node", package: "token-tracker" }],
     }, {
       env: { BIRDEYE_API_KEY: "test" },
-      siteUrl: "https://hub.solana-claude-go.com",
+      siteUrl: "https://hub.solana-clawd-go.com",
     });
 
     expect(plan.readyToLaunch).toBe(true);

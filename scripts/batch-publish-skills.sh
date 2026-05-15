@@ -2,7 +2,7 @@
 #
 # batch-publish-skills.sh
 #
-# Publishes all skills from the nanosolana skills directory to NanoHub.
+# Publishes all skills from the nanoclawd skills directory to NanoHub.
 # Reads name/description from each SKILL.md frontmatter, derives slug from
 # the directory name, and calls `nanohub publish` for each skill.
 #
@@ -12,7 +12,7 @@
 # Options:
 #   --dry-run       Preview what would be published without actually publishing
 #   --version VER   Override version for all skills (default: 1.0.0)
-#   --skills-dir D  Override skills directory (default: sibling nanosolana/skills)
+#   --skills-dir D  Override skills directory (default: sibling nanoclawd/skills)
 #   --concurrency N Not used yet; reserved for future parallel publishing
 #   --skip SLUG     Skip a specific slug (can be repeated)
 #   --only SLUG     Only publish a specific slug (can be repeated)

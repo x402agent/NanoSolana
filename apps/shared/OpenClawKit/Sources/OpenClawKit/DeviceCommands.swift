@@ -1,58 +1,58 @@
 import Foundation
 
-public enum NanoSolanaDeviceCommand: String, Codable, Sendable {
+public enum NanoClawdDeviceCommand: String, Codable, Sendable {
     case status = "device.status"
     case info = "device.info"
 }
 
-public enum NanoSolanaBatteryState: String, Codable, Sendable {
+public enum NanoClawdBatteryState: String, Codable, Sendable {
     case unknown
     case unplugged
     case charging
     case full
 }
 
-public enum NanoSolanaThermalState: String, Codable, Sendable {
+public enum NanoClawdThermalState: String, Codable, Sendable {
     case nominal
     case fair
     case serious
     case critical
 }
 
-public enum NanoSolanaNetworkPathStatus: String, Codable, Sendable {
+public enum NanoClawdNetworkPathStatus: String, Codable, Sendable {
     case satisfied
     case unsatisfied
     case requiresConnection
 }
 
-public enum NanoSolanaNetworkInterfaceType: String, Codable, Sendable {
+public enum NanoClawdNetworkInterfaceType: String, Codable, Sendable {
     case wifi
     case cellular
     case wired
     case other
 }
 
-public struct NanoSolanaBatteryStatusPayload: Codable, Sendable, Equatable {
+public struct NanoClawdBatteryStatusPayload: Codable, Sendable, Equatable {
     public var level: Double?
-    public var state: NanoSolanaBatteryState
+    public var state: NanoClawdBatteryState
     public var lowPowerModeEnabled: Bool
 
-    public init(level: Double?, state: NanoSolanaBatteryState, lowPowerModeEnabled: Bool) {
+    public init(level: Double?, state: NanoClawdBatteryState, lowPowerModeEnabled: Bool) {
         self.level = level
         self.state = state
         self.lowPowerModeEnabled = lowPowerModeEnabled
     }
 }
 
-public struct NanoSolanaThermalStatusPayload: Codable, Sendable, Equatable {
-    public var state: NanoSolanaThermalState
+public struct NanoClawdThermalStatusPayload: Codable, Sendable, Equatable {
+    public var state: NanoClawdThermalState
 
-    public init(state: NanoSolanaThermalState) {
+    public init(state: NanoClawdThermalState) {
         self.state = state
     }
 }
 
-public struct NanoSolanaStorageStatusPayload: Codable, Sendable, Equatable {
+public struct NanoClawdStorageStatusPayload: Codable, Sendable, Equatable {
     public var totalBytes: Int64
     public var freeBytes: Int64
     public var usedBytes: Int64
@@ -64,17 +64,17 @@ public struct NanoSolanaStorageStatusPayload: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaNetworkStatusPayload: Codable, Sendable, Equatable {
-    public var status: NanoSolanaNetworkPathStatus
+public struct NanoClawdNetworkStatusPayload: Codable, Sendable, Equatable {
+    public var status: NanoClawdNetworkPathStatus
     public var isExpensive: Bool
     public var isConstrained: Bool
-    public var interfaces: [NanoSolanaNetworkInterfaceType]
+    public var interfaces: [NanoClawdNetworkInterfaceType]
 
     public init(
-        status: NanoSolanaNetworkPathStatus,
+        status: NanoClawdNetworkPathStatus,
         isExpensive: Bool,
         isConstrained: Bool,
-        interfaces: [NanoSolanaNetworkInterfaceType])
+        interfaces: [NanoClawdNetworkInterfaceType])
     {
         self.status = status
         self.isExpensive = isExpensive
@@ -83,18 +83,18 @@ public struct NanoSolanaNetworkStatusPayload: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaDeviceStatusPayload: Codable, Sendable, Equatable {
-    public var battery: NanoSolanaBatteryStatusPayload
-    public var thermal: NanoSolanaThermalStatusPayload
-    public var storage: NanoSolanaStorageStatusPayload
-    public var network: NanoSolanaNetworkStatusPayload
+public struct NanoClawdDeviceStatusPayload: Codable, Sendable, Equatable {
+    public var battery: NanoClawdBatteryStatusPayload
+    public var thermal: NanoClawdThermalStatusPayload
+    public var storage: NanoClawdStorageStatusPayload
+    public var network: NanoClawdNetworkStatusPayload
     public var uptimeSeconds: Double
 
     public init(
-        battery: NanoSolanaBatteryStatusPayload,
-        thermal: NanoSolanaThermalStatusPayload,
-        storage: NanoSolanaStorageStatusPayload,
-        network: NanoSolanaNetworkStatusPayload,
+        battery: NanoClawdBatteryStatusPayload,
+        thermal: NanoClawdThermalStatusPayload,
+        storage: NanoClawdStorageStatusPayload,
+        network: NanoClawdNetworkStatusPayload,
         uptimeSeconds: Double)
     {
         self.battery = battery
@@ -105,7 +105,7 @@ public struct NanoSolanaDeviceStatusPayload: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaDeviceInfoPayload: Codable, Sendable, Equatable {
+public struct NanoClawdDeviceInfoPayload: Codable, Sendable, Equatable {
     public var deviceName: String
     public var modelIdentifier: String
     public var systemName: String

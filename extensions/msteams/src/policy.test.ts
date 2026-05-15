@@ -1,4 +1,4 @@
-import type { MSTeamsConfig } from "nanosolana/plugin-sdk/msteams";
+import type { MSTeamsConfig } from "nanoclawd/plugin-sdk/msteams";
 import { describe, expect, it } from "vitest";
 import {
   isMSTeamsGroupAllowed,

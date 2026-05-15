@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct HealthStoreStateTests {
     @Test @MainActor func `linked channel probe failure degrades state`() {

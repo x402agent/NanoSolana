@@ -1,10 +1,10 @@
 {
-  "name": "@nanosolana/telegram",
+  "name": "@nanoclawd/telegram",
   "version": "2026.3.11",
   "private": true,
-  "description": "NanoSolana Telegram channel plugin",
+  "description": "NanoClawd Telegram channel plugin",
   "type": "module",
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./index.ts"
     ]

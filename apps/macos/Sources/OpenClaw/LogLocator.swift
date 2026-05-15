@@ -2,20 +2,20 @@ import Foundation
 
 enum LogLocator {
     private static var logDir: URL {
-        if let override = ProcessInfo.processInfo.environment["NANOSOLANA_LOG_DIR"],
+        if let override = ProcessInfo.processInfo.environment["NANOCLAWD_LOG_DIR"],
            !override.isEmpty
         {
             return URL(fileURLWithPath: override)
         }
-        return URL(fileURLWithPath: "/tmp/nanosolana")
+        return URL(fileURLWithPath: "/tmp/nanoclawd")
     }
 
     private static var stdoutLog: URL {
-        logDir.appendingPathComponent("nanosolana-stdout.log")
+        logDir.appendingPathComponent("nanoclawd-stdout.log")
     }
 
     private static var gatewayLog: URL {
-        logDir.appendingPathComponent("nanosolana-gateway.log")
+        logDir.appendingPathComponent("nanoclawd-gateway.log")
     }
 
     private static func ensureLogDirExists() {
@@ -26,7 +26,7 @@ enum LogLocator {
         (try? url.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate) ?? .distantPast
     }
 
-    /// Returns the newest log file under /tmp/nanosolana/ (rolling or stdout), or nil if none exist.
+    /// Returns the newest log file under /tmp/nanoclawd/ (rolling or stdout), or nil if none exist.
     static func bestLogFile() -> URL? {
         self.ensureLogDirExists()
         let fm = FileManager()
@@ -35,7 +35,7 @@ enum LogLocator {
             includingPropertiesForKeys: [.contentModificationDateKey],
             options: [.skipsHiddenFiles])) ?? []
 
-        let prefixes = ["nanosolana"]
+        let prefixes = ["nanoclawd"]
         return files
             .filter { file in
                 prefixes.contains { file.lastPathComponent.hasPrefix($0) } && file.pathExtension == "log"

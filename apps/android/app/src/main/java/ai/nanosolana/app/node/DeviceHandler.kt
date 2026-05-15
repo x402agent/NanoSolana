@@ -1,4 +1,4 @@
-package ai.nanosolana.app.node
+package ai.nanoclawd.app.node
 
 import android.Manifest
 import android.app.ActivityManager
@@ -15,8 +15,8 @@ import android.os.PowerManager
 import android.os.StatFs
 import android.os.SystemClock
 import androidx.core.content.ContextCompat
-import ai.nanosolana.app.BuildConfig
-import ai.nanosolana.app.gateway.GatewaySession
+import ai.nanoclawd.app.BuildConfig
+import ai.nanoclawd.app.gateway.GatewaySession
 import java.util.Locale
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonArray

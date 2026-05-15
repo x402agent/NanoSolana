@@ -1,9 +1,9 @@
-package ai.nanosolana.app.protocol
+package ai.nanoclawd.app.protocol
 
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 
-object NanoSolanaCanvasA2UIAction {
+object NanoClawdCanvasA2UIAction {
   fun extractActionName(userAction: JsonObject): String? {
     val name =
       (userAction["name"] as? JsonPrimitive)
@@ -61,6 +61,6 @@ object NanoSolanaCanvasA2UIAction {
     val err = (error ?: "").replace("\\", "\\\\").replace("\"", "\\\"")
     val okLiteral = if (ok) "true" else "false"
     val idEscaped = actionId.replace("\\", "\\\\").replace("\"", "\\\"")
-    return "window.dispatchEvent(new CustomEvent('nanosolana:a2ui-action-status', { detail: { id: \"${idEscaped}\", ok: ${okLiteral}, error: \"${err}\" } }));"
+    return "window.dispatchEvent(new CustomEvent('nanoclawd:a2ui-action-status', { detail: { id: \"${idEscaped}\", ok: ${okLiteral}, error: \"${err}\" } }));"
   }
 }

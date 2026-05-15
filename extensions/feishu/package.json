@@ -1,7 +1,7 @@
 {
-  "name": "@nanosolana/feishu",
+  "name": "@nanoclawd/feishu",
   "version": "2026.3.11",
-  "description": "NanoSolana Feishu/Lark channel plugin (community maintained by @m1heng)",
+  "description": "NanoClawd Feishu/Lark channel plugin (community maintained by @m1heng)",
   "type": "module",
   "dependencies": {
     "@larksuiteoapi/node-sdk": "^1.59.0",
@@ -9,7 +9,7 @@
     "https-proxy-agent": "^8.0.0",
     "zod": "^4.3.6"
   },
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./index.ts"
     ],
@@ -27,7 +27,7 @@
       "quickstartAllowFrom": true
     },
     "install": {
-      "npmSpec": "@nanosolana/feishu",
+      "npmSpec": "@nanoclawd/feishu",
       "localPath": "extensions/feishu",
       "defaultChoice": "npm"
     }

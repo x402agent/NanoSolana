@@ -1,4 +1,4 @@
-// ── Solana Claude Go × PumpFun — Barrel Export ─────────────────────────────────────
+// ── Solana Clawd Go × PumpFun — Barrel Export ─────────────────────────────────────
 //
 // Main entry point for the Pump.Fun integration module.
 // Exports the SDK bridge, swarm spawner, Telegram gateway, bot registry,

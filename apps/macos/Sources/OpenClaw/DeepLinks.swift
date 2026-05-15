@@ -1,10 +1,10 @@
 import AppKit
 import Foundation
-import NanoSolanaKit
+import NanoClawdKit
 import OSLog
 import Security
 
-private let deepLinkLogger = Logger(subsystem: "ai.nanosolana", category: "DeepLink")
+private let deepLinkLogger = Logger(subsystem: "ai.nanoclawd", category: "DeepLink")
 
 enum DeepLinkAgentPolicy {
     static let maxMessageChars = 20000
@@ -60,7 +60,7 @@ final class DeepLinkHandler {
             return
         }
         guard !AppStateStore.shared.isPaused else {
-            self.presentAlert(title: "NanoSolana is paused", message: "Unpause NanoSolana to run agent actions.")
+            self.presentAlert(title: "NanoClawd is paused", message: "Unpause NanoClawd to run agent actions.")
             return
         }
 
@@ -99,7 +99,7 @@ final class DeepLinkHandler {
             let urlPreview = urlText.count > 500 ? "\(urlText.prefix(500))…" : urlText
             let body =
                 "Run the agent with this message?\n\n\(messagePreview)\n\nURL:\n\(urlPreview)"
-            guard self.confirm(title: "Run NanoSolana agent?", message: body) else { return }
+            guard self.confirm(title: "Run NanoClawd agent?", message: body) else { return }
         }
 
         if AppStateStore.shared.connectionMode == .local {

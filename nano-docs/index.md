@@ -1,17 +1,17 @@
 ---
-summary: "New-user documentation hub for running, operating, and extending Solana Claude Go"
-title: "Solana Claude Go Docs — New User Hub"
+summary: "New-user documentation hub for running, operating, and extending Solana Clawd Go"
+title: "Solana Clawd Go Docs — New User Hub"
 ---
 
-# Solana Claude Go Docs (New User Hub)
+# Solana Clawd Go Docs (New User Hub)
 
-Welcome. This is the **new-user hub** for getting productive with Solana Claude Go
+Welcome. This is the **new-user hub** for getting productive with Solana Clawd Go
 quickly, without falling into outdated command paths.
 
 **Website:** [scg.com](https://scg.com) · **Hub:**
 [hub.scg.com](https://hub.scg.com) · **Docs:**
 [docs.scg.com](https://docs.scg.com) · **GitHub:**
-[github.com/x402agent/Solana Claude Go](https://github.com/x402agent/Solana Claude Go)
+[github.com/x402agent/Solana Clawd Go](https://github.com/x402agent/Solana Clawd Go)
 
 ## 5-minute quickstart (safe)
 

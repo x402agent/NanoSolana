@@ -63,7 +63,7 @@ export default function Header() {
           <span className="brand-name">{siteName}</span>
         </Link>
         <nav className="nav-links">
-          {isSoulMode ? <a href={nanoHubUrl}>NanoSolana Hub</a> : null}
+          {isSoulMode ? <a href={nanoHubUrl}>NanoClawd Hub</a> : null}
           {isSoulMode ? (
             <Link
               to="/souls"
@@ -139,7 +139,7 @@ export default function Header() {
               <DropdownMenuContent align="end">
                 {isSoulMode ? (
                   <DropdownMenuItem asChild>
-                    <a href={nanoHubUrl}>NanoSolana Hub</a>
+                    <a href={nanoHubUrl}>NanoClawd Hub</a>
                   </DropdownMenuItem>
                 ) : null}
                 <DropdownMenuItem asChild>

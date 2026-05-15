@@ -1,10 +1,10 @@
 import Foundation
-import NanoSolanaChatUI
-import NanoSolanaKit
-import NanoSolanaProtocol
+import NanoClawdChatUI
+import NanoClawdKit
+import NanoClawdProtocol
 import OSLog
 
-private let gatewayConnectionLogger = Logger(subsystem: "ai.nanosolana", category: "gateway.connection")
+private let gatewayConnectionLogger = Logger(subsystem: "ai.nanoclawd", category: "gateway.connection")
 
 enum GatewayAgentChannel: String, Codable, CaseIterable {
     case last
@@ -315,7 +315,7 @@ actor GatewayConnection {
         return trimmed.isEmpty ? nil : trimmed
     }
 
-    private func sessionDefaultString(_ defaults: [String: NanoSolanaProtocol.AnyCodable]?, key: String) -> String {
+    private func sessionDefaultString(_ defaults: [String: NanoClawdProtocol.AnyCodable]?, key: String) -> String {
         let raw = defaults?[key]?.value as? String
         return (raw ?? "").trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
     }
@@ -546,7 +546,7 @@ extension GatewayConnection {
 
     func healthOK(timeoutMs: Int = 8000) async throws -> Bool {
         let data = try await self.requestRaw(method: .health, timeoutMs: Double(timeoutMs))
-        return (try? self.decoder.decode(NanoSolanaGatewayHealthOK.self, from: data))?.ok ?? true
+        return (try? self.decoder.decode(NanoClawdGatewayHealthOK.self, from: data))?.ok ?? true
     }
 
     // MARK: - Skills
@@ -591,13 +591,13 @@ extension GatewayConnection {
         keys: [String],
         limit: Int? = nil,
         maxChars: Int? = nil,
-        timeoutMs: Int? = nil) async throws -> NanoSolanaSessionsPreviewPayload
+        timeoutMs: Int? = nil) async throws -> NanoClawdSessionsPreviewPayload
     {
         let resolvedKeys = keys
             .map { self.canonicalizeSessionKey($0) }
             .filter { !$0.isEmpty }
         if resolvedKeys.isEmpty {
-            return NanoSolanaSessionsPreviewPayload(ts: 0, previews: [])
+            return NanoClawdSessionsPreviewPayload(ts: 0, previews: [])
         }
         var params: [String: AnyCodable] = ["keys": AnyCodable(resolvedKeys)]
         if let limit { params["limit"] = AnyCodable(limit) }
@@ -614,7 +614,7 @@ extension GatewayConnection {
     func chatHistory(
         sessionKey: String,
         limit: Int? = nil,
-        timeoutMs: Int? = nil) async throws -> NanoSolanaChatHistoryPayload
+        timeoutMs: Int? = nil) async throws -> NanoClawdChatHistoryPayload
     {
         let resolvedKey = self.canonicalizeSessionKey(sessionKey)
         var params: [String: AnyCodable] = ["sessionKey": AnyCodable(resolvedKey)]
@@ -631,8 +631,8 @@ extension GatewayConnection {
         message: String,
         thinking: String,
         idempotencyKey: String,
-        attachments: [NanoSolanaChatAttachmentPayload],
-        timeoutMs: Int = 30000) async throws -> NanoSolanaChatSendResponse
+        attachments: [NanoClawdChatAttachmentPayload],
+        timeoutMs: Int = 30000) async throws -> NanoClawdChatSendResponse
     {
         let resolvedKey = self.canonicalizeSessionKey(sessionKey)
         var params: [String: AnyCodable] = [

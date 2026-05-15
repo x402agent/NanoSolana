@@ -22,7 +22,7 @@ const mockState = vi.hoisted(() => ({
   uploadMattermostFile: vi.fn(),
 }));
 
-vi.mock("nanosolana/plugin-sdk/mattermost", () => ({
+vi.mock("nanoclawd/plugin-sdk/mattermost", () => ({
   loadOutboundMediaFromUrl: mockState.loadOutboundMediaFromUrl,
 }));
 

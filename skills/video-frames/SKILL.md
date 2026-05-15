@@ -4,7 +4,7 @@ description: Extract frames or short clips from videos using ffmpeg.
 homepage: https://ffmpeg.org
 metadata:
   {
-    "nanosolana":
+    "nanoclawd":
       {
         "emoji": "🎬",
         "requires": { "bins": ["ffmpeg"] },

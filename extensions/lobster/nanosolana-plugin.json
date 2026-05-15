@@ -1,7 +1,7 @@
 {
   "id": "lobster",
   "name": "Lobster",
-  "description": "NanoSolana Lobster workflow engine — typed pipelines and resumable approvals for trading operations",
+  "description": "NanoClawd Lobster workflow engine — typed pipelines and resumable approvals for trading operations",
   "configSchema": {
     "type": "object",
     "additionalProperties": false,

@@ -1,18 +1,18 @@
 import AppKit
 import Foundation
-import NanoSolanaChatUI
+import NanoClawdChatUI
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 @Suite(.serialized)
 @MainActor
 struct WebChatSwiftUISmokeTests {
-    private struct TestTransport: NanoSolanaChatTransport {
-        func requestHistory(sessionKey: String) async throws -> NanoSolanaChatHistoryPayload {
+    private struct TestTransport: NanoClawdChatTransport {
+        func requestHistory(sessionKey: String) async throws -> NanoClawdChatHistoryPayload {
             let json = """
             {"sessionKey":"\(sessionKey)","sessionId":null,"messages":[],"thinkingLevel":"off"}
             """
-            return try JSONDecoder().decode(NanoSolanaChatHistoryPayload.self, from: Data(json.utf8))
+            return try JSONDecoder().decode(NanoClawdChatHistoryPayload.self, from: Data(json.utf8))
         }
 
         func sendMessage(
@@ -20,19 +20,19 @@ struct WebChatSwiftUISmokeTests {
             message _: String,
             thinking _: String,
             idempotencyKey _: String,
-            attachments _: [NanoSolanaChatAttachmentPayload]) async throws -> NanoSolanaChatSendResponse
+            attachments _: [NanoClawdChatAttachmentPayload]) async throws -> NanoClawdChatSendResponse
         {
             let json = """
             {"runId":"\(UUID().uuidString)","status":"ok"}
             """
-            return try JSONDecoder().decode(NanoSolanaChatSendResponse.self, from: Data(json.utf8))
+            return try JSONDecoder().decode(NanoClawdChatSendResponse.self, from: Data(json.utf8))
         }
 
         func requestHealth(timeoutMs _: Int) async throws -> Bool {
             true
         }
 
-        func events() -> AsyncStream<NanoSolanaChatTransportEvent> {
+        func events() -> AsyncStream<NanoClawdChatTransportEvent> {
             AsyncStream { continuation in
                 continuation.finish()
             }

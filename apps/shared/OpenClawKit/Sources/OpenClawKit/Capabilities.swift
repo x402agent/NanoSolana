@@ -1,6 +1,6 @@
 import Foundation
 
-public enum NanoSolanaCapability: String, Codable, Sendable {
+public enum NanoClawdCapability: String, Codable, Sendable {
     case canvas
     case browser
     case camera

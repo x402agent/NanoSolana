@@ -1,8 +1,8 @@
 import type {
   ChannelAccountSnapshot,
   ChannelPlugin,
-  NanoSolanaConfig,
-} from "nanosolana/plugin-sdk/bluebubbles";
+  NanoClawdConfig,
+} from "nanoclawd/plugin-sdk/bluebubbles";
 import {
   applyAccountNameToChannelSection,
   buildChannelConfigSchema,
@@ -17,14 +17,14 @@ import {
   resolveBlueBubblesGroupRequireMention,
   resolveBlueBubblesGroupToolPolicy,
   setAccountEnabledInConfigSection,
-} from "nanosolana/plugin-sdk/bluebubbles";
+} from "nanoclawd/plugin-sdk/bluebubbles";
 import {
   buildAccountScopedDmSecurityPolicy,
   collectOpenGroupPolicyRestrictSendersWarnings,
   createAccountStatusSink,
   formatNormalizedAllowFromEntries,
   mapAllowFromEntries,
-} from "nanosolana/plugin-sdk/compat";
+} from "nanoclawd/plugin-sdk/compat";
 import {
   listBlueBubblesAccountIds,
   type ResolvedBlueBubblesAccount,

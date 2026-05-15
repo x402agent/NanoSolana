@@ -1,6 +1,6 @@
 import CoreLocation
 import Foundation
-import NanoSolanaKit
+import NanoClawdKit
 
 @MainActor
 final class MacNodeLocationService: NSObject, CLLocationManagerDelegate, LocationServiceCommon {
@@ -27,7 +27,7 @@ final class MacNodeLocationService: NSObject, CLLocationManagerDelegate, Locatio
     }
 
     func currentLocation(
-        desiredAccuracy: NanoSolanaLocationAccuracy,
+        desiredAccuracy: NanoClawdLocationAccuracy,
         maxAgeMs: Int?,
         timeoutMs: Int?) async throws -> CLLocation
     {

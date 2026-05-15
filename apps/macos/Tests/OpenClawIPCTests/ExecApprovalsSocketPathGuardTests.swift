@@ -1,13 +1,13 @@
 import Foundation
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 @Suite(.serialized)
 struct ExecApprovalsSocketPathGuardTests {
     @Test
     func `harden parent directory creates directory with0700 permissions`() throws {
         let root = FileManager().temporaryDirectory
-            .appendingPathComponent("nanosolana-socket-guard-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("nanoclawd-socket-guard-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager().removeItem(at: root) }
         let socketPath = root
             .appendingPathComponent("nested", isDirectory: true)
@@ -26,7 +26,7 @@ struct ExecApprovalsSocketPathGuardTests {
     @Test
     func `remove existing socket rejects symlink path`() throws {
         let root = FileManager().temporaryDirectory
-            .appendingPathComponent("nanosolana-socket-guard-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("nanoclawd-socket-guard-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager().removeItem(at: root) }
         try FileManager().createDirectory(at: root, withIntermediateDirectories: true)
 
@@ -52,7 +52,7 @@ struct ExecApprovalsSocketPathGuardTests {
     @Test
     func `remove existing socket rejects regular file path`() throws {
         let root = FileManager().temporaryDirectory
-            .appendingPathComponent("nanosolana-socket-guard-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("nanoclawd-socket-guard-\(UUID().uuidString)", isDirectory: true)
         defer { try? FileManager().removeItem(at: root) }
         try FileManager().createDirectory(at: root, withIntermediateDirectories: true)
 

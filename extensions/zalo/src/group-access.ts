@@ -1,9 +1,9 @@
-import type { GroupPolicy, SenderGroupAccessDecision } from "nanosolana/plugin-sdk/zalo";
+import type { GroupPolicy, SenderGroupAccessDecision } from "nanoclawd/plugin-sdk/zalo";
 import {
   evaluateSenderGroupAccess,
   isNormalizedSenderAllowed,
   resolveOpenProviderRuntimeGroupPolicy,
-} from "nanosolana/plugin-sdk/zalo";
+} from "nanoclawd/plugin-sdk/zalo";
 
 const ZALO_ALLOW_FROM_PREFIX_RE = /^(zalo|zl):/i;
 

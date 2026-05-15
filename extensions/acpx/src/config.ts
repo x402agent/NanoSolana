@@ -1,6 +1,6 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import type { NanoSolanaPluginConfigSchema } from "nanosolana/plugin-sdk/acpx";
+import type { NanoClawdPluginConfigSchema } from "nanoclawd/plugin-sdk/acpx";
 
 export const ACPX_PERMISSION_MODES = ["approve-all", "approve-reads", "deny-all"] as const;
 export type AcpxPermissionMode = (typeof ACPX_PERMISSION_MODES)[number];
@@ -245,7 +245,7 @@ function resolveConfiguredCommand(params: { configured?: string; workspaceDir?: 
   return configured;
 }
 
-export function createAcpxPluginConfigSchema(): NanoSolanaPluginConfigSchema {
+export function createAcpxPluginConfigSchema(): NanoClawdPluginConfigSchema {
   return {
     safeParse(value: unknown):
       | { success: true; data?: unknown }

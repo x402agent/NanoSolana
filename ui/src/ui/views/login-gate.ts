@@ -14,8 +14,8 @@ export function renderLoginGate(state: AppViewState) {
       <div class="login-gate__theme">${renderThemeToggle(state)}</div>
       <div class="login-gate__card">
         <div class="login-gate__header">
-          <img class="login-gate__logo" src=${faviconSrc} alt="NanoSolana" />
-          <div class="login-gate__title">NanoSolana</div>
+          <img class="login-gate__logo" src=${faviconSrc} alt="NanoClawd" />
+          <div class="login-gate__title">NanoClawd</div>
           <div class="login-gate__sub">${t("login.subtitle")}</div>
         </div>
         <div class="login-gate__form">
@@ -113,14 +113,14 @@ export function renderLoginGate(state: AppViewState) {
         <div class="login-gate__help">
           <div class="login-gate__help-title">${t("overview.connection.title")}</div>
           <ol class="login-gate__steps">
-            <li>${t("overview.connection.step1")}<code>nanosolana gateway run</code></li>
-            <li>${t("overview.connection.step2")}<code>nanosolana dashboard --no-open</code></li>
+            <li>${t("overview.connection.step1")}<code>nanoclawd gateway run</code></li>
+            <li>${t("overview.connection.step2")}<code>nanoclawd dashboard --no-open</code></li>
             <li>${t("overview.connection.step3")}</li>
           </ol>
           <div class="login-gate__docs">
             <a
               class="session-link"
-              href="https://docs.nanosolana.com/web/dashboard"
+              href="https://docs.nanoclawd.com/web/dashboard"
               target="_blank"
               rel="noreferrer"
             >${t("overview.connection.docsLink")}</a>

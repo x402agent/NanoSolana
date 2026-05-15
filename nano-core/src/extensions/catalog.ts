@@ -3,7 +3,7 @@ import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export type ScgExtensionKind = "channel" | "provider" | "tool" | "support" | "hybrid";
-export type ScgExtensionMetadataSource = "nanosolana-plugin" | "openclaw-plugin" | "package-json";
+export type ScgExtensionMetadataSource = "nanoclawd-plugin" | "openclaw-plugin" | "package-json";
 
 export interface ScgExtensionInstallMetadata {
   npmSpec?: string;
@@ -87,21 +87,21 @@ export function scanScgExtensions(
     const fileCount = walkFiles(directoryPath).length;
     totalFiles += fileCount;
 
-    const nanosolanaManifestPath = join(directoryPath, "nanosolana-plugin.json");
+    const nanoclawdManifestPath = join(directoryPath, "nanoclawd-plugin.json");
     const openClawManifestPath = join(directoryPath, "openclaw.plugin.json");
     const packagePath = join(directoryPath, "package.json");
 
-    const nanosolanaManifest = readJsonObject(nanosolanaManifestPath);
+    const nanoclawdManifest = readJsonObject(nanoclawdManifestPath);
     const openClawManifest = readJsonObject(openClawManifestPath);
     const packageJson = readJsonObject(packagePath);
-    const packageMetadata = asRecord(packageJson?.["nanosolana"]);
+    const packageMetadata = asRecord(packageJson?.["nanoclawd"]);
 
-    if (nanosolanaManifest) manifestCount += 1;
+    if (nanoclawdManifest) manifestCount += 1;
     if (openClawManifest) manifestCount += 1;
     if (packageMetadata) packageMetadataCount += 1;
 
     const extensionId = firstDefinedString(
-      getStringField(nanosolanaManifest, "id"),
+      getStringField(nanoclawdManifest, "id"),
       getStringField(openClawManifest, "id"),
       getNestedStringField(packageMetadata, ["channel", "id"]),
       getStringField(packageJson, "name"),
@@ -109,7 +109,7 @@ export function scanScgExtensions(
     ) ?? basename(directoryPath);
 
     const extensionName = firstDefinedString(
-      getStringField(nanosolanaManifest, "name"),
+      getStringField(nanoclawdManifest, "name"),
       getStringField(openClawManifest, "name"),
       getNestedStringField(packageMetadata, ["channel", "label"]),
       getNestedStringField(packageMetadata, ["channel", "selectionLabel"]),
@@ -117,7 +117,7 @@ export function scanScgExtensions(
     ) ?? humanizeExtensionId(extensionId);
 
     const extensionDescription = firstDefinedString(
-      getStringField(nanosolanaManifest, "description"),
+      getStringField(nanoclawdManifest, "description"),
       getStringField(openClawManifest, "description"),
       getStringField(packageJson, "description"),
       getNestedStringField(packageMetadata, ["channel", "blurb"]),
@@ -125,7 +125,7 @@ export function scanScgExtensions(
     ) ?? "";
 
     const channels = uniqueStrings([
-      ...getStringArrayField(nanosolanaManifest, "channels"),
+      ...getStringArrayField(nanoclawdManifest, "channels"),
       ...getStringArrayField(openClawManifest, "channels"),
       getNestedStringField(packageMetadata, ["channel", "id"]),
     ]);
@@ -136,12 +136,12 @@ export function scanScgExtensions(
     ]);
 
     const providers = uniqueStrings([
-      ...getStringArrayField(nanosolanaManifest, "providers"),
+      ...getStringArrayField(nanoclawdManifest, "providers"),
       ...getStringArrayField(openClawManifest, "providers"),
     ]);
 
     const skills = uniqueStrings([
-      ...getStringArrayField(nanosolanaManifest, "skills"),
+      ...getStringArrayField(nanoclawdManifest, "skills"),
       ...getStringArrayField(openClawManifest, "skills"),
     ]);
 
@@ -151,13 +151,13 @@ export function scanScgExtensions(
     ]);
 
     const metadataSources = uniqueMetadataSources([
-      nanosolanaManifest ? "nanosolana-plugin" : undefined,
+      nanoclawdManifest ? "nanoclawd-plugin" : undefined,
       openClawManifest ? "openclaw-plugin" : undefined,
       packageMetadata ? "package-json" : undefined,
     ]);
 
     const metadataPaths = uniqueStrings([
-      nanosolanaManifest ? toRepoRelative(repoRoot, nanosolanaManifestPath) : undefined,
+      nanoclawdManifest ? toRepoRelative(repoRoot, nanoclawdManifestPath) : undefined,
       openClawManifest ? toRepoRelative(repoRoot, openClawManifestPath) : undefined,
       packageMetadata ? toRepoRelative(repoRoot, packagePath) : undefined,
     ]);
@@ -181,7 +181,7 @@ export function scanScgExtensions(
       skills,
       entrypoints,
       fileCount,
-      hasPersistence: hasPersistenceMetadata(nanosolanaManifest, openClawManifest),
+      hasPersistence: hasPersistenceMetadata(nanoclawdManifest, openClawManifest),
       metadataSources,
       metadataPaths,
       install: install && hasInstallMetadata(install) ? install : undefined,
@@ -328,10 +328,10 @@ function determineExtensionKind(
 }
 
 function hasPersistenceMetadata(
-  nanosolanaManifest: Record<string, unknown> | null,
+  nanoclawdManifest: Record<string, unknown> | null,
   openClawManifest: Record<string, unknown> | null,
 ): boolean {
-  return asRecord(nanosolanaManifest?.["persistence"]) !== null || asRecord(openClawManifest?.["persistence"]) !== null;
+  return asRecord(nanoclawdManifest?.["persistence"]) !== null || asRecord(openClawManifest?.["persistence"]) !== null;
 }
 
 function hasInstallMetadata(install: ScgExtensionInstallMetadata): boolean {
@@ -340,7 +340,7 @@ function hasInstallMetadata(install: ScgExtensionInstallMetadata): boolean {
 
 function humanizeExtensionId(value: string): string {
   return value
-    .replace(/^@nanosolana\//, "")
+    .replace(/^@nanoclawd\//, "")
     .replace(/^@/, "")
     .split(/[\/_-]+/)
     .filter((part) => part.length > 0)

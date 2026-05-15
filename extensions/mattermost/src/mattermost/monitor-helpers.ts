@@ -1,9 +1,9 @@
 import {
   formatInboundFromLabel as formatInboundFromLabelShared,
   resolveThreadSessionKeys as resolveThreadSessionKeysShared,
-  type NanoSolanaConfig,
-} from "nanosolana/plugin-sdk/mattermost";
-export { createDedupeCache, rawDataToString } from "nanosolana/plugin-sdk/mattermost";
+  type NanoClawdConfig,
+} from "nanoclawd/plugin-sdk/mattermost";
+export { createDedupeCache, rawDataToString } from "nanoclawd/plugin-sdk/mattermost";
 
 export type ResponsePrefixContext = {
   model?: string;
@@ -39,9 +39,9 @@ function normalizeAgentId(value: string | undefined | null): string {
   );
 }
 
-type AgentEntry = NonNullable<NonNullable<NanoSolanaConfig["agents"]>["list"]>[number];
+type AgentEntry = NonNullable<NonNullable<NanoClawdConfig["agents"]>["list"]>[number];
 
-function listAgents(cfg: NanoSolanaConfig): AgentEntry[] {
+function listAgents(cfg: NanoClawdConfig): AgentEntry[] {
   const list = cfg.agents?.list;
   if (!Array.isArray(list)) {
     return [];
@@ -49,12 +49,12 @@ function listAgents(cfg: NanoSolanaConfig): AgentEntry[] {
   return list.filter((entry): entry is AgentEntry => Boolean(entry && typeof entry === "object"));
 }
 
-function resolveAgentEntry(cfg: NanoSolanaConfig, agentId: string): AgentEntry | undefined {
+function resolveAgentEntry(cfg: NanoClawdConfig, agentId: string): AgentEntry | undefined {
   const id = normalizeAgentId(agentId);
   return listAgents(cfg).find((entry) => normalizeAgentId(entry.id) === id);
 }
 
-export function resolveIdentityName(cfg: NanoSolanaConfig, agentId: string): string | undefined {
+export function resolveIdentityName(cfg: NanoClawdConfig, agentId: string): string | undefined {
   const entry = resolveAgentEntry(cfg, agentId);
   return entry?.identity?.name?.trim() || undefined;
 }

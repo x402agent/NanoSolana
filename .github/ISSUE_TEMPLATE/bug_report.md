@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a bug in NanoSolana
+about: Report a bug in NanoClawd
 title: "[BUG] "
 labels: bug
 assignees: ''
@@ -21,7 +21,7 @@ A clear description of what the bug is.
 
 **To reproduce**
 ```bash
-nanosolana <command>
+nanoclawd <command>
 ```
 
 **Expected behavior**
@@ -30,7 +30,7 @@ What should happen.
 **Environment**
 - OS: 
 - Node version: 
-- NanoSolana version: 
+- NanoClawd version: 
 - RPC provider: 
 
 **Logs**
@@ -38,4 +38,4 @@ What should happen.
 <paste relevant logs>
 ```
 
-**⚠️ Security**: If this bug involves private keys, wallet funds, or authentication bypass, **do NOT file it here**. Email security@nanosolana.com instead.
+**⚠️ Security**: If this bug involves private keys, wallet funds, or authentication bypass, **do NOT file it here**. Email security@nanoclawd.com instead.

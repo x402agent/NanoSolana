@@ -1,4 +1,4 @@
-package ai.nanosolana.app
+package ai.nanoclawd.app
 
 enum class VoiceWakeMode(val rawValue: String) {
   Off("off"),

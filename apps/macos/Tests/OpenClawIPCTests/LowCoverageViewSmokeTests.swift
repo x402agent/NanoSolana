@@ -1,8 +1,8 @@
 import AppKit
-import NanoSolanaProtocol
+import NanoClawdProtocol
 import SwiftUI
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 @Suite(.serialized)
 @MainActor

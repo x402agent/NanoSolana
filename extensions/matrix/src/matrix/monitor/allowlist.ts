@@ -3,7 +3,7 @@ import {
   normalizeStringEntries,
   resolveAllowlistCandidates,
   type AllowlistMatch,
-} from "nanosolana/plugin-sdk/matrix";
+} from "nanoclawd/plugin-sdk/matrix";
 
 function normalizeAllowList(list?: Array<string | number>) {
   return normalizeStringEntries(list);

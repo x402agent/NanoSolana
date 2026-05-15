@@ -132,7 +132,7 @@ function getAgentConfig(rawMetadata: unknown, rawFrontmatter: unknown) {
       : null
 
   const metadataNamespaces = metadataRecord
-    ? [metadataRecord.nanosolana, metadataRecord.tamagobot, metadataRecord.clawdis]
+    ? [metadataRecord.nanoclawd, metadataRecord.tamagobot, metadataRecord.clawdis]
     : []
 
   for (const namespace of metadataNamespaces) {

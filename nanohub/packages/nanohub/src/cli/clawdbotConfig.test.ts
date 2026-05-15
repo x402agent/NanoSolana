@@ -18,13 +18,13 @@ describe('resolveTamaGObotSkillRoots', () => {
     const home = join(base, 'home')
     const stateDir = join(base, 'state')
     const configPath = join(base, 'tamagobot.json')
-    const nanosolanaStateDir = join(base, 'nanosolana-state')
+    const nanoclawdStateDir = join(base, 'nanoclawd-state')
 
     process.env.HOME = home
     process.env.TAMAGOBOT_STATE_DIR = stateDir
     process.env.TAMAGOBOT_CONFIG_PATH = configPath
-    process.env.NANOSOLANA_STATE_DIR = nanosolanaStateDir
-    process.env.NANOSOLANA_CONFIG_PATH = join(nanosolanaStateDir, 'nanosolana.json')
+    process.env.NANOCLAWD_STATE_DIR = nanoclawdStateDir
+    process.env.NANOCLAWD_CONFIG_PATH = join(nanoclawdStateDir, 'nanoclawd.json')
 
     const config = `{
       // JSON5 comments + trailing commas supported
@@ -53,7 +53,7 @@ describe('resolveTamaGObotSkillRoots', () => {
 
     const expectedRoots = [
       resolve(stateDir, 'skills'),
-      resolve(nanosolanaStateDir, 'skills'),
+      resolve(nanoclawdStateDir, 'skills'),
       resolve(home, 'clawd-main', 'skills'),
       resolve(home, 'clawd-work', 'skills'),
       resolve(home, 'clawd-family', 'skills'),
@@ -63,7 +63,7 @@ describe('resolveTamaGObotSkillRoots', () => {
 
     expect(roots).toEqual(expect.arrayContaining(expectedRoots))
     expect(labels[resolve(stateDir, 'skills')]).toBe('Shared skills')
-    expect(labels[resolve(nanosolanaStateDir, 'skills')]).toBe('NanoSolana: Shared skills')
+    expect(labels[resolve(nanoclawdStateDir, 'skills')]).toBe('NanoClawd: Shared skills')
     expect(labels[resolve(home, 'clawd-main', 'skills')]).toBe('Agent: main')
     expect(labels[resolve(home, 'clawd-work', 'skills')]).toBe('Agent: Work Bot')
     expect(labels[resolve(home, 'clawd-family', 'skills')]).toBe('Agent: family')
@@ -78,13 +78,13 @@ describe('resolveTamaGObotSkillRoots', () => {
     const configPath = join(base, 'tamagobot.json')
     const workspaceMain = join(base, 'workspace-main')
     const workspaceList = join(base, 'workspace-list')
-    const nanosolanaStateDir = join(base, 'nanosolana-state')
+    const nanoclawdStateDir = join(base, 'nanoclawd-state')
 
     process.env.HOME = home
     process.env.TAMAGOBOT_STATE_DIR = stateDir
     process.env.TAMAGOBOT_CONFIG_PATH = configPath
-    process.env.NANOSOLANA_STATE_DIR = nanosolanaStateDir
-    process.env.NANOSOLANA_CONFIG_PATH = join(nanosolanaStateDir, 'nanosolana.json')
+    process.env.NANOCLAWD_STATE_DIR = nanoclawdStateDir
+    process.env.NANOCLAWD_CONFIG_PATH = join(nanoclawdStateDir, 'nanoclawd.json')
 
     const config = `{
       agents: {
@@ -106,12 +106,12 @@ describe('resolveTamaGObotSkillRoots', () => {
     const configPath = join(base, 'tamagobot.json')
     const workspaceMain = join(base, 'workspace-main')
     const workspaceWork = join(base, 'workspace-work')
-    const nanosolanaStateDir = join(base, 'nanosolana-state')
+    const nanoclawdStateDir = join(base, 'nanoclawd-state')
 
     process.env.HOME = home
     process.env.TAMAGOBOT_CONFIG_PATH = configPath
-    process.env.NANOSOLANA_STATE_DIR = nanosolanaStateDir
-    process.env.NANOSOLANA_CONFIG_PATH = join(nanosolanaStateDir, 'nanosolana.json')
+    process.env.NANOCLAWD_STATE_DIR = nanoclawdStateDir
+    process.env.NANOCLAWD_CONFIG_PATH = join(nanoclawdStateDir, 'nanoclawd.json')
 
     const config = `{
       agents: {
@@ -132,13 +132,13 @@ describe('resolveTamaGObotSkillRoots', () => {
     const home = join(base, 'home')
     const stateDir = join(base, 'custom-state')
     const configPath = join(base, 'config', 'tamagobot.json')
-    const nanosolanaStateDir = join(base, 'nanosolana-state')
+    const nanoclawdStateDir = join(base, 'nanoclawd-state')
 
     process.env.HOME = home
     process.env.TAMAGOBOT_STATE_DIR = stateDir
     process.env.TAMAGOBOT_CONFIG_PATH = configPath
-    process.env.NANOSOLANA_STATE_DIR = nanosolanaStateDir
-    process.env.NANOSOLANA_CONFIG_PATH = join(nanosolanaStateDir, 'nanosolana.json')
+    process.env.NANOCLAWD_STATE_DIR = nanoclawdStateDir
+    process.env.NANOCLAWD_CONFIG_PATH = join(nanoclawdStateDir, 'nanoclawd.json')
 
     const config = `{
       agent: { workspace: "${join(base, 'workspace-main')}" },
@@ -151,12 +151,12 @@ describe('resolveTamaGObotSkillRoots', () => {
     expect(roots).toEqual(
       expect.arrayContaining([
         resolve(stateDir, 'skills'),
-        resolve(nanosolanaStateDir, 'skills'),
+        resolve(nanoclawdStateDir, 'skills'),
         resolve(join(base, 'workspace-main'), 'skills'),
       ]),
     )
     expect(labels[resolve(stateDir, 'skills')]).toBe('Shared skills')
-    expect(labels[resolve(nanosolanaStateDir, 'skills')]).toBe('NanoSolana: Shared skills')
+    expect(labels[resolve(nanoclawdStateDir, 'skills')]).toBe('NanoClawd: Shared skills')
     expect(labels[resolve(join(base, 'workspace-main'), 'skills')]).toBe('Agent: main')
   })
 
@@ -164,18 +164,18 @@ describe('resolveTamaGObotSkillRoots', () => {
     const base = await mkdtemp(join(tmpdir(), 'clawhub-tamagobot-missing-'))
     const stateDir = join(base, 'state')
     const configPath = join(base, 'missing', 'tamagobot.json')
-    const nanosolanaStateDir = join(base, 'nanosolana-state')
+    const nanoclawdStateDir = join(base, 'nanoclawd-state')
 
     process.env.TAMAGOBOT_STATE_DIR = stateDir
     process.env.TAMAGOBOT_CONFIG_PATH = configPath
-    process.env.NANOSOLANA_STATE_DIR = nanosolanaStateDir
-    process.env.NANOSOLANA_CONFIG_PATH = join(nanosolanaStateDir, 'nanosolana.json')
+    process.env.NANOCLAWD_STATE_DIR = nanoclawdStateDir
+    process.env.NANOCLAWD_CONFIG_PATH = join(nanoclawdStateDir, 'nanoclawd.json')
 
     const { roots, labels } = await resolveTamaGObotSkillRoots()
 
-    expect(roots).toEqual([resolve(stateDir, 'skills'), resolve(nanosolanaStateDir, 'skills')])
+    expect(roots).toEqual([resolve(stateDir, 'skills'), resolve(nanoclawdStateDir, 'skills')])
     expect(labels[resolve(stateDir, 'skills')]).toBe('Shared skills')
-    expect(labels[resolve(nanosolanaStateDir, 'skills')]).toBe('NanoSolana: Shared skills')
+    expect(labels[resolve(nanoclawdStateDir, 'skills')]).toBe('NanoClawd: Shared skills')
   })
 
   it('uses $HOME over os.homedir() for tilde expansion', async () => {
@@ -183,13 +183,13 @@ describe('resolveTamaGObotSkillRoots', () => {
     const customHome = join(base, 'custom-home')
     const stateDir = join(base, 'state')
     const configPath = join(base, 'tamagobot.json')
-    const nanosolanaStateDir = join(base, 'nanosolana-state')
+    const nanoclawdStateDir = join(base, 'nanoclawd-state')
 
     process.env.HOME = customHome
     process.env.TAMAGOBOT_STATE_DIR = stateDir
     process.env.TAMAGOBOT_CONFIG_PATH = configPath
-    process.env.NANOSOLANA_STATE_DIR = nanosolanaStateDir
-    process.env.NANOSOLANA_CONFIG_PATH = join(nanosolanaStateDir, 'nanosolana.json')
+    process.env.NANOCLAWD_STATE_DIR = nanoclawdStateDir
+    process.env.NANOCLAWD_CONFIG_PATH = join(nanoclawdStateDir, 'nanoclawd.json')
 
     const config = `{
       agents: {
@@ -212,13 +212,13 @@ describe('resolveTamaGObotSkillRoots', () => {
     expect(resolveHome()).toBe(customHome)
   })
 
-  it('supports NanoSolana configuration files', async () => {
-    const base = await mkdtemp(join(tmpdir(), 'clawhub-nanosolana-'))
-    const stateDir = join(base, 'nanosolana-state')
-    const workspace = join(base, 'nanosolana-main')
-    const configPath = join(stateDir, 'nanosolana.json')
+  it('supports NanoClawd configuration files', async () => {
+    const base = await mkdtemp(join(tmpdir(), 'clawhub-nanoclawd-'))
+    const stateDir = join(base, 'nanoclawd-state')
+    const workspace = join(base, 'nanoclawd-main')
+    const configPath = join(stateDir, 'nanoclawd.json')
 
-    process.env.NANOSOLANA_STATE_DIR = stateDir
+    process.env.NANOCLAWD_STATE_DIR = stateDir
 
     await mkdir(stateDir, { recursive: true })
     const config = `{
@@ -232,7 +232,7 @@ describe('resolveTamaGObotSkillRoots', () => {
     expect(roots).toEqual(
       expect.arrayContaining([resolve(stateDir, 'skills'), resolve(workspace, 'skills')]),
     )
-    expect(labels[resolve(stateDir, 'skills')]).toBe('NanoSolana: Shared skills')
-    expect(labels[resolve(workspace, 'skills')]).toBe('NanoSolana: Agent: main')
+    expect(labels[resolve(stateDir, 'skills')]).toBe('NanoClawd: Shared skills')
+    expect(labels[resolve(workspace, 'skills')]).toBe('NanoClawd: Agent: main')
   })
 })

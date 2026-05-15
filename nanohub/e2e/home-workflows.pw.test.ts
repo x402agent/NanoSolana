@@ -7,17 +7,17 @@ test('home install switcher and browse CTA work', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' })
   await expect(page.getByRole('heading', { name: /nanohub, the skill dock/i })).toBeVisible()
   await expect(
-    page.getByText(/npx (?:@nanosolana\/nanohub|nanosolana)@latest install sonoscli/i),
+    page.getByText(/npx (?:@nanoclawd\/nanohub|nanoclawd)@latest install sonoscli/i),
   ).toBeVisible()
 
   await page.getByRole('tab', { name: 'pnpm' }).click()
   await expect(
-    page.getByText(/pnpm dlx (?:@nanosolana\/nanohub|nanosolana)@latest install sonoscli/i),
+    page.getByText(/pnpm dlx (?:@nanoclawd\/nanohub|nanoclawd)@latest install sonoscli/i),
   ).toBeVisible()
 
   await page.getByRole('tab', { name: 'bun' }).click()
   await expect(
-    page.getByText(/bunx (?:@nanosolana\/nanohub|nanosolana)@latest install sonoscli/i),
+    page.getByText(/bunx (?:@nanoclawd\/nanohub|nanoclawd)@latest install sonoscli/i),
   ).toBeVisible()
 
   const browseSkillsLink = page.getByRole('link', { name: 'Browse skills' }).first()

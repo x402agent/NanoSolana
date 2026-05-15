@@ -1,5 +1,5 @@
-import { createPluginRuntimeStore } from "nanosolana/plugin-sdk/compat";
-import type { PluginRuntime } from "nanosolana/plugin-sdk/twitch";
+import { createPluginRuntimeStore } from "nanoclawd/plugin-sdk/compat";
+import type { PluginRuntime } from "nanoclawd/plugin-sdk/twitch";
 
 const { setRuntime: setTwitchRuntime, getRuntime: getTwitchRuntime } =
   createPluginRuntimeStore<PluginRuntime>("Twitch runtime not initialized");

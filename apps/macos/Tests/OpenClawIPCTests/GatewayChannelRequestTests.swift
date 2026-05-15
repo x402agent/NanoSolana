@@ -1,7 +1,7 @@
 import Foundation
-import NanoSolanaKit
+import NanoClawdKit
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct GatewayChannelRequestTests {
     private func makeSession(requestSendDelayMs: Int) -> GatewayTestWebSocketSession {

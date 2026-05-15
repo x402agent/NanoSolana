@@ -1,5 +1,5 @@
 ---
-summary: "Wallet flows exposed by the current Solana Claude Go CLI"
+summary: "Wallet flows exposed by the current Solana Clawd Go CLI"
 title: "wallet"
 ---
 

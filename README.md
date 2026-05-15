@@ -1,25 +1,25 @@
-# NanoSolana
+# NanoClawd
 
 > One-shot Solana trading agents and autonomous daemons in TypeScript.
 
-NanoSolana is a TypeScript-first monorepo for building wallet-aware Solana agents, local operator daemons, NanoHub-powered skill installs, Pump integrations, and lightweight control surfaces.
+NanoClawd is a TypeScript-first monorepo for building wallet-aware Solana agents, local operator daemons, NanoHub-powered skill installs, Pump integrations, and lightweight control surfaces.
 
-The main runtime lives in [`nano-core/`](nano-core/) and ships to npm as `nanosolana`.
+The main runtime lives in [`nano-core/`](nano-core/) and ships to npm as `nanoclawd`.
 
 ## Latest Runtime Update
 
 The current published package line now reflects the TypeScript-first runtime work:
 
-- `nanosolana@1.0.3` is published on npm
-- `nanosolana daemon` is the explicit long-running runtime alias
-- `nanosolana bootstrap` is the explicit alias for `nanosolana go`
+- `nanoclawd@1.0.3` is published on npm
+- `nanoclawd daemon` is the explicit long-running runtime alias
+- `nanoclawd bootstrap` is the explicit alias for `nanoclawd go`
 - the npm package now bundles [`SOUL.md`](nano-core/SOUL.md), [`RESEARCH.md`](nano-core/RESEARCH.md), and [`GO_PARITY.md`](nano-core/GO_PARITY.md)
 - the AI/runtime prompt layer now resolves those packaged operator documents directly
 - the docs set now includes the research-program and system-prompt updates for the TypeScript runtime
 
 ## What This Repo Is
 n
-This repo is the TypeScript adaptation of the broader NanoSolana operator model:
+This repo is the TypeScript adaptation of the broader NanoClawd operator model:
 
 - a wallet that boots itself
 - a daemon you can leave running
@@ -35,7 +35,7 @@ That story now belongs to the TypeScript build, not just the older Go materials.
 cd nano-core
 npm install
 npm run build
-npx nanosolana demo
+npx nanoclawd demo
 ```
 
 `demo` runs the local runtime in simulation mode with wallet lifecycle, ClawVault memory, TamaGOchi state, and the OODA loop. No API keys required.
@@ -43,7 +43,7 @@ npx nanosolana demo
 Published package path:
 
 ```bash
-npx nanosolana@latest demo
+npx nanoclawd@latest demo
 ```
 
 ## One-Shot Bootstrap
@@ -53,19 +53,19 @@ cd nano-core
 cp .env.example .env
 npm install
 npm run build
-npx nanosolana go
+npx nanoclawd go
 ```
 
 Published package path:
 
 ```bash
-npx nanosolana@latest go
-npx nanosolana@latest daemon
+npx nanoclawd@latest go
+npx nanoclawd@latest daemon
 ```
 
-`nanosolana go` is the current TypeScript bootstrap path. It:
+`nanoclawd go` is the current TypeScript bootstrap path. It:
 
-- collects and encrypts secrets into `~/.nanosolana/vault.enc`
+- collects and encrypts secrets into `~/.nanoclawd/vault.enc`
 - creates or restores the local wallet
 - boots the TamaGOchi companion state
 - starts ClawVault memory
@@ -76,7 +76,7 @@ npx nanosolana@latest daemon
 If you already have state initialized, run the daemon directly:
 
 ```bash
-npx nanosolana daemon
+npx nanoclawd daemon
 ```
 
 ## Monorepo Layout
@@ -113,7 +113,7 @@ The TypeScript runtime now includes a Bitaxe client ported from the Go runtime m
 
 Current surfaces:
 
-- `NanoBot` local dashboard at `nanosolana nanobot`
+- `NanoBot` local dashboard at `nanoclawd nanobot`
 - gateway endpoints: `/api/miner` and `/api/extension/miner`
 - Chrome extension options page miner controls
 

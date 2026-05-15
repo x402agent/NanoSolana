@@ -10,8 +10,8 @@ import type {
   AcpRuntimeStatus,
   AcpRuntimeTurnInput,
   PluginLogger,
-} from "nanosolana/plugin-sdk/acpx";
-import { AcpRuntimeError } from "nanosolana/plugin-sdk/acpx";
+} from "nanoclawd/plugin-sdk/acpx";
+import { AcpRuntimeError } from "nanoclawd/plugin-sdk/acpx";
 import { toAcpMcpServers, type ResolvedAcpxPluginConfig } from "./config.js";
 import { checkAcpxVersion } from "./ensure.js";
 import {

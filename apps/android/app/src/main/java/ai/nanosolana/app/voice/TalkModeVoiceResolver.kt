@@ -1,4 +1,4 @@
-package ai.nanosolana.app.voice
+package ai.nanoclawd.app.voice
 
 import java.net.HttpURLConnection
 import java.net.URL

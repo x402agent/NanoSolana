@@ -1,10 +1,10 @@
 {
-  "name": "@nanosolana/copilot-proxy",
+  "name": "@nanoclawd/copilot-proxy",
   "version": "2026.3.11",
   "private": true,
-  "description": "NanoSolana Copilot Proxy provider plugin",
+  "description": "NanoClawd Copilot Proxy provider plugin",
   "type": "module",
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./index.ts"
     ]

@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct HealthDecodeTests {
     private let sampleJSON: String = // minimal but complete payload

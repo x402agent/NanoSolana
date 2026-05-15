@@ -1,8 +1,8 @@
 import type {
   ChannelDirectoryEntry,
-  NanoSolanaConfig,
+  NanoClawdConfig,
   RuntimeEnv,
-} from "nanosolana/plugin-sdk/mattermost";
+} from "nanoclawd/plugin-sdk/mattermost";
 import { listMattermostAccountIds, resolveMattermostAccount } from "./accounts.js";
 import {
   createMattermostClient,
@@ -13,7 +13,7 @@ import {
 } from "./client.js";
 
 export type MattermostDirectoryParams = {
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   accountId?: string | null;
   query?: string | null;
   limit?: number | null;
@@ -21,7 +21,7 @@ export type MattermostDirectoryParams = {
 };
 
 function buildClient(params: {
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   accountId?: string | null;
 }): MattermostClient | null {
   const account = resolveMattermostAccount({ cfg: params.cfg, accountId: params.accountId });

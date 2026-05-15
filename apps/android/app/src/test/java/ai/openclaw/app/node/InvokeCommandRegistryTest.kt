@@ -1,16 +1,16 @@
-package ai.nanosolana.app.node
+package ai.nanoclawd.app.node
 
-import ai.nanosolana.app.protocol.NanoSolanaCalendarCommand
-import ai.nanosolana.app.protocol.NanoSolanaCameraCommand
-import ai.nanosolana.app.protocol.NanoSolanaCapability
-import ai.nanosolana.app.protocol.NanoSolanaContactsCommand
-import ai.nanosolana.app.protocol.NanoSolanaDeviceCommand
-import ai.nanosolana.app.protocol.NanoSolanaLocationCommand
-import ai.nanosolana.app.protocol.NanoSolanaMotionCommand
-import ai.nanosolana.app.protocol.NanoSolanaNotificationsCommand
-import ai.nanosolana.app.protocol.NanoSolanaPhotosCommand
-import ai.nanosolana.app.protocol.NanoSolanaSmsCommand
-import ai.nanosolana.app.protocol.NanoSolanaSystemCommand
+import ai.nanoclawd.app.protocol.NanoClawdCalendarCommand
+import ai.nanoclawd.app.protocol.NanoClawdCameraCommand
+import ai.nanoclawd.app.protocol.NanoClawdCapability
+import ai.nanoclawd.app.protocol.NanoClawdContactsCommand
+import ai.nanoclawd.app.protocol.NanoClawdDeviceCommand
+import ai.nanoclawd.app.protocol.NanoClawdLocationCommand
+import ai.nanoclawd.app.protocol.NanoClawdMotionCommand
+import ai.nanoclawd.app.protocol.NanoClawdNotificationsCommand
+import ai.nanoclawd.app.protocol.NanoClawdPhotosCommand
+import ai.nanoclawd.app.protocol.NanoClawdSmsCommand
+import ai.nanoclawd.app.protocol.NanoClawdSystemCommand
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -18,49 +18,49 @@ import org.junit.Test
 class InvokeCommandRegistryTest {
   private val coreCapabilities =
     setOf(
-      NanoSolanaCapability.Canvas.rawValue,
-      NanoSolanaCapability.Device.rawValue,
-      NanoSolanaCapability.Notifications.rawValue,
-      NanoSolanaCapability.System.rawValue,
-      NanoSolanaCapability.Photos.rawValue,
-      NanoSolanaCapability.Contacts.rawValue,
-      NanoSolanaCapability.Calendar.rawValue,
+      NanoClawdCapability.Canvas.rawValue,
+      NanoClawdCapability.Device.rawValue,
+      NanoClawdCapability.Notifications.rawValue,
+      NanoClawdCapability.System.rawValue,
+      NanoClawdCapability.Photos.rawValue,
+      NanoClawdCapability.Contacts.rawValue,
+      NanoClawdCapability.Calendar.rawValue,
     )
 
   private val optionalCapabilities =
     setOf(
-      NanoSolanaCapability.Camera.rawValue,
-      NanoSolanaCapability.Location.rawValue,
-      NanoSolanaCapability.Sms.rawValue,
-      NanoSolanaCapability.VoiceWake.rawValue,
-      NanoSolanaCapability.Motion.rawValue,
+      NanoClawdCapability.Camera.rawValue,
+      NanoClawdCapability.Location.rawValue,
+      NanoClawdCapability.Sms.rawValue,
+      NanoClawdCapability.VoiceWake.rawValue,
+      NanoClawdCapability.Motion.rawValue,
     )
 
   private val coreCommands =
     setOf(
-      NanoSolanaDeviceCommand.Status.rawValue,
-      NanoSolanaDeviceCommand.Info.rawValue,
-      NanoSolanaDeviceCommand.Permissions.rawValue,
-      NanoSolanaDeviceCommand.Health.rawValue,
-      NanoSolanaNotificationsCommand.List.rawValue,
-      NanoSolanaNotificationsCommand.Actions.rawValue,
-      NanoSolanaSystemCommand.Notify.rawValue,
-      NanoSolanaPhotosCommand.Latest.rawValue,
-      NanoSolanaContactsCommand.Search.rawValue,
-      NanoSolanaContactsCommand.Add.rawValue,
-      NanoSolanaCalendarCommand.Events.rawValue,
-      NanoSolanaCalendarCommand.Add.rawValue,
+      NanoClawdDeviceCommand.Status.rawValue,
+      NanoClawdDeviceCommand.Info.rawValue,
+      NanoClawdDeviceCommand.Permissions.rawValue,
+      NanoClawdDeviceCommand.Health.rawValue,
+      NanoClawdNotificationsCommand.List.rawValue,
+      NanoClawdNotificationsCommand.Actions.rawValue,
+      NanoClawdSystemCommand.Notify.rawValue,
+      NanoClawdPhotosCommand.Latest.rawValue,
+      NanoClawdContactsCommand.Search.rawValue,
+      NanoClawdContactsCommand.Add.rawValue,
+      NanoClawdCalendarCommand.Events.rawValue,
+      NanoClawdCalendarCommand.Add.rawValue,
     )
 
   private val optionalCommands =
     setOf(
-      NanoSolanaCameraCommand.Snap.rawValue,
-      NanoSolanaCameraCommand.Clip.rawValue,
-      NanoSolanaCameraCommand.List.rawValue,
-      NanoSolanaLocationCommand.Get.rawValue,
-      NanoSolanaMotionCommand.Activity.rawValue,
-      NanoSolanaMotionCommand.Pedometer.rawValue,
-      NanoSolanaSmsCommand.Send.rawValue,
+      NanoClawdCameraCommand.Snap.rawValue,
+      NanoClawdCameraCommand.Clip.rawValue,
+      NanoClawdCameraCommand.List.rawValue,
+      NanoClawdLocationCommand.Get.rawValue,
+      NanoClawdMotionCommand.Activity.rawValue,
+      NanoClawdMotionCommand.Pedometer.rawValue,
+      NanoClawdSmsCommand.Send.rawValue,
     )
 
   private val debugCommands = setOf("debug.logs", "debug.ed25519")
@@ -130,8 +130,8 @@ class InvokeCommandRegistryTest {
         ),
       )
 
-    assertTrue(commands.contains(NanoSolanaMotionCommand.Activity.rawValue))
-    assertFalse(commands.contains(NanoSolanaMotionCommand.Pedometer.rawValue))
+    assertTrue(commands.contains(NanoClawdMotionCommand.Activity.rawValue))
+    assertFalse(commands.contains(NanoClawdMotionCommand.Pedometer.rawValue))
   }
 
   private fun defaultFlags(

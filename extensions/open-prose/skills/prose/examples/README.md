@@ -252,7 +252,7 @@ See examples 40-43 for full implementations.
 
 ## Running Examples
 
-Ask Claude to run any example:
+Ask Clawd to run any example:
 
 ```
 Run the code review example from the OpenProse examples

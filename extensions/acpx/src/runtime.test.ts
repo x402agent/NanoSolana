@@ -120,7 +120,7 @@ describe("AcpxRuntime", () => {
     const prompt = logs.find((entry) => entry.kind === "prompt");
     expect(ensure).toBeDefined();
     expect(prompt).toBeDefined();
-    expect(prompt?.nanosolanaShell).toBe("acp");
+    expect(prompt?.nanoclawdShell).toBe("acp");
     expect(Array.isArray(prompt?.args)).toBe(true);
     const promptArgs = (prompt?.args as string[]) ?? [];
     expect(promptArgs).toContain("--ttl");
@@ -358,13 +358,13 @@ describe("AcpxRuntime", () => {
   it("supports cancel and close using encoded runtime handle state", async () => {
     const { runtime, logPath, config } = await createMockRuntimeFixture();
     const handle = await runtime.ensureSession({
-      sessionKey: "agent:claude:acp:789",
-      agent: "claude",
+      sessionKey: "agent:clawd:acp:789",
+      agent: "clawd",
       mode: "persistent",
     });
 
     const decoded = decodeAcpxRuntimeHandleState(handle.runtimeSessionName);
-    expect(decoded?.name).toBe("agent:claude:acp:789");
+    expect(decoded?.name).toBe("agent:clawd:acp:789");
 
     const secondRuntime = new AcpxRuntime(config, { logger: NOOP_LOGGER });
 
@@ -374,8 +374,8 @@ describe("AcpxRuntime", () => {
     const logs = await readMockRuntimeLogEntries(logPath);
     const cancel = logs.find((entry) => entry.kind === "cancel");
     const close = logs.find((entry) => entry.kind === "close");
-    expect(cancel?.sessionName).toBe("agent:claude:acp:789");
-    expect(close?.sessionName).toBe("agent:claude:acp:789");
+    expect(cancel?.sessionName).toBe("agent:clawd:acp:789");
+    expect(close?.sessionName).toBe("agent:clawd:acp:789");
   });
 
   it("exposes control capabilities and runs set-mode/set/status commands", async () => {
@@ -497,7 +497,7 @@ describe("AcpxRuntime", () => {
 
   it("does not mark backend unhealthy when a per-session cwd is missing", async () => {
     const { runtime } = await createMockRuntimeFixture();
-    const missingCwd = path.join(os.tmpdir(), "nanosolana-acpx-runtime-test-missing-cwd");
+    const missingCwd = path.join(os.tmpdir(), "nanoclawd-acpx-runtime-test-missing-cwd");
 
     await runtime.probeAvailability();
     expect(runtime.isHealthy()).toBe(true);
@@ -566,13 +566,13 @@ describe("AcpxRuntime", () => {
     try {
       const { runtime, logPath } = await createMockRuntimeFixture();
       const handle = await runtime.ensureSession({
-        sessionKey: "agent:claude:acp:fallback-test",
-        agent: "claude",
+        sessionKey: "agent:clawd:acp:fallback-test",
+        agent: "clawd",
         mode: "persistent",
       });
       expect(handle.backend).toBe("acpx");
-      expect(handle.acpxRecordId).toBe("rec-agent:claude:acp:fallback-test");
-      expect(handle.agentSessionId).toBe("inner-agent:claude:acp:fallback-test");
+      expect(handle.acpxRecordId).toBe("rec-agent:clawd:acp:fallback-test");
+      expect(handle.agentSessionId).toBe("inner-agent:clawd:acp:fallback-test");
 
       const logs = await readMockRuntimeLogEntries(logPath);
       expect(logs.some((entry) => entry.kind === "ensure")).toBe(true);
@@ -590,8 +590,8 @@ describe("AcpxRuntime", () => {
 
       await expect(
         runtime.ensureSession({
-          sessionKey: "agent:claude:acp:fallback-fail",
-          agent: "claude",
+          sessionKey: "agent:clawd:acp:fallback-fail",
+          agent: "clawd",
           mode: "persistent",
         }),
       ).rejects.toMatchObject({

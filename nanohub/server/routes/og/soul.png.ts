@@ -36,7 +36,7 @@ function getApiBase(eventHost: string | null) {
   if (site) return site
 
   if (eventHost) return `https://${eventHost}`
-  return 'https://docs.nanosolana.com'
+  return 'https://docs.nanoclawd.com'
 }
 
 async function ensureWasm() {

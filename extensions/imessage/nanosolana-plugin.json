@@ -1,7 +1,7 @@
 {
   "id": "imessage",
   "name": "iMessage",
-  "description": "NanoSolana iMessage channel — trading alerts and portfolio updates via Apple Messages",
+  "description": "NanoClawd iMessage channel — trading alerts and portfolio updates via Apple Messages",
   "channels": ["imessage"],
   "configSchema": {
     "type": "object",

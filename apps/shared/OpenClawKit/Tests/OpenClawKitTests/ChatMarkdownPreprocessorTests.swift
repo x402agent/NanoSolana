@@ -1,5 +1,5 @@
 import Testing
-@testable import NanoSolanaChatUI
+@testable import NanoClawdChatUI
 
 @Suite("ChatMarkdownPreprocessor")
 struct ChatMarkdownPreprocessorTests {
@@ -57,7 +57,7 @@ struct ChatMarkdownPreprocessorTests {
         ```json
         {
           "message_id": "123",
-          "sender": "nanosolana-ios"
+          "sender": "nanoclawd-ios"
         }
         ```
 

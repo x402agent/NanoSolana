@@ -2,7 +2,7 @@ import { randomBytes, randomUUID } from "node:crypto";
 import {
   generatePkceVerifierChallenge,
   toFormUrlEncoded,
-} from "nanosolana/plugin-sdk/minimax-portal-auth";
+} from "nanoclawd/plugin-sdk/minimax-portal-auth";
 
 export type MiniMaxRegion = "cn" | "global";
 

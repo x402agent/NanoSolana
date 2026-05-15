@@ -90,7 +90,7 @@ import type { NostrProfileFormState } from "./views/channels.nostr-profile-form.
 
 declare global {
   interface Window {
-    __NANOSOLANA_CONTROL_UI_BASE_PATH__?: string;
+    __NANOCLAWD_CONTROL_UI_BASE_PATH__?: string;
   }
 }
 
@@ -109,8 +109,8 @@ function resolveOnboardingMode(): boolean {
   return normalized === "1" || normalized === "true" || normalized === "yes" || normalized === "on";
 }
 
-@customElement("nanosolana-app")
-export class NanoSolanaApp extends LitElement {
+@customElement("nanoclawd-app")
+export class NanoClawdApp extends LitElement {
   private i18nController = new I18nController(this);
   clientInstanceId = generateUUID();
   connectGeneration = 0;

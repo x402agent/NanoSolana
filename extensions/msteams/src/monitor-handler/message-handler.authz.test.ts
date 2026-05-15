@@ -1,11 +1,11 @@
-import type { NanoSolanaConfig, PluginRuntime, RuntimeEnv } from "nanosolana/plugin-sdk/msteams";
+import type { NanoClawdConfig, PluginRuntime, RuntimeEnv } from "nanoclawd/plugin-sdk/msteams";
 import { describe, expect, it, vi } from "vitest";
 import type { MSTeamsMessageHandlerDeps } from "../monitor-handler.js";
 import { setMSTeamsRuntime } from "../runtime.js";
 import { createMSTeamsMessageHandler } from "./message-handler.js";
 
 describe("msteams monitor handler authz", () => {
-  function createDeps(cfg: NanoSolanaConfig) {
+  function createDeps(cfg: NanoClawdConfig) {
     const readAllowFromStore = vi.fn(async () => ["attacker-aad"]);
     setMSTeamsRuntime({
       logging: { shouldLogVerbose: () => false },
@@ -69,7 +69,7 @@ describe("msteams monitor handler authz", () => {
           groupAllowFrom: [],
         },
       },
-    } as NanoSolanaConfig);
+    } as NanoClawdConfig);
 
     const handler = createMSTeamsMessageHandler(deps);
     await handler({
@@ -120,7 +120,7 @@ describe("msteams monitor handler authz", () => {
           },
         },
       },
-    } as NanoSolanaConfig);
+    } as NanoClawdConfig);
 
     const handler = createMSTeamsMessageHandler(deps);
     await handler({

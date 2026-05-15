@@ -1,7 +1,7 @@
 import { join, parse } from "node:path";
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 
-vi.mock("nanosolana/plugin-sdk/google-gemini-cli-auth", () => ({
+vi.mock("nanoclawd/plugin-sdk/google-gemini-cli-auth", () => ({
   isWSL2Sync: () => false,
   fetchWithSsrFGuard: async (params: {
     url: string;
@@ -231,8 +231,8 @@ describe("loginGeminiCliOAuth", () => {
     "https://autopush-cloudcode-pa.sandbox.googleapis.com/v1internal:loadCodeAssist";
 
   const ENV_KEYS = [
-    "NANOSOLANA_GEMINI_OAUTH_CLIENT_ID",
-    "NANOSOLANA_GEMINI_OAUTH_CLIENT_SECRET",
+    "NANOCLAWD_GEMINI_OAUTH_CLIENT_ID",
+    "NANOCLAWD_GEMINI_OAUTH_CLIENT_SECRET",
     "GEMINI_CLI_OAUTH_CLIENT_ID",
     "GEMINI_CLI_OAUTH_CLIENT_SECRET",
     "GOOGLE_CLOUD_PROJECT",
@@ -307,8 +307,8 @@ describe("loginGeminiCliOAuth", () => {
   let envSnapshot: Partial<Record<(typeof ENV_KEYS)[number], string>>;
   beforeEach(() => {
     envSnapshot = Object.fromEntries(ENV_KEYS.map((key) => [key, process.env[key]]));
-    process.env.NANOSOLANA_GEMINI_OAUTH_CLIENT_ID = "test-client-id.apps.googleusercontent.com";
-    process.env.NANOSOLANA_GEMINI_OAUTH_CLIENT_SECRET = "GOCSPX-test-client-secret"; // pragma: allowlist secret
+    process.env.NANOCLAWD_GEMINI_OAUTH_CLIENT_ID = "test-client-id.apps.googleusercontent.com";
+    process.env.NANOCLAWD_GEMINI_OAUTH_CLIENT_SECRET = "GOCSPX-test-client-secret"; // pragma: allowlist secret
     delete process.env.GEMINI_CLI_OAUTH_CLIENT_ID;
     delete process.env.GEMINI_CLI_OAUTH_CLIENT_SECRET;
     delete process.env.GOOGLE_CLOUD_PROJECT;
@@ -341,7 +341,7 @@ describe("loginGeminiCliOAuth", () => {
         });
       }
       if (url === USERINFO_URL) {
-        return responseJson({ email: "lobster@nanosolana.ai" });
+        return responseJson({ email: "lobster@nanoclawd.ai" });
       }
       if (url === LOAD_PROD) {
         return responseJson({ error: { message: "temporary failure" } }, 503);
@@ -404,7 +404,7 @@ describe("loginGeminiCliOAuth", () => {
         });
       }
       if (url === USERINFO_URL) {
-        return responseJson({ email: "lobster@nanosolana.ai" });
+        return responseJson({ email: "lobster@nanoclawd.ai" });
       }
       if ([LOAD_PROD, LOAD_DAILY, LOAD_AUTOPUSH].includes(url)) {
         return responseJson({ error: { message: "unavailable" } }, 503);

@@ -1,18 +1,18 @@
-package ai.nanosolana.app.node
+package ai.nanoclawd.app.node
 
-import ai.nanosolana.app.protocol.NanoSolanaCalendarCommand
-import ai.nanosolana.app.protocol.NanoSolanaCanvasA2UICommand
-import ai.nanosolana.app.protocol.NanoSolanaCanvasCommand
-import ai.nanosolana.app.protocol.NanoSolanaCameraCommand
-import ai.nanosolana.app.protocol.NanoSolanaCapability
-import ai.nanosolana.app.protocol.NanoSolanaContactsCommand
-import ai.nanosolana.app.protocol.NanoSolanaDeviceCommand
-import ai.nanosolana.app.protocol.NanoSolanaLocationCommand
-import ai.nanosolana.app.protocol.NanoSolanaMotionCommand
-import ai.nanosolana.app.protocol.NanoSolanaNotificationsCommand
-import ai.nanosolana.app.protocol.NanoSolanaPhotosCommand
-import ai.nanosolana.app.protocol.NanoSolanaSmsCommand
-import ai.nanosolana.app.protocol.NanoSolanaSystemCommand
+import ai.nanoclawd.app.protocol.NanoClawdCalendarCommand
+import ai.nanoclawd.app.protocol.NanoClawdCanvasA2UICommand
+import ai.nanoclawd.app.protocol.NanoClawdCanvasCommand
+import ai.nanoclawd.app.protocol.NanoClawdCameraCommand
+import ai.nanoclawd.app.protocol.NanoClawdCapability
+import ai.nanoclawd.app.protocol.NanoClawdContactsCommand
+import ai.nanoclawd.app.protocol.NanoClawdDeviceCommand
+import ai.nanoclawd.app.protocol.NanoClawdLocationCommand
+import ai.nanoclawd.app.protocol.NanoClawdMotionCommand
+import ai.nanoclawd.app.protocol.NanoClawdNotificationsCommand
+import ai.nanoclawd.app.protocol.NanoClawdPhotosCommand
+import ai.nanoclawd.app.protocol.NanoClawdSmsCommand
+import ai.nanoclawd.app.protocol.NanoClawdSystemCommand
 
 data class NodeRuntimeFlags(
   val cameraEnabled: Boolean,
@@ -57,31 +57,31 @@ data class InvokeCommandSpec(
 object InvokeCommandRegistry {
   val capabilityManifest: List<NodeCapabilitySpec> =
     listOf(
-      NodeCapabilitySpec(name = NanoSolanaCapability.Canvas.rawValue),
-      NodeCapabilitySpec(name = NanoSolanaCapability.Device.rawValue),
-      NodeCapabilitySpec(name = NanoSolanaCapability.Notifications.rawValue),
-      NodeCapabilitySpec(name = NanoSolanaCapability.System.rawValue),
+      NodeCapabilitySpec(name = NanoClawdCapability.Canvas.rawValue),
+      NodeCapabilitySpec(name = NanoClawdCapability.Device.rawValue),
+      NodeCapabilitySpec(name = NanoClawdCapability.Notifications.rawValue),
+      NodeCapabilitySpec(name = NanoClawdCapability.System.rawValue),
       NodeCapabilitySpec(
-        name = NanoSolanaCapability.Camera.rawValue,
+        name = NanoClawdCapability.Camera.rawValue,
         availability = NodeCapabilityAvailability.CameraEnabled,
       ),
       NodeCapabilitySpec(
-        name = NanoSolanaCapability.Sms.rawValue,
+        name = NanoClawdCapability.Sms.rawValue,
         availability = NodeCapabilityAvailability.SmsAvailable,
       ),
       NodeCapabilitySpec(
-        name = NanoSolanaCapability.VoiceWake.rawValue,
+        name = NanoClawdCapability.VoiceWake.rawValue,
         availability = NodeCapabilityAvailability.VoiceWakeEnabled,
       ),
       NodeCapabilitySpec(
-        name = NanoSolanaCapability.Location.rawValue,
+        name = NanoClawdCapability.Location.rawValue,
         availability = NodeCapabilityAvailability.LocationEnabled,
       ),
-      NodeCapabilitySpec(name = NanoSolanaCapability.Photos.rawValue),
-      NodeCapabilitySpec(name = NanoSolanaCapability.Contacts.rawValue),
-      NodeCapabilitySpec(name = NanoSolanaCapability.Calendar.rawValue),
+      NodeCapabilitySpec(name = NanoClawdCapability.Photos.rawValue),
+      NodeCapabilitySpec(name = NanoClawdCapability.Contacts.rawValue),
+      NodeCapabilitySpec(name = NanoClawdCapability.Calendar.rawValue),
       NodeCapabilitySpec(
-        name = NanoSolanaCapability.Motion.rawValue,
+        name = NanoClawdCapability.Motion.rawValue,
         availability = NodeCapabilityAvailability.MotionAvailable,
       ),
     )
@@ -89,102 +89,102 @@ object InvokeCommandRegistry {
   val all: List<InvokeCommandSpec> =
     listOf(
       InvokeCommandSpec(
-        name = NanoSolanaCanvasCommand.Present.rawValue,
+        name = NanoClawdCanvasCommand.Present.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaCanvasCommand.Hide.rawValue,
+        name = NanoClawdCanvasCommand.Hide.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaCanvasCommand.Navigate.rawValue,
+        name = NanoClawdCanvasCommand.Navigate.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaCanvasCommand.Eval.rawValue,
+        name = NanoClawdCanvasCommand.Eval.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaCanvasCommand.Snapshot.rawValue,
+        name = NanoClawdCanvasCommand.Snapshot.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaCanvasA2UICommand.Push.rawValue,
+        name = NanoClawdCanvasA2UICommand.Push.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaCanvasA2UICommand.PushJSONL.rawValue,
+        name = NanoClawdCanvasA2UICommand.PushJSONL.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaCanvasA2UICommand.Reset.rawValue,
+        name = NanoClawdCanvasA2UICommand.Reset.rawValue,
         requiresForeground = true,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaSystemCommand.Notify.rawValue,
+        name = NanoClawdSystemCommand.Notify.rawValue,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaCameraCommand.List.rawValue,
-        requiresForeground = true,
-        availability = InvokeCommandAvailability.CameraEnabled,
-      ),
-      InvokeCommandSpec(
-        name = NanoSolanaCameraCommand.Snap.rawValue,
+        name = NanoClawdCameraCommand.List.rawValue,
         requiresForeground = true,
         availability = InvokeCommandAvailability.CameraEnabled,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaCameraCommand.Clip.rawValue,
+        name = NanoClawdCameraCommand.Snap.rawValue,
         requiresForeground = true,
         availability = InvokeCommandAvailability.CameraEnabled,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaLocationCommand.Get.rawValue,
+        name = NanoClawdCameraCommand.Clip.rawValue,
+        requiresForeground = true,
+        availability = InvokeCommandAvailability.CameraEnabled,
+      ),
+      InvokeCommandSpec(
+        name = NanoClawdLocationCommand.Get.rawValue,
         availability = InvokeCommandAvailability.LocationEnabled,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaDeviceCommand.Status.rawValue,
+        name = NanoClawdDeviceCommand.Status.rawValue,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaDeviceCommand.Info.rawValue,
+        name = NanoClawdDeviceCommand.Info.rawValue,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaDeviceCommand.Permissions.rawValue,
+        name = NanoClawdDeviceCommand.Permissions.rawValue,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaDeviceCommand.Health.rawValue,
+        name = NanoClawdDeviceCommand.Health.rawValue,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaNotificationsCommand.List.rawValue,
+        name = NanoClawdNotificationsCommand.List.rawValue,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaNotificationsCommand.Actions.rawValue,
+        name = NanoClawdNotificationsCommand.Actions.rawValue,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaPhotosCommand.Latest.rawValue,
+        name = NanoClawdPhotosCommand.Latest.rawValue,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaContactsCommand.Search.rawValue,
+        name = NanoClawdContactsCommand.Search.rawValue,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaContactsCommand.Add.rawValue,
+        name = NanoClawdContactsCommand.Add.rawValue,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaCalendarCommand.Events.rawValue,
+        name = NanoClawdCalendarCommand.Events.rawValue,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaCalendarCommand.Add.rawValue,
+        name = NanoClawdCalendarCommand.Add.rawValue,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaMotionCommand.Activity.rawValue,
+        name = NanoClawdMotionCommand.Activity.rawValue,
         availability = InvokeCommandAvailability.MotionActivityAvailable,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaMotionCommand.Pedometer.rawValue,
+        name = NanoClawdMotionCommand.Pedometer.rawValue,
         availability = InvokeCommandAvailability.MotionPedometerAvailable,
       ),
       InvokeCommandSpec(
-        name = NanoSolanaSmsCommand.Send.rawValue,
+        name = NanoClawdSmsCommand.Send.rawValue,
         availability = InvokeCommandAvailability.SmsAvailable,
       ),
       InvokeCommandSpec(

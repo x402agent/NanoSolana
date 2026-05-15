@@ -1,4 +1,4 @@
-package ai.nanosolana.app.ui
+package ai.nanoclawd.app.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

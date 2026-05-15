@@ -1,5 +1,5 @@
 import Foundation
-import NanoSolanaIPC
+import NanoClawdIPC
 import OSLog
 
 /// Lightweight SemVer helper (major.minor.patch only) for gateway compatibility checks.
@@ -70,15 +70,15 @@ struct GatewayCommandResolution {
 }
 
 enum GatewayEnvironment {
-    private static let logger = Logger(subsystem: "ai.nanosolana", category: "gateway.env")
+    private static let logger = Logger(subsystem: "ai.nanoclawd", category: "gateway.env")
     private static let supportedBindModes: Set<String> = ["loopback", "tailnet", "lan", "auto"]
 
     static func gatewayPort() -> Int {
-        if let raw = ProcessInfo.processInfo.environment["NANOSOLANA_GATEWAY_PORT"] {
+        if let raw = ProcessInfo.processInfo.environment["NANOCLAWD_GATEWAY_PORT"] {
             let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
             if let parsed = Int(trimmed), parsed > 0 { return parsed }
         }
-        if let configPort = NanoSolanaConfigFile.gatewayPort(), configPort > 0 {
+        if let configPort = NanoClawdConfigFile.gatewayPort(), configPort > 0 {
             return configPort
         }
         let stored = UserDefaults.standard.integer(forKey: "gatewayPort")
@@ -125,7 +125,7 @@ enum GatewayEnvironment {
                 requiredGateway: expectedString,
                 message: RuntimeLocator.describeFailure(err))
         case let .success(runtime):
-            let gatewayBin = CommandResolver.nanosolanaExecutable()
+            let gatewayBin = CommandResolver.nanoclawdExecutable()
 
             if gatewayBin == nil, projectEntrypoint == nil {
                 return GatewayEnvironmentStatus(
@@ -133,7 +133,7 @@ enum GatewayEnvironment {
                     nodeVersion: runtime.version.description,
                     gatewayVersion: nil,
                     requiredGateway: expectedString,
-                    message: "nanosolana CLI not found in PATH; install the CLI.")
+                    message: "nanoclawd CLI not found in PATH; install the CLI.")
             }
 
             let installed = gatewayBin.flatMap { self.readGatewayVersion(binary: $0) }
@@ -183,7 +183,7 @@ enum GatewayEnvironment {
         let projectRoot = CommandResolver.projectRoot()
         let projectEntrypoint = CommandResolver.gatewayEntrypoint(in: projectRoot)
         let status = self.check()
-        let gatewayBin = CommandResolver.nanosolanaExecutable()
+        let gatewayBin = CommandResolver.nanoclawdExecutable()
         let runtime = RuntimeLocator.resolve(searchPaths: CommandResolver.preferredPaths())
 
         guard case .ok = status.kind else {
@@ -212,14 +212,14 @@ enum GatewayEnvironment {
         if CommandResolver.connectionModeIsRemote() {
             return nil
         }
-        if let env = ProcessInfo.processInfo.environment["NANOSOLANA_GATEWAY_BIND"] {
+        if let env = ProcessInfo.processInfo.environment["NANOCLAWD_GATEWAY_BIND"] {
             let trimmed = env.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
             if self.supportedBindModes.contains(trimmed) {
                 return trimmed
             }
         }
 
-        let root = NanoSolanaConfigFile.loadDict()
+        let root = NanoClawdConfigFile.loadDict()
         if let gateway = root["gateway"] as? [String: Any],
            let bind = gateway["bind"] as? String
         {
@@ -249,16 +249,16 @@ enum GatewayEnvironment {
         let bun = CommandResolver.findExecutable(named: "bun")
         let (label, cmd): (String, [String]) =
             if let npm {
-                ("npm", [npm, "install", "-g", "nanosolana@\(target)"])
+                ("npm", [npm, "install", "-g", "nanoclawd@\(target)"])
             } else if let pnpm {
-                ("pnpm", [pnpm, "add", "-g", "nanosolana@\(target)"])
+                ("pnpm", [pnpm, "add", "-g", "nanoclawd@\(target)"])
             } else if let bun {
-                ("bun", [bun, "add", "-g", "nanosolana@\(target)"])
+                ("bun", [bun, "add", "-g", "nanoclawd@\(target)"])
             } else {
-                ("npm", ["npm", "install", "-g", "nanosolana@\(target)"])
+                ("npm", ["npm", "install", "-g", "nanoclawd@\(target)"])
             }
 
-        statusHandler("Installing nanosolana@\(target) via \(label)…")
+        statusHandler("Installing nanoclawd@\(target) via \(label)…")
 
         func summarize(_ text: String) -> String? {
             let lines = text
@@ -272,7 +272,7 @@ enum GatewayEnvironment {
 
         let response = await ShellExecutor.runDetailed(command: cmd, cwd: nil, env: ["PATH": preferred], timeout: 300)
         if response.success {
-            statusHandler("Installed nanosolana@\(target)")
+            statusHandler("Installed nanoclawd@\(target)")
         } else {
             if response.timedOut {
                 statusHandler("Install failed: timed out. Check your internet connection and try again.")

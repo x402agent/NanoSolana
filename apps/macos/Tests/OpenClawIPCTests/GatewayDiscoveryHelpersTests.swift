@@ -1,7 +1,7 @@
 import Foundation
-import NanoSolanaDiscovery
+import NanoClawdDiscovery
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct GatewayDiscoveryHelpersTests {
     private func makeGateway(
@@ -20,7 +20,7 @@ struct GatewayDiscoveryHelpersTests {
             tailnetDns: tailnetDns,
             sshPort: sshPort,
             gatewayPort: gatewayPort,
-            cliPath: "/tmp/nanosolana",
+            cliPath: "/tmp/nanoclawd",
             stableID: UUID().uuidString,
             debugID: UUID().uuidString,
             isLocal: false)

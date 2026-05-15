@@ -1,4 +1,4 @@
-package ai.nanosolana.app.node
+package ai.nanoclawd.app.node
 
 import android.content.Context
 import kotlinx.serialization.json.Json

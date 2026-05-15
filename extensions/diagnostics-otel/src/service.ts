@@ -11,15 +11,15 @@ import { ParentBasedSampler, TraceIdRatioBasedSampler } from "@opentelemetry/sdk
 import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
 import type {
   DiagnosticEventPayload,
-  NanoSolanaPluginService,
-} from "nanosolana/plugin-sdk/diagnostics-otel";
+  NanoClawdPluginService,
+} from "nanoclawd/plugin-sdk/diagnostics-otel";
 import {
   onDiagnosticEvent,
   redactSensitiveText,
   registerLogTransport,
-} from "nanosolana/plugin-sdk/diagnostics-otel";
+} from "nanoclawd/plugin-sdk/diagnostics-otel";
 
-const DEFAULT_SERVICE_NAME = "nanosolana";
+const DEFAULT_SERVICE_NAME = "nanoclawd";
 
 function normalizeEndpoint(endpoint?: string): string | undefined {
   const trimmed = endpoint?.trim();
@@ -69,7 +69,7 @@ function redactOtelAttributes(attributes: Record<string, string | number | boole
   return redactedAttributes;
 }
 
-export function createDiagnosticsOtelService(): NanoSolanaPluginService {
+export function createDiagnosticsOtelService(): NanoClawdPluginService {
   let sdk: NodeSDK | null = null;
   let logProvider: LoggerProvider | null = null;
   let stopLogTransport: (() => void) | null = null;
@@ -164,78 +164,78 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
         FATAL: 21 as SeverityNumber,
       };
 
-      const meter = metrics.getMeter("nanosolana");
-      const tracer = trace.getTracer("nanosolana");
+      const meter = metrics.getMeter("nanoclawd");
+      const tracer = trace.getTracer("nanoclawd");
 
-      const tokensCounter = meter.createCounter("nanosolana.tokens", {
+      const tokensCounter = meter.createCounter("nanoclawd.tokens", {
         unit: "1",
         description: "Token usage by type",
       });
-      const costCounter = meter.createCounter("nanosolana.cost.usd", {
+      const costCounter = meter.createCounter("nanoclawd.cost.usd", {
         unit: "1",
         description: "Estimated model cost (USD)",
       });
-      const durationHistogram = meter.createHistogram("nanosolana.run.duration_ms", {
+      const durationHistogram = meter.createHistogram("nanoclawd.run.duration_ms", {
         unit: "ms",
         description: "Agent run duration",
       });
-      const contextHistogram = meter.createHistogram("nanosolana.context.tokens", {
+      const contextHistogram = meter.createHistogram("nanoclawd.context.tokens", {
         unit: "1",
         description: "Context window size and usage",
       });
-      const webhookReceivedCounter = meter.createCounter("nanosolana.webhook.received", {
+      const webhookReceivedCounter = meter.createCounter("nanoclawd.webhook.received", {
         unit: "1",
         description: "Webhook requests received",
       });
-      const webhookErrorCounter = meter.createCounter("nanosolana.webhook.error", {
+      const webhookErrorCounter = meter.createCounter("nanoclawd.webhook.error", {
         unit: "1",
         description: "Webhook processing errors",
       });
-      const webhookDurationHistogram = meter.createHistogram("nanosolana.webhook.duration_ms", {
+      const webhookDurationHistogram = meter.createHistogram("nanoclawd.webhook.duration_ms", {
         unit: "ms",
         description: "Webhook processing duration",
       });
-      const messageQueuedCounter = meter.createCounter("nanosolana.message.queued", {
+      const messageQueuedCounter = meter.createCounter("nanoclawd.message.queued", {
         unit: "1",
         description: "Messages queued for processing",
       });
-      const messageProcessedCounter = meter.createCounter("nanosolana.message.processed", {
+      const messageProcessedCounter = meter.createCounter("nanoclawd.message.processed", {
         unit: "1",
         description: "Messages processed by outcome",
       });
-      const messageDurationHistogram = meter.createHistogram("nanosolana.message.duration_ms", {
+      const messageDurationHistogram = meter.createHistogram("nanoclawd.message.duration_ms", {
         unit: "ms",
         description: "Message processing duration",
       });
-      const queueDepthHistogram = meter.createHistogram("nanosolana.queue.depth", {
+      const queueDepthHistogram = meter.createHistogram("nanoclawd.queue.depth", {
         unit: "1",
         description: "Queue depth on enqueue/dequeue",
       });
-      const queueWaitHistogram = meter.createHistogram("nanosolana.queue.wait_ms", {
+      const queueWaitHistogram = meter.createHistogram("nanoclawd.queue.wait_ms", {
         unit: "ms",
         description: "Queue wait time before execution",
       });
-      const laneEnqueueCounter = meter.createCounter("nanosolana.queue.lane.enqueue", {
+      const laneEnqueueCounter = meter.createCounter("nanoclawd.queue.lane.enqueue", {
         unit: "1",
         description: "Command queue lane enqueue events",
       });
-      const laneDequeueCounter = meter.createCounter("nanosolana.queue.lane.dequeue", {
+      const laneDequeueCounter = meter.createCounter("nanoclawd.queue.lane.dequeue", {
         unit: "1",
         description: "Command queue lane dequeue events",
       });
-      const sessionStateCounter = meter.createCounter("nanosolana.session.state", {
+      const sessionStateCounter = meter.createCounter("nanoclawd.session.state", {
         unit: "1",
         description: "Session state transitions",
       });
-      const sessionStuckCounter = meter.createCounter("nanosolana.session.stuck", {
+      const sessionStuckCounter = meter.createCounter("nanoclawd.session.stuck", {
         unit: "1",
         description: "Sessions stuck in processing",
       });
-      const sessionStuckAgeHistogram = meter.createHistogram("nanosolana.session.stuck_age_ms", {
+      const sessionStuckAgeHistogram = meter.createHistogram("nanoclawd.session.stuck_age_ms", {
         unit: "ms",
         description: "Age of stuck sessions",
       });
-      const runAttemptCounter = meter.createCounter("nanosolana.run.attempt", {
+      const runAttemptCounter = meter.createCounter("nanoclawd.run.attempt", {
         unit: "1",
         description: "Run attempts",
       });
@@ -255,7 +255,7 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
           resource,
           processors: [logProcessor],
         });
-        const otelLogger = logProvider.getLogger("nanosolana");
+        const otelLogger = logProvider.getLogger("nanoclawd");
 
         stopLogTransport = registerLogTransport((logObj) => {
           try {
@@ -314,13 +314,13 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
             }
 
             const attributes: Record<string, string | number | boolean> = {
-              "nanosolana.log.level": logLevelName,
+              "nanoclawd.log.level": logLevelName,
             };
             if (meta?.name) {
-              attributes["nanosolana.logger"] = meta.name;
+              attributes["nanoclawd.logger"] = meta.name;
             }
             if (meta?.parentNames?.length) {
-              attributes["nanosolana.logger.parents"] = meta.parentNames.join(".");
+              attributes["nanoclawd.logger.parents"] = meta.parentNames.join(".");
             }
             if (bindings) {
               for (const [key, value] of Object.entries(bindings)) {
@@ -329,14 +329,14 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
                   typeof value === "number" ||
                   typeof value === "boolean"
                 ) {
-                  attributes[`nanosolana.${key}`] = value;
+                  attributes[`nanoclawd.${key}`] = value;
                 } else if (value != null) {
-                  attributes[`nanosolana.${key}`] = safeStringify(value);
+                  attributes[`nanoclawd.${key}`] = safeStringify(value);
                 }
               }
             }
             if (numericArgs.length > 0) {
-              attributes["nanosolana.log.args"] = safeStringify(numericArgs);
+              attributes["nanoclawd.log.args"] = safeStringify(numericArgs);
             }
             if (meta?.path?.filePath) {
               attributes["code.filepath"] = meta.path.filePath;
@@ -348,7 +348,7 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
               attributes["code.function"] = meta.path.method;
             }
             if (meta?.path?.filePathWithLine) {
-              attributes["nanosolana.code.location"] = meta.path.filePathWithLine;
+              attributes["nanoclawd.code.location"] = meta.path.filePathWithLine;
             }
 
             // OTLP can leave the host boundary, so redact string fields before export.
@@ -381,29 +381,29 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
 
       const recordModelUsage = (evt: Extract<DiagnosticEventPayload, { type: "model.usage" }>) => {
         const attrs = {
-          "nanosolana.channel": evt.channel ?? "unknown",
-          "nanosolana.provider": evt.provider ?? "unknown",
-          "nanosolana.model": evt.model ?? "unknown",
+          "nanoclawd.channel": evt.channel ?? "unknown",
+          "nanoclawd.provider": evt.provider ?? "unknown",
+          "nanoclawd.model": evt.model ?? "unknown",
         };
 
         const usage = evt.usage;
         if (usage.input) {
-          tokensCounter.add(usage.input, { ...attrs, "nanosolana.token": "input" });
+          tokensCounter.add(usage.input, { ...attrs, "nanoclawd.token": "input" });
         }
         if (usage.output) {
-          tokensCounter.add(usage.output, { ...attrs, "nanosolana.token": "output" });
+          tokensCounter.add(usage.output, { ...attrs, "nanoclawd.token": "output" });
         }
         if (usage.cacheRead) {
-          tokensCounter.add(usage.cacheRead, { ...attrs, "nanosolana.token": "cache_read" });
+          tokensCounter.add(usage.cacheRead, { ...attrs, "nanoclawd.token": "cache_read" });
         }
         if (usage.cacheWrite) {
-          tokensCounter.add(usage.cacheWrite, { ...attrs, "nanosolana.token": "cache_write" });
+          tokensCounter.add(usage.cacheWrite, { ...attrs, "nanoclawd.token": "cache_write" });
         }
         if (usage.promptTokens) {
-          tokensCounter.add(usage.promptTokens, { ...attrs, "nanosolana.token": "prompt" });
+          tokensCounter.add(usage.promptTokens, { ...attrs, "nanoclawd.token": "prompt" });
         }
         if (usage.total) {
-          tokensCounter.add(usage.total, { ...attrs, "nanosolana.token": "total" });
+          tokensCounter.add(usage.total, { ...attrs, "nanoclawd.token": "total" });
         }
 
         if (evt.costUsd) {
@@ -415,13 +415,13 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
         if (evt.context?.limit) {
           contextHistogram.record(evt.context.limit, {
             ...attrs,
-            "nanosolana.context": "limit",
+            "nanoclawd.context": "limit",
           });
         }
         if (evt.context?.used) {
           contextHistogram.record(evt.context.used, {
             ...attrs,
-            "nanosolana.context": "used",
+            "nanoclawd.context": "used",
           });
         }
 
@@ -430,16 +430,16 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
         }
         const spanAttrs: Record<string, string | number> = {
           ...attrs,
-          "nanosolana.sessionKey": evt.sessionKey ?? "",
-          "nanosolana.sessionId": evt.sessionId ?? "",
-          "nanosolana.tokens.input": usage.input ?? 0,
-          "nanosolana.tokens.output": usage.output ?? 0,
-          "nanosolana.tokens.cache_read": usage.cacheRead ?? 0,
-          "nanosolana.tokens.cache_write": usage.cacheWrite ?? 0,
-          "nanosolana.tokens.total": usage.total ?? 0,
+          "nanoclawd.sessionKey": evt.sessionKey ?? "",
+          "nanoclawd.sessionId": evt.sessionId ?? "",
+          "nanoclawd.tokens.input": usage.input ?? 0,
+          "nanoclawd.tokens.output": usage.output ?? 0,
+          "nanoclawd.tokens.cache_read": usage.cacheRead ?? 0,
+          "nanoclawd.tokens.cache_write": usage.cacheWrite ?? 0,
+          "nanoclawd.tokens.total": usage.total ?? 0,
         };
 
-        const span = spanWithDuration("nanosolana.model.usage", spanAttrs, evt.durationMs);
+        const span = spanWithDuration("nanoclawd.model.usage", spanAttrs, evt.durationMs);
         span.end();
       };
 
@@ -447,8 +447,8 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
         evt: Extract<DiagnosticEventPayload, { type: "webhook.received" }>,
       ) => {
         const attrs = {
-          "nanosolana.channel": evt.channel ?? "unknown",
-          "nanosolana.webhook": evt.updateType ?? "unknown",
+          "nanoclawd.channel": evt.channel ?? "unknown",
+          "nanoclawd.webhook": evt.updateType ?? "unknown",
         };
         webhookReceivedCounter.add(1, attrs);
       };
@@ -457,8 +457,8 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
         evt: Extract<DiagnosticEventPayload, { type: "webhook.processed" }>,
       ) => {
         const attrs = {
-          "nanosolana.channel": evt.channel ?? "unknown",
-          "nanosolana.webhook": evt.updateType ?? "unknown",
+          "nanoclawd.channel": evt.channel ?? "unknown",
+          "nanoclawd.webhook": evt.updateType ?? "unknown",
         };
         if (typeof evt.durationMs === "number") {
           webhookDurationHistogram.record(evt.durationMs, attrs);
@@ -468,9 +468,9 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
         }
         const spanAttrs: Record<string, string | number> = { ...attrs };
         if (evt.chatId !== undefined) {
-          spanAttrs["nanosolana.chatId"] = String(evt.chatId);
+          spanAttrs["nanoclawd.chatId"] = String(evt.chatId);
         }
-        const span = spanWithDuration("nanosolana.webhook.processed", spanAttrs, evt.durationMs);
+        const span = spanWithDuration("nanoclawd.webhook.processed", spanAttrs, evt.durationMs);
         span.end();
       };
 
@@ -478,8 +478,8 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
         evt: Extract<DiagnosticEventPayload, { type: "webhook.error" }>,
       ) => {
         const attrs = {
-          "nanosolana.channel": evt.channel ?? "unknown",
-          "nanosolana.webhook": evt.updateType ?? "unknown",
+          "nanoclawd.channel": evt.channel ?? "unknown",
+          "nanoclawd.webhook": evt.updateType ?? "unknown",
         };
         webhookErrorCounter.add(1, attrs);
         if (!tracesEnabled) {
@@ -488,12 +488,12 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
         const redactedError = redactSensitiveText(evt.error);
         const spanAttrs: Record<string, string | number> = {
           ...attrs,
-          "nanosolana.error": redactedError,
+          "nanoclawd.error": redactedError,
         };
         if (evt.chatId !== undefined) {
-          spanAttrs["nanosolana.chatId"] = String(evt.chatId);
+          spanAttrs["nanoclawd.chatId"] = String(evt.chatId);
         }
-        const span = tracer.startSpan("nanosolana.webhook.error", {
+        const span = tracer.startSpan("nanoclawd.webhook.error", {
           attributes: spanAttrs,
         });
         span.setStatus({ code: SpanStatusCode.ERROR, message: redactedError });
@@ -504,8 +504,8 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
         evt: Extract<DiagnosticEventPayload, { type: "message.queued" }>,
       ) => {
         const attrs = {
-          "nanosolana.channel": evt.channel ?? "unknown",
-          "nanosolana.source": evt.source ?? "unknown",
+          "nanoclawd.channel": evt.channel ?? "unknown",
+          "nanoclawd.source": evt.source ?? "unknown",
         };
         messageQueuedCounter.add(1, attrs);
         if (typeof evt.queueDepth === "number") {
@@ -518,10 +518,10 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
         evt: { sessionKey?: string; sessionId?: string },
       ) => {
         if (evt.sessionKey) {
-          spanAttrs["nanosolana.sessionKey"] = evt.sessionKey;
+          spanAttrs["nanoclawd.sessionKey"] = evt.sessionKey;
         }
         if (evt.sessionId) {
-          spanAttrs["nanosolana.sessionId"] = evt.sessionId;
+          spanAttrs["nanoclawd.sessionId"] = evt.sessionId;
         }
       };
 
@@ -529,8 +529,8 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
         evt: Extract<DiagnosticEventPayload, { type: "message.processed" }>,
       ) => {
         const attrs = {
-          "nanosolana.channel": evt.channel ?? "unknown",
-          "nanosolana.outcome": evt.outcome ?? "unknown",
+          "nanoclawd.channel": evt.channel ?? "unknown",
+          "nanoclawd.outcome": evt.outcome ?? "unknown",
         };
         messageProcessedCounter.add(1, attrs);
         if (typeof evt.durationMs === "number") {
@@ -542,15 +542,15 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
         const spanAttrs: Record<string, string | number> = { ...attrs };
         addSessionIdentityAttrs(spanAttrs, evt);
         if (evt.chatId !== undefined) {
-          spanAttrs["nanosolana.chatId"] = String(evt.chatId);
+          spanAttrs["nanoclawd.chatId"] = String(evt.chatId);
         }
         if (evt.messageId !== undefined) {
-          spanAttrs["nanosolana.messageId"] = String(evt.messageId);
+          spanAttrs["nanoclawd.messageId"] = String(evt.messageId);
         }
         if (evt.reason) {
-          spanAttrs["nanosolana.reason"] = redactSensitiveText(evt.reason);
+          spanAttrs["nanoclawd.reason"] = redactSensitiveText(evt.reason);
         }
-        const span = spanWithDuration("nanosolana.message.processed", spanAttrs, evt.durationMs);
+        const span = spanWithDuration("nanoclawd.message.processed", spanAttrs, evt.durationMs);
         if (evt.outcome === "error" && evt.error) {
           span.setStatus({ code: SpanStatusCode.ERROR, message: redactSensitiveText(evt.error) });
         }
@@ -560,7 +560,7 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
       const recordLaneEnqueue = (
         evt: Extract<DiagnosticEventPayload, { type: "queue.lane.enqueue" }>,
       ) => {
-        const attrs = { "nanosolana.lane": evt.lane };
+        const attrs = { "nanoclawd.lane": evt.lane };
         laneEnqueueCounter.add(1, attrs);
         queueDepthHistogram.record(evt.queueSize, attrs);
       };
@@ -568,7 +568,7 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
       const recordLaneDequeue = (
         evt: Extract<DiagnosticEventPayload, { type: "queue.lane.dequeue" }>,
       ) => {
-        const attrs = { "nanosolana.lane": evt.lane };
+        const attrs = { "nanoclawd.lane": evt.lane };
         laneDequeueCounter.add(1, attrs);
         queueDepthHistogram.record(evt.queueSize, attrs);
         if (typeof evt.waitMs === "number") {
@@ -579,9 +579,9 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
       const recordSessionState = (
         evt: Extract<DiagnosticEventPayload, { type: "session.state" }>,
       ) => {
-        const attrs: Record<string, string> = { "nanosolana.state": evt.state };
+        const attrs: Record<string, string> = { "nanoclawd.state": evt.state };
         if (evt.reason) {
-          attrs["nanosolana.reason"] = redactSensitiveText(evt.reason);
+          attrs["nanoclawd.reason"] = redactSensitiveText(evt.reason);
         }
         sessionStateCounter.add(1, attrs);
       };
@@ -589,7 +589,7 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
       const recordSessionStuck = (
         evt: Extract<DiagnosticEventPayload, { type: "session.stuck" }>,
       ) => {
-        const attrs: Record<string, string> = { "nanosolana.state": evt.state };
+        const attrs: Record<string, string> = { "nanoclawd.state": evt.state };
         sessionStuckCounter.add(1, attrs);
         if (typeof evt.ageMs === "number") {
           sessionStuckAgeHistogram.record(evt.ageMs, attrs);
@@ -599,21 +599,21 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
         }
         const spanAttrs: Record<string, string | number> = { ...attrs };
         addSessionIdentityAttrs(spanAttrs, evt);
-        spanAttrs["nanosolana.queueDepth"] = evt.queueDepth ?? 0;
-        spanAttrs["nanosolana.ageMs"] = evt.ageMs;
-        const span = tracer.startSpan("nanosolana.session.stuck", { attributes: spanAttrs });
+        spanAttrs["nanoclawd.queueDepth"] = evt.queueDepth ?? 0;
+        spanAttrs["nanoclawd.ageMs"] = evt.ageMs;
+        const span = tracer.startSpan("nanoclawd.session.stuck", { attributes: spanAttrs });
         span.setStatus({ code: SpanStatusCode.ERROR, message: "session stuck" });
         span.end();
       };
 
       const recordRunAttempt = (evt: Extract<DiagnosticEventPayload, { type: "run.attempt" }>) => {
-        runAttemptCounter.add(1, { "nanosolana.attempt": evt.attempt });
+        runAttemptCounter.add(1, { "nanoclawd.attempt": evt.attempt });
       };
 
       const recordHeartbeat = (
         evt: Extract<DiagnosticEventPayload, { type: "diagnostic.heartbeat" }>,
       ) => {
-        queueDepthHistogram.record(evt.queued, { "nanosolana.channel": "heartbeat" });
+        queueDepthHistogram.record(evt.queued, { "nanoclawd.channel": "heartbeat" });
       };
 
       unsubscribe = onDiagnosticEvent((evt: DiagnosticEventPayload) => {
@@ -681,5 +681,5 @@ export function createDiagnosticsOtelService(): NanoSolanaPluginService {
         sdk = null;
       }
     },
-  } satisfies NanoSolanaPluginService;
+  } satisfies NanoClawdPluginService;
 }

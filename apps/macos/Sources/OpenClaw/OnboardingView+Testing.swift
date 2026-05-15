@@ -1,4 +1,4 @@
-import NanoSolanaDiscovery
+import NanoClawdDiscovery
 import SwiftUI
 
 #if DEBUG
@@ -14,7 +14,7 @@ extension OnboardingView {
             tailnetDns: "gateway.ts.net",
             sshPort: 2222,
             gatewayPort: 18789,
-            cliPath: "/usr/local/bin/nanosolana",
+            cliPath: "/usr/local/bin/nanoclawd",
             stableID: "gateway-1",
             debugID: "gateway-1",
             isLocal: false)
@@ -28,14 +28,14 @@ extension OnboardingView {
         view.localGatewayProbe = LocalGatewayProbe(
             port: GatewayEnvironment.gatewayPort(),
             pid: 123,
-            command: "nanosolana-gateway",
+            command: "nanoclawd-gateway",
             expected: true)
         view.showAdvancedConnection = true
         view.preferredGatewayID = gateway.stableID
         view.cliInstalled = true
-        view.cliInstallLocation = "/usr/local/bin/nanosolana"
+        view.cliInstallLocation = "/usr/local/bin/nanoclawd"
         view.cliStatus = "Installed"
-        view.workspacePath = "/tmp/nanosolana"
+        view.workspacePath = "/tmp/nanoclawd"
         view.workspaceStatus = "Saved workspace"
         view.state.connectionMode = .local
         _ = view.welcomePage()

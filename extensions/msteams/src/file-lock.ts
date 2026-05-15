@@ -1,1 +1,1 @@
-export { withFileLock } from "nanosolana/plugin-sdk/msteams";
+export { withFileLock } from "nanoclawd/plugin-sdk/msteams";

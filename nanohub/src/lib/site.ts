@@ -1,8 +1,8 @@
 export type SiteMode = 'skills' | 'souls'
 
-const DEFAULT_NANOHUB_SITE_URL = 'https://hub.nanosolana.com'
-const DEFAULT_DOCS_SITE_URL = 'https://docs.nanosolana.com'
-const DEFAULT_DOCS_HOST = 'docs.nanosolana.com'
+const DEFAULT_NANOHUB_SITE_URL = 'https://hub.nanoclawd.com'
+const DEFAULT_DOCS_SITE_URL = 'https://docs.nanoclawd.com'
+const DEFAULT_DOCS_HOST = 'docs.nanoclawd.com'
 const LEGACY_HOSTS = new Set([
   'nanohub.com',
   'www.nanohub.com',
@@ -117,13 +117,13 @@ export function getSiteMode(): SiteMode {
 }
 
 export function getSiteName(mode: SiteMode = getSiteMode()) {
-  return mode === 'souls' ? 'NanoSolana Docs' : 'NanoSolana Hub'
+  return mode === 'souls' ? 'NanoClawd Docs' : 'NanoClawd Hub'
 }
 
 export function getSiteDescription(mode: SiteMode = getSiteMode()) {
   return mode === 'souls'
-    ? 'NanoSolana Docs — the home for SOUL.md bundles and personal system lore.'
-    : 'NanoSolana Hub — a fast skill registry for agents, with vector search.'
+    ? 'NanoClawd Docs — the home for SOUL.md bundles and personal system lore.'
+    : 'NanoClawd Hub — a fast skill registry for agents, with vector search.'
 }
 
 export function getSiteUrlForMode(mode: SiteMode = getSiteMode()) {

@@ -1,4 +1,4 @@
-import type { RuntimeEnv, WizardPrompter } from "nanosolana/plugin-sdk/irc";
+import type { RuntimeEnv, WizardPrompter } from "nanoclawd/plugin-sdk/irc";
 import { describe, expect, it, vi } from "vitest";
 import { ircOnboardingAdapter } from "./onboarding.js";
 import type { CoreConfig } from "./types.js";
@@ -36,19 +36,19 @@ describe("irc onboarding", () => {
           return "6697";
         }
         if (message === "IRC nick") {
-          return "nanosolana-bot";
+          return "nanoclawd-bot";
         }
         if (message === "IRC username") {
-          return "nanosolana";
+          return "nanoclawd";
         }
         if (message === "IRC real name") {
-          return "NanoSolana Bot";
+          return "NanoClawd Bot";
         }
         if (message.startsWith("Auto-join IRC channels")) {
-          return "#nanosolana, #ops";
+          return "#nanoclawd, #ops";
         }
         if (message.startsWith("IRC channels allowlist")) {
-          return "#nanosolana, #ops";
+          return "#nanoclawd, #ops";
         }
         throw new Error(`Unexpected prompt: ${message}`);
       }) as WizardPrompter["text"],
@@ -84,11 +84,11 @@ describe("irc onboarding", () => {
     expect(result.accountId).toBe("default");
     expect(result.cfg.channels?.irc?.enabled).toBe(true);
     expect(result.cfg.channels?.irc?.host).toBe("irc.libera.chat");
-    expect(result.cfg.channels?.irc?.nick).toBe("nanosolana-bot");
+    expect(result.cfg.channels?.irc?.nick).toBe("nanoclawd-bot");
     expect(result.cfg.channels?.irc?.tls).toBe(true);
-    expect(result.cfg.channels?.irc?.channels).toEqual(["#nanosolana", "#ops"]);
+    expect(result.cfg.channels?.irc?.channels).toEqual(["#nanoclawd", "#ops"]);
     expect(result.cfg.channels?.irc?.groupPolicy).toBe("allowlist");
-    expect(Object.keys(result.cfg.channels?.irc?.groups ?? {})).toEqual(["#nanosolana", "#ops"]);
+    expect(Object.keys(result.cfg.channels?.irc?.groups ?? {})).toEqual(["#nanoclawd", "#ops"]);
   });
 
   it("writes DM allowFrom to top-level config for non-default account prompts", async () => {
@@ -111,7 +111,7 @@ describe("irc onboarding", () => {
           accounts: {
             work: {
               host: "irc.libera.chat",
-              nick: "nanosolana-work",
+              nick: "nanoclawd-work",
             },
           },
         },

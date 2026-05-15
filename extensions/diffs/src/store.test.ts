@@ -14,7 +14,7 @@ describe("DiffArtifactStore", () => {
       rootDir,
       store,
       cleanup: cleanupRootDir,
-    } = await createDiffStoreHarness("nanosolana-diffs-store-"));
+    } = await createDiffStoreHarness("nanoclawd-diffs-store-"));
   });
 
   afterEach(async () => {

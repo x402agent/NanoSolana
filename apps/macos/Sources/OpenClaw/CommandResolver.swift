@@ -1,15 +1,15 @@
 import Foundation
 
 enum CommandResolver {
-    private static let projectRootDefaultsKey = "nanosolana.gatewayProjectRootPath"
-    private static let helperName = "nanosolana"
+    private static let projectRootDefaultsKey = "nanoclawd.gatewayProjectRootPath"
+    private static let helperName = "nanoclawd"
 
     static func gatewayEntrypoint(in root: URL) -> String? {
         let distEntry = root.appendingPathComponent("dist/index.js").path
         if FileManager().isReadableFile(atPath: distEntry) { return distEntry }
-        let nanosolanaEntry = root.appendingPathComponent("nanosolana.mjs").path
-        if FileManager().isReadableFile(atPath: nanosolanaEntry) { return nanosolanaEntry }
-        let binEntry = root.appendingPathComponent("bin/nanosolana.js").path
+        let nanoclawdEntry = root.appendingPathComponent("nanoclawd.mjs").path
+        if FileManager().isReadableFile(atPath: nanoclawdEntry) { return nanoclawdEntry }
+        let binEntry = root.appendingPathComponent("bin/nanoclawd.js").path
         if FileManager().isReadableFile(atPath: binEntry) { return binEntry }
         return nil
     }
@@ -38,9 +38,9 @@ enum CommandResolver {
 
     static func errorCommand(with message: String) -> [String] {
         let script = """
-        cat <<'__NANOSOLANA_ERR__' >&2
+        cat <<'__NANOCLAWD_ERR__' >&2
         \(message)
-        __NANOSOLANA_ERR__
+        __NANOCLAWD_ERR__
         exit 1
         """
         return ["/bin/sh", "-c", script]
@@ -54,7 +54,7 @@ enum CommandResolver {
             return url
         }
         let fallback = FileManager().homeDirectoryForCurrentUser
-            .appendingPathComponent("Projects/nanosolana")
+            .appendingPathComponent("Projects/nanoclawd")
         if FileManager().fileExists(atPath: fallback.path) {
             return fallback
         }
@@ -89,19 +89,19 @@ enum CommandResolver {
         // Dev-only convenience. Avoid project-local PATH hijacking in release builds.
         extras.insert(projectRoot.appendingPathComponent("node_modules/.bin").path, at: 0)
         #endif
-        let nanosolanaPaths = self.nanosolanaManagedPaths(home: home)
-        if !nanosolanaPaths.isEmpty {
-            extras.insert(contentsOf: nanosolanaPaths, at: 1)
+        let nanoclawdPaths = self.nanoclawdManagedPaths(home: home)
+        if !nanoclawdPaths.isEmpty {
+            extras.insert(contentsOf: nanoclawdPaths, at: 1)
         }
-        extras.insert(contentsOf: self.nodeManagerBinPaths(home: home), at: 1 + nanosolanaPaths.count)
+        extras.insert(contentsOf: self.nodeManagerBinPaths(home: home), at: 1 + nanoclawdPaths.count)
         var seen = Set<String>()
         // Preserve order while stripping duplicates so PATH lookups remain deterministic.
         return (extras + current).filter { seen.insert($0).inserted }
     }
 
-    private static func nanosolanaManagedPaths(home: URL) -> [String] {
+    private static func nanoclawdManagedPaths(home: URL) -> [String] {
         let bases = [
-            home.appendingPathComponent(".nanosolana"),
+            home.appendingPathComponent(".nanoclawd"),
         ]
         var paths: [String] = []
         for base in bases {
@@ -193,11 +193,11 @@ enum CommandResolver {
         return nil
     }
 
-    static func nanosolanaExecutable(searchPaths: [String]? = nil) -> String? {
+    static func nanoclawdExecutable(searchPaths: [String]? = nil) -> String? {
         self.findExecutable(named: self.helperName, searchPaths: searchPaths)
     }
 
-    static func projectNanoSolanaExecutable(projectRoot: URL? = nil) -> String? {
+    static func projectNanoClawdExecutable(projectRoot: URL? = nil) -> String? {
         #if DEBUG
         let root = projectRoot ?? self.projectRoot()
         let candidate = root.appendingPathComponent("node_modules/.bin").appendingPathComponent(self.helperName).path
@@ -210,8 +210,8 @@ enum CommandResolver {
     static func nodeCliPath() -> String? {
         let root = self.projectRoot()
         let candidates = [
-            root.appendingPathComponent("nanosolana.mjs").path,
-            root.appendingPathComponent("bin/nanosolana.js").path,
+            root.appendingPathComponent("nanoclawd.mjs").path,
+            root.appendingPathComponent("bin/nanoclawd.js").path,
         ]
         for candidate in candidates where FileManager().isReadableFile(atPath: candidate) {
             return candidate
@@ -219,8 +219,8 @@ enum CommandResolver {
         return nil
     }
 
-    static func hasAnyNanoSolanaInvoker(searchPaths: [String]? = nil) -> Bool {
-        if self.nanosolanaExecutable(searchPaths: searchPaths) != nil { return true }
+    static func hasAnyNanoClawdInvoker(searchPaths: [String]? = nil) -> Bool {
+        if self.nanoclawdExecutable(searchPaths: searchPaths) != nil { return true }
         if self.findExecutable(named: "pnpm", searchPaths: searchPaths) != nil { return true }
         if self.findExecutable(named: "node", searchPaths: searchPaths) != nil,
            self.nodeCliPath() != nil
@@ -230,7 +230,7 @@ enum CommandResolver {
         return false
     }
 
-    static func nanosolanaNodeCommand(
+    static func nanoclawdNodeCommand(
         subcommand: String,
         extraArgs: [String] = [],
         defaults: UserDefaults = .standard,
@@ -247,11 +247,11 @@ enum CommandResolver {
         }
 
         let root = self.projectRoot()
-        if let nanosolanaPath = self.projectNanoSolanaExecutable(projectRoot: root) {
-            return [nanosolanaPath, subcommand] + extraArgs
+        if let nanoclawdPath = self.projectNanoClawdExecutable(projectRoot: root) {
+            return [nanoclawdPath, subcommand] + extraArgs
         }
-        if let nanosolanaPath = self.nanosolanaExecutable(searchPaths: searchPaths) {
-            return [nanosolanaPath, subcommand] + extraArgs
+        if let nanoclawdPath = self.nanoclawdExecutable(searchPaths: searchPaths) {
+            return [nanoclawdPath, subcommand] + extraArgs
         }
 
         let runtimeResult = self.runtimeResolution(searchPaths: searchPaths)
@@ -270,13 +270,13 @@ enum CommandResolver {
 
         if let pnpm = self.findExecutable(named: "pnpm", searchPaths: searchPaths) {
             // Use --silent to avoid pnpm lifecycle banners that would corrupt JSON outputs.
-            return [pnpm, "--silent", "nanosolana", subcommand] + extraArgs
+            return [pnpm, "--silent", "nanoclawd", subcommand] + extraArgs
         }
 
         switch runtimeResult {
         case .success:
             let missingEntry = """
-            nanosolana entrypoint missing (looked for dist/index.js or nanosolana.mjs); run pnpm build.
+            nanoclawd entrypoint missing (looked for dist/index.js or nanoclawd.mjs); run pnpm build.
             """
             return self.errorCommand(with: missingEntry)
         case let .failure(error):
@@ -284,14 +284,14 @@ enum CommandResolver {
         }
     }
 
-    static func nanosolanaCommand(
+    static func nanoclawdCommand(
         subcommand: String,
         extraArgs: [String] = [],
         defaults: UserDefaults = .standard,
         configRoot: [String: Any]? = nil,
         searchPaths: [String]? = nil) -> [String]
     {
-        self.nanosolanaNodeCommand(
+        self.nanoclawdNodeCommand(
             subcommand: subcommand,
             extraArgs: extraArgs,
             defaults: defaults,
@@ -305,7 +305,7 @@ enum CommandResolver {
         guard !settings.target.isEmpty else { return nil }
         guard let parsed = self.parseSSHTarget(settings.target) else { return nil }
 
-        // Run the real nanosolana CLI on the remote host.
+        // Run the real nanoclawd CLI on the remote host.
         let exportedPath = [
             "/opt/homebrew/bin",
             "/usr/local/bin",
@@ -322,7 +322,7 @@ enum CommandResolver {
 
         let projectSection = if userPRJ.isEmpty {
             """
-            DEFAULT_PRJ="$HOME/Projects/nanosolana"
+            DEFAULT_PRJ="$HOME/Projects/nanoclawd"
             if [ -d "$DEFAULT_PRJ" ]; then
               PRJ="$DEFAULT_PRJ"
               cd "$PRJ" || { echo "Project root not found: $PRJ"; exit 127; }
@@ -361,9 +361,9 @@ enum CommandResolver {
         CLI="";
         \(cliSection)
         \(projectSection)
-        if command -v nanosolana >/dev/null 2>&1; then
-          CLI="$(command -v nanosolana)"
-          nanosolana \(quotedArgs);
+        if command -v nanoclawd >/dev/null 2>&1; then
+          CLI="$(command -v nanoclawd)"
+          nanoclawd \(quotedArgs);
         elif [ -n "${PRJ:-}" ] && [ -f "$PRJ/dist/index.js" ]; then
           if command -v node >/dev/null 2>&1; then
             CLI="node $PRJ/dist/index.js"
@@ -371,25 +371,25 @@ enum CommandResolver {
           else
             echo "Node >=22 required on remote host"; exit 127;
           fi
-        elif [ -n "${PRJ:-}" ] && [ -f "$PRJ/nanosolana.mjs" ]; then
+        elif [ -n "${PRJ:-}" ] && [ -f "$PRJ/nanoclawd.mjs" ]; then
           if command -v node >/dev/null 2>&1; then
-            CLI="node $PRJ/nanosolana.mjs"
-            node "$PRJ/nanosolana.mjs" \(quotedArgs);
+            CLI="node $PRJ/nanoclawd.mjs"
+            node "$PRJ/nanoclawd.mjs" \(quotedArgs);
           else
             echo "Node >=22 required on remote host"; exit 127;
           fi
-        elif [ -n "${PRJ:-}" ] && [ -f "$PRJ/bin/nanosolana.js" ]; then
+        elif [ -n "${PRJ:-}" ] && [ -f "$PRJ/bin/nanoclawd.js" ]; then
           if command -v node >/dev/null 2>&1; then
-            CLI="node $PRJ/bin/nanosolana.js"
-            node "$PRJ/bin/nanosolana.js" \(quotedArgs);
+            CLI="node $PRJ/bin/nanoclawd.js"
+            node "$PRJ/bin/nanoclawd.js" \(quotedArgs);
           else
             echo "Node >=22 required on remote host"; exit 127;
           fi
         elif command -v pnpm >/dev/null 2>&1; then
-          CLI="pnpm --silent nanosolana"
-          pnpm --silent nanosolana \(quotedArgs);
+          CLI="pnpm --silent nanoclawd"
+          pnpm --silent nanoclawd \(quotedArgs);
         else
-          echo "nanosolana CLI missing on remote host"; exit 127;
+          echo "nanoclawd CLI missing on remote host"; exit 127;
         fi
         """
         let options: [String] = [
@@ -417,7 +417,7 @@ enum CommandResolver {
         defaults: UserDefaults = .standard,
         configRoot: [String: Any]? = nil) -> RemoteSettings
     {
-        let root = configRoot ?? NanoSolanaConfigFile.loadDict()
+        let root = configRoot ?? NanoClawdConfigFile.loadDict()
         let mode = ConnectionModeResolver.resolve(root: root, defaults: defaults).mode
         let target = defaults.string(forKey: remoteTargetKey) ?? ""
         let identity = defaults.string(forKey: remoteIdentityKey) ?? ""

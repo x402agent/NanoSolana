@@ -5,11 +5,11 @@ import { homedir } from "node:os";
 import * as path from "node:path";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
-import { fetchWithSsrFGuard } from "nanosolana/plugin-sdk/tlon";
+import { fetchWithSsrFGuard } from "nanoclawd/plugin-sdk/tlon";
 import { getDefaultSsrFPolicy } from "../urbit/context.js";
 
-// Default to NanoSolana workspace media directory
-const DEFAULT_MEDIA_DIR = path.join(homedir(), ".nanosolana", "workspace", "media", "inbound");
+// Default to NanoClawd workspace media directory
+const DEFAULT_MEDIA_DIR = path.join(homedir(), ".nanoclawd", "workspace", "media", "inbound");
 
 export interface ExtractedImage {
   url: string;
@@ -139,7 +139,7 @@ function getExtensionFromUrl(url: string): string | null {
 
 /**
  * Download all images from a message and return attachment metadata.
- * Format matches NanoSolana's expected attachment structure.
+ * Format matches NanoClawd's expected attachment structure.
  */
 export async function downloadMessageImages(
   content: unknown,

@@ -1,10 +1,10 @@
 import Foundation
 
-public enum NanoSolanaChatCommand: String, Codable, Sendable {
+public enum NanoClawdChatCommand: String, Codable, Sendable {
     case push = "chat.push"
 }
 
-public struct NanoSolanaChatPushParams: Codable, Sendable, Equatable {
+public struct NanoClawdChatPushParams: Codable, Sendable, Equatable {
     public var text: String
     public var speak: Bool?
 
@@ -14,7 +14,7 @@ public struct NanoSolanaChatPushParams: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaChatPushPayload: Codable, Sendable, Equatable {
+public struct NanoClawdChatPushPayload: Codable, Sendable, Equatable {
     public var messageId: String?
 
     public init(messageId: String? = nil) {

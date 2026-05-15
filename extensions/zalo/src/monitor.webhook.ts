@@ -1,6 +1,6 @@
 import { timingSafeEqual } from "node:crypto";
 import type { IncomingMessage, ServerResponse } from "node:http";
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/zalo";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/zalo";
 import {
   createDedupeCache,
   createFixedWindowRateLimiter,
@@ -15,7 +15,7 @@ import {
   withResolvedWebhookRequestPipeline,
   WEBHOOK_ANOMALY_COUNTER_DEFAULTS,
   WEBHOOK_RATE_LIMIT_DEFAULTS,
-} from "nanosolana/plugin-sdk/zalo";
+} from "nanoclawd/plugin-sdk/zalo";
 import { resolveClientIp } from "../../../src/gateway/net.js";
 import type { ResolvedZaloAccount } from "./accounts.js";
 import type { ZaloFetch, ZaloUpdate } from "./api.js";
@@ -26,7 +26,7 @@ const ZALO_WEBHOOK_REPLAY_WINDOW_MS = 5 * 60_000;
 export type ZaloWebhookTarget = {
   token: string;
   account: ResolvedZaloAccount;
-  config: NanoSolanaConfig;
+  config: NanoClawdConfig;
   runtime: ZaloRuntimeEnv;
   core: unknown;
   secret: string;

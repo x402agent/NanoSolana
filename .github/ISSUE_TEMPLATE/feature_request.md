@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Suggest a new feature for NanoSolana
+about: Suggest a new feature for NanoClawd
 title: "[FEATURE] "
 labels: enhancement
 assignees: ''

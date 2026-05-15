@@ -1,10 +1,10 @@
-import { MarkdownConfigSchema, ToolPolicySchema } from "nanosolana/plugin-sdk/bluebubbles";
+import { MarkdownConfigSchema, ToolPolicySchema } from "nanoclawd/plugin-sdk/bluebubbles";
 import {
   AllowFromListSchema,
   buildCatchallMultiAccountChannelSchema,
   DmPolicySchema,
   GroupPolicySchema,
-} from "nanosolana/plugin-sdk/compat";
+} from "nanoclawd/plugin-sdk/compat";
 import { z } from "zod";
 import { buildSecretInputSchema, hasConfiguredSecretInput } from "./secret-input.js";
 

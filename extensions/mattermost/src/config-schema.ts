@@ -4,7 +4,7 @@ import {
   GroupPolicySchema,
   MarkdownConfigSchema,
   requireOpenAllowFrom,
-} from "nanosolana/plugin-sdk/mattermost";
+} from "nanoclawd/plugin-sdk/mattermost";
 import { z } from "zod";
 import { buildSecretInputSchema } from "./secret-input.js";
 

@@ -209,7 +209,7 @@ export function renderAgentChannels(params: {
                               ? html`
                                   <div>
                                     <a
-                                      href="https://docs.nanosolana.com/channels"
+                                      href="https://docs.nanoclawd.com/channels"
                                       target="_blank"
                                       rel="noopener"
                                       style="color: var(--accent); font-size: 12px"

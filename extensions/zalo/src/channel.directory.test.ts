@@ -1,4 +1,4 @@
-import type { NanoSolanaConfig, RuntimeEnv } from "nanosolana/plugin-sdk/zalo";
+import type { NanoClawdConfig, RuntimeEnv } from "nanoclawd/plugin-sdk/zalo";
 import { describe, expect, it } from "vitest";
 import { zaloPlugin } from "./channel.js";
 
@@ -18,7 +18,7 @@ describe("zalo directory", () => {
           allowFrom: ["zalo:123", "zl:234", "345"],
         },
       },
-    } as unknown as NanoSolanaConfig;
+    } as unknown as NanoClawdConfig;
 
     expect(zaloPlugin.directory).toBeTruthy();
     expect(zaloPlugin.directory?.listPeers).toBeTruthy();

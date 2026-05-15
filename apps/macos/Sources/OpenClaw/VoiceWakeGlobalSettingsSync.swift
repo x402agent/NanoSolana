@@ -1,12 +1,12 @@
 import Foundation
-import NanoSolanaKit
+import NanoClawdKit
 import OSLog
 
 @MainActor
 final class VoiceWakeGlobalSettingsSync {
     static let shared = VoiceWakeGlobalSettingsSync()
 
-    private let logger = Logger(subsystem: "ai.nanosolana", category: "voicewake.sync")
+    private let logger = Logger(subsystem: "ai.nanoclawd", category: "voicewake.sync")
     private var task: Task<Void, Never>?
 
     private struct VoiceWakePayload: Codable, Equatable {

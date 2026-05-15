@@ -1,7 +1,7 @@
 # Skill Security Scanner v2
 #
 # Scans installed AI coding assistant skills/plugins for security vulnerabilities.
-# Supports Claude Code, AMP, and other tools that use the SKILL.md format.
+# Supports Clawd Code, AMP, and other tools that use the SKILL.md format.
 #
 # KEY IMPROVEMENTS (v2):
 # - Progressive disclosure: quick triage before deep scan (saves cost on clean skills)
@@ -33,14 +33,14 @@ agent discovery:
     You discover and enumerate AI assistant skills directories.
 
     Check these locations for skills:
-    - ~/.claude/skills/ (Claude Code personal)
-    - .claude/skills/ (Claude Code project)
-    - ~/.claude/plugins/ (Claude Code plugins)
+    - ~/.clawd/skills/ (Clawd Code personal)
+    - .clawd/skills/ (Clawd Code project)
+    - ~/.clawd/plugins/ (Clawd Code plugins)
     - .agents/skills/ (AMP workspace)
     - ~/.config/agents/skills/ (AMP home)
 
     For each location that exists, list all subdirectories containing SKILL.md files.
-    Return a structured list with: path, name, tool (claude-code/amp/unknown).
+    Return a structured list with: path, name, tool (clawd-code/amp/unknown).
   """
 
 # Quick triage: Sonnet (pattern matching, surface-level)

@@ -1,4 +1,4 @@
-import NanoSolanaKit
+import NanoClawdKit
 import Testing
 
 struct TalkConfigParsingTests {

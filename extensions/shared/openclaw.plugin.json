@@ -1,7 +1,7 @@
 {
   "id": "shared",
   "name": "Shared Helpers",
-  "description": "Shared extension helpers and cross-plugin fixtures used by the NanoSolana extension workspace.",
+  "description": "Shared extension helpers and cross-plugin fixtures used by the NanoClawd extension workspace.",
   "configSchema": {
     "type": "object",
     "additionalProperties": false,

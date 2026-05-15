@@ -1,9 +1,9 @@
 import com.android.build.api.variant.impl.VariantOutputImpl
 
-val androidStoreFile = providers.gradleProperty("NANOSOLANA_ANDROID_STORE_FILE").orNull?.takeIf { it.isNotBlank() }
-val androidStorePassword = providers.gradleProperty("NANOSOLANA_ANDROID_STORE_PASSWORD").orNull?.takeIf { it.isNotBlank() }
-val androidKeyAlias = providers.gradleProperty("NANOSOLANA_ANDROID_KEY_ALIAS").orNull?.takeIf { it.isNotBlank() }
-val androidKeyPassword = providers.gradleProperty("NANOSOLANA_ANDROID_KEY_PASSWORD").orNull?.takeIf { it.isNotBlank() }
+val androidStoreFile = providers.gradleProperty("NANOCLAWD_ANDROID_STORE_FILE").orNull?.takeIf { it.isNotBlank() }
+val androidStorePassword = providers.gradleProperty("NANOCLAWD_ANDROID_STORE_PASSWORD").orNull?.takeIf { it.isNotBlank() }
+val androidKeyAlias = providers.gradleProperty("NANOCLAWD_ANDROID_KEY_ALIAS").orNull?.takeIf { it.isNotBlank() }
+val androidKeyPassword = providers.gradleProperty("NANOCLAWD_ANDROID_KEY_PASSWORD").orNull?.takeIf { it.isNotBlank() }
 val resolvedAndroidStoreFile =
     androidStoreFile?.let { storeFilePath ->
         if (storeFilePath.startsWith("~/")) {
@@ -24,9 +24,9 @@ val wantsAndroidReleaseBuild =
 
 if (wantsAndroidReleaseBuild && !hasAndroidReleaseSigning) {
     error(
-        "Missing Android release signing properties. Set NANOSOLANA_ANDROID_STORE_FILE, " +
-            "NANOSOLANA_ANDROID_STORE_PASSWORD, NANOSOLANA_ANDROID_KEY_ALIAS, and " +
-            "NANOSOLANA_ANDROID_KEY_PASSWORD in ~/.gradle/gradle.properties.",
+        "Missing Android release signing properties. Set NANOCLAWD_ANDROID_STORE_FILE, " +
+            "NANOCLAWD_ANDROID_STORE_PASSWORD, NANOCLAWD_ANDROID_KEY_ALIAS, and " +
+            "NANOCLAWD_ANDROID_KEY_PASSWORD in ~/.gradle/gradle.properties.",
     )
 }
 
@@ -38,7 +38,7 @@ plugins {
 }
 
 android {
-    namespace = "ai.nanosolana.app"
+    namespace = "ai.nanoclawd.app"
     compileSdk = 36
 
     // Release signing is local-only; keep the keystore path and passwords out of the repo.
@@ -55,12 +55,12 @@ android {
 
     sourceSets {
         getByName("main") {
-            assets.directories.add("../../shared/NanoSolanaKit/Sources/NanoSolanaKit/Resources")
+            assets.directories.add("../../shared/NanoClawdKit/Sources/NanoClawdKit/Resources")
         }
     }
 
     defaultConfig {
-        applicationId = "ai.nanosolana.app"
+        applicationId = "ai.nanoclawd.app"
         minSdk = 31
         targetSdk = 36
         versionCode = 202603110
@@ -132,7 +132,7 @@ androidComponents {
                 val versionName = output.versionName.orNull ?: "0"
                 val buildType = variant.buildType
 
-                val outputFileName = "nanosolana-$versionName-$buildType.apk"
+                val outputFileName = "nanoclawd-$versionName-$buildType.apk"
                 output.outputFileName = outputFileName
             }
     }

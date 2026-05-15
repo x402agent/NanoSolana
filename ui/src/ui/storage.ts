@@ -1,6 +1,6 @@
-const KEY = "nanosolana.control.settings.v1";
-const LEGACY_TOKEN_SESSION_KEY = "nanosolana.control.token.v1";
-const TOKEN_SESSION_KEY_PREFIX = "nanosolana.control.token.v1:";
+const KEY = "nanoclawd.control.settings.v1";
+const LEGACY_TOKEN_SESSION_KEY = "nanoclawd.control.token.v1";
+const TOKEN_SESSION_KEY_PREFIX = "nanoclawd.control.token.v1:";
 
 type PersistedUiSettings = Omit<UiSettings, "token"> & { token?: never };
 
@@ -40,8 +40,8 @@ function deriveDefaultGatewayUrl(): { pageUrl: string; effectiveUrl: string } {
   const proto = location.protocol === "https:" ? "wss" : "ws";
   const configured =
     typeof window !== "undefined" &&
-    typeof window.__NANOSOLANA_CONTROL_UI_BASE_PATH__ === "string" &&
-    window.__NANOSOLANA_CONTROL_UI_BASE_PATH__.trim();
+    typeof window.__NANOCLAWD_CONTROL_UI_BASE_PATH__ === "string" &&
+    window.__NANOCLAWD_CONTROL_UI_BASE_PATH__.trim();
   const basePath = configured
     ? normalizeBasePath(configured)
     : inferBasePathFromPathname(location.pathname);

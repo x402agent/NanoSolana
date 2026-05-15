@@ -1,5 +1,5 @@
 /**
- * NanoSolana — Multi-Agent Mesh Example
+ * NanoClawd — Multi-Agent Mesh Example
  *
  * Spawn multiple agents that coordinate via Tailscale mesh networking.
  * Agents share signals and learned patterns but never share private keys.
@@ -16,7 +16,7 @@ import {
   NanoNetworkClient,
   TailscaleDiscovery,
   loadConfig,
-} from "nanosolana";
+} from "nanoclawd";
 
 interface AgentInstance {
   name: string;
@@ -59,7 +59,7 @@ async function spawnAgent(name: string, config: any): Promise<AgentInstance> {
 }
 
 async function main() {
-  console.log("🦞 NanoSolana — Multi-Agent Mesh\n");
+  console.log("🦞 NanoClawd — Multi-Agent Mesh\n");
 
   const config = loadConfig();
 

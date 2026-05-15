@@ -1,10 +1,10 @@
 import {
   buildOauthProviderAuthResult,
   emptyPluginConfigSchema,
-  type NanoSolanaPluginApi,
+  type NanoClawdPluginApi,
   type ProviderAuthContext,
   type ProviderAuthResult,
-} from "nanosolana/plugin-sdk/minimax-portal-auth";
+} from "nanoclawd/plugin-sdk/minimax-portal-auth";
 import { loginMiniMaxPortalOAuth, type MiniMaxRegion } from "./oauth.js";
 
 const PROVIDER_ID = "minimax-portal";
@@ -135,7 +135,7 @@ const minimaxPortalPlugin = {
   name: "MiniMax OAuth",
   description: "OAuth flow for MiniMax models",
   configSchema: emptyPluginConfigSchema(),
-  register(api: NanoSolanaPluginApi) {
+  register(api: NanoClawdPluginApi) {
     api.registerProvider({
       id: PROVIDER_ID,
       label: PROVIDER_LABEL,

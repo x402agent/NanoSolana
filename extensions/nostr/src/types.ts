@@ -2,8 +2,8 @@ import {
   DEFAULT_ACCOUNT_ID,
   normalizeAccountId,
   normalizeOptionalAccountId,
-} from "nanosolana/plugin-sdk/account-id";
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/nostr";
+} from "nanoclawd/plugin-sdk/account-id";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/nostr";
 import type { NostrProfile } from "./config-schema.js";
 import { getPublicKeyFromPrivate } from "./nostr-bus.js";
 import { DEFAULT_RELAYS } from "./nostr-bus.js";
@@ -31,7 +31,7 @@ export interface ResolvedNostrAccount {
   config: NostrAccountConfig;
 }
 
-function resolveConfiguredDefaultNostrAccountId(cfg: NanoSolanaConfig): string | undefined {
+function resolveConfiguredDefaultNostrAccountId(cfg: NanoClawdConfig): string | undefined {
   const nostrCfg = (cfg.channels as Record<string, unknown> | undefined)?.nostr as
     | NostrAccountConfig
     | undefined;
@@ -41,7 +41,7 @@ function resolveConfiguredDefaultNostrAccountId(cfg: NanoSolanaConfig): string |
 /**
  * List all configured Nostr account IDs
  */
-export function listNostrAccountIds(cfg: NanoSolanaConfig): string[] {
+export function listNostrAccountIds(cfg: NanoClawdConfig): string[] {
   const nostrCfg = (cfg.channels as Record<string, unknown> | undefined)?.nostr as
     | NostrAccountConfig
     | undefined;
@@ -57,7 +57,7 @@ export function listNostrAccountIds(cfg: NanoSolanaConfig): string[] {
 /**
  * Get the default account ID
  */
-export function resolveDefaultNostrAccountId(cfg: NanoSolanaConfig): string {
+export function resolveDefaultNostrAccountId(cfg: NanoClawdConfig): string {
   const preferred = resolveConfiguredDefaultNostrAccountId(cfg);
   if (preferred) {
     return preferred;
@@ -73,7 +73,7 @@ export function resolveDefaultNostrAccountId(cfg: NanoSolanaConfig): string {
  * Resolve a Nostr account from config
  */
 export function resolveNostrAccount(opts: {
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   accountId?: string | null;
 }): ResolvedNostrAccount {
   const accountId = normalizeAccountId(opts.accountId ?? resolveDefaultNostrAccountId(opts.cfg));

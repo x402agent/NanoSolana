@@ -1,5 +1,5 @@
 import Foundation
-import NanoSolanaProtocol
+import NanoClawdProtocol
 
 public enum GatewayDeviceAuthPayload {
     public static func buildV3(
@@ -58,7 +58,7 @@ public enum GatewayDeviceAuthPayload {
         payload: String,
         identity: DeviceIdentity,
         signedAtMs: Int,
-        nonce: String) -> [String: NanoSolanaProtocol.AnyCodable]?
+        nonce: String) -> [String: NanoClawdProtocol.AnyCodable]?
     {
         guard let signature = DeviceIdentityStore.signPayload(payload, identity: identity),
               let publicKey = DeviceIdentityStore.publicKeyBase64Url(identity)
@@ -66,11 +66,11 @@ public enum GatewayDeviceAuthPayload {
             return nil
         }
         return [
-            "id": NanoSolanaProtocol.AnyCodable(identity.deviceId),
-            "publicKey": NanoSolanaProtocol.AnyCodable(publicKey),
-            "signature": NanoSolanaProtocol.AnyCodable(signature),
-            "signedAt": NanoSolanaProtocol.AnyCodable(signedAtMs),
-            "nonce": NanoSolanaProtocol.AnyCodable(nonce),
+            "id": NanoClawdProtocol.AnyCodable(identity.deviceId),
+            "publicKey": NanoClawdProtocol.AnyCodable(publicKey),
+            "signature": NanoClawdProtocol.AnyCodable(signature),
+            "signedAt": NanoClawdProtocol.AnyCodable(signedAtMs),
+            "nonce": NanoClawdProtocol.AnyCodable(nonce),
         ]
     }
 }

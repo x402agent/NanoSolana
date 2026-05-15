@@ -53,7 +53,7 @@
 - VT fallback: activate only VT-pending hidden skills when scans are unavailable/stale; keep quality/scanner-blocked skills hidden (#300) (thanks @superlowburn).
 - API: return proper status codes for delete/undelete errors (#35) (thanks @sergical).
 - API: for owners, return clearer status/messages for hidden/soft-deleted skills instead of a generic 404.
-- Web: allow copying NanoSolana scan summary text (thanks @borisolver, #322).
+- Web: allow copying NanoClawd scan summary text (thanks @borisolver, #322).
 - HTTP/CORS: add preflight handler + include CORS headers on API/download errors; CLI: include auth token for owner-visible installs/updates (#146) (thanks @Grenghis-Khan).
 - CLI: clarify `logout` only removes the local token; token remains valid until revoked in the web UI (#166) (thanks @aronchick).
 - CLI: validate skill slugs used for filesystem operations (prevents path traversal) (#241) (thanks @superlowburn).
@@ -75,12 +75,12 @@
 
 ### Added
 - Security: add LLM-based security evaluation during skill publish.
-- Parsing: recognize `metadata.nanosolana` frontmatter and evaluate all skill files for requirements.
+- Parsing: recognize `metadata.nanoclawd` frontmatter and evaluate all skill files for requirements.
 
 ### Changed
 - Performance: lazy-load Monaco diff viewer on demand (thanks @alexjcm, #212).
 - Search: improve recall/ranking with lexical fallback and relevance prioritization.
-- Moderation UX: collapse NanoSolana analysis by default; update spacing and default reasoning model.
+- Moderation UX: collapse NanoClawd analysis by default; update spacing and default reasoning model.
 
 ### Fixed
 - Skills: fix initial `/skills` sort wiring so first page respects selected sort/direction (thanks @bpk9, #92).
@@ -107,7 +107,7 @@
 ### Fixed
 - Web: show pending-scan skills to owners without 404 (thanks @orlyjamie, #136).
 - Users: backfill empty handles from name/email in ensure (thanks @adlai88, #158).
-- Web: update footer branding to NanoSolana (thanks @jontsai, #122).
+- Web: update footer branding to NanoClawd (thanks @jontsai, #122).
 - Auth: restore soft-deleted users on reauth, block banned users (thanks @mkrokosz, #106).
 
 ## 0.5.0 - 2026-02-02
@@ -132,11 +132,11 @@
 ### Added
 - Web: show published skills on user profiles (thanks @njoylab, #20).
 - CLI: include NanoHub + TamaGObot fallback skill roots for sync scans.
-- CLI: support NanoSolana configuration files (`NANOSOLANA_CONFIG_PATH` / `NANOSOLANA_STATE_DIR`).
+- CLI: support NanoClawd configuration files (`NANOCLAWD_CONFIG_PATH` / `NANOCLAWD_STATE_DIR`).
 
 ### Changed
 - Brand: rebrand to NanoHub and publish CLI as `nanohub` (legacy `nanohub` supported).
-- Domain: default site/registry now `https://nanosolana.netlify.app`; `.well-known/nanohub.json` preferred.
+- Domain: default site/registry now `https://nanoclawd.netlify.app`; `.well-known/nanohub.json` preferred.
 - Theme: persist theme under `nanohub-theme` (legacy key still read).
 
 ### Fixed

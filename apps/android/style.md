@@ -1,4 +1,4 @@
-# NanoSolana Android UI Style Guide
+# NanoClawd Android UI Style Guide
 
 Scope: all native Android UI in `apps/android` (Jetpack Compose).
 Goal: one coherent visual system across onboarding, settings, and future screens.
@@ -104,10 +104,10 @@ Hard rule: avoid ultra-thin weights on light backgrounds.
 
 ## 11. Source Of Truth
 
-- `app/src/main/java/ai/nanosolana/android/ui/NanoSolanaTheme.kt`
-- `app/src/main/java/ai/nanosolana/android/ui/OnboardingFlow.kt`
-- `app/src/main/java/ai/nanosolana/android/ui/RootScreen.kt`
-- `app/src/main/java/ai/nanosolana/android/ui/SettingsSheet.kt`
-- `app/src/main/java/ai/nanosolana/android/MainViewModel.kt`
+- `app/src/main/java/ai/nanoclawd/android/ui/NanoClawdTheme.kt`
+- `app/src/main/java/ai/nanoclawd/android/ui/OnboardingFlow.kt`
+- `app/src/main/java/ai/nanoclawd/android/ui/RootScreen.kt`
+- `app/src/main/java/ai/nanoclawd/android/ui/SettingsSheet.kt`
+- `app/src/main/java/ai/nanoclawd/android/MainViewModel.kt`
 
 If style and implementation diverge, update both in the same change.

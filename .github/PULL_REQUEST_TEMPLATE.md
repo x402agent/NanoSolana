@@ -17,7 +17,7 @@
 
 - [ ] Tested locally
 - [ ] Added/updated tests
-- [ ] Tested with `nanosolana demo`
+- [ ] Tested with `nanoclawd demo`
 
 ## Checklist
 

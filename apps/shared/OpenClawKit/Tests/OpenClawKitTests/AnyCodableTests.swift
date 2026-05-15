@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-import NanoSolanaProtocol
+import NanoClawdProtocol
 
 struct AnyCodableTests {
     @Test

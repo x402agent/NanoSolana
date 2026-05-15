@@ -1,7 +1,7 @@
 import AppKit
 import Foundation
-import NanoSolanaDiscovery
-import NanoSolanaIPC
+import NanoClawdDiscovery
+import NanoClawdIPC
 import SwiftUI
 
 extension OnboardingView {
@@ -34,7 +34,7 @@ extension OnboardingView {
         SettingsTabRouter.request(tab)
         self.openSettings()
         DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .nanosolanaSelectSettingsTab, object: tab)
+            NotificationCenter.default.post(name: .nanoclawdSelectSettingsTab, object: tab)
         }
     }
 
@@ -54,7 +54,7 @@ extension OnboardingView {
     }
 
     func finish() {
-        UserDefaults.standard.set(true, forKey: "nanosolana.onboardingSeen")
+        UserDefaults.standard.set(true, forKey: "nanoclawd.onboardingSeen")
         UserDefaults.standard.set(currentOnboardingVersion, forKey: onboardingVersionKey)
         OnboardingController.shared.close()
     }

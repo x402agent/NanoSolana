@@ -1,7 +1,7 @@
-// ── PumpFun Extension for NanoSolana ────────────────────────────────
+// ── PumpFun Extension for NanoClawd ────────────────────────────────
 //
 // Channel extension that bridges PumpFun on-chain events into the
-// NanoSolana agent runtime. Provides:
+// NanoClawd agent runtime. Provides:
 //
 //   - Real-time token launch monitoring via Solana WebSocket
 //   - Bonding curve graduation alerts

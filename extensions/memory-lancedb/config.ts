@@ -25,7 +25,7 @@ const LEGACY_STATE_DIRS: string[] = [];
 
 function resolveDefaultDbPath(): string {
   const home = homedir();
-  const preferred = join(home, ".nanosolana", "memory", "lancedb");
+  const preferred = join(home, ".nanoclawd", "memory", "lancedb");
   try {
     if (fs.existsSync(preferred)) {
       return preferred;
@@ -159,7 +159,7 @@ export const memoryConfigSchema = {
     },
     dbPath: {
       label: "Database Path",
-      placeholder: "~/.nanosolana/memory/lancedb",
+      placeholder: "~/.nanoclawd/memory/lancedb",
       advanced: true,
     },
     autoCapture: {

@@ -1,4 +1,4 @@
-import type { BaseProbeResult } from "nanosolana/plugin-sdk/zalouser";
+import type { BaseProbeResult } from "nanoclawd/plugin-sdk/zalouser";
 import type { ZcaUserInfo } from "./types.js";
 import { getZaloUserInfo } from "./zalo-js.js";
 

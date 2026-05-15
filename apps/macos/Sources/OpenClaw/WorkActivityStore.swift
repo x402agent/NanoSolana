@@ -1,7 +1,7 @@
 import Foundation
 import Observation
-import NanoSolanaKit
-import NanoSolanaProtocol
+import NanoClawdKit
+import NanoClawdProtocol
 import SwiftUI
 
 @MainActor
@@ -58,7 +58,7 @@ final class WorkActivityStore {
         phase: String,
         name: String?,
         meta: String?,
-        args: [String: NanoSolanaProtocol.AnyCodable]?)
+        args: [String: NanoClawdProtocol.AnyCodable]?)
     {
         let toolKind = Self.mapToolKind(name)
         let label = Self.buildLabel(name: name, meta: meta, args: args)
@@ -225,7 +225,7 @@ final class WorkActivityStore {
     private static func buildLabel(
         name: String?,
         meta: String?,
-        args: [String: NanoSolanaProtocol.AnyCodable]?) -> String
+        args: [String: NanoClawdProtocol.AnyCodable]?) -> String
     {
         let wrappedArgs = self.wrapToolArgs(args)
         let display = ToolDisplayRegistry.resolve(name: name ?? "tool", args: wrappedArgs, meta: meta)
@@ -236,17 +236,17 @@ final class WorkActivityStore {
         return display.label
     }
 
-    private static func wrapToolArgs(_ args: [String: NanoSolanaProtocol.AnyCodable]?) -> NanoSolanaKit.AnyCodable? {
+    private static func wrapToolArgs(_ args: [String: NanoClawdProtocol.AnyCodable]?) -> NanoClawdKit.AnyCodable? {
         guard let args else { return nil }
         let converted: [String: Any] = args.mapValues { self.unwrapJSONValue($0.value) }
-        return NanoSolanaKit.AnyCodable(converted)
+        return NanoClawdKit.AnyCodable(converted)
     }
 
     private static func unwrapJSONValue(_ value: Any) -> Any {
-        if let dict = value as? [String: NanoSolanaProtocol.AnyCodable] {
+        if let dict = value as? [String: NanoClawdProtocol.AnyCodable] {
             return dict.mapValues { self.unwrapJSONValue($0.value) }
         }
-        if let array = value as? [NanoSolanaProtocol.AnyCodable] {
+        if let array = value as? [NanoClawdProtocol.AnyCodable] {
             return array.map { self.unwrapJSONValue($0.value) }
         }
         if let dict = value as? [String: Any] {

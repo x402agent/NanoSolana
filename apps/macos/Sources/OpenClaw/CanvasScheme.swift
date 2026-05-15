@@ -1,7 +1,7 @@
 import Foundation
 
 enum CanvasScheme {
-    static let scheme = "nanosolana-canvas"
+    static let scheme = "nanoclawd-canvas"
     static let allSchemes = [scheme]
 
     static func makeURL(session: String, path: String? = nil) -> URL? {

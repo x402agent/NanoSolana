@@ -1,10 +1,10 @@
 import Foundation
 
-public enum NanoSolanaPhotosCommand: String, Codable, Sendable {
+public enum NanoClawdPhotosCommand: String, Codable, Sendable {
     case latest = "photos.latest"
 }
 
-public struct NanoSolanaPhotosLatestParams: Codable, Sendable, Equatable {
+public struct NanoClawdPhotosLatestParams: Codable, Sendable, Equatable {
     public var limit: Int?
     public var maxWidth: Int?
     public var quality: Double?
@@ -16,7 +16,7 @@ public struct NanoSolanaPhotosLatestParams: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaPhotoPayload: Codable, Sendable, Equatable {
+public struct NanoClawdPhotoPayload: Codable, Sendable, Equatable {
     public var format: String
     public var base64: String
     public var width: Int
@@ -32,10 +32,10 @@ public struct NanoSolanaPhotoPayload: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaPhotosLatestPayload: Codable, Sendable, Equatable {
-    public var photos: [NanoSolanaPhotoPayload]
+public struct NanoClawdPhotosLatestPayload: Codable, Sendable, Equatable {
+    public var photos: [NanoClawdPhotoPayload]
 
-    public init(photos: [NanoSolanaPhotoPayload]) {
+    public init(photos: [NanoClawdPhotoPayload]) {
         self.photos = photos
     }
 }

@@ -1,11 +1,11 @@
-import type { NanoSolanaConfig, NanoSolanaPluginApi } from "nanosolana/plugin-sdk/thread-ownership";
+import type { NanoClawdConfig, NanoClawdPluginApi } from "nanoclawd/plugin-sdk/thread-ownership";
 
 type ThreadOwnershipConfig = {
   forwarderUrl?: string;
   abTestChannels?: string[];
 };
 
-type AgentEntry = NonNullable<NonNullable<NanoSolanaConfig["agents"]>["list"]>[number];
+type AgentEntry = NonNullable<NonNullable<NanoClawdConfig["agents"]>["list"]>[number];
 
 // In-memory set of {channel}:{thread} keys where this agent was @-mentioned.
 // Entries expire after 5 minutes.
@@ -21,7 +21,7 @@ function cleanExpiredMentions(): void {
   }
 }
 
-function resolveOwnershipAgent(config: NanoSolanaConfig): { id: string; name: string } {
+function resolveOwnershipAgent(config: NanoClawdConfig): { id: string; name: string } {
   const list = Array.isArray(config.agents?.list)
     ? config.agents.list.filter((entry): entry is AgentEntry =>
         Boolean(entry && typeof entry === "object"),
@@ -39,7 +39,7 @@ function resolveOwnershipAgent(config: NanoSolanaConfig): { id: string; name: st
   return { id, name };
 }
 
-export default function register(api: NanoSolanaPluginApi) {
+export default function register(api: NanoClawdPluginApi) {
   const pluginCfg = (api.pluginConfig ?? {}) as ThreadOwnershipConfig;
   const forwarderUrl = (
     pluginCfg.forwarderUrl ??

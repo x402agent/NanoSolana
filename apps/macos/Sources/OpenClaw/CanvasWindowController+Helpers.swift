@@ -23,7 +23,7 @@ extension CanvasWindowController {
     }
 
     static func storedFrameDefaultsKey(sessionKey: String) -> String {
-        "nanosolana.canvas.frame.\(self.sanitizeSessionKey(sessionKey))"
+        "nanoclawd.canvas.frame.\(self.sanitizeSessionKey(sessionKey))"
     }
 
     static func loadRestoredFrame(sessionKey: String) -> NSRect? {

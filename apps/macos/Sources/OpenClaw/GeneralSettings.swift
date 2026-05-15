@@ -1,8 +1,8 @@
 import AppKit
 import Observation
-import NanoSolanaDiscovery
-import NanoSolanaIPC
-import NanoSolanaKit
+import NanoClawdDiscovery
+import NanoClawdIPC
+import NanoClawdKit
 import SwiftUI
 
 struct GeneralSettings: View {
@@ -29,8 +29,8 @@ struct GeneralSettings: View {
             VStack(alignment: .leading, spacing: 18) {
                 VStack(alignment: .leading, spacing: 12) {
                     SettingsToggleRow(
-                        title: "NanoSolana active",
-                        subtitle: "Pause to stop the NanoSolana gateway; no messages will be processed.",
+                        title: "NanoClawd active",
+                        subtitle: "Pause to stop the NanoClawd gateway; no messages will be processed.",
                         binding: self.activeBinding)
 
                     self.connectionSection
@@ -39,12 +39,12 @@ struct GeneralSettings: View {
 
                     SettingsToggleRow(
                         title: "Launch at login",
-                        subtitle: "Automatically start NanoSolana after you sign in.",
+                        subtitle: "Automatically start NanoClawd after you sign in.",
                         binding: self.$state.launchAtLogin)
 
                     SettingsToggleRow(
                         title: "Show Dock icon",
-                        subtitle: "Keep NanoSolana visible in the Dock instead of menu-bar-only mode.",
+                        subtitle: "Keep NanoClawd visible in the Dock instead of menu-bar-only mode.",
                         binding: self.$state.showDockIcon)
 
                     SettingsToggleRow(
@@ -76,7 +76,7 @@ struct GeneralSettings: View {
                 Spacer(minLength: 12)
                 HStack {
                     Spacer()
-                    Button("Quit NanoSolana") { NSApp.terminate(nil) }
+                    Button("Quit NanoClawd") { NSApp.terminate(nil) }
                         .buttonStyle(.borderedProminent)
                 }
             }
@@ -103,7 +103,7 @@ struct GeneralSettings: View {
 
     private var connectionSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("NanoSolana runs")
+            Text("NanoClawd runs")
                 .font(.title3.weight(.semibold))
                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -173,12 +173,12 @@ struct GeneralSettings: View {
                                 .frame(width: 280)
                         }
                         LabeledContent("Project root") {
-                            TextField("/home/you/Projects/nanosolana", text: self.$state.remoteProjectRoot)
+                            TextField("/home/you/Projects/nanoclawd", text: self.$state.remoteProjectRoot)
                                 .textFieldStyle(.roundedBorder)
                                 .frame(width: 280)
                         }
                         LabeledContent("CLI path") {
-                            TextField("/Applications/NanoSolana.app/.../nanosolana", text: self.$state.remoteCliPath)
+                            TextField("/Applications/NanoClawd.app/.../nanoclawd", text: self.$state.remoteCliPath)
                                 .textFieldStyle(.roundedBorder)
                                 .frame(width: 280)
                         }
@@ -308,7 +308,7 @@ struct GeneralSettings: View {
                 .padding(.leading, self.remoteLabelWidth + 10)
             if self.state.remoteTokenUnsupported {
                 Text(
-                    "The current gateway.remote.token value is not plain text. NanoSolana for macOS cannot use it directly; enter a plaintext token here to replace it.")
+                    "The current gateway.remote.token value is not plain text. NanoClawd for macOS cannot use it directly; enter a plaintext token here to replace it.")
                     .font(.caption)
                     .foregroundStyle(.orange)
                     .padding(.leading, self.remoteLabelWidth + 10)
@@ -589,7 +589,7 @@ extension GeneralSettings {
         let alert = NSAlert()
         alert.messageText = "Log file not found"
         alert.informativeText = """
-        Looked for nanosolana logs in /tmp/nanosolana/.
+        Looked for nanoclawd logs in /tmp/nanoclawd/.
         Run a health check or send a message to generate activity, then try again.
         """
         alert.alertStyle = .informational
@@ -627,8 +627,8 @@ extension GeneralSettings {
         state.remoteUrl = "wss://gateway.example.ts.net"
         state.remoteToken = "example-token"
         state.remoteIdentity = "/tmp/id_ed25519"
-        state.remoteProjectRoot = "/tmp/nanosolana"
-        state.remoteCliPath = "/tmp/nanosolana"
+        state.remoteProjectRoot = "/tmp/nanoclawd"
+        state.remoteCliPath = "/tmp/nanoclawd"
 
         let view = GeneralSettings(state: state)
         view.gatewayStatus = GatewayEnvironmentStatus(

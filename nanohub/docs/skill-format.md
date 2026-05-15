@@ -49,16 +49,16 @@ version: 1.0.0
 ---
 ```
 
-### Runtime metadata (`metadata.nanosolana`)
+### Runtime metadata (`metadata.nanoclawd`)
 
-Declare your skill's runtime requirements under `metadata.nanosolana` (aliases: `metadata.tamagobot`, `metadata.clawdis`).
+Declare your skill's runtime requirements under `metadata.nanoclawd` (aliases: `metadata.tamagobot`, `metadata.clawdis`).
 
 ```yaml
 ---
 name: my-skill
 description: Manage tasks via the Todoist API.
 metadata:
-  nanosolana:
+  nanoclawd:
     requires:
       env:
         - TODOIST_API_KEY
@@ -92,7 +92,7 @@ If your skill needs dependencies installed, declare them in the `install` array:
 
 ```yaml
 metadata:
-  nanosolana:
+  nanoclawd:
     install:
       - kind: brew
         formula: jq
@@ -116,7 +116,7 @@ name: todoist-cli
 description: Manage Todoist tasks, projects, and labels from the command line.
 version: 1.2.0
 metadata:
-  nanosolana:
+  nanoclawd:
     requires:
       env:
         - TODOIST_API_KEY

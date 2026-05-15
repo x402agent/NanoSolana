@@ -1,5 +1,5 @@
 ---
-summary: "Beginner-focused guide to Solana Claude Go gateway startup, auth, and day-one operations"
+summary: "Beginner-focused guide to Solana Clawd Go gateway startup, auth, and day-one operations"
 title: "Gateway (CLI Surface)"
 ---
 
@@ -45,7 +45,7 @@ npm run gateway
 ```bash
 npx scg status
 curl http://127.0.0.1:18790/health
-curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Clawd Go-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/status
 ```
 
@@ -60,7 +60,7 @@ Current defaults come from `nano-core/src/config/vault.ts`:
 Auth behavior:
 
 - if `NANO_GATEWAY_SECRET` is set, `/api/*` routes require auth
-- use `X-Solana Claude Go-Secret: <secret>` header or `Authorization: Bearer <secret>`
+- use `X-Solana Clawd Go-Secret: <secret>` header or `Authorization: Bearer <secret>`
 - `/health` remains open for liveness checks
 
 ## Gateway endpoints you will use first

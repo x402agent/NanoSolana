@@ -4,14 +4,14 @@ import type {
   WindowsSpawnProgram,
   WindowsSpawnProgramCandidate,
   WindowsSpawnResolution,
-} from "nanosolana/plugin-sdk/acpx";
+} from "nanoclawd/plugin-sdk/acpx";
 import {
   applyWindowsSpawnProgramPolicy,
   listKnownProviderAuthEnvVarNames,
   materializeWindowsSpawnProgram,
   omitEnvKeysCaseInsensitive,
   resolveWindowsSpawnProgramCandidate,
-} from "nanosolana/plugin-sdk/acpx";
+} from "nanoclawd/plugin-sdk/acpx";
 
 export type SpawnExit = {
   code: number | null;
@@ -143,7 +143,7 @@ export function spawnWithResolvedCommand(
     process.env,
     params.stripProviderAuthEnvVars ? listKnownProviderAuthEnvVarNames() : [],
   );
-  childEnv.NANOSOLANA_SHELL = "acp";
+  childEnv.NANOCLAWD_SHELL = "acp";
 
   return spawn(resolved.command, resolved.args, {
     cwd: params.cwd,

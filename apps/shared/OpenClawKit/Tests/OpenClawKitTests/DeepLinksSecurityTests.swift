@@ -1,23 +1,23 @@
 import Foundation
-import NanoSolanaKit
+import NanoClawdKit
 import Testing
 
 @Suite struct DeepLinksSecurityTests {
     @Test func gatewayDeepLinkRejectsInsecureNonLoopbackWs() {
         let url = URL(
-            string: "nanosolana://gateway?host=attacker.example&port=18789&tls=0&token=abc")!
+            string: "nanoclawd://gateway?host=attacker.example&port=18789&tls=0&token=abc")!
         #expect(DeepLinkParser.parse(url) == nil)
     }
 
     @Test func gatewayDeepLinkRejectsInsecurePrefixBypassHost() {
         let url = URL(
-            string: "nanosolana://gateway?host=127.attacker.example&port=18789&tls=0&token=abc")!
+            string: "nanoclawd://gateway?host=127.attacker.example&port=18789&tls=0&token=abc")!
         #expect(DeepLinkParser.parse(url) == nil)
     }
 
     @Test func gatewayDeepLinkAllowsLoopbackWs() {
         let url = URL(
-            string: "nanosolana://gateway?host=127.0.0.1&port=18789&tls=0&token=abc")!
+            string: "nanoclawd://gateway?host=127.0.0.1&port=18789&tls=0&token=abc")!
         #expect(
             DeepLinkParser.parse(url) == .gateway(
                 .init(host: "127.0.0.1", port: 18789, tls: false, token: "abc", password: nil)))

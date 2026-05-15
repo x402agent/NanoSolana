@@ -1,4 +1,4 @@
-import NanoSolanaKit
+import NanoClawdKit
 
 enum GatewayPushSubscription {
     @MainActor

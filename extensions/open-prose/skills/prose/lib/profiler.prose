@@ -17,7 +17,7 @@
 #   - Optimization recommendations
 #
 # Data Sources:
-#   Primary: Claude Code's jsonl files in ~/.claude/projects/{project}/{session}/
+#   Primary: Clawd Code's jsonl files in ~/.clawd/projects/{project}/{session}/
 #   - Main session: {session}.jsonl (VM orchestration)
 #   - Subagents: subagents/agent-*.jsonl (OpenProse sessions)
 #
@@ -29,13 +29,13 @@
 #   Pricing: Fetched live from Anthropic's pricing page
 #
 # Supported Tools:
-#   - Claude Code (~/.claude) - full support
+#   - Clawd Code (~/.clawd) - full support
 #   - OpenCode, Amp, Codex - may have different structures, will warn
 
 input run_path: "Path to run, or 'recent' for latest runs in .prose/runs/"
 input scope: "Scope: single (one run) | compare (multiple runs) | trend (over time)"
 
-const PRICING_URL = "https://platform.claude.com/docs/en/about-claude/pricing#model-pricing"
+const PRICING_URL = "https://platform.clawd.com/docs/en/about-clawd/pricing#model-pricing"
 
 # ============================================================
 # Agents
@@ -47,12 +47,12 @@ agent detector:
     You detect which AI coding tool was used and find its data files.
 
     Check for:
-    1. ~/.claude/projects/ - Claude Code (full support)
+    1. ~/.clawd/projects/ - Clawd Code (full support)
     2. ~/.opencode/ - OpenCode (may differ)
     3. ~/.amp/ - Amp (may differ)
     4. ~/.codex/ - Codex (may differ)
 
-    If not Claude Code, warn the user that analysis may be incomplete.
+    If not Clawd Code, warn the user that analysis may be incomplete.
   """
 
 agent collector:
@@ -60,7 +60,7 @@ agent collector:
   prompt: """
     You locate and inventory AI coding tool session files.
 
-    For Claude Code (~/.claude/projects/{project}/{session}/):
+    For Clawd Code (~/.clawd/projects/{project}/{session}/):
     1. Main session file: {session}.jsonl - VM orchestration
     2. Subagent files: subagents/agent-*.jsonl - OpenProse sessions
 
@@ -81,7 +81,7 @@ agent calculator:
 
     BEFORE CALCULATING:
     Fetch current pricing from the pricing URL provided in your prompt.
-    Extract per-million-token rates for each Claude model.
+    Extract per-million-token rates for each Clawd model.
 
     YOUR PYTHON SCRIPT MUST:
     1. Process the main_jsonl file (VM orchestration data)
@@ -160,17 +160,17 @@ let tool_detection = session: detector
 
     1. If run_path is in .prose/runs/, extract the run timestamp
     2. Look for corresponding session in:
-       - ~/.claude/projects/ (Claude Code) - check subfolders for sessions
+       - ~/.clawd/projects/ (Clawd Code) - check subfolders for sessions
        - Other tool directories as fallback
 
-    3. If found in ~/.claude:
+    3. If found in ~/.clawd:
        - Return the full session path
        - List the main jsonl file and subagent files
        - This is the primary data source
 
-    4. If NOT found in ~/.claude:
+    4. If NOT found in ~/.clawd:
        - Check for opencode/amp/codex directories
-       - WARN: "Non-Claude Code tool detected. Token data structure may differ."
+       - WARN: "Non-Clawd Code tool detected. Token data structure may differ."
 
     5. If no tool data found:
        - Return tool="not-found" with clear error
@@ -178,7 +178,7 @@ let tool_detection = session: detector
 
     Return JSON:
     {
-      "tool": "claude-code" | "opencode" | "amp" | "codex" | "not-found",
+      "tool": "clawd-code" | "opencode" | "amp" | "codex" | "not-found",
       "session_path": "/path/to/session/" | null,
       "main_jsonl": "/path/to/session.jsonl" | null,
       "subagent_jsonls": [...] | [],
@@ -196,11 +196,11 @@ assert tool_detection.tool != "not-found":
   ERROR: Profiling requires actual data from AI tool session files.
 
   Could not find session data for this run. This can happen if:
-  1. The run was not executed with Claude Code (or supported tool)
-  2. The Claude Code session has been deleted or moved
+  1. The run was not executed with Clawd Code (or supported tool)
+  2. The Clawd Code session has been deleted or moved
   3. The run path does not correspond to an existing session
 
-  Supported tools: Claude Code (~/.claude)
+  Supported tools: Clawd Code (~/.clawd)
   Partial support: OpenCode, Amp, Codex (structure may differ)
   """
 
@@ -221,7 +221,7 @@ let runs_to_analyze = session: collector
 
     For each run, locate:
     1. The .prose/runs/{run_id}/ directory
-    2. The corresponding Claude Code session
+    2. The corresponding Clawd Code session
     3. List all jsonl files (main session + subagents/)
 
     Return JSON array:
@@ -229,7 +229,7 @@ let runs_to_analyze = session: collector
       {
         "run_id": "...",
         "prose_run_path": "/path/to/.prose/runs/xxx/",
-        "session_path": "/path/to/claude/session/",
+        "session_path": "/path/to/clawd/session/",
         "main_jsonl": "/path/to/session.jsonl",
         "subagent_jsonls": [...]
       }

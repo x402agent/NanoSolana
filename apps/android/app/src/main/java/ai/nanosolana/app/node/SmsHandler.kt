@@ -1,6 +1,6 @@
-package ai.nanosolana.app.node
+package ai.nanoclawd.app.node
 
-import ai.nanosolana.app.gateway.GatewaySession
+import ai.nanoclawd.app.gateway.GatewaySession
 
 class SmsHandler(
   private val sms: SmsManager,

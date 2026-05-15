@@ -1,4 +1,4 @@
-package ai.nanosolana.app.gateway
+package ai.nanoclawd.app.gateway
 
 data class ParsedInvokeError(
   val code: String,

@@ -1,4 +1,4 @@
-import type { AcpRuntime, NanoSolanaPluginServiceContext } from "nanosolana/plugin-sdk/acpx";
+import type { AcpRuntime, NanoClawdPluginServiceContext } from "nanoclawd/plugin-sdk/acpx";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { AcpRuntimeError } from "../../../src/acp/runtime/errors.js";
 import {
@@ -54,8 +54,8 @@ function createRuntimeStub(healthy: boolean): {
 }
 
 function createServiceContext(
-  overrides: Partial<NanoSolanaPluginServiceContext> = {},
-): NanoSolanaPluginServiceContext {
+  overrides: Partial<NanoClawdPluginServiceContext> = {},
+): NanoClawdPluginServiceContext {
   return {
     config: {},
     workspaceDir: "/tmp/workspace",

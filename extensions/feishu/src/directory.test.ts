@@ -1,4 +1,4 @@
-import type { TamaGObotConfig } from "nanosolana/plugin-sdk/feishu";
+import type { TamaGObotConfig } from "nanoclawd/plugin-sdk/feishu";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("./accounts.js", () => ({

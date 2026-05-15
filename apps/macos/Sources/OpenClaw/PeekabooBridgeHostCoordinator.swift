@@ -9,18 +9,18 @@ import Security
 final class PeekabooBridgeHostCoordinator {
     static let shared = PeekabooBridgeHostCoordinator()
 
-    private let logger = Logger(subsystem: "ai.nanosolana", category: "PeekabooBridge")
+    private let logger = Logger(subsystem: "ai.nanoclawd", category: "PeekabooBridge")
 
     private var host: PeekabooBridgeHost?
-    private var services: NanoSolanaPeekabooBridgeServices?
+    private var services: NanoClawdPeekabooBridgeServices?
 
     private static let legacySocketDirectoryNames = ["tamagobot", "clawdis", "tamagobot"]
 
-    private static var nanosolanaSocketPath: String {
+    private static var nanoclawdSocketPath: String {
         let fileManager = FileManager.default
         let base = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
             ?? fileManager.homeDirectoryForCurrentUser.appendingPathComponent("Library/Application Support")
-        return Self.makeSocketPath(for: "NanoSolana", in: base)
+        return Self.makeSocketPath(for: "NanoClawd", in: base)
     }
 
     private static func makeSocketPath(for directoryName: String, in baseDirectory: URL) -> String {
@@ -64,7 +64,7 @@ final class PeekabooBridgeHostCoordinator {
 
         self.ensureLegacySocketSymlinks()
 
-        let services = NanoSolanaPeekabooBridgeServices()
+        let services = NanoClawdPeekabooBridgeServices()
         let server = PeekabooBridgeServer(
             services: services,
             hostKind: .gui,
@@ -72,7 +72,7 @@ final class PeekabooBridgeHostCoordinator {
             allowlistedBundles: allowlistedBundles)
 
         let host = PeekabooBridgeHost(
-            socketPath: Self.nanosolanaSocketPath,
+            socketPath: Self.nanoclawdSocketPath,
             server: server,
             allowedTeamIDs: allowlistedTeamIDs,
             requestTimeoutSec: 10)
@@ -82,7 +82,7 @@ final class PeekabooBridgeHostCoordinator {
 
         await host.start()
         self.logger
-            .info("PeekabooBridge host started at \(Self.nanosolanaSocketPath, privacy: .public)")
+            .info("PeekabooBridge host started at \(Self.nanoclawdSocketPath, privacy: .public)")
     }
 
     private func ensureLegacySocketSymlinks() {
@@ -108,14 +108,14 @@ final class PeekabooBridgeHostCoordinator {
                 let destination = try FileManager.default.destinationOfSymbolicLink(atPath: legacyPath)
                 let destinationURL = URL(fileURLWithPath: destination, relativeTo: linkURL.deletingLastPathComponent())
                     .standardizedFileURL
-                if destinationURL.path == URL(fileURLWithPath: Self.nanosolanaSocketPath).standardizedFileURL.path {
+                if destinationURL.path == URL(fileURLWithPath: Self.nanoclawdSocketPath).standardizedFileURL.path {
                     return
                 }
                 try fileManager.removeItem(atPath: legacyPath)
             } else if fileManager.fileExists(atPath: legacyPath) {
                 try fileManager.removeItem(atPath: legacyPath)
             }
-            try fileManager.createSymbolicLink(atPath: legacyPath, withDestinationPath: Self.nanosolanaSocketPath)
+            try fileManager.createSymbolicLink(atPath: legacyPath, withDestinationPath: Self.nanoclawdSocketPath)
         } catch {
             let message = "Failed to create legacy PeekabooBridge socket symlink: \(error.localizedDescription)"
             self.logger
@@ -153,7 +153,7 @@ final class PeekabooBridgeHostCoordinator {
 }
 
 @MainActor
-private final class NanoSolanaPeekabooBridgeServices: PeekabooBridgeServiceProviding {
+private final class NanoClawdPeekabooBridgeServices: PeekabooBridgeServiceProviding {
     let permissions: PermissionsService
     let screenCapture: any ScreenCaptureServiceProtocol
     let automation: any UIAutomationServiceProtocol
@@ -165,7 +165,7 @@ private final class NanoSolanaPeekabooBridgeServices: PeekabooBridgeServiceProvi
     let snapshots: any SnapshotManagerProtocol
 
     init() {
-        let logging = LoggingService(subsystem: "ai.nanosolana.peekaboo")
+        let logging = LoggingService(subsystem: "ai.nanoclawd.peekaboo")
         let feedbackClient: any AutomationFeedbackClient = NoopAutomationFeedbackClient()
 
         let snapshots = InMemorySnapshotManager(options: .init(

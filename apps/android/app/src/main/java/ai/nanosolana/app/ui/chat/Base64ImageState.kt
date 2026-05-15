@@ -1,4 +1,4 @@
-package ai.nanosolana.app.ui.chat
+package ai.nanoclawd.app.ui.chat
 
 import android.graphics.BitmapFactory
 import android.util.Base64

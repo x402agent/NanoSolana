@@ -2,8 +2,8 @@ import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import type { NanoSolanaPluginApi } from "nanosolana/plugin-sdk/tlon";
-import { emptyPluginConfigSchema } from "nanosolana/plugin-sdk/tlon";
+import type { NanoClawdPluginApi } from "nanoclawd/plugin-sdk/tlon";
+import { emptyPluginConfigSchema } from "nanoclawd/plugin-sdk/tlon";
 import { tlonPlugin } from "./src/channel.js";
 import { setTlonRuntime } from "./src/runtime.js";
 
@@ -128,7 +128,7 @@ const plugin = {
   name: "Tlon",
   description: "Tlon/Urbit channel plugin",
   configSchema: emptyPluginConfigSchema(),
-  register(api: NanoSolanaPluginApi) {
+  register(api: NanoClawdPluginApi) {
     setTlonRuntime(api.runtime);
     api.registerChannel({ plugin: tlonPlugin });
 

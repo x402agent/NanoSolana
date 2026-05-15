@@ -1,4 +1,4 @@
-import { fetchWithSsrFGuard } from "nanosolana/plugin-sdk/voice-call";
+import { fetchWithSsrFGuard } from "nanoclawd/plugin-sdk/voice-call";
 
 type GuardedJsonApiRequestParams = {
   url: string;

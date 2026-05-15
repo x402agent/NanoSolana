@@ -1,4 +1,4 @@
-package ai.nanosolana.app.gateway
+package ai.nanoclawd.app.gateway
 
 object BonjourEscapes {
   fun decode(input: String): String {

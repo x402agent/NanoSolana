@@ -1,5 +1,5 @@
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct VoiceWakeHelpersTests {
     @Test func `sanitize triggers trims and drops empty`() {

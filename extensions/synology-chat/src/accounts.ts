@@ -5,7 +5,7 @@
 
 import type { SynologyChatChannelConfig, ResolvedSynologyChatAccount } from "./types.js";
 
-/** Extract the channel config from the full NanoSolana config object. */
+/** Extract the channel config from the full NanoClawd config object. */
 function getChannelConfig(cfg: any): SynologyChatChannelConfig | undefined {
   return cfg?.channels?.["synology-chat"];
 }
@@ -74,7 +74,7 @@ export function resolveAccount(cfg: any, accountId?: string | null): ResolvedSyn
   const envNasHost = process.env.SYNOLOGY_NAS_HOST ?? "localhost";
   const envAllowedUserIds = process.env.SYNOLOGY_ALLOWED_USER_IDS ?? "";
   const envRateLimitValue = parseRateLimitPerMinute(process.env.SYNOLOGY_RATE_LIMIT);
-  const envBotName = process.env.NANOSOLANA_BOT_NAME ?? "NanoSolana";
+  const envBotName = process.env.NANOCLAWD_BOT_NAME ?? "NanoClawd";
 
   // Merge: account override > base channel config > env var
   return {

@@ -1,14 +1,14 @@
 /**
- * NanoSolana — Webhook Alerts Example
+ * NanoClawd — Webhook Alerts Example
  *
- * Set up a simple webhook server that receives NanoSolana trading signals
+ * Set up a simple webhook server that receives NanoClawd trading signals
  * and forwards them to Discord, Slack, or any HTTP endpoint.
  *
  * Usage:
  *   npx tsx examples/webhook-alerts.ts
  */
 
-import { NanoWallet, TradingEngine, loadConfig, type TradeSignal } from "nanosolana";
+import { NanoWallet, TradingEngine, loadConfig, type TradeSignal } from "nanoclawd";
 
 // Webhook configuration
 const WEBHOOK_URLS = {
@@ -32,7 +32,7 @@ async function sendWebhook(url: string, signal: TradeSignal) {
         { name: "Source", value: signal.source, inline: true },
         { name: "Mint", value: `\`${signal.mint.slice(0, 8)}...${signal.mint.slice(-8)}\``, inline: true },
       ],
-      footer: { text: "NanoSolana OODA Trading Engine" },
+      footer: { text: "NanoClawd OODA Trading Engine" },
       timestamp: new Date(signal.timestamp).toISOString(),
     }],
   };
@@ -50,7 +50,7 @@ async function sendWebhook(url: string, signal: TradeSignal) {
 }
 
 async function main() {
-  console.log("🦞 NanoSolana — Webhook Alerts\n");
+  console.log("🦞 NanoClawd — Webhook Alerts\n");
 
   const config = loadConfig();
   const wallet = new NanoWallet("alert-agent");

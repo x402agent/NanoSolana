@@ -1,7 +1,7 @@
-import type { WizardPrompter } from "nanosolana/plugin-sdk/bluebubbles";
+import type { WizardPrompter } from "nanoclawd/plugin-sdk/bluebubbles";
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("nanosolana/plugin-sdk/bluebubbles", () => ({
+vi.mock("nanoclawd/plugin-sdk/bluebubbles", () => ({
   DEFAULT_ACCOUNT_ID: "default",
   addWildcardAllowFrom: vi.fn(),
   formatDocsLink: (_url: string, fallback: string) => fallback,

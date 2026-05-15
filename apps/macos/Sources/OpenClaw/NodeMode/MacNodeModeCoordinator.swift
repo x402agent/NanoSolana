@@ -1,12 +1,12 @@
 import Foundation
-import NanoSolanaKit
+import NanoClawdKit
 import OSLog
 
 @MainActor
 final class MacNodeModeCoordinator {
     static let shared = MacNodeModeCoordinator()
 
-    private let logger = Logger(subsystem: "ai.nanosolana", category: "mac-node")
+    private let logger = Logger(subsystem: "ai.nanoclawd", category: "mac-node")
     private var task: Task<Void, Never>?
     private let runtime = MacNodeRuntime()
     private let session = GatewayNodeSession()
@@ -49,7 +49,7 @@ final class MacNodeModeCoordinator {
                 await self.session.disconnect()
                 try? await Task.sleep(nanoseconds: 200_000_000)
             }
-            let browserControlEnabled = NanoSolanaConfigFile.browserControlEnabled()
+            let browserControlEnabled = NanoClawdConfigFile.browserControlEnabled()
             if lastBrowserControlEnabled == nil {
                 lastBrowserControlEnabled = browserControlEnabled
             } else if lastBrowserControlEnabled != browserControlEnabled {
@@ -69,7 +69,7 @@ final class MacNodeModeCoordinator {
                     caps: caps,
                     commands: commands,
                     permissions: permissions,
-                    clientId: "nanosolana-macos",
+                    clientId: "nanoclawd-macos",
                     clientMode: "node",
                     clientDisplayName: InstanceIdentity.displayName)
                 let sessionBox = self.buildSessionBox(url: config.url)
@@ -100,7 +100,7 @@ final class MacNodeModeCoordinator {
                             return BridgeInvokeResponse(
                                 id: req.id,
                                 ok: false,
-                                error: NanoSolanaNodeError(code: .unavailable, message: "UNAVAILABLE: node not ready"))
+                                error: NanoClawdNodeError(code: .unavailable, message: "UNAVAILABLE: node not ready"))
                         }
                         return await self.runtime.handleInvoke(req)
                     })
@@ -116,16 +116,16 @@ final class MacNodeModeCoordinator {
     }
 
     private func currentCaps() -> [String] {
-        var caps: [String] = [NanoSolanaCapability.canvas.rawValue, NanoSolanaCapability.screen.rawValue]
-        if NanoSolanaConfigFile.browserControlEnabled() {
-            caps.append(NanoSolanaCapability.browser.rawValue)
+        var caps: [String] = [NanoClawdCapability.canvas.rawValue, NanoClawdCapability.screen.rawValue]
+        if NanoClawdConfigFile.browserControlEnabled() {
+            caps.append(NanoClawdCapability.browser.rawValue)
         }
         if UserDefaults.standard.object(forKey: cameraEnabledKey) as? Bool ?? false {
-            caps.append(NanoSolanaCapability.camera.rawValue)
+            caps.append(NanoClawdCapability.camera.rawValue)
         }
         let rawLocationMode = UserDefaults.standard.string(forKey: locationModeKey) ?? "off"
-        if NanoSolanaLocationMode(rawValue: rawLocationMode) != .off {
-            caps.append(NanoSolanaCapability.location.rawValue)
+        if NanoClawdLocationMode(rawValue: rawLocationMode) != .off {
+            caps.append(NanoClawdCapability.location.rawValue)
         }
         return caps
     }
@@ -137,33 +137,33 @@ final class MacNodeModeCoordinator {
 
     private func currentCommands(caps: [String]) -> [String] {
         var commands: [String] = [
-            NanoSolanaCanvasCommand.present.rawValue,
-            NanoSolanaCanvasCommand.hide.rawValue,
-            NanoSolanaCanvasCommand.navigate.rawValue,
-            NanoSolanaCanvasCommand.evalJS.rawValue,
-            NanoSolanaCanvasCommand.snapshot.rawValue,
-            NanoSolanaCanvasA2UICommand.push.rawValue,
-            NanoSolanaCanvasA2UICommand.pushJSONL.rawValue,
-            NanoSolanaCanvasA2UICommand.reset.rawValue,
+            NanoClawdCanvasCommand.present.rawValue,
+            NanoClawdCanvasCommand.hide.rawValue,
+            NanoClawdCanvasCommand.navigate.rawValue,
+            NanoClawdCanvasCommand.evalJS.rawValue,
+            NanoClawdCanvasCommand.snapshot.rawValue,
+            NanoClawdCanvasA2UICommand.push.rawValue,
+            NanoClawdCanvasA2UICommand.pushJSONL.rawValue,
+            NanoClawdCanvasA2UICommand.reset.rawValue,
             MacNodeScreenCommand.record.rawValue,
-            NanoSolanaSystemCommand.notify.rawValue,
-            NanoSolanaSystemCommand.which.rawValue,
-            NanoSolanaSystemCommand.run.rawValue,
-            NanoSolanaSystemCommand.execApprovalsGet.rawValue,
-            NanoSolanaSystemCommand.execApprovalsSet.rawValue,
+            NanoClawdSystemCommand.notify.rawValue,
+            NanoClawdSystemCommand.which.rawValue,
+            NanoClawdSystemCommand.run.rawValue,
+            NanoClawdSystemCommand.execApprovalsGet.rawValue,
+            NanoClawdSystemCommand.execApprovalsSet.rawValue,
         ]
 
         let capsSet = Set(caps)
-        if capsSet.contains(NanoSolanaCapability.browser.rawValue) {
-            commands.append(NanoSolanaBrowserCommand.proxy.rawValue)
+        if capsSet.contains(NanoClawdCapability.browser.rawValue) {
+            commands.append(NanoClawdBrowserCommand.proxy.rawValue)
         }
-        if capsSet.contains(NanoSolanaCapability.camera.rawValue) {
-            commands.append(NanoSolanaCameraCommand.list.rawValue)
-            commands.append(NanoSolanaCameraCommand.snap.rawValue)
-            commands.append(NanoSolanaCameraCommand.clip.rawValue)
+        if capsSet.contains(NanoClawdCapability.camera.rawValue) {
+            commands.append(NanoClawdCameraCommand.list.rawValue)
+            commands.append(NanoClawdCameraCommand.snap.rawValue)
+            commands.append(NanoClawdCameraCommand.clip.rawValue)
         }
-        if capsSet.contains(NanoSolanaCapability.location.rawValue) {
-            commands.append(NanoSolanaLocationCommand.get.rawValue)
+        if capsSet.contains(NanoClawdCapability.location.rawValue) {
+            commands.append(NanoClawdLocationCommand.get.rawValue)
         }
 
         return commands

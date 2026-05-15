@@ -1,6 +1,6 @@
-import NanoSolanaProtocol
+import NanoClawdProtocol
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct InstancesStoreTests {
     @Test
@@ -8,7 +8,7 @@ struct InstancesStoreTests {
     func `presence event payload decodes via JSON encoder`() {
         // Build a payload that mirrors the gateway's presence event shape:
         // { "presence": [ PresenceEntry ] }
-        let entry: [String: NanoSolanaProtocol.AnyCodable] = [
+        let entry: [String: NanoClawdProtocol.AnyCodable] = [
             "host": .init("gw"),
             "ip": .init("10.0.0.1"),
             "version": .init("2.0.0"),
@@ -18,10 +18,10 @@ struct InstancesStoreTests {
             "text": .init("Gateway node"),
             "ts": .init(1_730_000_000),
         ]
-        let payloadMap: [String: NanoSolanaProtocol.AnyCodable] = [
-            "presence": .init([NanoSolanaProtocol.AnyCodable(entry)]),
+        let payloadMap: [String: NanoClawdProtocol.AnyCodable] = [
+            "presence": .init([NanoClawdProtocol.AnyCodable(entry)]),
         ]
-        let payload = NanoSolanaProtocol.AnyCodable(payloadMap)
+        let payload = NanoClawdProtocol.AnyCodable(payloadMap)
 
         let store = InstancesStore(isPreview: true)
         store.handlePresenceEventPayload(payload)

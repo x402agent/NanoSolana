@@ -1,4 +1,4 @@
-import { loadOutboundMediaFromUrl, type NanoSolanaConfig } from "nanosolana/plugin-sdk/mattermost";
+import { loadOutboundMediaFromUrl, type NanoClawdConfig } from "nanoclawd/plugin-sdk/mattermost";
 import { getMattermostRuntime } from "../runtime.js";
 import { resolveMattermostAccount } from "./accounts.js";
 import {
@@ -22,7 +22,7 @@ import {
 import { isMattermostId, resolveMattermostOpaqueTarget } from "./target-resolution.js";
 
 export type MattermostSendOpts = {
-  cfg?: NanoSolanaConfig;
+  cfg?: NanoClawdConfig;
   botToken?: string;
   baseUrl?: string;
   accountId?: string;
@@ -220,7 +220,7 @@ async function resolveTargetChannelId(params: {
 }
 
 type MattermostSendContext = {
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   accountId: string;
   token: string;
   baseUrl: string;

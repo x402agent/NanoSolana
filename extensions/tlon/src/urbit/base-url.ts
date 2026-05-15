@@ -1,4 +1,4 @@
-import { isBlockedHostnameOrIp } from "nanosolana/plugin-sdk/tlon";
+import { isBlockedHostnameOrIp } from "nanoclawd/plugin-sdk/tlon";
 
 export type UrbitBaseUrlValidation =
   | { ok: true; baseUrl: string; hostname: string }

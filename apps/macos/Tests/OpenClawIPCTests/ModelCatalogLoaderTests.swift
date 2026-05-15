@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct ModelCatalogLoaderTests {
     @Test
@@ -13,7 +13,7 @@ struct ModelCatalogLoaderTests {
             "gpt-3.5": { contextWindow: 16000 },
           },
           anthropic: {
-            "claude-3": { name: "Claude 3", contextWindow: 200000 },
+            "clawd-3": { name: "Clawd 3", contextWindow: 200000 },
           },
         };
         """
@@ -26,10 +26,10 @@ struct ModelCatalogLoaderTests {
         let choices = try await ModelCatalogLoader.load(from: tmp.path)
         #expect(choices.count == 4)
         #expect(choices.first?.provider == "anthropic")
-        #expect(choices.first?.id == "claude-3")
+        #expect(choices.first?.id == "clawd-3")
 
         let ids = Set(choices.map(\.id))
-        #expect(ids == Set(["claude-3", "gpt-4o", "gpt-4o-mini", "gpt-3.5"]))
+        #expect(ids == Set(["clawd-3", "gpt-4o", "gpt-4o-mini", "gpt-3.5"]))
 
         let openai = choices.filter { $0.provider == "openai" }
         let openaiNames = openai.map(\.name)

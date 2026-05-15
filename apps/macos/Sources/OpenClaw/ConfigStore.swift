@@ -1,5 +1,5 @@
 import Foundation
-import NanoSolanaProtocol
+import NanoClawdProtocol
 
 enum ConfigStore {
     struct Overrides {
@@ -44,7 +44,7 @@ enum ConfigStore {
         if let gateway = await self.loadFromGateway() {
             return gateway
         }
-        return NanoSolanaConfigFile.loadDict()
+        return NanoClawdConfigFile.loadDict()
     }
 
     @MainActor
@@ -63,7 +63,7 @@ enum ConfigStore {
                 do {
                     try await self.saveToGateway(root)
                 } catch {
-                    NanoSolanaConfigFile.saveDict(root)
+                    NanoClawdConfigFile.saveDict(root)
                 }
             }
         }

@@ -1,21 +1,21 @@
 {
-  "name": "@nanosolana/googlechat",
+  "name": "@nanoclawd/googlechat",
   "version": "2026.3.11",
   "private": true,
-  "description": "NanoSolana Google Chat channel plugin",
+  "description": "NanoClawd Google Chat channel plugin",
   "type": "module",
   "dependencies": {
     "google-auth-library": "^10.6.1"
   },
   "peerDependencies": {
-    "nanosolana": ">=2026.3.7"
+    "nanoclawd": ">=2026.3.7"
   },
   "peerDependenciesMeta": {
-    "nanosolana": {
+    "nanoclawd": {
       "optional": true
     }
   },
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./index.ts"
     ],
@@ -34,7 +34,7 @@
       "order": 55
     },
     "install": {
-      "npmSpec": "@nanosolana/googlechat",
+      "npmSpec": "@nanoclawd/googlechat",
       "localPath": "extensions/googlechat",
       "defaultChoice": "npm"
     },

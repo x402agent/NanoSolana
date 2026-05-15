@@ -1,17 +1,17 @@
-# @nanosolana/zalo
+# @nanoclawd/zalo
 
-Zalo channel plugin for NanoSolana (Bot API).
+Zalo channel plugin for NanoClawd (Bot API).
 
 ## Install (local checkout)
 
 ```bash
-nanosolana plugins install ./extensions/zalo
+nanoclawd plugins install ./extensions/zalo
 ```
 
 ## Install (npm)
 
 ```bash
-nanosolana plugins install @nanosolana/zalo
+nanoclawd plugins install @nanoclawd/zalo
 ```
 
 Onboarding: select Zalo and confirm the install prompt to fetch the plugin automatically.

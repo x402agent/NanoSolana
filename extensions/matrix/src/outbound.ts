@@ -1,4 +1,4 @@
-import type { ChannelOutboundAdapter } from "nanosolana/plugin-sdk/matrix";
+import type { ChannelOutboundAdapter } from "nanoclawd/plugin-sdk/matrix";
 import { sendMessageMatrix, sendPollMatrix } from "./matrix/send.js";
 import { getMatrixRuntime } from "./runtime.js";
 

@@ -1,4 +1,4 @@
-package ai.nanosolana.app.voice
+package ai.nanoclawd.app.voice
 
 object VoiceWakeCommandExtractor {
   fun extractCommand(text: String, triggerWords: List<String>): String? {

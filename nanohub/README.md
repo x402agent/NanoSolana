@@ -6,23 +6,23 @@
 
 <p align="center">
   <a href="https://www.npmjs.com/package/@mawdbotsonsolana/nanohub"><img src="https://img.shields.io/npm/v/@mawdbotsonsolana/nanohub?style=for-the-badge&logo=npm&logoColor=white&label=nanohub" alt="npm version"></a>
-  <a href="https://github.com/nanosolana/nanosolana/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/nanosolana/nanosolana/ci.yml?style=for-the-badge" alt="CI status"></a>
-  <a href="https://discord.gg/nanosolana"><img src="https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white&style=for-the-badge" alt="Discord"></a>
+  <a href="https://github.com/nanoclawd/nanoclawd/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/nanoclawd/nanoclawd/ci.yml?style=for-the-badge" alt="CI status"></a>
+  <a href="https://discord.gg/nanoclawd"><img src="https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white&style=for-the-badge" alt="Discord"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="MIT License"></a>
 </p>
 
-NanoHub is the public skill registry for NanoSolana agents: publish, version, search, inspect, and install text-based agent skills built around `SKILL.md` plus supporting files.
+NanoHub is the public skill registry for NanoClawd agents: publish, version, search, inspect, and install text-based agent skills built around `SKILL.md` plus supporting files.
 It is optimized for fast browsing, a CLI-friendly registry API, moderation workflows, and vector search.
 
-NanoSolana Docs is the companion registry for `SOUL.md` bundles and long-form system lore.
+NanoClawd Docs is the companion registry for `SOUL.md` bundles and long-form system lore.
 
 <p align="center">
-  <a href="https://hub.nanosolana.com">NanoHub</a> ·
-  <a href="https://docs.nanosolana.com">NanoSolana Docs</a> ·
+  <a href="https://hub.nanoclawd.com">NanoHub</a> ·
+  <a href="https://docs.nanoclawd.com">NanoClawd Docs</a> ·
   <a href="VISION.md">Vision</a> ·
   <a href="docs/README.md">Docs</a> ·
   <a href="CONTRIBUTING.md">Contributing</a> ·
-  <a href="https://discord.gg/nanosolana">Discord</a>
+  <a href="https://discord.gg/nanoclawd">Discord</a>
 </p>
 
 ## What you can do
@@ -110,7 +110,7 @@ Common flows:
 - Manage installs: `nanohub install <slug>`, `nanohub uninstall <slug>`, `nanohub list`, `nanohub update --all`
 - Inspect without installing: `nanohub inspect <slug>`
 - Publish and sync: `nanohub publish <path>`, `nanohub sync`
-- Bootstrap metadata: `GET /api/v1/skills/:slug/manifest` for manifest-driven installers such as `nanosolana oneshot <slug>`
+- Bootstrap metadata: `GET /api/v1/skills/:slug/manifest` for manifest-driven installers such as `nanoclawd oneshot <slug>`
 
 Legacy `clawhub` remains available as a compatibility alias.
 

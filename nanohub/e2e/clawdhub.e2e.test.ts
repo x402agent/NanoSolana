@@ -31,7 +31,7 @@ function mustGetToken() {
   const fromEnv =
     process.env.CLAWHUB_E2E_TOKEN?.trim() ||
     process.env.NANOHUB_E2E_TOKEN?.trim() ||
-    process.env.NANOSOLANA_E2E_TOKEN?.trim()
+    process.env.NANOCLAWD_E2E_TOKEN?.trim()
   if (fromEnv) return fromEnv
   return null
 }
@@ -40,8 +40,8 @@ function getRegistry() {
   return (
     process.env.CLAWHUB_REGISTRY?.trim() ||
     process.env.NANOHUB_REGISTRY?.trim() ||
-    process.env.NANOSOLANA_REGISTRY?.trim() ||
-    'https://nanosolana.netlify.app'
+    process.env.NANOCLAWD_REGISTRY?.trim() ||
+    'https://nanoclawd.netlify.app'
   )
 }
 
@@ -49,8 +49,8 @@ function getSite() {
   return (
     process.env.CLAWHUB_SITE?.trim() ||
     process.env.NANOHUB_SITE?.trim() ||
-    process.env.NANOSOLANA_SITE?.trim() ||
-    'https://nanosolana.netlify.app'
+    process.env.NANOCLAWD_SITE?.trim() ||
+    'https://nanoclawd.netlify.app'
   )
 }
 
@@ -75,7 +75,7 @@ async function fetchWithTimeout(input: RequestInfo | URL, init?: RequestInit) {
   }
 }
 
-describe('nanosolana nanohub e2e', () => {
+describe('nanoclawd nanohub e2e', () => {
   it('prints CLI version via --cli-version', async () => {
     const result = spawnSync('bun', ['clawhub', '--cli-version'], {
       cwd: process.cwd(),
@@ -518,7 +518,7 @@ describe('nanosolana nanohub e2e', () => {
     const token = mustGetToken() ?? (await readGlobalConfig())?.token ?? null
     if (!token) {
       throw new Error(
-        'Missing token. Set CLAWHUB_E2E_TOKEN / NANOHUB_E2E_TOKEN / NANOSOLANA_E2E_TOKEN or run: bun clawhub auth login',
+        'Missing token. Set CLAWHUB_E2E_TOKEN / NANOHUB_E2E_TOKEN / NANOCLAWD_E2E_TOKEN or run: bun clawhub auth login',
       )
     }
 

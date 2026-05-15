@@ -1,6 +1,6 @@
 import Foundation
 
-public enum NanoSolanaSystemCommand: String, Codable, Sendable {
+public enum NanoClawdSystemCommand: String, Codable, Sendable {
     case run = "system.run"
     case which = "system.which"
     case notify = "system.notify"
@@ -8,19 +8,19 @@ public enum NanoSolanaSystemCommand: String, Codable, Sendable {
     case execApprovalsSet = "system.execApprovals.set"
 }
 
-public enum NanoSolanaNotificationPriority: String, Codable, Sendable {
+public enum NanoClawdNotificationPriority: String, Codable, Sendable {
     case passive
     case active
     case timeSensitive
 }
 
-public enum NanoSolanaNotificationDelivery: String, Codable, Sendable {
+public enum NanoClawdNotificationDelivery: String, Codable, Sendable {
     case system
     case overlay
     case auto
 }
 
-public struct NanoSolanaSystemRunParams: Codable, Sendable, Equatable {
+public struct NanoClawdSystemRunParams: Codable, Sendable, Equatable {
     public var command: [String]
     public var rawCommand: String?
     public var cwd: String?
@@ -57,7 +57,7 @@ public struct NanoSolanaSystemRunParams: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaSystemWhichParams: Codable, Sendable, Equatable {
+public struct NanoClawdSystemWhichParams: Codable, Sendable, Equatable {
     public var bins: [String]
 
     public init(bins: [String]) {
@@ -65,19 +65,19 @@ public struct NanoSolanaSystemWhichParams: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaSystemNotifyParams: Codable, Sendable, Equatable {
+public struct NanoClawdSystemNotifyParams: Codable, Sendable, Equatable {
     public var title: String
     public var body: String
     public var sound: String?
-    public var priority: NanoSolanaNotificationPriority?
-    public var delivery: NanoSolanaNotificationDelivery?
+    public var priority: NanoClawdNotificationPriority?
+    public var delivery: NanoClawdNotificationDelivery?
 
     public init(
         title: String,
         body: String,
         sound: String? = nil,
-        priority: NanoSolanaNotificationPriority? = nil,
-        delivery: NanoSolanaNotificationDelivery? = nil)
+        priority: NanoClawdNotificationPriority? = nil,
+        delivery: NanoClawdNotificationDelivery? = nil)
     {
         self.title = title
         self.body = body

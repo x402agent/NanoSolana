@@ -1,6 +1,6 @@
 import Foundation
 
-enum NanoSolanaEnv {
+enum NanoClawdEnv {
     static func path(_ key: String) -> String? {
         // Normalize env overrides once so UI + file IO stay consistent.
         guard let raw = getenv(key) else { return nil }
@@ -13,30 +13,30 @@ enum NanoSolanaEnv {
     }
 }
 
-enum NanoSolanaPaths {
-    private static let configPathEnv = ["NANOSOLANA_CONFIG_PATH"]
-    private static let stateDirEnv = ["NANOSOLANA_STATE_DIR"]
+enum NanoClawdPaths {
+    private static let configPathEnv = ["NANOCLAWD_CONFIG_PATH"]
+    private static let stateDirEnv = ["NANOCLAWD_STATE_DIR"]
 
     static var stateDirURL: URL {
         for key in self.stateDirEnv {
-            if let override = NanoSolanaEnv.path(key) {
+            if let override = NanoClawdEnv.path(key) {
                 return URL(fileURLWithPath: override, isDirectory: true)
             }
         }
         let home = FileManager().homeDirectoryForCurrentUser
-        return home.appendingPathComponent(".nanosolana", isDirectory: true)
+        return home.appendingPathComponent(".nanoclawd", isDirectory: true)
     }
 
     private static func resolveConfigCandidate(in dir: URL) -> URL? {
         let candidates = [
-            dir.appendingPathComponent("nanosolana.json"),
+            dir.appendingPathComponent("nanoclawd.json"),
         ]
         return candidates.first(where: { FileManager().fileExists(atPath: $0.path) })
     }
 
     static var configURL: URL {
         for key in self.configPathEnv {
-            if let override = NanoSolanaEnv.path(key) {
+            if let override = NanoClawdEnv.path(key) {
                 return URL(fileURLWithPath: override)
             }
         }
@@ -44,7 +44,7 @@ enum NanoSolanaPaths {
         if let existing = self.resolveConfigCandidate(in: stateDir) {
             return existing
         }
-        return stateDir.appendingPathComponent("nanosolana.json")
+        return stateDir.appendingPathComponent("nanoclawd.json")
     }
 
     static var workspaceURL: URL {

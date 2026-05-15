@@ -1,6 +1,6 @@
 import Foundation
 import Observation
-import NanoSolanaProtocol
+import NanoClawdProtocol
 
 struct ChannelsStatusSnapshot: Codable {
     struct WhatsAppSelf: Codable {

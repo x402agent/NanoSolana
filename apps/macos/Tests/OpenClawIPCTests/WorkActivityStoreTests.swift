@@ -1,7 +1,7 @@
 import Foundation
-import NanoSolanaProtocol
+import NanoClawdProtocol
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 @MainActor
 struct WorkActivityStoreTests {
@@ -67,7 +67,7 @@ struct WorkActivityStoreTests {
             meta: nil,
             args: [
                 "command": AnyCodable("echo hi\necho bye"),
-                "path": AnyCodable("\(home)/Projects/nanosolana"),
+                "path": AnyCodable("\(home)/Projects/nanoclawd"),
             ])
 
         #expect(store.current?.label == "bash: echo hi")

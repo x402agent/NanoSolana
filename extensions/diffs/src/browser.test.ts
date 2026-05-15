@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/diffs";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/diffs";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createTempDiffRoot } from "./test-helpers.js";
 
@@ -21,7 +21,7 @@ describe("PlaywrightDiffScreenshotter", () => {
 
   beforeEach(async () => {
     vi.useFakeTimers();
-    ({ rootDir, cleanup: cleanupRootDir } = await createTempDiffRoot("nanosolana-diffs-browser-"));
+    ({ rootDir, cleanup: cleanupRootDir } = await createTempDiffRoot("nanoclawd-diffs-browser-"));
     outputPath = path.join(rootDir, "preview.png");
     launchMock.mockReset();
     const browserModule = await import("./browser.js");
@@ -182,12 +182,12 @@ describe("PlaywrightDiffScreenshotter", () => {
   });
 });
 
-function createConfig(): NanoSolanaConfig {
+function createConfig(): NanoClawdConfig {
   return {
     browser: {
       executablePath: process.execPath,
     },
-  } as NanoSolanaConfig;
+  } as NanoClawdConfig;
 }
 
 async function createScreenshotterHarness(options?: {

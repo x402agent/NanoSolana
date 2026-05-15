@@ -40,8 +40,8 @@ function parsePayload(element: HTMLScriptElement): DiffViewerPayload {
 function getCards(): Array<{ host: HTMLElement; payload: DiffViewerPayload }> {
   const cards: Array<{ host: HTMLElement; payload: DiffViewerPayload }> = [];
   for (const card of document.querySelectorAll<HTMLElement>(".oc-diff-card")) {
-    const host = card.querySelector<HTMLElement>("[data-nanosolana-diff-host]");
-    const payloadNode = card.querySelector<HTMLScriptElement>("[data-nanosolana-diff-payload]");
+    const host = card.querySelector<HTMLElement>("[data-nanoclawd-diff-host]");
+    const payloadNode = card.querySelector<HTMLScriptElement>("[data-nanoclawd-diff-payload]");
     if (!host || !payloadNode) {
       continue;
     }
@@ -290,9 +290,9 @@ async function hydrateViewer(): Promise<void> {
 async function main(): Promise<void> {
   try {
     await hydrateViewer();
-    document.documentElement.dataset.nanosolanaDiffsReady = "true";
+    document.documentElement.dataset.nanoclawdDiffsReady = "true";
   } catch (error) {
-    document.documentElement.dataset.nanosolanaDiffsError = "true";
+    document.documentElement.dataset.nanoclawdDiffsError = "true";
     console.error("Failed to hydrate diff viewer", error);
   }
 }

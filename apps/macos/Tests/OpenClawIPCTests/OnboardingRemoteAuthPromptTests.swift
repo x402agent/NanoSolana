@@ -1,6 +1,6 @@
-import NanoSolanaKit
+import NanoClawdKit
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 @MainActor
 struct OnboardingRemoteAuthPromptTests {
@@ -101,7 +101,7 @@ struct OnboardingRemoteAuthPromptTests {
         #expect(issue.title == "This device needs pairing approval")
         #expect(issue.body.contains("`/pair approve`"))
         #expect(issue.statusMessage.contains("/pair approve"))
-        #expect(issue.footnote?.contains("`nanosolana devices approve`") == true)
+        #expect(issue.footnote?.contains("`nanoclawd devices approve`") == true)
     }
 
     @Test func `paired device success copy explains auth source`() {

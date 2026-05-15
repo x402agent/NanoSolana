@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=120&section=header&text=SOLANA%20CLAUDE%20GO&fontSize=42&fontColor=14F195&animation=fadeIn&fontAlignY=38&desc=sovereign%20ai%20lobsters%20on%20solana&descSize=16&descAlignY=60&descColor=9945FF" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=120&section=header&text=SOLANA%20CLAWD%20GO&fontSize=42&fontColor=14F195&animation=fadeIn&fontAlignY=38&desc=sovereign%20ai%20lobsters%20on%20solana&descSize=16&descAlignY=60&descColor=9945FF" width="100%" />
 
 ```
  ███████╗ ██████╗ ██████╗
@@ -15,8 +15,8 @@
 
 ---
 
-[![npm](https://img.shields.io/npm/v/solana-claude-go?color=14F195&style=for-the-badge&label=npm&logo=npm&logoColor=white)](https://npmjs.com/package/solana-claude-go)
-[![downloads](https://img.shields.io/npm/dm/solana-claude-go?color=9945FF&style=for-the-badge&logo=npm&logoColor=white&label=downloads)](https://npmjs.com/package/solana-claude-go)
+[![npm](https://img.shields.io/npm/v/solana-clawd-go?color=14F195&style=for-the-badge&label=npm&logo=npm&logoColor=white)](https://npmjs.com/package/solana-clawd-go)
+[![downloads](https://img.shields.io/npm/dm/solana-clawd-go?color=9945FF&style=for-the-badge&logo=npm&logoColor=white&label=downloads)](https://npmjs.com/package/solana-clawd-go)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Node](https://img.shields.io/badge/Node-%E2%89%A522-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org)
 
@@ -25,7 +25,7 @@
 [![license](https://img.shields.io/badge/LICENSE-MIT-orange?style=for-the-badge)](./LICENSE)
 [![Go Bridge](https://img.shields.io/badge/Go%20Bridge-ONLINE-14F195?style=for-the-badge&logo=go&logoColor=white)](https://github.com/x402agent/solana-clawd)
 
-[**solanaclawd.com**](https://solanaclawd.com) · [**pay.solanaclawd.com**](https://pay.solanaclawd.com) · [**@clawddevs**](https://x.com/clawddevs) · [**NPM**](https://npmjs.com/package/solana-claude-go) · [**GitHub**](https://github.com/x402agent/NanoSolana)
+[**solanaclawd.com**](https://solanaclawd.com) · [**pay.solanaclawd.com**](https://pay.solanaclawd.com) · [**@clawddevs**](https://x.com/clawddevs) · [**NPM**](https://npmjs.com/package/solana-clawd-go) · [**GitHub**](https://github.com/x402agent/NanoClawd)
 
 </div>
 
@@ -33,7 +33,7 @@
 
 ## Signal
 
-**Solana Claude Go (SCG)** is a Solana-native agent stack built to move like **Hermes in Web3**: messenger, scout, trader, payer, vault, and recall engine in one shell.
+**Solana Clawd Go (SCG)** is a Solana-native agent stack built to move like **Hermes in Web3**: messenger, scout, trader, payer, vault, and recall engine in one shell.
 
 > *An agent is not truly sovereign until it can pay for its own inference.*
 
@@ -56,7 +56,7 @@
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│                    SOLANA CLAUDE GO RUNTIME                       │
+│                    SOLANA CLAWD GO RUNTIME                       │
 ├──────────────┬──────────────┬──────────────┬─────────────────────┤
 │   scg CLI    │  Go binary   │   ScgHub     │  OpenSCG exts       │
 │   (this pkg) │  companion   │  skills mkt  │  40+ channels       │
@@ -88,17 +88,17 @@ curl -fsSL https://install.solanaclawd.com | bash
 
 ```bash
 # Via npm — demo mode (no keys required)
-npx solana-claude-go demo
+npx solana-clawd-go demo
 ```
 
 ```bash
 # Full one-shot bootstrap
-npx solana-claude-go go
+npx solana-clawd-go go
 ```
 
 ```bash
 # Long-running daemon
-npx solana-claude-go daemon
+npx solana-clawd-go daemon
 ```
 
 ---
@@ -131,15 +131,15 @@ Pay      :: pay.solanaclawd.com
 ### No install (npx)
 
 ```bash
-npx solana-claude-go@latest demo          # simulation — no keys needed
-npx solana-claude-go@latest go            # one-shot bootstrap
-npx solana-claude-go@latest daemon        # persistent runtime
+npx solana-clawd-go@latest demo          # simulation — no keys needed
+npx solana-clawd-go@latest go            # one-shot bootstrap
+npx solana-clawd-go@latest daemon        # persistent runtime
 ```
 
 ### Global
 
 ```bash
-npm install -g solana-claude-go
+npm install -g solana-clawd-go
 scg demo
 scg go
 scg daemon
@@ -148,8 +148,8 @@ scg daemon
 ### From source
 
 ```bash
-git clone https://github.com/x402agent/NanoSolana.git
-cd NanoSolana/nano-core
+git clone https://github.com/x402agent/NanoClawd.git
+cd NanoClawd/nano-core
 npm install
 npm run build
 node dist/cli/entry.js demo
@@ -169,8 +169,8 @@ node dist/cli/entry.js demo
  ███████║╚██████╗╚██████╔╝
  ╚══════╝ ╚═════╝ ╚═════╝
 
-  🦞 Solana Claude Go Runtime v1.1.0
-  TypeScript sovereign agent · github.com/x402agent/NanoSolana
+  🦞 Solana Clawd Go Runtime v1.1.0
+  TypeScript sovereign agent · github.com/x402agent/NanoClawd
 
   🔧 Initializing...
   ✅ Wallet:    Ab3x...Kz9f  (0.0000 SOL)
@@ -224,7 +224,7 @@ SCG_GO_SECRET=your-shared-secret
 ```
 
 ```ts
-import { GoBridgeClient } from "solana-claude-go";
+import { GoBridgeClient } from "solana-clawd-go";
 
 const bridge = new GoBridgeClient({
   host: "127.0.0.1",
@@ -271,7 +271,7 @@ import {
   GoBridgeClient,
   createGoBridgeFromEnv,
   loadConfig,
-} from "solana-claude-go";
+} from "solana-clawd-go";
 
 const config = loadConfig();
 

@@ -1,7 +1,7 @@
 {
   "id": "pumpfun",
   "name": "PumpFun",
-  "description": "Pump.fun protocol bridge for NanoSolana — launch monitoring, bonding curve analytics, fee tracking, and swarm trade events.",
+  "description": "Pump.fun protocol bridge for NanoClawd — launch monitoring, bonding curve analytics, fee tracking, and swarm trade events.",
   "providers": ["pumpfun"],
   "configSchema": {
     "type": "object",

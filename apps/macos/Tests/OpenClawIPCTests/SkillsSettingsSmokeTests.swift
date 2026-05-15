@@ -1,6 +1,6 @@
-import NanoSolanaProtocol
+import NanoClawdProtocol
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 private func makeSkillStatus(
     name: String,
@@ -48,7 +48,7 @@ struct SkillsSettingsSmokeTests {
             makeSkillStatus(
                 name: "Needs Setup",
                 description: "Missing bins and env",
-                source: "nanosolana-managed",
+                source: "nanoclawd-managed",
                 filePath: "/tmp/skills/needs-setup",
                 skillKey: "needs-setup",
                 primaryEnv: "API_KEY",
@@ -72,7 +72,7 @@ struct SkillsSettingsSmokeTests {
             makeSkillStatus(
                 name: "Ready Skill",
                 description: "All set",
-                source: "nanosolana-bundled",
+                source: "nanoclawd-bundled",
                 filePath: "/tmp/skills/ready",
                 skillKey: "ready",
                 emoji: "✅",
@@ -86,7 +86,7 @@ struct SkillsSettingsSmokeTests {
             makeSkillStatus(
                 name: "Disabled Skill",
                 description: "Disabled in config",
-                source: "nanosolana-extra",
+                source: "nanoclawd-extra",
                 filePath: "/tmp/skills/disabled",
                 skillKey: "disabled",
                 emoji: "🚫",
@@ -109,7 +109,7 @@ struct SkillsSettingsSmokeTests {
             makeSkillStatus(
                 name: "Local Skill",
                 description: "Local ready",
-                source: "nanosolana-workspace",
+                source: "nanoclawd-workspace",
                 filePath: "/tmp/skills/local",
                 skillKey: "local",
                 emoji: "🏠",

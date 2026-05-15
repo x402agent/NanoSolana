@@ -1,4 +1,4 @@
-// ── Solana Claude Go × PumpFun — Swarm Spawner ─────────────────────────────────────
+// ── Solana Clawd Go × PumpFun — Swarm Spawner ─────────────────────────────────────
 //
 // The SwarmSpawner manages the lifecycle of autonomous financial agents.
 // Each agent runs as an isolated async task with its own wallet, strategy,

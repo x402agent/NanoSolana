@@ -34,7 +34,7 @@ type SoulMeta = {
 }
 
 const DEFAULT_DESCRIPTION = 'NanoHub — a fast skill registry for agents, with vector search.'
-const DEFAULT_SOUL_DESCRIPTION = 'NanoSolana Docs — the home for SOUL.md bundles and personal system lore.'
+const DEFAULT_SOUL_DESCRIPTION = 'NanoClawd Docs — the home for SOUL.md bundles and personal system lore.'
 const OG_SKILL_IMAGE_LAYOUT_VERSION = '5'
 const OG_SOUL_IMAGE_LAYOUT_VERSION = '1'
 
@@ -128,9 +128,9 @@ export function buildSoulMeta(source: SoulMetaSource): SoulMeta {
   const displayName = clean(source.displayName) || clean(source.slug)
   const summary = clean(source.summary)
   const version = clean(source.version)
-  const title = `${displayName} — NanoSolana Docs`
+  const title = `${displayName} — NanoClawd Docs`
   const description =
-    summary || (owner ? `Soul by @${owner} on NanoSolana Docs.` : DEFAULT_SOUL_DESCRIPTION)
+    summary || (owner ? `Soul by @${owner} on NanoClawd Docs.` : DEFAULT_SOUL_DESCRIPTION)
   const url = `${siteUrl}/souls/${source.slug}`
   const imageParams = new URLSearchParams()
   imageParams.set('v', OG_SOUL_IMAGE_LAYOUT_VERSION)

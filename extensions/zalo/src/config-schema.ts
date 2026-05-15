@@ -3,8 +3,8 @@ import {
   buildCatchallMultiAccountChannelSchema,
   DmPolicySchema,
   GroupPolicySchema,
-} from "nanosolana/plugin-sdk/compat";
-import { MarkdownConfigSchema } from "nanosolana/plugin-sdk/zalo";
+} from "nanoclawd/plugin-sdk/compat";
+import { MarkdownConfigSchema } from "nanoclawd/plugin-sdk/zalo";
 import { z } from "zod";
 import { buildSecretInputSchema } from "./secret-input.js";
 

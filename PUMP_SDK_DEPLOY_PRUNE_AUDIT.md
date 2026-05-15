@@ -6,7 +6,7 @@ The point is to separate:
 
 1. safe generated artifacts that should be deleted now
 2. source trees that can remain in git but should not ship in a final deploy
-3. directories that NanoSolana still references directly at runtime
+3. directories that NanoClawd still references directly at runtime
 
 ## Current Result
 
@@ -21,7 +21,7 @@ After that safe prune, `pump-fun-sdk-main/` is down to about `107M`.
 
 ## Keep For Current Runtime
 
-NanoSolana currently resolves these paths directly from `pump-fun-sdk-main/` via:
+NanoClawd currently resolves these paths directly from `pump-fun-sdk-main/` via:
 
 - `pump/bot-registry.ts`
 - `nano-core/src/claw/pump/bot-registry.ts`
@@ -76,7 +76,7 @@ Also exclude contributor and metadata files from the final runtime image:
 - `AGENTS.md`
 - `CHANGELOG.md`
 - `CITATION.cff`
-- `CLAUDE.md`
+- `CLAWD.md`
 - `CODE_OF_CONDUCT.md`
 - `CONTRIBUTING.md`
 - `COPILOT.md`
@@ -111,15 +111,15 @@ SDK from the vendored snapshot:
 - `README.md`
 - `server.json`
 
-If NanoSolana only relies on its own copied Pump bridge under `pump/` and
+If NanoClawd only relies on its own copied Pump bridge under `pump/` and
 `nano-core/src/claw/pump/`, those are reference files, not runtime deploy files.
 
 ## Recommended Next Step
 
-For a final NanoSolana deployment:
+For a final NanoClawd deployment:
 
 1. Keep the runtime bot/service folders listed above.
 2. Exclude the doc/source-only folders from the deploy artifact.
 3. Longer term, move the remaining runtime-needed Pump services out of `pump-fun-sdk-main/`
-   into first-class NanoSolana paths.
+   into first-class NanoClawd paths.
 4. Once that path migration is complete, archive or remove the vendored snapshot entirely.

@@ -1,4 +1,4 @@
-import { createDedupeCache } from "nanosolana/plugin-sdk/tlon";
+import { createDedupeCache } from "nanoclawd/plugin-sdk/tlon";
 
 export type ProcessedMessageTracker = {
   mark: (id?: string | null) => boolean;

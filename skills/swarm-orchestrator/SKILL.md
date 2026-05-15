@@ -8,7 +8,7 @@ Manage multi-bot trading swarms with agent personas, epistemological memory, and
 
 ## Prerequisites
 
-- NanoSolana core installed
+- NanoClawd core installed
 - `TELEGRAM_BOT_TOKEN` for Telegram gateway (optional)
 - `HELIUS_RPC_URL` configured
 
@@ -107,7 +107,7 @@ Each agent gets its own ScgVault with 3-tier epistemological memory:
 The bot manager handles lifecycle for sub-bots:
 
 ```typescript
-import { BotManager, EventBus } from "nanosolana";
+import { BotManager, EventBus } from "nanoclawd";
 
 const eventBus = new EventBus(5000);
 const manager = new BotManager(eventBus);

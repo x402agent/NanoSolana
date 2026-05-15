@@ -2,7 +2,7 @@
 
 /**
  * ╔══════════════════════════════════════════════════════════════════════╗
- * ║                 SOLANA CLAUDE GO — TypeScript CLI Entry                 ║
+ * ║                 SOLANA CLAWD GO — TypeScript CLI Entry                 ║
  * ║   Terminal runtime · autonomous daemon · scg go-bridge          ║
  * ║  By x402agent                                               ║
  * ╚══════════════════════════════════════════════════════════════════════╝
@@ -73,7 +73,7 @@ function printBanner(): void {
   ██║ ╚████║██║  ██║██║ ╚████║╚██████╔╝███████║╚██████╔╝███████╗██║  ██║██║ ╚████║██║  ██║
   ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝
   `));
-  console.log(chalk.white("  🦞 Solana Claude Go Runtime"));
+  console.log(chalk.white("  🦞 Solana Clawd Go Runtime"));
   console.log(chalk.gray("  TypeScript Solana operator runtime · By x402agent\n"));
 }
 
@@ -147,17 +147,17 @@ const program = new Command();
 
 program
   .name("scg")
-  .description("🦞 Solana Claude Go — Autonomous Solana trading intelligence with a virtual pet soul")
+  .description("🦞 Solana Clawd Go — Autonomous Solana trading intelligence with a virtual pet soul")
   .version("1.0.3");
 
 // ── nano init ────────────────────────────────────────────────
 
 program
   .command("init")
-  .description("Initialize Nano Solana and configure API keys")
+  .description("Initialize Nano Clawd and configure API keys")
   .action(async () => {
     printBanner();
-    console.log(chalk.white.bold("  🔧 Initializing Nano Solana...\n"));
+    console.log(chalk.white.bold("  🔧 Initializing Nano Clawd...\n"));
 
     ensureClawdHome();
     const secrets = loadSecrets();
@@ -190,7 +190,7 @@ program
     // Create .env template
     const envPath = join(process.cwd(), ".env");
     if (!existsSync(envPath)) {
-      const envContent = `# Solana Claude Go Configuration
+      const envContent = `# Solana Clawd Go Configuration
 SCG_AGENT_NAME=nano-alpha
 SCG_GATEWAY_PORT=18790
 AI_PROVIDER=gemini
@@ -210,7 +210,7 @@ NANO_LOG_LEVEL=info
 program
   .command("birth")
   .description("Birth a new nano agent with a Solana wallet")
-  .option("-n, --name <name>", "Agent name", "Solana Claude Go")
+  .option("-n, --name <name>", "Agent name", "Solana Clawd Go")
   .option("--pet-name <petName>", "TamaGOchi pet name")
   .action(async (opts) => {
     printBanner();
@@ -261,14 +261,14 @@ program
 program
   .command("run")
   .alias("daemon")
-  .description("Run the autonomous Solana Claude Go daemon (gateway + trading + memory)")
-  .option("-n, --name <name>", "Agent name", "Solana Claude Go")
+  .description("Run the autonomous Solana Clawd Go daemon (gateway + trading + memory)")
+  .option("-n, --name <name>", "Agent name", "Solana Clawd Go")
   .option("--pet-name <petName>", "TamaGOchi pet name")
   .option("--no-trade", "Disable trading engine (--no-ooda)")
   .option("--no-gateway", "Disable gateway server")
   .action(async (opts) => {
     printBanner();
-    console.log(chalk.white.bold(`  🚀 Starting Solana Claude Go daemon "${opts.name}"...\n`));
+    console.log(chalk.white.bold(`  🚀 Starting Solana Clawd Go daemon "${opts.name}"...\n`));
 
     try {
       const config = loadConfig();
@@ -418,7 +418,7 @@ program
       const vaultStats = vault.getStats();
       const pet = new TamaGOchi(config.agent.name);
 
-      console.log(chalk.cyan("\n  ── Solana Claude Go Runtime Status ─────────────────\n"));
+      console.log(chalk.cyan("\n  ── Solana Clawd Go Runtime Status ─────────────────\n"));
       console.log(chalk.white("  Agent:      ") + chalk.cyan(config.agent.name));
       console.log(chalk.white("  Wallet:     ") + chalk.cyan(wallet.getPublicKey()));
       console.log(chalk.white("  Balance:    ") + chalk.yellow(`${wallet.getInfo().balance} SOL`));
@@ -613,7 +613,7 @@ program
     try {
       const config = loadConfig();
       const redacted = redactConfig(config);
-      console.log(chalk.cyan("\n  ── Solana Claude Go Config ────────────────────────\n"));
+      console.log(chalk.cyan("\n  ── Solana Clawd Go Config ────────────────────────\n"));
       console.log(JSON.stringify(redacted, null, 2).split("\n").map((l) => `  ${l}`).join("\n"));
       console.log();
     } catch (err) {
@@ -728,7 +728,7 @@ program
         return;
       }
 
-      console.log(chalk.cyan("\n  ── Solana Claude Go Knowledge Integration ──────────\n"));
+      console.log(chalk.cyan("\n  ── Solana Clawd Go Knowledge Integration ──────────\n"));
       console.log(chalk.white("  Generated:  ") + chalk.gray(new Date(summary.generatedAt).toISOString()));
       console.log(chalk.white("  Docs:       ") + chalk.green(`${summary.docs.files} files`) + chalk.gray(` (${summary.docs.markdownFiles} markdown, ${formatBytes(summary.docs.bytes)})`));
       console.log(
@@ -890,7 +890,7 @@ program
   .command("go")
   .alias("bootstrap")
   .description("One-shot bootstrap: configure, birth, and launch your Solana trading daemon")
-  .option("-n, --name <name>", "Agent name", "Solana Claude Go")
+  .option("-n, --name <name>", "Agent name", "Solana Clawd Go")
   .option("--pet-name <petName>", "TamaGOchi pet name")
   .option("--skip-init", "Skip API key prompts if already configured")
   .option("--dvd-intro", "Play DVD intro animation before startup")
@@ -1084,7 +1084,7 @@ program
     }
   });
 
-// ── nanosolana demo (simulation mode) ───────────────────────
+// ── nanoclawd demo (simulation mode) ───────────────────────
 
 program
   .command("demo")
@@ -1195,8 +1195,8 @@ program
         console.log(chalk.white("  Ready to go live?"));
         console.log(chalk.cyan("    npx scg go"));
         console.log();
-        console.log(chalk.gray("  Full docs: https://docs.nanosolana.com"));
-        console.log(chalk.gray("  GitHub: https://github.com/x402agent/Solana Claude Go"));
+        console.log(chalk.gray("  Full docs: https://docs.nanoclawd.com"));
+        console.log(chalk.gray("  GitHub: https://github.com/x402agent/Solana Clawd Go"));
         console.log();
         process.exit(0);
       }
@@ -1221,11 +1221,11 @@ program
     await new Promise(() => {});
   });
 
-// ── nanosolana dvd (screensaver) ────────────────────────────
+// ── nanoclawd dvd (screensaver) ────────────────────────────
 
 program
   .command("dvd")
-  .description("Floating DVD-style Solana Claude Go screensaver in the terminal")
+  .description("Floating DVD-style Solana Clawd Go screensaver in the terminal")
   .action(() => {
     const dvd = startDvdScreensaver();
 
@@ -1239,11 +1239,11 @@ program
     });
   });
 
-// ── nanosolana lobster (show mascot) ────────────────────────
+// ── nanoclawd lobster (show mascot) ────────────────────────
 
 program
   .command("lobster")
-  .description("Show the animated Solana Claude Go lobster mascot")
+  .description("Show the animated Solana Clawd Go lobster mascot")
   .option("--static", "Show static version")
   .action(async (opts) => {
     if (opts.static) {
@@ -1253,7 +1253,7 @@ program
     }
   });
 
-// ── nanosolana scan (blockchain data reader) ────────────────────
+// ── nanoclawd scan (blockchain data reader) ────────────────────
 
 program
   .command("scan")
@@ -1270,9 +1270,9 @@ program
 
       const pubkey = address ?? (() => {
         try {
-          const wallet = new ScgWallet("Solana Claude Go");
+          const wallet = new ScgWallet("Solana Clawd Go");
           // Try loading existing wallet pubkey from file
-          const pubPath = join(homedir(), ".nanosolana", "wallet.pub");
+          const pubPath = join(homedir(), ".nanoclawd", "wallet.pub");
           if (existsSync(pubPath)) return readFileSync(pubPath, "utf-8").trim();
           return "";
         } catch { return ""; }
@@ -1298,7 +1298,7 @@ program
     }
   });
 
-// ── nanosolana register (on-chain NFT identity) ─────────────────
+// ── nanoclawd register (on-chain NFT identity) ─────────────────
 
 program
   .command("register")
@@ -1306,7 +1306,7 @@ program
   .action(async () => {
     try {
       const config = loadConfig();
-      const wallet = new ScgWallet("Solana Claude Go");
+      const wallet = new ScgWallet("Solana Clawd Go");
       await wallet.birth();
 
       const registry = new AgentRegistry();
@@ -1349,7 +1349,7 @@ program
     }
   });
 
-// ── nanosolana registry (show registration status) ──────────────
+// ── nanoclawd registry (show registration status) ──────────────
 
 program
   .command("registry")
@@ -1359,7 +1359,7 @@ program
     const reg = registry.loadRegistration();
 
     if (!reg) {
-      console.log(chalk.hex("#FFAA00")("\n  ⚠️  No registration found. Run: nanosolana register\n"));
+      console.log(chalk.hex("#FFAA00")("\n  ⚠️  No registration found. Run: nanoclawd register\n"));
       return;
     }
 
@@ -1377,7 +1377,7 @@ program
     console.log(chalk.gray(`  Explorer: https://explorer.solana.com/address/${reg.result.mintAddress}?cluster=devnet\n`));
   });
 
-// ── nanosolana nanobot (interactive UI) ──────────────────────────
+// ── nanoclawd nanobot (interactive UI) ──────────────────────────
 
 program
   .command("nanobot")
@@ -1394,7 +1394,7 @@ program
     await new Promise(() => {});
   });
 
-// ── nanosolana pay (tokenized agent payments) ─────────────────
+// ── nanoclawd pay (tokenized agent payments) ─────────────────
 
 const payCmd = program
   .command("pay")
@@ -1508,13 +1508,13 @@ payCmd
     printInfo("\nSet AGENT_TOKEN_MINT_ADDRESS in .env to enable payments.\n");
   });
 
-// ── nanosolana oneshot ───────────────────────────────────────────
+// ── nanoclawd oneshot ───────────────────────────────────────────
 
 program
   .command("oneshot")
-  .description("Resolve a NanoHub skill manifest into a one-shot Solana Claude Go launch plan")
+  .description("Resolve a NanoHub skill manifest into a one-shot Solana Clawd Go launch plan")
   .argument("<slug>", "NanoHub skill slug")
-  .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? "https://hub.nanosolana.com")
+  .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? "https://hub.nanoclawd.com")
   .option("--write <path>", "Write the generated plan to a JSON file")
   .option("--json", "Emit machine-readable JSON")
   .action(async (slug, opts) => {
@@ -1540,7 +1540,7 @@ program
       }
 
       printBanner();
-      console.log(chalk.white.bold("  ⚡ Solana Claude Go One-Shot Plan\n"));
+      console.log(chalk.white.bold("  ⚡ Solana Clawd Go One-Shot Plan\n"));
       console.log(chalk.cyan(`  Skill:       ${plan.displayName} (${plan.slug})`));
       console.log(chalk.cyan(`  Version:     ${plan.version}`));
       console.log(chalk.cyan(`  Site:        ${siteUrl}`));
@@ -1592,7 +1592,7 @@ program
     }
   });
 
-// ── nanosolana hub ────────────────────────────────────────────────
+// ── nanoclawd hub ────────────────────────────────────────────────
 
 const hubCmd = program
   .command("hub")
@@ -1600,12 +1600,12 @@ const hubCmd = program
 
 hubCmd
   .command("skills")
-  .description("Browse or search public NanoHub skills from the Solana Claude Go CLI")
+  .description("Browse or search public NanoHub skills from the Solana Clawd Go CLI")
   .argument("[query]", "Optional query to search NanoHub skills")
   .option("-l, --limit <n>", "Max results", "10")
   .option("-s, --sort <sort>", "Sort: newest|downloads|rating|installs|installsAllTime|trending", "newest")
   .option("--highlighted", "Only show highlighted skills")
-  .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? "https://hub.nanosolana.com")
+  .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? "https://hub.nanoclawd.com")
   .option("--json", "Emit machine-readable JSON")
   .action(async (query, opts) => {
     try {
@@ -1703,7 +1703,7 @@ hubCmd
   .command("inspect")
   .description("Inspect a NanoHub skill and optionally fetch its SKILL.md")
   .argument("<slug>", "Skill slug")
-  .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? "https://hub.nanosolana.com")
+  .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? "https://hub.nanoclawd.com")
   .option("--file <path>", "Fetch a specific file from the latest skill version", "SKILL.md")
   .option("--no-file", "Skip fetching the skill file preview")
   .option("--json", "Emit machine-readable JSON")
@@ -1806,7 +1806,7 @@ hubCmd
     try {
       // Load wallet for public key
       const config = loadConfig();
-      const agentName = opts.name ?? config.agent.name ?? "Solana Claude Go";
+      const agentName = opts.name ?? config.agent.name ?? "Solana Clawd Go";
       const wallet = new ScgWallet(agentName);
       const walletInfo = await wallet.birth();
 
@@ -1859,7 +1859,7 @@ hubCmd
       }
 
       // Save registration token locally
-      const hubTokenPath = join(homedir(), ".nanosolana", "hub-token.json");
+      const hubTokenPath = join(homedir(), ".nanoclawd", "hub-token.json");
       const hubData = {
         slug: (data.agent as Record<string, unknown>)?.slug ?? opts.slug ?? agentName.toLowerCase().replace(/\s+/g, "-"),
         registrationToken: data.registrationToken,
@@ -1875,7 +1875,7 @@ hubCmd
       console.log(chalk.white("  Message:  ") + chalk.gray(String(data.message ?? "")));
       console.log();
       console.log(chalk.gray("  Your agent is now discoverable in the NanoHub registry."));
-      console.log(chalk.gray("  Run ") + chalk.cyan("nanosolana hub list") + chalk.gray(" to see all registered agents.\n"));
+      console.log(chalk.gray("  Run ") + chalk.cyan("nanoclawd hub list") + chalk.gray(" to see all registered agents.\n"));
     } catch (err) {
       printError(err instanceof Error ? err.message : String(err));
       process.exit(1);
@@ -1950,9 +1950,9 @@ hubCmd
   .option("--api <url>", "NanoHub API server URL", "https://nanohub-api.up.railway.app")
   .action(async (opts) => {
     try {
-      const hubTokenPath = join(homedir(), ".nanosolana", "hub-token.json");
+      const hubTokenPath = join(homedir(), ".nanoclawd", "hub-token.json");
       if (!existsSync(hubTokenPath)) {
-        printError("Not registered. Run 'nanosolana hub register' first.");
+        printError("Not registered. Run 'nanoclawd hub register' first.");
         process.exit(1);
       }
 
@@ -2000,7 +2000,7 @@ hubCmd
       }
 
       // Check local registration
-      const hubTokenPath = join(homedir(), ".nanosolana", "hub-token.json");
+      const hubTokenPath = join(homedir(), ".nanoclawd", "hub-token.json");
       if (existsSync(hubTokenPath)) {
         const hubData = JSON.parse(readFileSync(hubTokenPath, "utf-8")) as {
           slug: string; registeredAt: string; apiUrl: string;
@@ -2010,9 +2010,9 @@ hubCmd
         console.log(chalk.white("  Registered:   ") + chalk.gray(hubData.registeredAt));
         console.log(chalk.white("  API:          ") + chalk.cyan(hubData.apiUrl));
       } else {
-        console.log(chalk.yellow("\n  ⚠️  Not registered. Run 'nanosolana hub register' to register."));
+        console.log(chalk.yellow("\n  ⚠️  Not registered. Run 'nanoclawd hub register' to register."));
       }
-      console.log(chalk.gray("\n  Public skills: nanosolana hub skills"));
+      console.log(chalk.gray("\n  Public skills: nanoclawd hub skills"));
       console.log();
     } catch (err) {
       printError(err instanceof Error ? err.message : String(err));
@@ -2025,7 +2025,7 @@ hubCmd
   .option("--api <url>", "NanoHub API server URL", "https://nanohub-api.up.railway.app")
   .action(async (opts) => {
     try {
-      const hubTokenPath = join(homedir(), ".nanosolana", "hub-token.json");
+      const hubTokenPath = join(homedir(), ".nanoclawd", "hub-token.json");
       if (!existsSync(hubTokenPath)) {
         printError("Not registered.");
         process.exit(1);

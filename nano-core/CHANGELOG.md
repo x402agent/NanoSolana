@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to NanoSolana will be documented in this file.
+All notable changes to NanoClawd will be documented in this file.
 
 ## [1.0.3] — 2026-03-20
 
@@ -14,7 +14,7 @@ All notable changes to NanoSolana will be documented in this file.
 
 ### Fixed
 
-- Aligned the CLI-reported version with the published npm package so `npx nanosolana --version` matches the release installed by `npx nanosolana go`.
+- Aligned the CLI-reported version with the published npm package so `npx nanoclawd --version` matches the release installed by `npx nanoclawd go`.
 
 ## [1.0.1] — 2026-03-16
 
@@ -22,21 +22,21 @@ All notable changes to NanoSolana will be documented in this file.
 
 - Added the missing `cron-parser` runtime dependency required by the claw IPC and task scheduler paths.
 - Fixed strict TypeScript declaration build errors in the CLI demo flow, docs integration, container runner, Pump swarm spawner, and Pump Telegram gateway.
-- Aligned the bundled docs corpus with the current repo surface, including `pump/docs/` integration in `nanosolana docs`.
+- Aligned the bundled docs corpus with the current repo surface, including `pump/docs/` integration in `nanoclawd docs`.
 
 ### Improved
 
-- Updated package metadata and release artifacts so `npx nanosolana go` resolves to a buildable, test-passing package.
+- Updated package metadata and release artifacts so `npx nanoclawd go` resolves to a buildable, test-passing package.
 
 ## [1.0.0] — 2025-03-15
 
 ### 🎉 First Stable Release
 
-NanoSolana hits 1.0! Production-ready autonomous trading agents on Solana.
+NanoClawd hits 1.0! Production-ready autonomous trading agents on Solana.
 
 ### ✨ New Features
 
-- **`nanosolana demo`** — Zero-config simulation mode. Try the full OODA loop without any API keys.
+- **`nanoclawd demo`** — Zero-config simulation mode. Try the full OODA loop without any API keys.
 - **SDK Examples** — 5 runnable examples: basic agent, custom strategy, webhook alerts, multi-agent mesh, and programmatic SDK usage.
 - **Enhanced npm presence** — 30 discovery keywords, 12+ badges, comparison table, SDK usage docs.
 - **GitHub Actions CI/CD** — Automated testing on Node 22/23, auto-publish on release with npm provenance.

@@ -1,4 +1,4 @@
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/tlon";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/tlon";
 import {
   formatDocsLink,
   patchScopedAccountConfig,
@@ -6,7 +6,7 @@ import {
   DEFAULT_ACCOUNT_ID,
   type ChannelOnboardingAdapter,
   type WizardPrompter,
-} from "nanosolana/plugin-sdk/tlon";
+} from "nanoclawd/plugin-sdk/tlon";
 import { buildTlonAccountFields } from "./account-fields.js";
 import type { TlonResolvedAccount } from "./types.js";
 import { listTlonAccountIds, resolveTlonAccount } from "./types.js";
@@ -19,7 +19,7 @@ function isConfigured(account: TlonResolvedAccount): boolean {
 }
 
 function applyAccountConfig(params: {
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   accountId: string;
   input: {
     name?: string;
@@ -31,7 +31,7 @@ function applyAccountConfig(params: {
     dmAllowlist?: string[];
     autoDiscoverChannels?: boolean;
   };
-}): NanoSolanaConfig {
+}): NanoClawdConfig {
   const { cfg, accountId, input } = params;
   const nextValues = {
     enabled: true,

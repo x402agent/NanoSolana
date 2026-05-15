@@ -1,4 +1,4 @@
-import type { NanoSolanaPluginApi } from "nanosolana/plugin-sdk/feishu";
+import type { NanoClawdPluginApi } from "nanoclawd/plugin-sdk/feishu";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { registerFeishuBitableTools } from "./bitable.js";
 import { registerFeishuDriveTools } from "./drive.js";
@@ -26,7 +26,7 @@ function createConfig(params: {
     perm?: boolean;
   };
   defaultAccount?: string;
-}): NanoSolanaPluginApi["config"] {
+}): NanoClawdPluginApi["config"] {
   return {
     channels: {
       feishu: {
@@ -46,7 +46,7 @@ function createConfig(params: {
         },
       },
     },
-  } as NanoSolanaPluginApi["config"];
+  } as NanoClawdPluginApi["config"];
 }
 
 describe("feishu tool account routing", () => {

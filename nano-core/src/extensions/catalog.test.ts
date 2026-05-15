@@ -14,7 +14,7 @@ describe("scanScgExtensions", () => {
     expect(discord).toBeDefined();
     expect(discord?.channels).toContain("discord");
     expect(discord?.metadataSources).toEqual(
-      expect.arrayContaining(["nanosolana-plugin", "openclaw-plugin", "package-json"]),
+      expect.arrayContaining(["nanoclawd-plugin", "openclaw-plugin", "package-json"]),
     );
 
     const pumpfun = snapshot.entries.find((entry) => entry.id === "pumpfun");

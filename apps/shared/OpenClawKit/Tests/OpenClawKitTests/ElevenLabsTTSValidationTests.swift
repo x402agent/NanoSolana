@@ -1,5 +1,5 @@
 import XCTest
-@testable import NanoSolanaKit
+@testable import NanoClawdKit
 
 final class ElevenLabsTTSValidationTests: XCTestCase {
     func testValidatedOutputFormatAllowsOnlyMp3Presets() {

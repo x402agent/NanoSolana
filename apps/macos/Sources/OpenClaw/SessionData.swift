@@ -157,7 +157,7 @@ extension SessionRow {
                 systemSent: false,
                 abortedLastRun: false,
                 tokens: SessionTokenStats(input: 320, output: 680, total: 1000, contextTokens: 200_000),
-                model: "claude-3.5-sonnet"),
+                model: "clawd-3.5-sonnet"),
             SessionRow(
                 id: "group-1",
                 key: "discord:channel:release-squad",
@@ -174,7 +174,7 @@ extension SessionRow {
                 systemSent: true,
                 abortedLastRun: true,
                 tokens: SessionTokenStats(input: 5000, output: 1200, total: 6200, contextTokens: 200_000),
-                model: "claude-opus-4-6"),
+                model: "clawd-opus-4-6"),
             SessionRow(
                 id: "global",
                 key: "global",
@@ -247,11 +247,11 @@ struct SessionStoreSnapshot {
 
 @MainActor
 enum SessionLoader {
-    static let fallbackModel = "claude-opus-4-6"
+    static let fallbackModel = "clawd-opus-4-6"
     static let fallbackContextTokens = 200_000
 
     static let defaultStorePath = standardize(
-        NanoSolanaPaths.stateDirURL
+        NanoClawdPaths.stateDirURL
             .appendingPathComponent("sessions/sessions.json").path)
 
     static func loadSnapshot(

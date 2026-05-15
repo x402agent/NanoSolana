@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
-import { fetchWithSsrFGuard } from "nanosolana/plugin-sdk/nextcloud-talk";
-import type { RuntimeEnv } from "nanosolana/plugin-sdk/nextcloud-talk";
+import { fetchWithSsrFGuard } from "nanoclawd/plugin-sdk/nextcloud-talk";
+import type { RuntimeEnv } from "nanoclawd/plugin-sdk/nextcloud-talk";
 import type { ResolvedNextcloudTalkAccount } from "./accounts.js";
 import { normalizeResolvedSecretInputString } from "./secret-input.js";
 

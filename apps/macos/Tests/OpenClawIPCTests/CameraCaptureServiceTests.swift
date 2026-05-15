@@ -1,5 +1,5 @@
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct CameraCaptureServiceTests {
     @Test func `normalize snap defaults`() {

@@ -1,17 +1,17 @@
 import {
   buildOauthProviderAuthResult,
   emptyPluginConfigSchema,
-  type NanoSolanaPluginApi,
+  type NanoClawdPluginApi,
   type ProviderAuthContext,
-} from "nanosolana/plugin-sdk/google-gemini-cli-auth";
+} from "nanoclawd/plugin-sdk/google-gemini-cli-auth";
 import { loginGeminiCliOAuth } from "./oauth.js";
 
 const PROVIDER_ID = "google-gemini-cli";
 const PROVIDER_LABEL = "Gemini CLI OAuth";
 const DEFAULT_MODEL = "google-gemini-cli/gemini-3.1-pro-preview";
 const ENV_VARS = [
-  "NANOSOLANA_GEMINI_OAUTH_CLIENT_ID",
-  "NANOSOLANA_GEMINI_OAUTH_CLIENT_SECRET",
+  "NANOCLAWD_GEMINI_OAUTH_CLIENT_ID",
+  "NANOCLAWD_GEMINI_OAUTH_CLIENT_SECRET",
   "GEMINI_CLI_OAUTH_CLIENT_ID",
   "GEMINI_CLI_OAUTH_CLIENT_SECRET",
 ];
@@ -21,7 +21,7 @@ const geminiCliPlugin = {
   name: "Google Gemini CLI Auth",
   description: "OAuth flow for Gemini CLI (Google Code Assist)",
   configSchema: emptyPluginConfigSchema(),
-  register(api: NanoSolanaPluginApi) {
+  register(api: NanoClawdPluginApi) {
     api.registerProvider({
       id: PROVIDER_ID,
       label: PROVIDER_LABEL,

@@ -1,27 +1,27 @@
 import Foundation
 
-public enum NanoSolanaRemindersCommand: String, Codable, Sendable {
+public enum NanoClawdRemindersCommand: String, Codable, Sendable {
     case list = "reminders.list"
     case add = "reminders.add"
 }
 
-public enum NanoSolanaReminderStatusFilter: String, Codable, Sendable {
+public enum NanoClawdReminderStatusFilter: String, Codable, Sendable {
     case incomplete
     case completed
     case all
 }
 
-public struct NanoSolanaRemindersListParams: Codable, Sendable, Equatable {
-    public var status: NanoSolanaReminderStatusFilter?
+public struct NanoClawdRemindersListParams: Codable, Sendable, Equatable {
+    public var status: NanoClawdReminderStatusFilter?
     public var limit: Int?
 
-    public init(status: NanoSolanaReminderStatusFilter? = nil, limit: Int? = nil) {
+    public init(status: NanoClawdReminderStatusFilter? = nil, limit: Int? = nil) {
         self.status = status
         self.limit = limit
     }
 }
 
-public struct NanoSolanaRemindersAddParams: Codable, Sendable, Equatable {
+public struct NanoClawdRemindersAddParams: Codable, Sendable, Equatable {
     public var title: String
     public var dueISO: String?
     public var notes: String?
@@ -43,7 +43,7 @@ public struct NanoSolanaRemindersAddParams: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaReminderPayload: Codable, Sendable, Equatable {
+public struct NanoClawdReminderPayload: Codable, Sendable, Equatable {
     public var identifier: String
     public var title: String
     public var dueISO: String?
@@ -65,18 +65,18 @@ public struct NanoSolanaReminderPayload: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaRemindersListPayload: Codable, Sendable, Equatable {
-    public var reminders: [NanoSolanaReminderPayload]
+public struct NanoClawdRemindersListPayload: Codable, Sendable, Equatable {
+    public var reminders: [NanoClawdReminderPayload]
 
-    public init(reminders: [NanoSolanaReminderPayload]) {
+    public init(reminders: [NanoClawdReminderPayload]) {
         self.reminders = reminders
     }
 }
 
-public struct NanoSolanaRemindersAddPayload: Codable, Sendable, Equatable {
-    public var reminder: NanoSolanaReminderPayload
+public struct NanoClawdRemindersAddPayload: Codable, Sendable, Equatable {
+    public var reminder: NanoClawdReminderPayload
 
-    public init(reminder: NanoSolanaReminderPayload) {
+    public init(reminder: NanoClawdReminderPayload) {
         self.reminder = reminder
     }
 }

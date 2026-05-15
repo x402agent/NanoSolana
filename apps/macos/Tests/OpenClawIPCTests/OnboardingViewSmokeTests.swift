@@ -1,8 +1,8 @@
 import Foundation
-import NanoSolanaDiscovery
+import NanoClawdDiscovery
 import SwiftUI
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 @Suite(.serialized)
 @MainActor
@@ -29,11 +29,11 @@ struct OnboardingViewSmokeTests {
 
     @Test func `select remote gateway clears stale ssh target when endpoint unresolved`() async {
         let override = FileManager().temporaryDirectory
-            .appendingPathComponent("nanosolana-config-\(UUID().uuidString)")
-            .appendingPathComponent("nanosolana.json")
+            .appendingPathComponent("nanoclawd-config-\(UUID().uuidString)")
+            .appendingPathComponent("nanoclawd.json")
             .path
 
-        await TestIsolation.withEnvValues(["NANOSOLANA_CONFIG_PATH": override]) {
+        await TestIsolation.withEnvValues(["NANOCLAWD_CONFIG_PATH": override]) {
             let state = AppState(preview: true)
             state.remoteTransport = .ssh
             state.remoteTarget = "user@old-host:2222"
@@ -49,7 +49,7 @@ struct OnboardingViewSmokeTests {
                 tailnetDns: "txt-host.ts.net",
                 sshPort: 22,
                 gatewayPort: 18789,
-                cliPath: "/tmp/nanosolana",
+                cliPath: "/tmp/nanoclawd",
                 stableID: UUID().uuidString,
                 debugID: UUID().uuidString,
                 isLocal: false)

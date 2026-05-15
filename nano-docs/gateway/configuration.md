@@ -1,5 +1,5 @@
 ---
-summary: "Gateway configuration for the current Solana Claude Go runtime"
+summary: "Gateway configuration for the current Solana Clawd Go runtime"
 title: "Gateway Configuration"
 ---
 

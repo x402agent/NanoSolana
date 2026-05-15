@@ -1,7 +1,7 @@
 {
   "id": "test-utils",
   "name": "Test Utils",
-  "description": "Shared test doubles and runtime mocks for validating NanoSolana extensions against the plugin contract.",
+  "description": "Shared test doubles and runtime mocks for validating NanoClawd extensions against the plugin contract.",
   "configSchema": {
     "type": "object",
     "additionalProperties": false,

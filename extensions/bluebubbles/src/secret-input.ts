@@ -3,7 +3,7 @@ import {
   hasConfiguredSecretInput,
   normalizeResolvedSecretInputString,
   normalizeSecretInputString,
-} from "nanosolana/plugin-sdk/bluebubbles";
+} from "nanoclawd/plugin-sdk/bluebubbles";
 
 export {
   buildSecretInputSchema,

@@ -1,11 +1,11 @@
 import type {
   ChannelOnboardingAdapter,
   ChannelOnboardingDmPolicy,
-  NanoSolanaConfig,
+  NanoClawdConfig,
   DmPolicy,
   WizardPrompter,
   MSTeamsTeamConfig,
-} from "nanosolana/plugin-sdk/msteams";
+} from "nanoclawd/plugin-sdk/msteams";
 import {
   DEFAULT_ACCOUNT_ID,
   formatDocsLink,
@@ -15,7 +15,7 @@ import {
   setTopLevelChannelDmPolicyWithAllowFrom,
   setTopLevelChannelGroupPolicy,
   splitOnboardingEntries,
-} from "nanosolana/plugin-sdk/msteams";
+} from "nanoclawd/plugin-sdk/msteams";
 import {
   parseMSTeamsTeamEntry,
   resolveMSTeamsChannelAllowlist,
@@ -26,7 +26,7 @@ import { hasConfiguredMSTeamsCredentials, resolveMSTeamsCredentials } from "./to
 
 const channel = "msteams" as const;
 
-function setMSTeamsDmPolicy(cfg: NanoSolanaConfig, dmPolicy: DmPolicy) {
+function setMSTeamsDmPolicy(cfg: NanoClawdConfig, dmPolicy: DmPolicy) {
   return setTopLevelChannelDmPolicyWithAllowFrom({
     cfg,
     channel: "msteams",
@@ -34,7 +34,7 @@ function setMSTeamsDmPolicy(cfg: NanoSolanaConfig, dmPolicy: DmPolicy) {
   });
 }
 
-function setMSTeamsAllowFrom(cfg: NanoSolanaConfig, allowFrom: string[]): NanoSolanaConfig {
+function setMSTeamsAllowFrom(cfg: NanoClawdConfig, allowFrom: string[]): NanoClawdConfig {
   return setTopLevelChannelAllowFrom({
     cfg,
     channel: "msteams",
@@ -73,9 +73,9 @@ async function promptMSTeamsCredentials(prompter: WizardPrompter): Promise<{
 }
 
 async function promptMSTeamsAllowFrom(params: {
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   prompter: WizardPrompter;
-}): Promise<NanoSolanaConfig> {
+}): Promise<NanoClawdConfig> {
   const existing = params.cfg.channels?.msteams?.allowFrom ?? [];
   await params.prompter.note(
     [
@@ -149,9 +149,9 @@ async function noteMSTeamsCredentialHelp(prompter: WizardPrompter): Promise<void
 }
 
 function setMSTeamsGroupPolicy(
-  cfg: NanoSolanaConfig,
+  cfg: NanoClawdConfig,
   groupPolicy: "open" | "allowlist" | "disabled",
-): NanoSolanaConfig {
+): NanoClawdConfig {
   return setTopLevelChannelGroupPolicy({
     cfg,
     channel: "msteams",
@@ -161,9 +161,9 @@ function setMSTeamsGroupPolicy(
 }
 
 function setMSTeamsTeamsAllowlist(
-  cfg: NanoSolanaConfig,
+  cfg: NanoClawdConfig,
   entries: Array<{ teamKey: string; channelKey?: string }>,
-): NanoSolanaConfig {
+): NanoClawdConfig {
   const baseTeams = cfg.channels?.msteams?.teams ?? {};
   const teams: Record<string, { channels?: Record<string, unknown> }> = { ...baseTeams };
   for (const entry of entries) {

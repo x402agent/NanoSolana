@@ -1,12 +1,12 @@
 {
-  "name": "@nanosolana/lobster",
+  "name": "@nanoclawd/lobster",
   "version": "2026.3.11",
   "description": "Lobster workflow tool plugin (typed pipelines + resumable approvals)",
   "type": "module",
   "dependencies": {
     "@sinclair/typebox": "0.34.48"
   },
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./index.ts"
     ]

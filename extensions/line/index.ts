@@ -1,5 +1,5 @@
-import type { NanoSolanaPluginApi } from "nanosolana/plugin-sdk/line";
-import { emptyPluginConfigSchema } from "nanosolana/plugin-sdk/line";
+import type { NanoClawdPluginApi } from "nanoclawd/plugin-sdk/line";
+import { emptyPluginConfigSchema } from "nanoclawd/plugin-sdk/line";
 import { registerLineCardCommand } from "./src/card-command.js";
 import { linePlugin } from "./src/channel.js";
 import { setLineRuntime } from "./src/runtime.js";
@@ -9,7 +9,7 @@ const plugin = {
   name: "LINE",
   description: "LINE Messaging API channel plugin",
   configSchema: emptyPluginConfigSchema(),
-  register(api: NanoSolanaPluginApi) {
+  register(api: NanoClawdPluginApi) {
     setLineRuntime(api.runtime);
     api.registerChannel({ plugin: linePlugin });
     registerLineCardCommand(api);

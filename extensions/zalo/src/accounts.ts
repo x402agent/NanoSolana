@@ -1,5 +1,5 @@
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "nanosolana/plugin-sdk/account-id";
-import { createAccountListHelpers, type NanoSolanaConfig } from "nanosolana/plugin-sdk/zalo";
+import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "nanoclawd/plugin-sdk/account-id";
+import { createAccountListHelpers, type NanoClawdConfig } from "nanoclawd/plugin-sdk/zalo";
 import { resolveZaloToken } from "./token.js";
 import type { ResolvedZaloAccount, ZaloAccountConfig, ZaloConfig } from "./types.js";
 
@@ -10,7 +10,7 @@ const { listAccountIds: listZaloAccountIds, resolveDefaultAccountId: resolveDefa
 export { listZaloAccountIds, resolveDefaultZaloAccountId };
 
 function resolveAccountConfig(
-  cfg: NanoSolanaConfig,
+  cfg: NanoClawdConfig,
   accountId: string,
 ): ZaloAccountConfig | undefined {
   const accounts = (cfg.channels?.zalo as ZaloConfig | undefined)?.accounts;
@@ -20,7 +20,7 @@ function resolveAccountConfig(
   return accounts[accountId] as ZaloAccountConfig | undefined;
 }
 
-function mergeZaloAccountConfig(cfg: NanoSolanaConfig, accountId: string): ZaloAccountConfig {
+function mergeZaloAccountConfig(cfg: NanoClawdConfig, accountId: string): ZaloAccountConfig {
   const raw = (cfg.channels?.zalo ?? {}) as ZaloConfig;
   const { accounts: _ignored, defaultAccount: _ignored2, ...base } = raw;
   const account = resolveAccountConfig(cfg, accountId) ?? {};
@@ -28,7 +28,7 @@ function mergeZaloAccountConfig(cfg: NanoSolanaConfig, accountId: string): ZaloA
 }
 
 export function resolveZaloAccount(params: {
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   accountId?: string | null;
   allowUnresolvedSecretRef?: boolean;
 }): ResolvedZaloAccount {
@@ -53,7 +53,7 @@ export function resolveZaloAccount(params: {
   };
 }
 
-export function listEnabledZaloAccounts(cfg: NanoSolanaConfig): ResolvedZaloAccount[] {
+export function listEnabledZaloAccounts(cfg: NanoClawdConfig): ResolvedZaloAccount[] {
   return listZaloAccountIds(cfg)
     .map((accountId) => resolveZaloAccount({ cfg, accountId }))
     .filter((account) => account.enabled);

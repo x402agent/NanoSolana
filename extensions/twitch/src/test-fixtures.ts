@@ -1,4 +1,4 @@
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/twitch";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/twitch";
 import { afterEach, beforeEach, vi } from "vitest";
 
 export const BASE_TWITCH_TEST_ACCOUNT = {
@@ -7,7 +7,7 @@ export const BASE_TWITCH_TEST_ACCOUNT = {
   channel: "#testchannel",
 };
 
-export function makeTwitchTestConfig(account: Record<string, unknown>): NanoSolanaConfig {
+export function makeTwitchTestConfig(account: Record<string, unknown>): NanoClawdConfig {
   return {
     channels: {
       twitch: {
@@ -16,7 +16,7 @@ export function makeTwitchTestConfig(account: Record<string, unknown>): NanoSola
         },
       },
     },
-  } as unknown as NanoSolanaConfig;
+  } as unknown as NanoClawdConfig;
 }
 
 export function installTwitchTestHooks() {

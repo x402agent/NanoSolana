@@ -1,7 +1,7 @@
 import Foundation
-import NanoSolanaDiscovery
+import NanoClawdDiscovery
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 @Suite(.serialized)
 @MainActor
@@ -30,7 +30,7 @@ struct GatewayDiscoverySelectionSupportTests {
     @Test func `selecting tailscale serve gateway switches to direct transport`() async {
         let tailnetHost = "gateway-host.tailnet-example.ts.net"
         let configPath = TestIsolation.tempConfigPath()
-        await TestIsolation.withEnvValues(["NANOSOLANA_CONFIG_PATH": configPath]) {
+        await TestIsolation.withEnvValues(["NANOCLAWD_CONFIG_PATH": configPath]) {
             let state = AppState(preview: true)
             state.remoteTransport = .ssh
             state.remoteTarget = "user@old-host"
@@ -52,7 +52,7 @@ struct GatewayDiscoverySelectionSupportTests {
     @Test func `selecting merged tailnet gateway still switches to direct transport`() async {
         let tailnetHost = "gateway-host.tailnet-example.ts.net"
         let configPath = TestIsolation.tempConfigPath()
-        await TestIsolation.withEnvValues(["NANOSOLANA_CONFIG_PATH": configPath]) {
+        await TestIsolation.withEnvValues(["NANOCLAWD_CONFIG_PATH": configPath]) {
             let state = AppState(preview: true)
             state.remoteTransport = .ssh
 
@@ -61,7 +61,7 @@ struct GatewayDiscoverySelectionSupportTests {
                     serviceHost: tailnetHost,
                     servicePort: 443,
                     tailnetDns: tailnetHost,
-                    stableID: "wide-area|nanosolana.internal.|gateway-host"),
+                    stableID: "wide-area|nanoclawd.internal.|gateway-host"),
                 state: state)
 
             #expect(state.remoteTransport == .direct)
@@ -71,7 +71,7 @@ struct GatewayDiscoverySelectionSupportTests {
 
     @Test func `selecting nearby lan gateway keeps ssh transport`() async {
         let configPath = TestIsolation.tempConfigPath()
-        await TestIsolation.withEnvValues(["NANOSOLANA_CONFIG_PATH": configPath]) {
+        await TestIsolation.withEnvValues(["NANOCLAWD_CONFIG_PATH": configPath]) {
             let state = AppState(preview: true)
             state.remoteTransport = .ssh
             state.remoteTarget = "user@old-host"

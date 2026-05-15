@@ -1,6 +1,6 @@
-package ai.nanosolana.app.node
+package ai.nanoclawd.app.node
 
-import ai.nanosolana.app.gateway.GatewayEndpoint
+import ai.nanoclawd.app.gateway.GatewayEndpoint
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -10,7 +10,7 @@ class ConnectionManagerTest {
   fun resolveTlsParamsForEndpoint_prefersStoredPinOverAdvertisedFingerprint() {
     val endpoint =
       GatewayEndpoint(
-        stableId = "_nanosolana-gw._tcp.|local.|Test",
+        stableId = "_nanoclawd-gw._tcp.|local.|Test",
         name = "Test",
         host = "10.0.0.2",
         port = 18789,
@@ -33,7 +33,7 @@ class ConnectionManagerTest {
   fun resolveTlsParamsForEndpoint_doesNotTrustAdvertisedFingerprintWhenNoStoredPin() {
     val endpoint =
       GatewayEndpoint(
-        stableId = "_nanosolana-gw._tcp.|local.|Test",
+        stableId = "_nanoclawd-gw._tcp.|local.|Test",
         name = "Test",
         host = "10.0.0.2",
         port = 18789,

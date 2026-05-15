@@ -1,28 +1,28 @@
 import Foundation
 
-public enum NanoSolanaLocationCommand: String, Codable, Sendable {
+public enum NanoClawdLocationCommand: String, Codable, Sendable {
     case get = "location.get"
 }
 
-public enum NanoSolanaLocationAccuracy: String, Codable, Sendable {
+public enum NanoClawdLocationAccuracy: String, Codable, Sendable {
     case coarse
     case balanced
     case precise
 }
 
-public struct NanoSolanaLocationGetParams: Codable, Sendable, Equatable {
+public struct NanoClawdLocationGetParams: Codable, Sendable, Equatable {
     public var timeoutMs: Int?
     public var maxAgeMs: Int?
-    public var desiredAccuracy: NanoSolanaLocationAccuracy?
+    public var desiredAccuracy: NanoClawdLocationAccuracy?
 
-    public init(timeoutMs: Int? = nil, maxAgeMs: Int? = nil, desiredAccuracy: NanoSolanaLocationAccuracy? = nil) {
+    public init(timeoutMs: Int? = nil, maxAgeMs: Int? = nil, desiredAccuracy: NanoClawdLocationAccuracy? = nil) {
         self.timeoutMs = timeoutMs
         self.maxAgeMs = maxAgeMs
         self.desiredAccuracy = desiredAccuracy
     }
 }
 
-public struct NanoSolanaLocationPayload: Codable, Sendable, Equatable {
+public struct NanoClawdLocationPayload: Codable, Sendable, Equatable {
     public var lat: Double
     public var lon: Double
     public var accuracyMeters: Double

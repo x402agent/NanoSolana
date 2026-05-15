@@ -98,9 +98,9 @@ vi.mock("@opentelemetry/semantic-conventions", () => ({
   ATTR_SERVICE_NAME: "service.name",
 }));
 
-vi.mock("nanosolana/plugin-sdk/diagnostics-otel", async () => {
-  const actual = await vi.importActual<typeof import("nanosolana/plugin-sdk/diagnostics-otel")>(
-    "nanosolana/plugin-sdk/diagnostics-otel",
+vi.mock("nanoclawd/plugin-sdk/diagnostics-otel", async () => {
+  const actual = await vi.importActual<typeof import("nanoclawd/plugin-sdk/diagnostics-otel")>(
+    "nanoclawd/plugin-sdk/diagnostics-otel",
   );
   return {
     ...actual,
@@ -108,11 +108,11 @@ vi.mock("nanosolana/plugin-sdk/diagnostics-otel", async () => {
   };
 });
 
-import type { NanoSolanaPluginServiceContext } from "nanosolana/plugin-sdk/diagnostics-otel";
-import { emitDiagnosticEvent } from "nanosolana/plugin-sdk/diagnostics-otel";
+import type { NanoClawdPluginServiceContext } from "nanoclawd/plugin-sdk/diagnostics-otel";
+import { emitDiagnosticEvent } from "nanoclawd/plugin-sdk/diagnostics-otel";
 import { createDiagnosticsOtelService } from "./service.js";
 
-const OTEL_TEST_STATE_DIR = "/tmp/nanosolana-diagnostics-otel-test";
+const OTEL_TEST_STATE_DIR = "/tmp/nanoclawd-diagnostics-otel-test";
 const OTEL_TEST_ENDPOINT = "http://otel-collector:4318";
 const OTEL_TEST_PROTOCOL = "http/protobuf";
 
@@ -133,7 +133,7 @@ type OtelContextFlags = {
 function createOtelContext(
   endpoint: string,
   { traces = false, metrics = false, logs = false }: OtelContextFlags = {},
-): NanoSolanaPluginServiceContext {
+): NanoClawdPluginServiceContext {
   return {
     config: {
       diagnostics: {
@@ -153,7 +153,7 @@ function createOtelContext(
   };
 }
 
-function createTraceOnlyContext(endpoint: string): NanoSolanaPluginServiceContext {
+function createTraceOnlyContext(endpoint: string): NanoClawdPluginServiceContext {
   return createOtelContext(endpoint, { traces: true });
 }
 
@@ -243,26 +243,26 @@ describe("diagnostics-otel service", () => {
       attempt: 2,
     });
 
-    expect(telemetryState.counters.get("nanosolana.webhook.received")?.add).toHaveBeenCalled();
+    expect(telemetryState.counters.get("nanoclawd.webhook.received")?.add).toHaveBeenCalled();
     expect(
-      telemetryState.histograms.get("nanosolana.webhook.duration_ms")?.record,
+      telemetryState.histograms.get("nanoclawd.webhook.duration_ms")?.record,
     ).toHaveBeenCalled();
-    expect(telemetryState.counters.get("nanosolana.message.queued")?.add).toHaveBeenCalled();
-    expect(telemetryState.counters.get("nanosolana.message.processed")?.add).toHaveBeenCalled();
+    expect(telemetryState.counters.get("nanoclawd.message.queued")?.add).toHaveBeenCalled();
+    expect(telemetryState.counters.get("nanoclawd.message.processed")?.add).toHaveBeenCalled();
     expect(
-      telemetryState.histograms.get("nanosolana.message.duration_ms")?.record,
+      telemetryState.histograms.get("nanoclawd.message.duration_ms")?.record,
     ).toHaveBeenCalled();
-    expect(telemetryState.histograms.get("nanosolana.queue.wait_ms")?.record).toHaveBeenCalled();
-    expect(telemetryState.counters.get("nanosolana.session.stuck")?.add).toHaveBeenCalled();
+    expect(telemetryState.histograms.get("nanoclawd.queue.wait_ms")?.record).toHaveBeenCalled();
+    expect(telemetryState.counters.get("nanoclawd.session.stuck")?.add).toHaveBeenCalled();
     expect(
-      telemetryState.histograms.get("nanosolana.session.stuck_age_ms")?.record,
+      telemetryState.histograms.get("nanoclawd.session.stuck_age_ms")?.record,
     ).toHaveBeenCalled();
-    expect(telemetryState.counters.get("nanosolana.run.attempt")?.add).toHaveBeenCalled();
+    expect(telemetryState.counters.get("nanoclawd.run.attempt")?.add).toHaveBeenCalled();
 
     const spanNames = telemetryState.tracer.startSpan.mock.calls.map((call) => call[0]);
-    expect(spanNames).toContain("nanosolana.webhook.processed");
-    expect(spanNames).toContain("nanosolana.message.processed");
-    expect(spanNames).toContain("nanosolana.session.stuck");
+    expect(spanNames).toContain("nanoclawd.webhook.processed");
+    expect(spanNames).toContain("nanoclawd.message.processed");
+    expect(spanNames).toContain("nanoclawd.session.stuck");
 
     expect(registerLogTransportMock).toHaveBeenCalledTimes(1);
     expect(registeredTransports).toHaveLength(1);
@@ -334,7 +334,7 @@ describe("diagnostics-otel service", () => {
       _meta: { logLevelName: "DEBUG", date: new Date() },
     });
 
-    const tokenAttr = emitCall?.attributes?.["nanosolana.token"];
+    const tokenAttr = emitCall?.attributes?.["nanoclawd.token"];
     expect(tokenAttr).not.toBe("test_fake_token_abcdefghijklmnopqrstuv");
     if (typeof tokenAttr === "string") {
       expect(tokenAttr).toContain("…");
@@ -352,16 +352,16 @@ describe("diagnostics-otel service", () => {
       reason: "token=test_fake_token_abcdefghijklmnopqrstuv",
     });
 
-    const sessionCounter = telemetryState.counters.get("nanosolana.session.state");
+    const sessionCounter = telemetryState.counters.get("nanoclawd.session.state");
     expect(sessionCounter?.add).toHaveBeenCalledWith(
       1,
       expect.objectContaining({
-        "nanosolana.reason": expect.stringContaining("…"),
+        "nanoclawd.reason": expect.stringContaining("…"),
       }),
     );
     const attrs = sessionCounter?.add.mock.calls[0]?.[1] as Record<string, unknown> | undefined;
-    expect(typeof attrs?.["nanosolana.reason"]).toBe("string");
-    expect(String(attrs?.["nanosolana.reason"])).not.toContain(
+    expect(typeof attrs?.["nanoclawd.reason"]).toBe("string");
+    expect(String(attrs?.["nanoclawd.reason"])).not.toContain(
       "test_fake_token_abcdefghijklmnopqrstuv",
     );
     await service.stop?.(ctx);

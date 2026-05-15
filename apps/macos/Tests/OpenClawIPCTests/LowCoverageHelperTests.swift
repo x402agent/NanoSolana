@@ -1,12 +1,12 @@
 import AppKit
 import Foundation
-import NanoSolanaProtocol
+import NanoClawdProtocol
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 @Suite(.serialized)
 struct LowCoverageHelperTests {
-    private typealias ProtoAnyCodable = NanoSolanaProtocol.AnyCodable
+    private typealias ProtoAnyCodable = NanoClawdProtocol.AnyCodable
 
     @Test func `any codable helper accessors`() throws {
         let payload: [String: ProtoAnyCodable] = [

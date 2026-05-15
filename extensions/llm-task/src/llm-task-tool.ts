@@ -6,14 +6,14 @@ import {
   formatThinkingLevels,
   formatXHighModelHint,
   normalizeThinkLevel,
-  resolvePreferredNanoSolanaTmpDir,
+  resolvePreferredNanoClawdTmpDir,
   supportsXHighThinking,
-} from "nanosolana/plugin-sdk/llm-task";
-// NOTE: This extension is intended to be bundled with NanoSolana.
-// When running from source (tests/dev), NanoSolana internals live under src/.
+} from "nanoclawd/plugin-sdk/llm-task";
+// NOTE: This extension is intended to be bundled with NanoClawd.
+// When running from source (tests/dev), NanoClawd internals live under src/.
 // When running from a built install, internals live under dist/ (no src/ tree).
 // So we resolve internal imports dynamically with src-first, dist-fallback.
-import type { NanoSolanaPluginApi } from "nanosolana/plugin-sdk/llm-task";
+import type { NanoClawdPluginApi } from "nanoclawd/plugin-sdk/llm-task";
 
 type RunEmbeddedPiAgentFn = (params: Record<string, unknown>) => Promise<unknown>;
 
@@ -76,12 +76,12 @@ type PluginCfg = {
   timeoutMs?: number;
 };
 
-export function createLlmTaskTool(api: NanoSolanaPluginApi) {
+export function createLlmTaskTool(api: NanoClawdPluginApi) {
   return {
     name: "llm-task",
     label: "LLM Task",
     description:
-      "Run a generic JSON-only LLM task and return schema-validated JSON. Designed for orchestration from Lobster workflows via nanosolana.invoke.",
+      "Run a generic JSON-only LLM task and return schema-validated JSON. Designed for orchestration from Lobster workflows via nanoclawd.invoke.",
     parameters: Type.Object({
       prompt: Type.String({ description: "Task instruction for the LLM." }),
       input: Type.Optional(Type.Unknown({ description: "Optional input payload for the task." })),
@@ -204,7 +204,7 @@ export function createLlmTaskTool(api: NanoSolanaPluginApi) {
       let tmpDir: string | null = null;
       try {
         tmpDir = await fs.mkdtemp(
-          path.join(resolvePreferredNanoSolanaTmpDir(), "nanosolana-llm-task-"),
+          path.join(resolvePreferredNanoClawdTmpDir(), "nanoclawd-llm-task-"),
         );
         const sessionId = `llm-task-${Date.now()}`;
         const sessionFile = path.join(tmpDir, "session.json");

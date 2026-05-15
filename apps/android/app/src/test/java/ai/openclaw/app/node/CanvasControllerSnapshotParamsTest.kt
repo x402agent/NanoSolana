@@ -1,4 +1,4 @@
-package ai.nanosolana.app.node
+package ai.nanoclawd.app.node
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull

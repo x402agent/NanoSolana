@@ -1,5 +1,5 @@
 import AppKit
-import NanoSolanaKit
+import NanoClawdKit
 import OSLog
 
 final class PairingAlertHostWindow: NSWindow {

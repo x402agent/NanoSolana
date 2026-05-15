@@ -1,5 +1,5 @@
 import Foundation
-import NanoSolanaProtocol
+import NanoClawdProtocol
 
 struct SkillsStatusReport: Codable {
     let workspaceDir: String

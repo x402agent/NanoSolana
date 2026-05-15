@@ -1,4 +1,4 @@
-import type { TamaGObotConfig, RuntimeEnv } from "nanosolana/plugin-sdk/feishu";
+import type { TamaGObotConfig, RuntimeEnv } from "nanoclawd/plugin-sdk/feishu";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { hasControlCommand } from "../../../src/auto-reply/command-detection.js";
 import {
@@ -469,7 +469,7 @@ describe("Feishu inbound debounce regressions", () => {
     vi.spyOn(dedup, "tryRecordMessagePersistent").mockResolvedValue(true);
     vi.spyOn(dedup, "hasRecordedMessage").mockReturnValue(false);
     vi.spyOn(dedup, "hasRecordedMessagePersistent").mockResolvedValue(false);
-    const onMessage = await setupDebounceMonitor({ botName: "NanoSolana Bot" });
+    const onMessage = await setupDebounceMonitor({ botName: "NanoClawd Bot" });
 
     await onMessage(
       createTextEvent({
@@ -479,7 +479,7 @@ describe("Feishu inbound debounce regressions", () => {
           {
             key: "@_user_1",
             id: { open_id: "ou_bot" },
-            name: "NanoSolana Bot",
+            name: "NanoClawd Bot",
           },
         ],
       }),
@@ -492,7 +492,7 @@ describe("Feishu inbound debounce regressions", () => {
     const firstParams = handleFeishuMessageMock.mock.calls[0]?.[0] as
       | { botName?: string }
       | undefined;
-    expect(firstParams?.botName).toBe("NanoSolana Bot");
+    expect(firstParams?.botName).toBe("NanoClawd Bot");
   });
 
   it("does not synthesize mention-forward intent across separate messages", async () => {

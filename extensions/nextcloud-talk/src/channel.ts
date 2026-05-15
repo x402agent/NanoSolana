@@ -6,7 +6,7 @@ import {
   formatAllowFromLowercase,
   mapAllowFromEntries,
   runPassiveAccountLifecycle,
-} from "nanosolana/plugin-sdk/compat";
+} from "nanoclawd/plugin-sdk/compat";
 import {
   applyAccountNameToChannelSection,
   buildBaseChannelStatusSummary,
@@ -18,9 +18,9 @@ import {
   normalizeAccountId,
   setAccountEnabledInConfigSection,
   type ChannelPlugin,
-  type NanoSolanaConfig,
+  type NanoClawdConfig,
   type ChannelSetupInput,
-} from "nanosolana/plugin-sdk/nextcloud-talk";
+} from "nanoclawd/plugin-sdk/nextcloud-talk";
 import {
   listNextcloudTalkAccountIds,
   resolveDefaultNextcloudTalkAccountId,
@@ -238,7 +238,7 @@ export const nextcloudTalkPlugin: ChannelPlugin<ResolvedNextcloudTalkAccount> = 
                     : {}),
             },
           },
-        } as NanoSolanaConfig;
+        } as NanoClawdConfig;
       }
       return {
         ...namedConfig,
@@ -262,7 +262,7 @@ export const nextcloudTalkPlugin: ChannelPlugin<ResolvedNextcloudTalkAccount> = 
             },
           },
         },
-      } as NanoSolanaConfig;
+      } as NanoClawdConfig;
     },
   },
   outbound: {
@@ -360,7 +360,7 @@ export const nextcloudTalkPlugin: ChannelPlugin<ResolvedNextcloudTalkAccount> = 
       });
     },
     logoutAccount: async ({ accountId, cfg }) => {
-      const nextCfg = { ...cfg } as NanoSolanaConfig;
+      const nextCfg = { ...cfg } as NanoClawdConfig;
       const nextSection = cfg.channels?.["nextcloud-talk"]
         ? { ...cfg.channels["nextcloud-talk"] }
         : undefined;
@@ -398,7 +398,7 @@ export const nextcloudTalkPlugin: ChannelPlugin<ResolvedNextcloudTalkAccount> = 
           const nextChannels = { ...nextCfg.channels } as Record<string, unknown>;
           delete nextChannels["nextcloud-talk"];
           if (Object.keys(nextChannels).length > 0) {
-            nextCfg.channels = nextChannels as NanoSolanaConfig["channels"];
+            nextCfg.channels = nextChannels as NanoClawdConfig["channels"];
           } else {
             delete nextCfg.channels;
           }

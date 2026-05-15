@@ -1,14 +1,14 @@
 # NanoHub Vision
 
-NanoHub is the skill registry and discovery platform for NanoSolana — the autonomous Solana agent runtime.
+NanoHub is the skill registry and discovery platform for NanoClawd — the autonomous Solana agent runtime.
 
-**Live site:** [nanosolana.netlify.app](https://nanosolana.netlify.app)
+**Live site:** [nanoclawd.netlify.app](https://nanoclawd.netlify.app)
 
 This document explains the current state and direction of NanoHub.
 We are still early, so iteration is fast.
 Project overview and developer docs: [`README.md`](README.md)
 
-NanoHub exists to give NanoSolana agents a fast, searchable registry of skills they can install, run, and compose.
+NanoHub exists to give NanoClawd agents a fast, searchable registry of skills they can install, run, and compose.
 It also serves as the publishing platform for the community to share skills, SOUL.md bundles, and agent tooling.
 
 ## Current Focus
@@ -25,7 +25,7 @@ Next priorities:
 - Skill creator web UI for authoring and validating skills in-browser
 - Batch publishing and version management
 - Analytics dashboard for skill authors
-- Integration with NanoSolana's on-chain payment system
+- Integration with NanoClawd's on-chain payment system
 - Community features: ratings, reviews, install tracking
 
 ## Skills Catalog
@@ -54,7 +54,7 @@ pump-admin-ops, pump-ai-agents, pump-bonding-curve, pump-build-release, pump-cla
 
 ## Tokenized Agent Payments
 
-NanoSolana supports on-chain tokenized agent payments via `@pump-fun/agent-payments-sdk`.
+NanoClawd supports on-chain tokenized agent payments via `@pump-fun/agent-payments-sdk`.
 NanoHub integrates with this system to enable:
 
 - **Payment-gated skill access**: Skill authors can require on-chain payment before granting access
@@ -74,7 +74,7 @@ NanoHub is a two-part deployment:
 
 Key infrastructure:
 - Convex cloud: `original-ibex-124.convex.cloud`
-- Site: `nanosolana.netlify.app`
+- Site: `nanoclawd.netlify.app`
 - Auth callback: GitHub OAuth via Convex's `@convex-dev/auth`
 - Search: OpenAI embeddings for vector similarity search
 
@@ -112,7 +112,7 @@ NanoHub includes a web-based skill creator at `/skills/create` that provides:
 - Moderation pipeline with auto-ban for malicious content
 - GitHub OAuth with deleted/banned account blocking
 - Rate limiting on all API endpoints
-- HMAC-authenticated gateway connections in the NanoSolana runtime
+- HMAC-authenticated gateway connections in the NanoClawd runtime
 
 ## What We Will Not Merge (For Now)
 

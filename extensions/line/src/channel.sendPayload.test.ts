@@ -1,4 +1,4 @@
-import type { NanoSolanaConfig, PluginRuntime } from "nanosolana/plugin-sdk/line";
+import type { NanoClawdConfig, PluginRuntime } from "nanoclawd/plugin-sdk/line";
 import { describe, expect, it, vi } from "vitest";
 import { linePlugin } from "./channel.js";
 import { setLineRuntime } from "./runtime.js";
@@ -34,7 +34,7 @@ function createRuntime(): { runtime: PluginRuntime; mocks: LineRuntimeMocks } {
   const chunkMarkdownText = vi.fn((text: string) => [text]);
   const resolveTextChunkLimit = vi.fn(() => 123);
   const resolveLineAccount = vi.fn(
-    ({ cfg, accountId }: { cfg: NanoSolanaConfig; accountId?: string }) => {
+    ({ cfg, accountId }: { cfg: NanoClawdConfig; accountId?: string }) => {
       const resolved = accountId ?? "default";
       const lineConfig = (cfg.channels?.line ?? {}) as {
         accounts?: Record<string, Record<string, unknown>>;
@@ -91,7 +91,7 @@ describe("linePlugin outbound.sendPayload", () => {
   it("sends flex message without dropping text", async () => {
     const { runtime, mocks } = createRuntime();
     setLineRuntime(runtime);
-    const cfg = { channels: { line: {} } } as NanoSolanaConfig;
+    const cfg = { channels: { line: {} } } as NanoClawdConfig;
 
     const payload = {
       text: "Now playing:",
@@ -124,7 +124,7 @@ describe("linePlugin outbound.sendPayload", () => {
   it("sends template message without dropping text", async () => {
     const { runtime, mocks } = createRuntime();
     setLineRuntime(runtime);
-    const cfg = { channels: { line: {} } } as NanoSolanaConfig;
+    const cfg = { channels: { line: {} } } as NanoClawdConfig;
 
     const payload = {
       text: "Choose one:",
@@ -162,7 +162,7 @@ describe("linePlugin outbound.sendPayload", () => {
   it("attaches quick replies when no text chunks are present", async () => {
     const { runtime, mocks } = createRuntime();
     setLineRuntime(runtime);
-    const cfg = { channels: { line: {} } } as NanoSolanaConfig;
+    const cfg = { channels: { line: {} } } as NanoClawdConfig;
 
     const payload = {
       channelData: {
@@ -203,7 +203,7 @@ describe("linePlugin outbound.sendPayload", () => {
   it("sends media before quick-reply text so buttons stay visible", async () => {
     const { runtime, mocks } = createRuntime();
     setLineRuntime(runtime);
-    const cfg = { channels: { line: {} } } as NanoSolanaConfig;
+    const cfg = { channels: { line: {} } } as NanoClawdConfig;
 
     const payload = {
       text: "Hello",
@@ -243,7 +243,7 @@ describe("linePlugin outbound.sendPayload", () => {
   it("uses configured text chunk limit for payloads", async () => {
     const { runtime, mocks } = createRuntime();
     setLineRuntime(runtime);
-    const cfg = { channels: { line: { textChunkLimit: 123 } } } as NanoSolanaConfig;
+    const cfg = { channels: { line: { textChunkLimit: 123 } } } as NanoClawdConfig;
 
     const payload = {
       text: "Hello world",
@@ -275,7 +275,7 @@ describe("linePlugin outbound.sendPayload", () => {
 describe("linePlugin config.formatAllowFrom", () => {
   it("strips line:user: prefixes without lowercasing", () => {
     const formatted = linePlugin.config.formatAllowFrom!({
-      cfg: {} as NanoSolanaConfig,
+      cfg: {} as NanoClawdConfig,
       allowFrom: ["line:user:UABC", "line:UDEF"],
     });
     expect(formatted).toEqual(["UABC", "UDEF"]);
@@ -302,7 +302,7 @@ describe("linePlugin groups.resolveRequireMention", () => {
           },
         },
       },
-    } as NanoSolanaConfig;
+    } as NanoClawdConfig;
 
     const requireMention = linePlugin.groups!.resolveRequireMention!({
       cfg,

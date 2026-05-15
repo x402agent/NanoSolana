@@ -1,4 +1,4 @@
-package ai.nanosolana.app.voice
+package ai.nanoclawd.app.voice
 
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals

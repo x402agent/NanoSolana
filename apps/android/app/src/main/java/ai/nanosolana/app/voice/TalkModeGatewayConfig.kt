@@ -1,6 +1,6 @@
-package ai.nanosolana.app.voice
+package ai.nanoclawd.app.voice
 
-import ai.nanosolana.app.normalizeMainKey
+import ai.nanoclawd.app.normalizeMainKey
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive

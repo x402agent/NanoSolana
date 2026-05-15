@@ -1,20 +1,20 @@
 import Foundation
-import NanoSolanaProtocol
+import NanoClawdProtocol
 
-enum NanoSolanaConfigFile {
-    private static let logger = Logger(subsystem: "ai.nanosolana", category: "config")
+enum NanoClawdConfigFile {
+    private static let logger = Logger(subsystem: "ai.nanoclawd", category: "config")
     private static let configAuditFileName = "config-audit.jsonl"
 
     static func url() -> URL {
-        NanoSolanaPaths.configURL
+        NanoClawdPaths.configURL
     }
 
     static func stateDirURL() -> URL {
-        NanoSolanaPaths.stateDirURL
+        NanoClawdPaths.stateDirURL
     }
 
     static func defaultWorkspaceURL() -> URL {
-        NanoSolanaPaths.workspaceURL
+        NanoClawdPaths.workspaceURL
     }
 
     static func loadDict() -> [String: Any] {
@@ -319,7 +319,7 @@ enum NanoSolanaConfigFile {
     private static func appendConfigWriteAudit(_ fields: [String: Any]) {
         var record: [String: Any] = [
             "ts": ISO8601DateFormatter().string(from: Date()),
-            "source": "macos-nanosolana-config-file",
+            "source": "macos-nanoclawd-config-file",
             "event": "config.write",
             "pid": ProcessInfo.processInfo.processIdentifier,
             "argv": Array(ProcessInfo.processInfo.arguments.prefix(8)),

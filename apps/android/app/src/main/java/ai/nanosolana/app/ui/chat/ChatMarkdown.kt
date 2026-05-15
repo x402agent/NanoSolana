@@ -1,4 +1,4 @@
-package ai.nanosolana.app.ui.chat
+package ai.nanoclawd.app.ui.chat
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,12 +34,12 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ai.nanosolana.app.ui.mobileAccent
-import ai.nanosolana.app.ui.mobileCallout
-import ai.nanosolana.app.ui.mobileCaption1
-import ai.nanosolana.app.ui.mobileCodeBg
-import ai.nanosolana.app.ui.mobileCodeText
-import ai.nanosolana.app.ui.mobileTextSecondary
+import ai.nanoclawd.app.ui.mobileAccent
+import ai.nanoclawd.app.ui.mobileCallout
+import ai.nanoclawd.app.ui.mobileCaption1
+import ai.nanoclawd.app.ui.mobileCodeBg
+import ai.nanoclawd.app.ui.mobileCodeText
+import ai.nanoclawd.app.ui.mobileTextSecondary
 import org.commonmark.Extension
 import org.commonmark.ext.autolink.AutolinkExtension
 import org.commonmark.ext.gfm.strikethrough.Strikethrough

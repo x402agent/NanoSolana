@@ -1,5 +1,5 @@
 import Foundation
-import NanoSolanaProtocol
+import NanoClawdProtocol
 import UniformTypeIdentifiers
 
 actor MacNodeBrowserProxy {
@@ -14,8 +14,8 @@ actor MacNodeBrowserProxy {
     private struct RequestParams: Decodable {
         let method: String?
         let path: String?
-        let query: [String: NanoSolanaProtocol.AnyCodable]?
-        let body: NanoSolanaProtocol.AnyCodable?
+        let query: [String: NanoClawdProtocol.AnyCodable]?
+        let body: NanoClawdProtocol.AnyCodable?
         let timeoutMs: Int?
         let profile: String?
     }
@@ -143,7 +143,7 @@ actor MacNodeBrowserProxy {
         } else if let password = endpoint.password?.trimmingCharacters(in: .whitespacesAndNewlines),
                   !password.isEmpty
         {
-            request.setValue(password, forHTTPHeaderField: "x-nanosolana-password")
+            request.setValue(password, forHTTPHeaderField: "x-nanoclawd-password")
         }
 
         if method != "GET", let body = params.body {

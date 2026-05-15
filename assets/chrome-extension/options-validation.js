@@ -75,7 +75,7 @@ export function classifyRelayCheckException(err, port) {
 
   return {
     kind: 'error',
-    message: `Relay not reachable/authenticated at http://127.0.0.1:${port}/. Start NanoSolana browser relay and verify token.`,
+    message: `Relay not reachable/authenticated at http://127.0.0.1:${port}/. Start NanoClawd browser relay and verify token.`,
   }
 }
 
@@ -134,7 +134,7 @@ export function classifyGatewayCheckResponse(healthRes, extensionRes) {
     return {
       action: 'status',
       kind: 'error',
-      message: `Unexpected /api/extension/config payload. Ensure NanoSolana gateway extension APIs are enabled.`,
+      message: `Unexpected /api/extension/config payload. Ensure NanoClawd gateway extension APIs are enabled.`,
     }
   }
 

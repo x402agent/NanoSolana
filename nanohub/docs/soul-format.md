@@ -13,7 +13,7 @@ A soul is a single file:
 
 - `SOUL.md` (or `soul.md`)
 
-For now, docs.nanosolana.com rejects any extra files.
+For now, docs.nanoclawd.com rejects any extra files.
 
 ## `SOUL.md`
 

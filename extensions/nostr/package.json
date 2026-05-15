@@ -1,13 +1,13 @@
 {
-  "name": "@nanosolana/nostr",
+  "name": "@nanoclawd/nostr",
   "version": "2026.3.11",
-  "description": "NanoSolana Nostr channel plugin for NIP-04 encrypted DMs",
+  "description": "NanoClawd Nostr channel plugin for NIP-04 encrypted DMs",
   "type": "module",
   "dependencies": {
     "nostr-tools": "^2.23.3",
     "zod": "^4.3.6"
   },
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./index.ts"
     ],
@@ -22,7 +22,7 @@
       "quickstartAllowFrom": true
     },
     "install": {
-      "npmSpec": "@nanosolana/nostr",
+      "npmSpec": "@nanoclawd/nostr",
       "localPath": "extensions/nostr",
       "defaultChoice": "npm"
     },

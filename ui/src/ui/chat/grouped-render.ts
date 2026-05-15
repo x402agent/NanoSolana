@@ -287,7 +287,7 @@ function renderMessageMeta(meta: GroupMeta | null) {
 
   // Model
   if (meta.model) {
-    // Shorten model name: strip provider prefix if present (e.g. "anthropic/claude-3.5-sonnet" → "claude-3.5-sonnet")
+    // Shorten model name: strip provider prefix if present (e.g. "anthropic/clawd-3.5-sonnet" → "clawd-3.5-sonnet")
     const shortModel = meta.model.includes("/") ? meta.model.split("/").pop()! : meta.model;
     parts.push(html`<span class="msg-meta__model">${shortModel}</span>`);
   }
@@ -310,7 +310,7 @@ function extractGroupText(group: MessageGroup): string {
   return parts.join("\n\n");
 }
 
-const SKIP_DELETE_CONFIRM_KEY = "nanosolana:skipDeleteConfirm";
+const SKIP_DELETE_CONFIRM_KEY = "nanoclawd:skipDeleteConfirm";
 
 function shouldSkipDeleteConfirm(): boolean {
   try {

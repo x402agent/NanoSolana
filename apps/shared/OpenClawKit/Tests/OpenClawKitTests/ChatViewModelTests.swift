@@ -1,7 +1,7 @@
-import NanoSolanaKit
+import NanoClawdKit
 import Foundation
 import Testing
-@testable import NanoSolanaChatUI
+@testable import NanoClawdChatUI
 
 private func chatTextMessage(role: String, text: String, timestamp: Double) -> AnyCodable {
     AnyCodable([
@@ -14,17 +14,17 @@ private func chatTextMessage(role: String, text: String, timestamp: Double) -> A
 private func historyPayload(
     sessionKey: String = "main",
     sessionId: String? = "sess-main",
-    messages: [AnyCodable] = []) -> NanoSolanaChatHistoryPayload
+    messages: [AnyCodable] = []) -> NanoClawdChatHistoryPayload
 {
-    NanoSolanaChatHistoryPayload(
+    NanoClawdChatHistoryPayload(
         sessionKey: sessionKey,
         sessionId: sessionId,
         messages: messages,
         thinkingLevel: "off")
 }
 
-private func sessionEntry(key: String, updatedAt: Double) -> NanoSolanaChatSessionEntry {
-    NanoSolanaChatSessionEntry(
+private func sessionEntry(key: String, updatedAt: Double) -> NanoClawdChatSessionEntry {
+    NanoClawdChatSessionEntry(
         key: key,
         kind: nil,
         displayName: nil,
@@ -50,9 +50,9 @@ private func sessionEntry(
     key: String,
     updatedAt: Double,
     model: String?,
-    modelProvider: String? = nil) -> NanoSolanaChatSessionEntry
+    modelProvider: String? = nil) -> NanoClawdChatSessionEntry
 {
-    NanoSolanaChatSessionEntry(
+    NanoClawdChatSessionEntry(
         key: key,
         kind: nil,
         displayName: nil,
@@ -74,20 +74,20 @@ private func sessionEntry(
         contextTokens: nil)
 }
 
-private func modelChoice(id: String, name: String, provider: String = "anthropic") -> NanoSolanaChatModelChoice {
-    NanoSolanaChatModelChoice(modelID: id, name: name, provider: provider, contextWindow: nil)
+private func modelChoice(id: String, name: String, provider: String = "anthropic") -> NanoClawdChatModelChoice {
+    NanoClawdChatModelChoice(modelID: id, name: name, provider: provider, contextWindow: nil)
 }
 
 private func makeViewModel(
     sessionKey: String = "main",
-    historyResponses: [NanoSolanaChatHistoryPayload],
-    sessionsResponses: [NanoSolanaChatSessionsListResponse] = [],
-    modelResponses: [[NanoSolanaChatModelChoice]] = [],
+    historyResponses: [NanoClawdChatHistoryPayload],
+    sessionsResponses: [NanoClawdChatSessionsListResponse] = [],
+    modelResponses: [[NanoClawdChatModelChoice]] = [],
     setSessionModelHook: (@Sendable (String?) async throws -> Void)? = nil,
     setSessionThinkingHook: (@Sendable (String) async throws -> Void)? = nil,
     initialThinkingLevel: String? = nil,
     onThinkingLevelChanged: (@MainActor @Sendable (String) -> Void)? = nil) async
-    -> (TestChatTransport, NanoSolanaChatViewModel)
+    -> (TestChatTransport, NanoClawdChatViewModel)
 {
     let transport = TestChatTransport(
         historyResponses: historyResponses,
@@ -96,7 +96,7 @@ private func makeViewModel(
         setSessionModelHook: setSessionModelHook,
         setSessionThinkingHook: setSessionThinkingHook)
     let vm = await MainActor.run {
-        NanoSolanaChatViewModel(
+        NanoClawdChatViewModel(
             sessionKey: sessionKey,
             transport: transport,
             initialThinkingLevel: initialThinkingLevel,
@@ -106,7 +106,7 @@ private func makeViewModel(
 }
 
 private func loadAndWaitBootstrap(
-    vm: NanoSolanaChatViewModel,
+    vm: NanoClawdChatViewModel,
     sessionId: String? = nil) async throws
 {
     await MainActor.run { vm.load() }
@@ -117,7 +117,7 @@ private func loadAndWaitBootstrap(
     }
 }
 
-private func sendUserMessage(_ vm: NanoSolanaChatViewModel, text: String = "hi") async {
+private func sendUserMessage(_ vm: NanoClawdChatViewModel, text: String = "hi") async {
     await MainActor.run {
         vm.input = text
         vm.send()
@@ -132,7 +132,7 @@ private func emitAssistantText(
 {
     transport.emit(
         .agent(
-            NanoSolanaAgentEventPayload(
+            NanoClawdAgentEventPayload(
                 runId: runId,
                 seq: seq,
                 stream: "assistant",
@@ -147,7 +147,7 @@ private func emitToolStart(
 {
     transport.emit(
         .agent(
-            NanoSolanaAgentEventPayload(
+            NanoClawdAgentEventPayload(
                 runId: runId,
                 seq: seq,
                 stream: "tool",
@@ -167,7 +167,7 @@ private func emitExternalFinal(
 {
     transport.emit(
         .chat(
-            NanoSolanaChatEventPayload(
+            NanoClawdChatEventPayload(
                 runId: runId,
                 sessionKey: sessionKey,
                 state: "final",
@@ -206,21 +206,21 @@ private actor TestChatTransportState {
     var patchedThinkingLevels: [String] = []
 }
 
-private final class TestChatTransport: @unchecked Sendable, NanoSolanaChatTransport {
+private final class TestChatTransport: @unchecked Sendable, NanoClawdChatTransport {
     private let state = TestChatTransportState()
-    private let historyResponses: [NanoSolanaChatHistoryPayload]
-    private let sessionsResponses: [NanoSolanaChatSessionsListResponse]
-    private let modelResponses: [[NanoSolanaChatModelChoice]]
+    private let historyResponses: [NanoClawdChatHistoryPayload]
+    private let sessionsResponses: [NanoClawdChatSessionsListResponse]
+    private let modelResponses: [[NanoClawdChatModelChoice]]
     private let setSessionModelHook: (@Sendable (String?) async throws -> Void)?
     private let setSessionThinkingHook: (@Sendable (String) async throws -> Void)?
 
-    private let stream: AsyncStream<NanoSolanaChatTransportEvent>
-    private let continuation: AsyncStream<NanoSolanaChatTransportEvent>.Continuation
+    private let stream: AsyncStream<NanoClawdChatTransportEvent>
+    private let continuation: AsyncStream<NanoClawdChatTransportEvent>.Continuation
 
     init(
-        historyResponses: [NanoSolanaChatHistoryPayload],
-        sessionsResponses: [NanoSolanaChatSessionsListResponse] = [],
-        modelResponses: [[NanoSolanaChatModelChoice]] = [],
+        historyResponses: [NanoClawdChatHistoryPayload],
+        sessionsResponses: [NanoClawdChatSessionsListResponse] = [],
+        modelResponses: [[NanoClawdChatModelChoice]] = [],
         setSessionModelHook: (@Sendable (String?) async throws -> Void)? = nil,
         setSessionThinkingHook: (@Sendable (String) async throws -> Void)? = nil)
     {
@@ -229,26 +229,26 @@ private final class TestChatTransport: @unchecked Sendable, NanoSolanaChatTransp
         self.modelResponses = modelResponses
         self.setSessionModelHook = setSessionModelHook
         self.setSessionThinkingHook = setSessionThinkingHook
-        var cont: AsyncStream<NanoSolanaChatTransportEvent>.Continuation!
+        var cont: AsyncStream<NanoClawdChatTransportEvent>.Continuation!
         self.stream = AsyncStream { c in
             cont = c
         }
         self.continuation = cont
     }
 
-    func events() -> AsyncStream<NanoSolanaChatTransportEvent> {
+    func events() -> AsyncStream<NanoClawdChatTransportEvent> {
         self.stream
     }
 
     func setActiveSessionKey(_: String) async throws {}
 
-    func requestHistory(sessionKey: String) async throws -> NanoSolanaChatHistoryPayload {
+    func requestHistory(sessionKey: String) async throws -> NanoClawdChatHistoryPayload {
         let idx = await self.state.historyCallCount
         await self.state.setHistoryCallCount(idx + 1)
         if idx < self.historyResponses.count {
             return self.historyResponses[idx]
         }
-        return self.historyResponses.last ?? NanoSolanaChatHistoryPayload(
+        return self.historyResponses.last ?? NanoClawdChatHistoryPayload(
             sessionKey: sessionKey,
             sessionId: nil,
             messages: [],
@@ -260,24 +260,24 @@ private final class TestChatTransport: @unchecked Sendable, NanoSolanaChatTransp
         message _: String,
         thinking: String,
         idempotencyKey: String,
-        attachments _: [NanoSolanaChatAttachmentPayload]) async throws -> NanoSolanaChatSendResponse
+        attachments _: [NanoClawdChatAttachmentPayload]) async throws -> NanoClawdChatSendResponse
     {
         await self.state.sentRunIdsAppend(idempotencyKey)
         await self.state.sentThinkingLevelsAppend(thinking)
-        return NanoSolanaChatSendResponse(runId: idempotencyKey, status: "ok")
+        return NanoClawdChatSendResponse(runId: idempotencyKey, status: "ok")
     }
 
     func abortRun(sessionKey _: String, runId: String) async throws {
         await self.state.abortedRunIdsAppend(runId)
     }
 
-    func listSessions(limit _: Int?) async throws -> NanoSolanaChatSessionsListResponse {
+    func listSessions(limit _: Int?) async throws -> NanoClawdChatSessionsListResponse {
         let idx = await self.state.sessionsCallCount
         await self.state.setSessionsCallCount(idx + 1)
         if idx < self.sessionsResponses.count {
             return self.sessionsResponses[idx]
         }
-        return self.sessionsResponses.last ?? NanoSolanaChatSessionsListResponse(
+        return self.sessionsResponses.last ?? NanoClawdChatSessionsListResponse(
             ts: nil,
             path: nil,
             count: 0,
@@ -285,7 +285,7 @@ private final class TestChatTransport: @unchecked Sendable, NanoSolanaChatTransp
             sessions: [])
     }
 
-    func listModels() async throws -> [NanoSolanaChatModelChoice] {
+    func listModels() async throws -> [NanoClawdChatModelChoice] {
         let idx = await self.state.modelsCallCount
         await self.state.setModelsCallCount(idx + 1)
         if idx < self.modelResponses.count {
@@ -312,7 +312,7 @@ private final class TestChatTransport: @unchecked Sendable, NanoSolanaChatTransp
         true
     }
 
-    func emit(_ evt: NanoSolanaChatTransportEvent) {
+    func emit(_ evt: NanoClawdChatTransportEvent) {
         self.continuation.yield(evt)
     }
 
@@ -403,7 +403,7 @@ extension TestChatTransportState {
         let runId = try #require(await transport.lastSentRunId())
         transport.emit(
             .chat(
-                NanoSolanaChatEventPayload(
+                NanoClawdChatEventPayload(
                     runId: runId,
                     sessionKey: "main",
                     state: "final",
@@ -436,7 +436,7 @@ extension TestChatTransportState {
         let runId = try #require(await transport.lastSentRunId())
         transport.emit(
             .chat(
-                NanoSolanaChatEventPayload(
+                NanoClawdChatEventPayload(
                     runId: runId,
                     sessionKey: "agent:main:main",
                     state: "final",
@@ -465,7 +465,7 @@ extension TestChatTransportState {
 
         transport.emit(
             .chat(
-                NanoSolanaChatEventPayload(
+                NanoClawdChatEventPayload(
                     runId: "external-run",
                     sessionKey: "agent:main:main",
                     state: "final",
@@ -548,7 +548,7 @@ extension TestChatTransportState {
         let recentOlder = now - (5 * 60 * 60 * 1000)
         let stale = now - (26 * 60 * 60 * 1000)
         let history = historyPayload()
-        let sessions = NanoSolanaChatSessionsListResponse(
+        let sessions = NanoClawdChatSessionsListResponse(
             ts: now,
             path: nil,
             count: 4,
@@ -572,7 +572,7 @@ extension TestChatTransportState {
         let now = Date().timeIntervalSince1970 * 1000
         let recent = now - (30 * 60 * 1000)
         let history = historyPayload(sessionKey: "custom", sessionId: "sess-custom")
-        let sessions = NanoSolanaChatSessionsListResponse(
+        let sessions = NanoClawdChatSessionsListResponse(
             ts: now,
             path: nil,
             count: 1,
@@ -595,16 +595,16 @@ extension TestChatTransportState {
     @Test func bootstrapsModelSelectionFromSessionAndDefaults() async throws {
         let now = Date().timeIntervalSince1970 * 1000
         let history = historyPayload()
-        let sessions = NanoSolanaChatSessionsListResponse(
+        let sessions = NanoClawdChatSessionsListResponse(
             ts: now,
             path: nil,
             count: 1,
-            defaults: NanoSolanaChatSessionsDefaults(model: "openai/gpt-4.1-mini", contextTokens: nil),
+            defaults: NanoClawdChatSessionsDefaults(model: "openai/gpt-4.1-mini", contextTokens: nil),
             sessions: [
-                sessionEntry(key: "main", updatedAt: now, model: "anthropic/claude-opus-4-6"),
+                sessionEntry(key: "main", updatedAt: now, model: "anthropic/clawd-opus-4-6"),
             ])
         let models = [
-            modelChoice(id: "anthropic/claude-opus-4-6", name: "Claude Opus 4.6"),
+            modelChoice(id: "anthropic/clawd-opus-4-6", name: "Clawd Opus 4.6"),
             modelChoice(id: "openai/gpt-4.1-mini", name: "GPT-4.1 mini", provider: "openai"),
         ]
 
@@ -616,23 +616,23 @@ extension TestChatTransportState {
         try await loadAndWaitBootstrap(vm: vm)
 
         #expect(await MainActor.run { vm.showsModelPicker })
-        #expect(await MainActor.run { vm.modelSelectionID } == "anthropic/claude-opus-4-6")
+        #expect(await MainActor.run { vm.modelSelectionID } == "anthropic/clawd-opus-4-6")
         #expect(await MainActor.run { vm.defaultModelLabel } == "Default: openai/gpt-4.1-mini")
     }
 
     @Test func selectingDefaultModelPatchesNilAndUpdatesSelection() async throws {
         let now = Date().timeIntervalSince1970 * 1000
         let history = historyPayload()
-        let sessions = NanoSolanaChatSessionsListResponse(
+        let sessions = NanoClawdChatSessionsListResponse(
             ts: now,
             path: nil,
             count: 1,
-            defaults: NanoSolanaChatSessionsDefaults(model: "openai/gpt-4.1-mini", contextTokens: nil),
+            defaults: NanoClawdChatSessionsDefaults(model: "openai/gpt-4.1-mini", contextTokens: nil),
             sessions: [
-                sessionEntry(key: "main", updatedAt: now, model: "anthropic/claude-opus-4-6"),
+                sessionEntry(key: "main", updatedAt: now, model: "anthropic/clawd-opus-4-6"),
             ])
         let models = [
-            modelChoice(id: "anthropic/claude-opus-4-6", name: "Claude Opus 4.6"),
+            modelChoice(id: "anthropic/clawd-opus-4-6", name: "Clawd Opus 4.6"),
             modelChoice(id: "openai/gpt-4.1-mini", name: "GPT-4.1 mini", provider: "openai"),
         ]
 
@@ -643,24 +643,24 @@ extension TestChatTransportState {
 
         try await loadAndWaitBootstrap(vm: vm)
 
-        await MainActor.run { vm.selectModel(NanoSolanaChatViewModel.defaultModelSelectionID) }
+        await MainActor.run { vm.selectModel(NanoClawdChatViewModel.defaultModelSelectionID) }
 
         try await waitUntil("session model patched") {
             let patched = await transport.patchedModels()
             return patched == [nil]
         }
 
-        #expect(await MainActor.run { vm.modelSelectionID } == NanoSolanaChatViewModel.defaultModelSelectionID)
+        #expect(await MainActor.run { vm.modelSelectionID } == NanoClawdChatViewModel.defaultModelSelectionID)
     }
 
     @Test func selectingProviderQualifiedModelDisambiguatesDuplicateModelIDs() async throws {
         let now = Date().timeIntervalSince1970 * 1000
         let history = historyPayload()
-        let sessions = NanoSolanaChatSessionsListResponse(
+        let sessions = NanoClawdChatSessionsListResponse(
             ts: now,
             path: nil,
             count: 1,
-            defaults: NanoSolanaChatSessionsDefaults(model: "openrouter/gpt-4.1-mini", contextTokens: nil),
+            defaults: NanoClawdChatSessionsDefaults(model: "openrouter/gpt-4.1-mini", contextTokens: nil),
             sessions: [
                 sessionEntry(key: "main", updatedAt: now, model: "gpt-4.1-mini", modelProvider: "openrouter"),
             ])
@@ -689,7 +689,7 @@ extension TestChatTransportState {
     @Test func slashModelIDsStayProviderQualifiedInSelectionAndPatch() async throws {
         let now = Date().timeIntervalSince1970 * 1000
         let history = historyPayload()
-        let sessions = NanoSolanaChatSessionsListResponse(
+        let sessions = NanoClawdChatSessionsListResponse(
             ts: now,
             path: nil,
             count: 1,
@@ -722,7 +722,7 @@ extension TestChatTransportState {
     @Test func staleModelPatchCompletionsDoNotOverwriteNewerSelection() async throws {
         let now = Date().timeIntervalSince1970 * 1000
         let history = historyPayload()
-        let sessions = NanoSolanaChatSessionsListResponse(
+        let sessions = NanoClawdChatSessionsListResponse(
             ts: now,
             path: nil,
             count: 1,
@@ -764,7 +764,7 @@ extension TestChatTransportState {
     @Test func sendWaitsForInFlightModelPatchToFinish() async throws {
         let now = Date().timeIntervalSince1970 * 1000
         let history = historyPayload()
-        let sessions = NanoSolanaChatSessionsListResponse(
+        let sessions = NanoClawdChatSessionsListResponse(
             ts: now,
             path: nil,
             count: 1,
@@ -817,7 +817,7 @@ extension TestChatTransportState {
     @Test func failedLatestModelSelectionDoesNotReplayAfterOlderCompletionFinishes() async throws {
         let now = Date().timeIntervalSince1970 * 1000
         let history = historyPayload()
-        let sessions = NanoSolanaChatSessionsListResponse(
+        let sessions = NanoClawdChatSessionsListResponse(
             ts: now,
             path: nil,
             count: 1,
@@ -863,7 +863,7 @@ extension TestChatTransportState {
     @Test func failedLatestModelSelectionRestoresEarlierSuccessWithoutReplay() async throws {
         let now = Date().timeIntervalSince1970 * 1000
         let history = historyPayload()
-        let sessions = NanoSolanaChatSessionsListResponse(
+        let sessions = NanoClawdChatSessionsListResponse(
             ts: now,
             path: nil,
             count: 1,
@@ -911,7 +911,7 @@ extension TestChatTransportState {
 
     @Test func switchingSessionsIgnoresLateModelPatchCompletionFromPreviousSession() async throws {
         let now = Date().timeIntervalSince1970 * 1000
-        let sessions = NanoSolanaChatSessionsListResponse(
+        let sessions = NanoClawdChatSessionsListResponse(
             ts: now,
             path: nil,
             count: 2,
@@ -950,13 +950,13 @@ extension TestChatTransportState {
             return patched == ["openai/gpt-5.4"]
         }
 
-        #expect(await MainActor.run { vm.modelSelectionID } == NanoSolanaChatViewModel.defaultModelSelectionID)
+        #expect(await MainActor.run { vm.modelSelectionID } == NanoClawdChatViewModel.defaultModelSelectionID)
         #expect(await MainActor.run { vm.sessions.first(where: { $0.key == "other" })?.model } == nil)
     }
 
     @Test func lateModelCompletionDoesNotReplayCurrentSessionSelectionIntoPreviousSession() async throws {
         let now = Date().timeIntervalSince1970 * 1000
-        let initialSessions = NanoSolanaChatSessionsListResponse(
+        let initialSessions = NanoClawdChatSessionsListResponse(
             ts: now,
             path: nil,
             count: 2,
@@ -965,7 +965,7 @@ extension TestChatTransportState {
                 sessionEntry(key: "main", updatedAt: now, model: nil),
                 sessionEntry(key: "other", updatedAt: now - 1000, model: nil),
             ])
-        let sessionsAfterOtherSelection = NanoSolanaChatSessionsListResponse(
+        let sessionsAfterOtherSelection = NanoClawdChatSessionsListResponse(
             ts: now,
             path: nil,
             count: 2,
@@ -1022,7 +1022,7 @@ extension TestChatTransportState {
     }
 
     @Test func explicitThinkingLevelWinsOverHistoryAndPersistsChanges() async throws {
-        let history = NanoSolanaChatHistoryPayload(
+        let history = NanoClawdChatHistoryPayload(
             sessionKey: "main",
             sessionId: "sess-main",
             messages: [],
@@ -1051,7 +1051,7 @@ extension TestChatTransportState {
     }
 
     @Test func serverProvidedThinkingLevelsOutsideMenuArePreservedForSend() async throws {
-        let history = NanoSolanaChatHistoryPayload(
+        let history = NanoClawdChatHistoryPayload(
             sessionKey: "main",
             sessionId: "sess-main",
             messages: [],
@@ -1069,7 +1069,7 @@ extension TestChatTransportState {
     }
 
     @Test func staleThinkingPatchCompletionReappliesLatestSelection() async throws {
-        let history = NanoSolanaChatHistoryPayload(
+        let history = NanoClawdChatHistoryPayload(
             sessionKey: "main",
             sessionId: "sess-main",
             messages: [],
@@ -1112,7 +1112,7 @@ extension TestChatTransportState {
 
         transport.emit(
             .chat(
-                NanoSolanaChatEventPayload(
+                NanoClawdChatEventPayload(
                     runId: "other-run",
                     sessionKey: "main",
                     state: "error",
@@ -1123,7 +1123,7 @@ extension TestChatTransportState {
     }
 
     @Test func stripsInboundMetadataFromHistoryMessages() async throws {
-        let history = NanoSolanaChatHistoryPayload(
+        let history = NanoClawdChatHistoryPayload(
             sessionKey: "main",
             sessionId: "sess-main",
             messages: [
@@ -1132,7 +1132,7 @@ extension TestChatTransportState {
                     "content": [["type": "text", "text": """
 Conversation info (untrusted metadata):
 ```json
-{ \"sender\": \"nanosolana-ios\" }
+{ \"sender\": \"nanoclawd-ios\" }
 ```
 
 Hello?
@@ -1142,7 +1142,7 @@ Hello?
             ],
             thinkingLevel: "off")
         let transport = TestChatTransport(historyResponses: [history])
-        let vm = await MainActor.run { NanoSolanaChatViewModel(sessionKey: "main", transport: transport) }
+        let vm = await MainActor.run { NanoClawdChatViewModel(sessionKey: "main", transport: transport) }
 
         await MainActor.run { vm.load() }
         try await waitUntil("history loaded") { await MainActor.run { !vm.messages.isEmpty } }
@@ -1173,7 +1173,7 @@ Hello?
 
         transport.emit(
             .chat(
-                NanoSolanaChatEventPayload(
+                NanoClawdChatEventPayload(
                     runId: runId,
                     sessionKey: "main",
                     state: "aborted",

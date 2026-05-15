@@ -37,8 +37,8 @@ export function getFallbackSkillRoots(workdir: string) {
     resolve(workdir, '..', 'clawdis', 'Skills'),
     resolve(workdir, '..', 'tamagobot', 'skills'),
     resolve(workdir, '..', 'tamagobot', 'Skills'),
-    resolve(workdir, '..', 'nanosolana', 'skills'),
-    resolve(workdir, '..', 'nanosolana', 'Skills'),
+    resolve(workdir, '..', 'nanoclawd', 'skills'),
+    resolve(workdir, '..', 'nanoclawd', 'Skills'),
     resolve(workdir, '..', 'tamagobot', 'skills'),
     resolve(workdir, '..', 'tamagobot', 'Skills'),
 
@@ -58,10 +58,10 @@ export function getFallbackSkillRoots(workdir: string) {
     resolve(home, '.clawdis', 'skills'),
     resolve(home, '.clawdis', 'Skills'),
 
-    resolve(home, 'nanosolana', 'skills'),
-    resolve(home, 'nanosolana', 'Skills'),
-    resolve(home, '.nanosolana', 'skills'),
-    resolve(home, '.nanosolana', 'Skills'),
+    resolve(home, 'nanoclawd', 'skills'),
+    resolve(home, 'nanoclawd', 'Skills'),
+    resolve(home, '.nanoclawd', 'skills'),
+    resolve(home, '.nanoclawd', 'Skills'),
 
     resolve(home, 'tamagobot', 'skills'),
     resolve(home, 'tamagobot', 'Skills'),
@@ -73,8 +73,8 @@ export function getFallbackSkillRoots(workdir: string) {
     resolve(home, 'Library', 'Application Support', 'tamagobot', 'Skills'),
     resolve(home, 'Library', 'Application Support', 'clawdis', 'skills'),
     resolve(home, 'Library', 'Application Support', 'clawdis', 'Skills'),
-    resolve(home, 'Library', 'Application Support', 'nanosolana', 'skills'),
-    resolve(home, 'Library', 'Application Support', 'nanosolana', 'Skills'),
+    resolve(home, 'Library', 'Application Support', 'nanoclawd', 'skills'),
+    resolve(home, 'Library', 'Application Support', 'nanoclawd', 'Skills'),
     resolve(home, 'Library', 'Application Support', 'tamagobot', 'skills'),
     resolve(home, 'Library', 'Application Support', 'tamagobot', 'Skills'),
   ]

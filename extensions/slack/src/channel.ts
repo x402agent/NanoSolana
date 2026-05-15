@@ -1,11 +1,11 @@
-import { createScopedChannelConfigBase } from "nanosolana/plugin-sdk/compat";
+import { createScopedChannelConfigBase } from "nanoclawd/plugin-sdk/compat";
 import {
   buildAccountScopedDmSecurityPolicy,
   collectOpenProviderGroupPolicyWarnings,
   collectOpenGroupPolicyConfiguredRouteWarnings,
   createScopedAccountConfigAccessors,
   formatAllowFromLowercase,
-} from "nanosolana/plugin-sdk/compat";
+} from "nanoclawd/plugin-sdk/compat";
 import {
   applyAccountNameToChannelSection,
   buildComputedAccountStatusSnapshot,
@@ -36,7 +36,7 @@ import {
   SlackConfigSchema,
   type ChannelPlugin,
   type ResolvedSlackAccount,
-} from "nanosolana/plugin-sdk/slack";
+} from "nanoclawd/plugin-sdk/slack";
 import { getSlackRuntime } from "./runtime.js";
 
 const meta = getChatChannelMeta("slack");

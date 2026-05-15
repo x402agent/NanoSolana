@@ -1,11 +1,11 @@
 ---
-summary: "Solana Claude Go tools reference — current runtime and extension tool surfaces"
+summary: "Solana Clawd Go tools reference — current runtime and extension tool surfaces"
 title: "Tools"
 ---
 
 # Tools
 
-Solana Claude Go has three tool surfaces in this checkout:
+Solana Clawd Go has three tool surfaces in this checkout:
 
 1. runtime capabilities exposed by the `scg` CLI and gateway
 2. extension-registered tools used by the UI and plugin layer

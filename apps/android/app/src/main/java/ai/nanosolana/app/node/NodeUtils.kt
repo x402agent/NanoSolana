@@ -1,6 +1,6 @@
-package ai.nanosolana.app.node
+package ai.nanoclawd.app.node
 
-import ai.nanosolana.app.gateway.parseInvokeErrorFromThrowable
+import ai.nanoclawd.app.gateway.parseInvokeErrorFromThrowable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull

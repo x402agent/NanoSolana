@@ -1,4 +1,4 @@
-import NanoSolanaDiscovery
+import NanoClawdDiscovery
 import SwiftUI
 
 struct GatewayDiscoveryInlineList: View {
@@ -112,6 +112,6 @@ struct GatewayDiscoveryMenu: View {
         } label: {
             Image(systemName: "dot.radiowaves.left.and.right")
         }
-        .help("Discover NanoSolana gateways on your LAN")
+        .help("Discover NanoClawd gateways on your LAN")
     }
 }

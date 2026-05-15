@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { PassThrough } from "node:stream";
-import type { NanoSolanaPluginApi, NanoSolanaPluginToolContext } from "nanosolana/plugin-sdk/lobster";
+import type { NanoClawdPluginApi, NanoClawdPluginToolContext } from "nanoclawd/plugin-sdk/lobster";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   createWindowsCmdShimFixture,
@@ -27,7 +27,7 @@ vi.mock("node:child_process", async (importOriginal) => {
 
 let createLobsterTool: typeof import("./lobster-tool.js").createLobsterTool;
 
-function fakeApi(overrides: Partial<NanoSolanaPluginApi> = {}): NanoSolanaPluginApi {
+function fakeApi(overrides: Partial<NanoClawdPluginApi> = {}): NanoClawdPluginApi {
   return {
     id: "lobster",
     name: "lobster",
@@ -53,7 +53,7 @@ function fakeApi(overrides: Partial<NanoSolanaPluginApi> = {}): NanoSolanaPlugin
   };
 }
 
-function fakeCtx(overrides: Partial<NanoSolanaPluginToolContext> = {}): NanoSolanaPluginToolContext {
+function fakeCtx(overrides: Partial<NanoClawdPluginToolContext> = {}): NanoClawdPluginToolContext {
   return {
     config: {},
     workspaceDir: "/tmp",
@@ -74,7 +74,7 @@ describe("lobster plugin tool", () => {
   beforeAll(async () => {
     ({ createLobsterTool } = await import("./lobster-tool.js"));
 
-    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "nanosolana-lobster-plugin-"));
+    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "nanoclawd-lobster-plugin-"));
   });
 
   afterEach(() => {
@@ -298,7 +298,7 @@ describe("lobster plugin tool", () => {
 
   it("can be gated off in sandboxed contexts", async () => {
     const api = fakeApi();
-    const factoryTool = (ctx: NanoSolanaPluginToolContext) => {
+    const factoryTool = (ctx: NanoClawdPluginToolContext) => {
       if (ctx.sandboxed) {
         return null;
       }

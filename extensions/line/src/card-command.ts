@@ -1,4 +1,4 @@
-import type { LineChannelData, NanoSolanaPluginApi, ReplyPayload } from "nanosolana/plugin-sdk/line";
+import type { LineChannelData, NanoClawdPluginApi, ReplyPayload } from "nanoclawd/plugin-sdk/line";
 import {
   createActionCard,
   createImageCard,
@@ -7,7 +7,7 @@ import {
   createReceiptCard,
   type CardAction,
   type ListItem,
-} from "nanosolana/plugin-sdk/line";
+} from "nanoclawd/plugin-sdk/line";
 
 const CARD_USAGE = `Usage: /card <type> "title" "body" [options]
 
@@ -154,7 +154,7 @@ function parseCardArgs(argsStr: string): {
   return result;
 }
 
-export function registerLineCardCommand(api: NanoSolanaPluginApi): void {
+export function registerLineCardCommand(api: NanoClawdPluginApi): void {
   api.registerCommand({
     name: "card",
     description: "Send a rich card message (LINE).",

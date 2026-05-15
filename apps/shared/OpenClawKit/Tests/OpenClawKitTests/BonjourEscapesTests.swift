@@ -1,4 +1,4 @@
-import NanoSolanaKit
+import NanoClawdKit
 import Testing
 
 @Suite struct BonjourEscapesTests {
@@ -8,7 +8,7 @@ import Testing
     }
 
     @Test func decodeSpaces() {
-        #expect(BonjourEscapes.decode("NanoSolana\\032Gateway") == "NanoSolana Gateway")
+        #expect(BonjourEscapes.decode("NanoClawd\\032Gateway") == "NanoClawd Gateway")
     }
 
     @Test func decodeMultipleEscapes() {

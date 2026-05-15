@@ -1,4 +1,4 @@
-import type { LookupFn, SsrFPolicy } from "nanosolana/plugin-sdk/tlon";
+import type { LookupFn, SsrFPolicy } from "nanoclawd/plugin-sdk/tlon";
 import { UrbitAuthError } from "./errors.js";
 import { urbitFetch } from "./fetch.js";
 

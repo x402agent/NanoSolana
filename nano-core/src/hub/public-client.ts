@@ -2,7 +2,7 @@ import type {
   ScgHubSkillManifestResponse,
 } from "./oneshot.js";
 
-const DEFAULT_SCGHUB_SITE_URL = "https://hub.solana-claude-go.com";
+const DEFAULT_SCGHUB_SITE_URL = "https://hub.solana-clawd-go.com";
 
 export type ScgHubExploreSort =
   | "newest"

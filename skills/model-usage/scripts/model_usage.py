@@ -245,7 +245,7 @@ def build_json_all(provider: str, totals: Dict[str, float]) -> Dict[str, Any]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Summarize CodexBar model usage from local cost logs.")
-    parser.add_argument("--provider", choices=["codex", "claude"], default="codex")
+    parser.add_argument("--provider", choices=["codex", "clawd"], default="codex")
     parser.add_argument("--mode", choices=["current", "all"], default="current")
     parser.add_argument("--model", help="Explicit model name to report instead of auto-current.")
     parser.add_argument("--input", help="Path to codexbar cost JSON (or '-' for stdin).")

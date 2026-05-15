@@ -1,10 +1,10 @@
-import NanoSolanaKit
+import NanoClawdKit
 import Foundation
 import Testing
 
 @Suite struct ToolDisplayRegistryTests {
     @Test func loadsToolDisplayConfigFromBundle() {
-        let url = NanoSolanaKitResources.bundle.url(forResource: "tool-display", withExtension: "json")
+        let url = NanoClawdKitResources.bundle.url(forResource: "tool-display", withExtension: "json")
         #expect(url != nil)
     }
 

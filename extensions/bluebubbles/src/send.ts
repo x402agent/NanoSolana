@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/bluebubbles";
-import { stripMarkdown } from "nanosolana/plugin-sdk/bluebubbles";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/bluebubbles";
+import { stripMarkdown } from "nanoclawd/plugin-sdk/bluebubbles";
 import { resolveBlueBubblesAccount } from "./accounts.js";
 import {
   getCachedBlueBubblesPrivateApiStatus,
@@ -21,7 +21,7 @@ export type BlueBubblesSendOpts = {
   password?: string;
   accountId?: string;
   timeoutMs?: number;
-  cfg?: NanoSolanaConfig;
+  cfg?: NanoClawdConfig;
   /** Message GUID to reply to (reply threading) */
   replyToMessageGuid?: string;
   /** Part index for reply (default: 0) */

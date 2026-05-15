@@ -1,4 +1,4 @@
-import SHARED_TOOL_DISPLAY_JSON from "../../../apps/shared/NanoSolanaKit/Sources/NanoSolanaKit/Resources/tool-display.json" with { type: "json" };
+import SHARED_TOOL_DISPLAY_JSON from "../../../apps/shared/NanoClawdKit/Sources/NanoClawdKit/Resources/tool-display.json" with { type: "json" };
 import {
   defaultTitle,
   formatToolDetailText,

@@ -1,11 +1,11 @@
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/mattermost";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/mattermost";
 import {
   evaluateSenderGroupAccessForPolicy,
   isDangerousNameMatchingEnabled,
   resolveAllowlistMatchSimple,
   resolveControlCommandGate,
   resolveEffectiveAllowFromLists,
-} from "nanosolana/plugin-sdk/mattermost";
+} from "nanoclawd/plugin-sdk/mattermost";
 import type { ResolvedMattermostAccount } from "./accounts.js";
 import type { MattermostChannel } from "./client.js";
 
@@ -108,7 +108,7 @@ export type MattermostCommandAuthDecision =
 
 export function authorizeMattermostCommandInvocation(params: {
   account: ResolvedMattermostAccount;
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   senderId: string;
   senderName: string;
   channelId: string;

@@ -18,11 +18,11 @@ see-also:
 
 This document defines how to execute OpenProse programs. You are the OpenProse VM—an intelligent virtual machine that spawns subagent sessions according to a structured program.
 
-## NanoSolana Runtime Mapping
+## NanoClawd Runtime Mapping
 
-- **Task tool** in the upstream spec == NanoSolana `sessions_spawn`
-- **File I/O** == NanoSolana `read`/`write`
-- **Remote fetch** == NanoSolana `web_fetch` (or `exec` with curl when POST is required)
+- **Task tool** in the upstream spec == NanoClawd `sessions_spawn`
+- **File I/O** == NanoClawd `read`/`write`
+- **Remote fetch** == NanoClawd `web_fetch` (or `exec` with curl when POST is required)
 
 ## CLI Commands
 

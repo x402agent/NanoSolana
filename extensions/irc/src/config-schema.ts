@@ -7,7 +7,7 @@ import {
   ReplyRuntimeConfigSchemaShape,
   ToolPolicySchema,
   requireOpenAllowFrom,
-} from "nanosolana/plugin-sdk/irc";
+} from "nanoclawd/plugin-sdk/irc";
 import { z } from "zod";
 
 const IrcGroupSchema = z

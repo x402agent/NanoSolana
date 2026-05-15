@@ -1,6 +1,6 @@
 import Foundation
-import NanoSolanaIPC
-import NanoSolanaKit
+import NanoClawdIPC
+import NanoClawdKit
 
 enum RemoteGatewayAuthIssue: Equatable {
     case tokenRequired
@@ -56,24 +56,24 @@ enum RemoteGatewayAuthIssue: Equatable {
     var body: String {
         switch self {
         case .tokenRequired:
-            "Paste the token configured on the gateway host. On the gateway host, run `nanosolana config get gateway.auth.token`. If the gateway uses an environment variable instead, use `NANOSOLANA_GATEWAY_TOKEN`."
+            "Paste the token configured on the gateway host. On the gateway host, run `nanoclawd config get gateway.auth.token`. If the gateway uses an environment variable instead, use `NANOCLAWD_GATEWAY_TOKEN`."
         case .tokenMismatch:
-            "Check `gateway.auth.token` or `NANOSOLANA_GATEWAY_TOKEN` on the gateway host and try again."
+            "Check `gateway.auth.token` or `NANOCLAWD_GATEWAY_TOKEN` on the gateway host and try again."
         case .gatewayTokenNotConfigured:
-            "This gateway is set to token auth, but no `gateway.auth.token` is configured on the gateway host. If the gateway uses an environment variable instead, set `NANOSOLANA_GATEWAY_TOKEN` before starting the gateway."
+            "This gateway is set to token auth, but no `gateway.auth.token` is configured on the gateway host. If the gateway uses an environment variable instead, set `NANOCLAWD_GATEWAY_TOKEN` before starting the gateway."
         case .passwordRequired:
             "This onboarding flow does not support password auth yet. Reconfigure the gateway to use token auth, then retry."
         case .pairingRequired:
-            "Approve this device from an already-paired NanoSolana client. In your NanoSolana chat, run `/pair approve`, then click **Check connection** again."
+            "Approve this device from an already-paired NanoClawd client. In your NanoClawd chat, run `/pair approve`, then click **Check connection** again."
         }
     }
 
     var footnote: String? {
         switch self {
         case .tokenRequired, .gatewayTokenNotConfigured:
-            "No token yet? Generate one on the gateway host with `nanosolana doctor --generate-gateway-token`, then set it as `gateway.auth.token`."
+            "No token yet? Generate one on the gateway host with `nanoclawd doctor --generate-gateway-token`, then set it as `gateway.auth.token`."
         case .pairingRequired:
-            "If you do not have another paired NanoSolana client yet, approve the pending request on the gateway host with `nanosolana devices approve`."
+            "If you do not have another paired NanoClawd client yet, approve the pending request on the gateway host with `nanoclawd devices approve`."
         case .tokenMismatch, .passwordRequired:
             nil
         }
@@ -84,13 +84,13 @@ enum RemoteGatewayAuthIssue: Equatable {
         case .tokenRequired:
             "This gateway requires an auth token from the gateway host."
         case .tokenMismatch:
-            "Gateway token mismatch. Check gateway.auth.token or NANOSOLANA_GATEWAY_TOKEN on the gateway host."
+            "Gateway token mismatch. Check gateway.auth.token or NANOCLAWD_GATEWAY_TOKEN on the gateway host."
         case .gatewayTokenNotConfigured:
             "This gateway has token auth enabled, but no gateway.auth.token is configured on the host."
         case .passwordRequired:
             "This gateway uses password auth. Remote onboarding on macOS cannot collect gateway passwords yet."
         case .pairingRequired:
-            "Pairing required. In an already-paired NanoSolana client, run /pair approve, then check the connection again."
+            "Pairing required. In an already-paired NanoClawd client, run /pair approve, then check the connection again."
         }
     }
 }

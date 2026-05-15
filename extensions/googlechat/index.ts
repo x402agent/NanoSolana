@@ -1,14 +1,14 @@
-import type { NanoSolanaPluginApi } from "nanosolana/plugin-sdk/googlechat";
-import { emptyPluginConfigSchema } from "nanosolana/plugin-sdk/googlechat";
+import type { NanoClawdPluginApi } from "nanoclawd/plugin-sdk/googlechat";
+import { emptyPluginConfigSchema } from "nanoclawd/plugin-sdk/googlechat";
 import { googlechatDock, googlechatPlugin } from "./src/channel.js";
 import { setGoogleChatRuntime } from "./src/runtime.js";
 
 const plugin = {
   id: "googlechat",
   name: "Google Chat",
-  description: "NanoSolana Google Chat channel plugin",
+  description: "NanoClawd Google Chat channel plugin",
   configSchema: emptyPluginConfigSchema(),
-  register(api: NanoSolanaPluginApi) {
+  register(api: NanoClawdPluginApi) {
     setGoogleChatRuntime(api.runtime);
     api.registerChannel({ plugin: googlechatPlugin, dock: googlechatDock });
   },

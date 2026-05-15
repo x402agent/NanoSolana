@@ -1,5 +1,5 @@
-import { resolveChannelGroupRequireMention } from "nanosolana/plugin-sdk/compat";
-import type { ChannelGroupContext } from "nanosolana/plugin-sdk/mattermost";
+import { resolveChannelGroupRequireMention } from "nanoclawd/plugin-sdk/compat";
+import type { ChannelGroupContext } from "nanoclawd/plugin-sdk/mattermost";
 import { resolveMattermostAccount } from "./mattermost/accounts.js";
 
 export function resolveMattermostGroupRequireMention(

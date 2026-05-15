@@ -1,5 +1,5 @@
-import type { NanoSolanaPluginApi } from "nanosolana/plugin-sdk/memory-core";
-import { emptyPluginConfigSchema } from "nanosolana/plugin-sdk/memory-core";
+import type { NanoClawdPluginApi } from "nanoclawd/plugin-sdk/memory-core";
+import { emptyPluginConfigSchema } from "nanoclawd/plugin-sdk/memory-core";
 
 const memoryCorePlugin = {
   id: "memory-core",
@@ -7,7 +7,7 @@ const memoryCorePlugin = {
   description: "File-backed memory search tools and CLI",
   kind: "memory",
   configSchema: emptyPluginConfigSchema(),
-  register(api: NanoSolanaPluginApi) {
+  register(api: NanoClawdPluginApi) {
     api.registerTool(
       (ctx) => {
         const memorySearchTool = api.runtime.tools.createMemorySearchTool({

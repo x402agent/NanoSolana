@@ -1,11 +1,11 @@
-package ai.nanosolana.app.ui
+package ai.nanoclawd.app.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import ai.nanosolana.app.MainViewModel
+import ai.nanoclawd.app.MainViewModel
 
 @Composable
 fun RootScreen(viewModel: MainViewModel) {

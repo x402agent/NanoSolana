@@ -1,8 +1,8 @@
-# NanoSolana Chrome Extension — Browser Agent Relay
+# NanoClawd Chrome Extension — Browser Agent Relay
 
 <div align="center">
 
-**Relay Chrome tabs to your NanoSolana agent • Manage wallet • Chat via gateway • Trigger manual trades**
+**Relay Chrome tabs to your NanoClawd agent • Manage wallet • Chat via gateway • Trigger manual trades**
 
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-14F195?style=flat-square)](https://developer.chrome.com/docs/extensions/mv3/)
 [![Solana](https://img.shields.io/badge/Solana-Native-9945FF?style=flat-square)](https://solana.com)
@@ -13,11 +13,11 @@
 
 ## What It Does
 
-The NanoSolana Browser Extension connects your Chrome browser to your locally running NanoSolana agent via the CDP (Chrome DevTools Protocol) relay. Once installed, you can:
+The NanoClawd Browser Extension connects your Chrome browser to your locally running NanoClawd agent via the CDP (Chrome DevTools Protocol) relay. Once installed, you can:
 
 - **🔗 Relay browser tabs** — Attach/detach any Chrome tab to your agent for browser automation
 - **💰 Manage wallet** — View wallet status, generate/rehydrate wallets directly from the extension
-- **💬 Chat relay** — Send messages through the NanoSolana gateway, optionally forwarding to Telegram
+- **💬 Chat relay** — Send messages through the NanoClawd gateway, optionally forwarding to Telegram
 - **📈 Manual trades** — Submit buy/sell/hold signals with confidence scores and reasoning
 - **⚙️ Gateway sync** — Auto-sync configuration from your running gateway
 
@@ -27,15 +27,15 @@ The NanoSolana Browser Extension connects your Chrome browser to your locally ru
 
 ### Prerequisites
 
-1. **NanoSolana agent running** — Start with `nanosolana go` or `nanosolana run`
+1. **NanoClawd agent running** — Start with `nanoclawd go` or `nanoclawd run`
 2. **Gateway active** — The HMAC-SHA256 gateway must be running (default: `http://127.0.0.1:18790`)
 3. **Relay server** — Browser relay server at `http://127.0.0.1:18792` (started automatically)
 
 ### Load Unpacked Extension
 
 ```bash
-# 1. Start your NanoSolana agent (gateway + relay included)
-nanosolana go
+# 1. Start your NanoClawd agent (gateway + relay included)
+nanoclawd go
 
 # 2. Open Chrome extensions page
 #    Navigate to: chrome://extensions
@@ -43,18 +43,18 @@ nanosolana go
 # 3. Enable "Developer mode" (toggle in top-right)
 
 # 4. Click "Load unpacked" → select:
-#    /path/to/nanosolana/assets/chrome-extension
+#    /path/to/nanoclawd/assets/chrome-extension
 
 # 5. Pin the extension in your toolbar
 ```
 
 ### Quick Setup
 
-1. Click the NanoSolana icon in your toolbar
+1. Click the NanoClawd icon in your toolbar
 2. Right-click → **Options** to open the settings page
 3. Set your **Relay port** (default: `18792`)
 4. Set your **Gateway base URL** (default: `http://127.0.0.1:18790`)
-5. Enter your **Gateway token** (same as `NANOSOLANA_GATEWAY_TOKEN` or from `nanosolana vault get gatewayToken`)
+5. Enter your **Gateway token** (same as `NANOCLAWD_GATEWAY_TOKEN` or from `nanoclawd vault get gatewayToken`)
 6. Click **Save + Check** to verify connectivity
 
 ---
@@ -63,7 +63,7 @@ nanosolana go
 
 ### Tab Relay (Browser Automation)
 
-Click the NanoSolana icon on any tab to **attach** it. The agent can now control that tab via CDP:
+Click the NanoClawd icon on any tab to **attach** it. The agent can now control that tab via CDP:
 
 - Navigate pages
 - Extract content
@@ -84,7 +84,7 @@ From the Options page:
 
 ### Chat Relay
 
-Send messages through your NanoSolana gateway:
+Send messages through your NanoClawd gateway:
 
 | Field | Description |
 |-------|-------------|
@@ -125,7 +125,7 @@ Chrome Extension (Manifest V3)
 
 ```
 ┌──────────────┐    CDP     ┌──────────────┐    HTTP    ┌──────────────┐
-│   Chrome     │◄──────────►│  Relay Server│◄──────────►│  NanoSolana  │
+│   Chrome     │◄──────────►│  Relay Server│◄──────────►│  NanoClawd  │
 │   Tab        │   :18792   │  (local)     │            │  Gateway     │
 └──────────────┘            └──────────────┘            │  :18790      │
                                                         │              │
@@ -178,8 +178,8 @@ Chrome Extension (Manifest V3)
 
 | Issue | Fix |
 |-------|-----|
-| Red `!` badge on icon | Relay server not running — start with `nanosolana go` |
+| Red `!` badge on icon | Relay server not running — start with `nanoclawd go` |
 | "Gateway unreachable" | Check gateway URL and port in Options |
-| "Auth failed" | Verify gateway token matches `NANOSOLANA_GATEWAY_TOKEN` |
+| "Auth failed" | Verify gateway token matches `NANOCLAWD_GATEWAY_TOKEN` |
 | Chat not forwarding | Enable "Forward to Telegram" checkbox + save Telegram settings |
 | Trade not executing | Ensure confidence ≥ 0.7 for auto-execution |

@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 @Suite(.serialized)
 @MainActor
@@ -8,12 +8,12 @@ struct CLIInstallerTests {
     @Test func `installed location finds executable`() throws {
         let fm = FileManager()
         let root = fm.temporaryDirectory.appendingPathComponent(
-            "nanosolana-cli-installer-\(UUID().uuidString)")
+            "nanoclawd-cli-installer-\(UUID().uuidString)")
         defer { try? fm.removeItem(at: root) }
 
         let binDir = root.appendingPathComponent("bin")
         try fm.createDirectory(at: binDir, withIntermediateDirectories: true)
-        let cli = binDir.appendingPathComponent("nanosolana")
+        let cli = binDir.appendingPathComponent("nanoclawd")
         fm.createFile(atPath: cli.path, contents: Data())
         try fm.setAttributes([.posixPermissions: 0o755], ofItemAtPath: cli.path)
 

@@ -1,4 +1,4 @@
-package ai.nanosolana.app.gateway
+package ai.nanoclawd.app.gateway
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -51,9 +51,9 @@ class GatewayDiscovery(
   private val nsd = context.getSystemService(NsdManager::class.java)
   private val connectivity = context.getSystemService(ConnectivityManager::class.java)
   private val dns = DnsResolver.getInstance()
-  private val serviceType = "_nanosolana-gw._tcp."
-  private val wideAreaDomain = System.getenv("NANOSOLANA_WIDE_AREA_DOMAIN")
-  private val logTag = "NanoSolana/GatewayDiscovery"
+  private val serviceType = "_nanoclawd-gw._tcp."
+  private val wideAreaDomain = System.getenv("NANOCLAWD_WIDE_AREA_DOMAIN")
+  private val logTag = "NanoClawd/GatewayDiscovery"
 
   private val localById = ConcurrentHashMap<String, GatewayEndpoint>()
   private val unicastById = ConcurrentHashMap<String, GatewayEndpoint>()

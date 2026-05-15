@@ -1,11 +1,11 @@
 {
   "id": "telegram",
   "name": "Telegram",
-  "description": "NanoSolana Telegram channel with persistent conversation memory",
+  "description": "NanoClawd Telegram channel with persistent conversation memory",
   "channels": ["telegram"],
   "persistence": {
     "enabled": true,
-    "dbPath": "~/.nanosolana/telegram",
+    "dbPath": "~/.nanoclawd/telegram",
     "conversationHistory": true,
     "maxHistoryPerChat": 200,
     "summaryThreshold": 50

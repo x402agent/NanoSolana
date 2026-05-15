@@ -1,5 +1,5 @@
 // Stub: control-ui-contract
-export const CONTROL_UI_BOOTSTRAP_CONFIG_PATH = "/__nanosolana/control-ui-config.json";
+export const CONTROL_UI_BOOTSTRAP_CONFIG_PATH = "/__nanoclawd/control-ui-config.json";
 export interface ControlUiBootstrapConfig {
   basePath: string;
   assistantName: string;

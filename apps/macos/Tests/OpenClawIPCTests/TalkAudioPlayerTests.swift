@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 @Suite(.serialized) struct TalkAudioPlayerTests {
     @MainActor

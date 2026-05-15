@@ -1,5 +1,5 @@
 /**
- * Synology Chat Channel Plugin for NanoSolana.
+ * Synology Chat Channel Plugin for NanoClawd.
  *
  * Implements the ChannelPlugin interface following the LINE pattern.
  */
@@ -9,7 +9,7 @@ import {
   setAccountEnabledInConfigSection,
   registerPluginHttpRoute,
   buildChannelConfigSchema,
-} from "nanosolana/plugin-sdk/synology-chat";
+} from "nanoclawd/plugin-sdk/synology-chat";
 import { z } from "zod";
 import { listAccountIds, resolveAccount } from "./accounts.js";
 import { sendMessage, sendFileUrl } from "./client.js";
@@ -49,7 +49,7 @@ export function createSynologyChatPlugin() {
       selectionLabel: "Synology Chat (Webhook)",
       detailLabel: "Synology Chat (Webhook)",
       docsPath: "/channels/synology-chat",
-      blurb: "Connect your Synology NAS Chat to NanoSolana",
+      blurb: "Connect your Synology NAS Chat to NanoClawd",
       order: 90,
     },
 
@@ -104,7 +104,7 @@ export function createSynologyChatPlugin() {
         if (!account.incomingUrl) return;
         await sendMessage(
           account.incomingUrl,
-          "NanoSolana: your access has been approved.",
+          "NanoClawd: your access has been approved.",
           id,
           account.allowInsecureSsl,
         );
@@ -132,7 +132,7 @@ export function createSynologyChatPlugin() {
           allowFrom: account.allowedUserIds ?? [],
           policyPath: `${basePath}dmPolicy`,
           allowFromPath: basePath,
-          approveHint: "nanosolana pairing approve synology-chat <code>",
+          approveHint: "nanoclawd pairing approve synology-chat <code>",
           normalizeEntry: (raw: string) => raw.toLowerCase().trim(),
         };
       },

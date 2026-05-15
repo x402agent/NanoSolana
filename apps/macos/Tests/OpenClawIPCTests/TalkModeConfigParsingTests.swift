@@ -1,6 +1,6 @@
-import NanoSolanaProtocol
+import NanoClawdProtocol
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct TalkModeConfigParsingTests {
     @Test func `rejects normalized talk provider payload without resolved`() {

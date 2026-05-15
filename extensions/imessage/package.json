@@ -1,10 +1,10 @@
 {
-  "name": "@nanosolana/imessage",
+  "name": "@nanoclawd/imessage",
   "version": "2026.3.11",
   "private": true,
-  "description": "NanoSolana iMessage channel plugin",
+  "description": "NanoClawd iMessage channel plugin",
   "type": "module",
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./index.ts"
     ]

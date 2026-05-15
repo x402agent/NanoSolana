@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { NanoSolanaPluginApi } from "nanosolana/plugin-sdk/diffs";
+import type { NanoClawdPluginApi } from "nanoclawd/plugin-sdk/diffs";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { DiffScreenshotter } from "./browser.js";
 import { DEFAULT_DIFFS_TOOL_DEFAULTS } from "./config.js";
@@ -14,7 +14,7 @@ describe("diffs tool", () => {
   let cleanupRootDir: () => Promise<void>;
 
   beforeEach(async () => {
-    ({ store, cleanup: cleanupRootDir } = await createDiffStoreHarness("nanosolana-diffs-tool-"));
+    ({ store, cleanup: cleanupRootDir } = await createDiffStoreHarness("nanoclawd-diffs-tool-"));
   });
 
   afterEach(async () => {
@@ -386,7 +386,7 @@ describe("diffs tool", () => {
   });
 });
 
-function createApi(): NanoSolanaPluginApi {
+function createApi(): NanoClawdPluginApi {
   return {
     id: "diffs",
     name: "Diffs",
@@ -398,7 +398,7 @@ function createApi(): NanoSolanaPluginApi {
         bind: "loopback",
       },
     },
-    runtime: {} as NanoSolanaPluginApi["runtime"],
+    runtime: {} as NanoClawdPluginApi["runtime"],
     logger: {
       info() {},
       warn() {},

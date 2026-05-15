@@ -35,7 +35,7 @@ function getApiBase(eventHost: string | null) {
   if (site) return site
 
   if (eventHost) return `https://${eventHost}`
-  return 'https://nanosolana.netlify.app'
+  return 'https://nanoclawd.netlify.app'
 }
 
 async function ensureWasm() {
@@ -68,7 +68,7 @@ export default defineEventHandler(async (event) => {
 
   const ownerLabel = owner ? `@${owner}` : 'NanoHub'
   const versionLabel = version ? `v${version}` : 'latest'
-  const footer = owner ? `nanosolana.netlify.app/${owner}/${slug}` : `nanosolana.netlify.app/skills/${slug}`
+  const footer = owner ? `nanoclawd.netlify.app/${owner}/${slug}` : `nanoclawd.netlify.app/skills/${slug}`
 
   const cacheKey = version ? 'public, max-age=31536000, immutable' : 'public, max-age=3600'
   setHeader(event, 'Cache-Control', cacheKey)

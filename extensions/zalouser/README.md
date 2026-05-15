@@ -1,6 +1,6 @@
-# @nanosolana/zalouser
+# @nanoclawd/zalouser
 
-NanoSolana extension for Zalo Personal Account messaging via native `zca-js` integration.
+NanoClawd extension for Zalo Personal Account messaging via native `zca-js` integration.
 
 > **Warning:** Using Zalo automation may result in account suspension or ban. Use at your own risk. This is an unofficial integration.
 
@@ -14,7 +14,7 @@ NanoSolana extension for Zalo Personal Account messaging via native `zca-js` int
 
 ## Prerequisites
 
-- NanoSolana Gateway
+- NanoClawd Gateway
 - Zalo mobile app (for QR login)
 
 No external `zca`, `openzca`, or `zca-cli` binary is required.
@@ -24,13 +24,13 @@ No external `zca`, `openzca`, or `zca-cli` binary is required.
 ### Option A: npm
 
 ```bash
-nanosolana plugins install @nanosolana/zalouser
+nanoclawd plugins install @nanoclawd/zalouser
 ```
 
 ### Option B: local source checkout
 
 ```bash
-nanosolana plugins install ./extensions/zalouser
+nanoclawd plugins install ./extensions/zalouser
 cd ./extensions/zalouser && pnpm install
 ```
 
@@ -41,7 +41,7 @@ Restart the Gateway after install.
 ### Login (QR)
 
 ```bash
-nanosolana channels login --channel zalouser
+nanoclawd channels login --channel zalouser
 ```
 
 Scan the QR code with the Zalo app on your phone.
@@ -58,7 +58,7 @@ channels:
 ### Send a message
 
 ```bash
-nanosolana message send --channel zalouser --target <threadId> --message "Hello from NanoSolana"
+nanoclawd message send --channel zalouser --target <threadId> --message "Hello from NanoClawd"
 ```
 
 ## Configuration
@@ -91,15 +91,15 @@ channels:
 ## Useful commands
 
 ```bash
-nanosolana channels login --channel zalouser
-nanosolana channels login --channel zalouser --account work
-nanosolana channels status --probe
-nanosolana channels logout --channel zalouser
+nanoclawd channels login --channel zalouser
+nanoclawd channels login --channel zalouser --account work
+nanoclawd channels status --probe
+nanoclawd channels logout --channel zalouser
 
-nanosolana directory self --channel zalouser
-nanosolana directory peers list --channel zalouser --query "name"
-nanosolana directory groups list --channel zalouser --query "work"
-nanosolana directory groups members --channel zalouser --group-id <id>
+nanoclawd directory self --channel zalouser
+nanoclawd directory peers list --channel zalouser --query "name"
+nanoclawd directory groups list --channel zalouser --query "work"
+nanoclawd directory groups members --channel zalouser --group-id <id>
 ```
 
 ## Agent tool
@@ -110,8 +110,8 @@ Available actions: `send`, `image`, `link`, `friends`, `groups`, `me`, `status`
 
 ## Troubleshooting
 
-- Login not persisted: `nanosolana channels logout --channel zalouser && nanosolana channels login --channel zalouser`
-- Probe status: `nanosolana channels status --probe`
+- Login not persisted: `nanoclawd channels logout --channel zalouser && nanoclawd channels login --channel zalouser`
+- Probe status: `nanoclawd channels status --probe`
 - Name resolution issues (allowlist/groups): use numeric IDs or exact Zalo names
 
 ## Credits

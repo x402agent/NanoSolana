@@ -2,36 +2,36 @@
 
 set -euo pipefail
 
-PREFIX="${HOME}/.nanosolana"
+PREFIX="${HOME}/.nanoclawd"
 INSTALL_METHOD="git"
-PACKAGE_NAME="nanosolana"
+PACKAGE_NAME="nanoclawd"
 VERSION="latest"
-REPO_URL="https://github.com/nanosolana/nanosolana.git"
+REPO_URL="https://github.com/nanoclawd/nanoclawd.git"
 REPO_REF="main"
 NO_PROFILE=0
 DRY_RUN=0
 
 print_usage() {
   cat <<'USAGE'
-NanoSolana one-shot installer
+NanoClawd one-shot installer
 
 Usage:
   install-cli.sh [options]
 
 Options:
-  --prefix <path>          Install prefix (default: ~/.nanosolana)
+  --prefix <path>          Install prefix (default: ~/.nanoclawd)
   --install-method <mode>  Install mode: git | npm (default: git)
-  --package <name>         npm package name (default: nanosolana)
+  --package <name>         npm package name (default: nanoclawd)
   --version <tag>          npm version/dist-tag (default: latest)
-  --repo-url <url>         Git repository URL (default: nanosolana/nanosolana)
+  --repo-url <url>         Git repository URL (default: nanoclawd/nanoclawd)
   --repo-ref <ref>         Git branch/tag/ref (default: main)
   --no-profile             Do not modify shell profile
   --dry-run                Print steps without executing them
   -h, --help               Show this help message
 
 Examples:
-  curl -fsSL https://nanosolana.com/install.sh | bash
-  curl -fsSL https://nanosolana.com/install.sh | \
+  curl -fsSL https://nanoclawd.com/install.sh | bash
+  curl -fsSL https://nanoclawd.com/install.sh | \
     bash -s -- --install-method npm --version latest
 USAGE
 }
@@ -103,7 +103,7 @@ ensure_path_export() {
     return
   fi
 
-  log "adding NanoSolana PATH entry to ${profile_file}"
+  log "adding NanoClawd PATH entry to ${profile_file}"
   run_cmd mkdir -p "$(dirname "$profile_file")"
 
   if [[ "$DRY_RUN" -eq 1 ]]; then
@@ -112,7 +112,7 @@ ensure_path_export() {
   fi
 
   {
-    printf '\n# NanoSolana CLI\n'
+    printf '\n# NanoClawd CLI\n'
     printf '%s\n' "$export_line"
   } >>"$profile_file"
 }
@@ -125,14 +125,14 @@ install_from_npm() {
 
 install_from_git() {
   require_command git
-  log "installing NanoSolana from ${REPO_URL}#${REPO_REF}"
+  log "installing NanoClawd from ${REPO_URL}#${REPO_REF}"
   run_cmd mkdir -p "$PREFIX"
 
   if [[ "$DRY_RUN" -eq 1 ]]; then
-    run_cmd git clone --depth 1 --branch "$REPO_REF" "$REPO_URL" /tmp/nanosolana-install-repo
-    run_cmd npm install --prefix /tmp/nanosolana-install-repo/nano-core
-    run_cmd npm run build --prefix /tmp/nanosolana-install-repo/nano-core
-    run_cmd npm install --global --prefix "$PREFIX" /tmp/nanosolana-install-repo/nano-core
+    run_cmd git clone --depth 1 --branch "$REPO_REF" "$REPO_URL" /tmp/nanoclawd-install-repo
+    run_cmd npm install --prefix /tmp/nanoclawd-install-repo/nano-core
+    run_cmd npm run build --prefix /tmp/nanoclawd-install-repo/nano-core
+    run_cmd npm install --global --prefix "$PREFIX" /tmp/nanoclawd-install-repo/nano-core
     return
   fi
 
@@ -211,13 +211,13 @@ fi
 profile_file="$(detect_profile_file)"
 ensure_path_export "$profile_file"
 
-if [[ "$DRY_RUN" -eq 0 && ! -x "${PREFIX}/bin/nanosolana" ]]; then
-  die "install completed but nanosolana binary was not found at ${PREFIX}/bin/nanosolana"
+if [[ "$DRY_RUN" -eq 0 && ! -x "${PREFIX}/bin/nanoclawd" ]]; then
+  die "install completed but nanoclawd binary was not found at ${PREFIX}/bin/nanoclawd"
 fi
 
-log "NanoSolana installed successfully"
+log "NanoClawd installed successfully"
 printf '\nNext steps:\n'
 printf '  1) Add to PATH now: export PATH="%s/bin:$PATH"\n' "$PREFIX"
-printf '  2) Verify install: nanosolana --version\n'
-printf '  3) Initialize vault: nanosolana init\n'
-printf '  4) Start agent: nanosolana run\n'
+printf '  2) Verify install: nanoclawd --version\n'
+printf '  3) Initialize vault: nanoclawd init\n'
+printf '  4) Start agent: nanoclawd run\n'

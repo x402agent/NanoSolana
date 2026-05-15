@@ -1,8 +1,8 @@
 import Foundation
-import NanoSolanaKit
+import NanoClawdKit
 import Testing
-@testable import NanoSolana
-@testable import NanoSolanaIPC
+@testable import NanoClawd
+@testable import NanoClawdIPC
 
 private final class FakeWebSocketTask: WebSocketTasking, @unchecked Sendable {
     var state: URLSessionTask.State = .running

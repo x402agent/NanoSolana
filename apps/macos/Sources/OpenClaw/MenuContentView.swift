@@ -4,7 +4,7 @@ import Foundation
 import Observation
 import SwiftUI
 
-/// Menu contents for the NanoSolana menu bar extra.
+/// Menu contents for the NanoClawd menu bar extra.
 struct MenuContent: View {
     @Bindable var state: AppState
     let updater: UpdaterProviding?
@@ -149,7 +149,7 @@ struct MenuContent: View {
             Button("Settings…") { self.open(tab: .general) }
                 .keyboardShortcut(",", modifiers: [.command])
             self.debugMenu
-            Button("About NanoSolana") { self.open(tab: .about) }
+            Button("About NanoClawd") { self.open(tab: .about) }
             if let updater, updater.isAvailable, self.updateStatus.isUpdateReady {
                 Button("Update ready, restart now?") { updater.checkForUpdates(nil) }
             }
@@ -189,11 +189,11 @@ struct MenuContent: View {
     private var connectionLabel: String {
         switch self.state.connectionMode {
         case .unconfigured:
-            "NanoSolana Not Configured"
+            "NanoClawd Not Configured"
         case .remote:
-            "Remote NanoSolana Active"
+            "Remote NanoClawd Active"
         case .local:
-            "NanoSolana Active"
+            "NanoClawd Active"
         }
     }
 
@@ -333,7 +333,7 @@ struct MenuContent: View {
         NSApp.activate(ignoringOtherApps: true)
         self.openSettings()
         DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .nanosolanaSelectSettingsTab, object: tab)
+            NotificationCenter.default.post(name: .nanoclawdSelectSettingsTab, object: tab)
         }
     }
 

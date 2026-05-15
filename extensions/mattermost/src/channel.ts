@@ -3,7 +3,7 @@ import {
   collectAllowlistProviderRestrictSendersWarnings,
   createScopedAccountConfigAccessors,
   formatNormalizedAllowFromEntries,
-} from "nanosolana/plugin-sdk/compat";
+} from "nanoclawd/plugin-sdk/compat";
 import {
   applyAccountNameToChannelSection,
   applySetupAccountConfigPatch,
@@ -20,7 +20,7 @@ import {
   type ChannelMessageActionAdapter,
   type ChannelMessageActionName,
   type ChannelPlugin,
-} from "nanosolana/plugin-sdk/mattermost";
+} from "nanoclawd/plugin-sdk/mattermost";
 import { MattermostConfigSchema } from "./config-schema.js";
 import { resolveMattermostGroupRequireMention } from "./group-mentions.js";
 import {

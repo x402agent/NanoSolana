@@ -17,10 +17,10 @@ public struct GatewayTLSParams: Sendable {
 }
 
 public enum GatewayTLSStore {
-    private static let keychainService = "ai.nanosolana.tls-pinning"
+    private static let keychainService = "ai.nanoclawd.tls-pinning"
 
     // Legacy UserDefaults location used before Keychain migration.
-    private static let legacySuiteName = "ai.nanosolana.shared"
+    private static let legacySuiteName = "ai.nanoclawd.shared"
     private static let legacyKeyPrefix = "gateway.tls."
 
     public static func loadFingerprint(stableID: String) -> String? {

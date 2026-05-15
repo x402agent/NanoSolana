@@ -1,9 +1,9 @@
-package ai.nanosolana.app.node
+package ai.nanoclawd.app.node
 
 import android.content.Context
-import ai.nanosolana.app.CameraHudKind
-import ai.nanosolana.app.BuildConfig
-import ai.nanosolana.app.gateway.GatewaySession
+import ai.nanoclawd.app.CameraHudKind
+import ai.nanoclawd.app.BuildConfig
+import ai.nanoclawd.app.gateway.GatewaySession
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
@@ -61,7 +61,7 @@ class CameraHandler(
       if (!BuildConfig.DEBUG) return
       val ts = java.text.SimpleDateFormat("HH:mm:ss.SSS", java.util.Locale.US).format(java.util.Date())
       logFile?.appendText("[$ts] $msg\n")
-      android.util.Log.w("nanosolana", "camera.snap: $msg")
+      android.util.Log.w("nanoclawd", "camera.snap: $msg")
     }
     try {
       logFile?.writeText("") // clear
@@ -99,7 +99,7 @@ class CameraHandler(
       if (!BuildConfig.DEBUG) return
       val ts = java.text.SimpleDateFormat("HH:mm:ss.SSS", java.util.Locale.US).format(java.util.Date())
       clipLogFile?.appendText("[CLIP $ts] $msg\n")
-      android.util.Log.w("nanosolana", "camera.clip: $msg")
+      android.util.Log.w("nanoclawd", "camera.clip: $msg")
     }
     val includeAudio = parseIncludeAudio(paramsJson) ?: true
     if (includeAudio) externalAudioCaptureActive.value = true

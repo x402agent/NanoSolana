@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct FileHandleSafeReadTests {
     @Test func `read to end safely returns empty for closed handle`() {

@@ -1,5 +1,5 @@
-import type { PluginRuntime } from "nanosolana/plugin-sdk/test-utils";
-import { removeAckReactionAfterReply, shouldAckReaction } from "nanosolana/plugin-sdk/test-utils";
+import type { PluginRuntime } from "nanoclawd/plugin-sdk/test-utils";
+import { removeAckReactionAfterReply, shouldAckReaction } from "nanoclawd/plugin-sdk/test-utils";
 import { vi } from "vitest";
 
 type DeepPartial<T> = {
@@ -251,7 +251,7 @@ export function createPluginRuntimeMock(overrides: DeepPartial<PluginRuntime> = 
       })),
     },
     state: {
-      resolveStateDir: vi.fn(() => "/tmp/nanosolana"),
+      resolveStateDir: vi.fn(() => "/tmp/nanoclawd"),
     },
     modelAuth: {
       getApiKeyForModel: vi.fn() as unknown as PluginRuntime["modelAuth"]["getApiKeyForModel"],

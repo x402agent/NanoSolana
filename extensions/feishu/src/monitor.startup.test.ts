@@ -1,4 +1,4 @@
-import type { TamaGObotConfig } from "nanosolana/plugin-sdk/feishu";
+import type { TamaGObotConfig } from "nanoclawd/plugin-sdk/feishu";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { monitorFeishuProvider, stopFeishuMonitor } from "./monitor.js";
 

@@ -1,14 +1,14 @@
-package ai.nanosolana.app.node
+package ai.nanoclawd.app.node
 
 import android.os.Build
-import ai.nanosolana.app.BuildConfig
-import ai.nanosolana.app.SecurePrefs
-import ai.nanosolana.app.gateway.GatewayClientInfo
-import ai.nanosolana.app.gateway.GatewayConnectOptions
-import ai.nanosolana.app.gateway.GatewayEndpoint
-import ai.nanosolana.app.gateway.GatewayTlsParams
-import ai.nanosolana.app.LocationMode
-import ai.nanosolana.app.VoiceWakeMode
+import ai.nanoclawd.app.BuildConfig
+import ai.nanoclawd.app.SecurePrefs
+import ai.nanoclawd.app.gateway.GatewayClientInfo
+import ai.nanoclawd.app.gateway.GatewayConnectOptions
+import ai.nanoclawd.app.gateway.GatewayEndpoint
+import ai.nanoclawd.app.gateway.GatewayTlsParams
+import ai.nanoclawd.app.LocationMode
+import ai.nanoclawd.app.VoiceWakeMode
 
 class ConnectionManager(
   private val prefs: SecurePrefs,
@@ -109,7 +109,7 @@ class ConnectionManager(
     val version = resolvedVersionName()
     val release = Build.VERSION.RELEASE?.trim().orEmpty()
     val releaseLabel = if (release.isEmpty()) "unknown" else release
-    return "NanoSolanaAndroid/$version (Android $releaseLabel; SDK ${Build.VERSION.SDK_INT})"
+    return "NanoClawdAndroid/$version (Android $releaseLabel; SDK ${Build.VERSION.SDK_INT})"
   }
 
   fun buildClientInfo(clientId: String, clientMode: String): GatewayClientInfo {
@@ -132,7 +132,7 @@ class ConnectionManager(
       caps = buildCapabilities(),
       commands = buildInvokeCommands(),
       permissions = emptyMap(),
-      client = buildClientInfo(clientId = "nanosolana-android", clientMode = "node"),
+      client = buildClientInfo(clientId = "nanoclawd-android", clientMode = "node"),
       userAgent = buildUserAgent(),
     )
   }
@@ -144,7 +144,7 @@ class ConnectionManager(
       caps = emptyList(),
       commands = emptyList(),
       permissions = emptyMap(),
-      client = buildClientInfo(clientId = "nanosolana-android", clientMode = "ui"),
+      client = buildClientInfo(clientId = "nanoclawd-android", clientMode = "ui"),
       userAgent = buildUserAgent(),
     )
   }

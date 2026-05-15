@@ -1,5 +1,5 @@
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 @Suite(.serialized) struct VoiceWakeForwarderTests {
     @Test func `prefixed transcript uses machine name`() {

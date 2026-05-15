@@ -1,5 +1,5 @@
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "nanosolana/plugin-sdk/account-id";
-import type { TamaGObotConfig } from "nanosolana/plugin-sdk/feishu";
+import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "nanoclawd/plugin-sdk/account-id";
+import type { TamaGObotConfig } from "nanoclawd/plugin-sdk/feishu";
 import { normalizeResolvedSecretInputString, normalizeSecretInputString } from "./secret-input.js";
 import type {
   FeishuConfig,

@@ -3,7 +3,7 @@ import {
   hasConfiguredSecretInput,
   normalizeResolvedSecretInputString,
   normalizeSecretInputString,
-} from "nanosolana/plugin-sdk/nextcloud-talk";
+} from "nanoclawd/plugin-sdk/nextcloud-talk";
 
 export {
   buildSecretInputSchema,

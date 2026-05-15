@@ -1,5 +1,5 @@
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 @MainActor
 struct ExecApprovalsGatewayPrompterTests {

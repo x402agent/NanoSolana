@@ -44,11 +44,11 @@ function SkillsHome() {
       <section className="hero">
         <div className="hero-inner">
           <div className="hero-copy fade-up" data-delay="1">
-            <span className="hero-badge">Nano Solana. Agent-ready.</span>
-            <h1 className="hero-title">NanoHub, the skill dock for Nano Solana agents.</h1>
+            <span className="hero-badge">Nano Clawd. Agent-ready.</span>
+            <h1 className="hero-title">NanoHub, the skill dock for Nano Clawd agents.</h1>
             <p className="hero-subtitle">
               Upload AgentSkills bundles, version them like npm, and host them in a
-              searchable Nano Solana registry. No gatekeeping, just signal.
+              searchable Nano Clawd registry. No gatekeeping, just signal.
             </p>
             <div style={{ display: 'flex', gap: 12, marginTop: 20 }}>
               <Link to="/upload" search={{ updateSlug: undefined }} className="btn btn-primary">
@@ -183,7 +183,7 @@ function DocsHome() {
         <div className="hero-inner">
           <div className="hero-copy fade-up" data-delay="1">
             <span className="hero-badge">SOUL.md, shared.</span>
-            <h1 className="hero-title">NanoSolana Docs, where system lore lives.</h1>
+            <h1 className="hero-title">NanoClawd Docs, where system lore lives.</h1>
             <p className="hero-subtitle">
               Share SOUL.md bundles, version them like docs, and keep personal system lore in one
               public place.

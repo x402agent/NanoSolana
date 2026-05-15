@@ -1,5 +1,5 @@
 import Foundation
-import NanoSolanaKit
+import NanoClawdKit
 
 enum GatewayRemoteConfig {
     enum TokenValue: Equatable {

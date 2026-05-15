@@ -1,7 +1,7 @@
 import Foundation
 
-private let legacyDefaultsPrefix = "nanosolana."
-private let defaultsPrefix = "nanosolana."
+private let legacyDefaultsPrefix = "nanoclawd."
+private let defaultsPrefix = "nanoclawd."
 
 func migrateLegacyDefaults() {
     let defaults = UserDefaults.standard

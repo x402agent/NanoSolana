@@ -1,5 +1,5 @@
 /**
- * NanoSolana — Custom Strategy Example
+ * NanoClawd — Custom Strategy Example
  *
  * Bring your own trading strategy: override the RSI/EMA/ATR defaults
  * and build custom signal logic.
@@ -17,7 +17,7 @@ import {
   type StrategyParams,
   type OHLCV,
   type Signal,
-} from "nanosolana";
+} from "nanoclawd";
 
 // Custom aggressive strategy params
 const aggressiveParams: StrategyParams = {
@@ -40,7 +40,7 @@ const sampleData: OHLCV[] = Array.from({ length: 50 }, (_, i) => ({
 }));
 
 function analyzeWithCustomStrategy() {
-  console.log("🦞 NanoSolana — Custom Strategy Analysis\n");
+  console.log("🦞 NanoClawd — Custom Strategy Analysis\n");
   console.log(`Strategy: Aggressive (RSI ${aggressiveParams.rsiPeriod}, EMA ${aggressiveParams.emaFast}/${aggressiveParams.emaSlow})\n`);
 
   // Calculate indicators

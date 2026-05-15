@@ -1,6 +1,6 @@
 import * as crypto from "crypto";
 import * as Lark from "@larksuiteoapi/node-sdk";
-import type { TamaGObotConfig, RuntimeEnv, HistoryEntry } from "nanosolana/plugin-sdk/feishu";
+import type { TamaGObotConfig, RuntimeEnv, HistoryEntry } from "nanoclawd/plugin-sdk/feishu";
 import { resolveFeishuAccount } from "./accounts.js";
 import { raceWithTimeoutAndAbort } from "./async.js";
 import {

@@ -1,6 +1,6 @@
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "nanosolana/plugin-sdk/account-id";
-import { tryReadSecretFileSync } from "nanosolana/plugin-sdk/core";
-import type { BaseTokenResolution } from "nanosolana/plugin-sdk/zalo";
+import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "nanoclawd/plugin-sdk/account-id";
+import { tryReadSecretFileSync } from "nanoclawd/plugin-sdk/core";
+import type { BaseTokenResolution } from "nanoclawd/plugin-sdk/zalo";
 import { normalizeResolvedSecretInputString, normalizeSecretInputString } from "./secret-input.js";
 import type { ZaloConfig } from "./types.js";
 

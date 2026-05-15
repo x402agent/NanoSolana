@@ -1,4 +1,4 @@
-// ── Solana Claude Go — Payment Agent ────────────────────────────────────────────────
+// ── Solana Clawd Go — Payment Agent ────────────────────────────────────────────────
 //
 // Production-grade wrapper around @pump-fun/agent-payments-sdk PumpAgent.
 // Handles invoice creation, payment instruction building, verification,

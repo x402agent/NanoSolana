@@ -1,5 +1,5 @@
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "nanosolana/plugin-sdk/account-id";
-import { createAccountListHelpers, type NanoSolanaConfig } from "nanosolana/plugin-sdk/mattermost";
+import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "nanoclawd/plugin-sdk/account-id";
+import { createAccountListHelpers, type NanoClawdConfig } from "nanoclawd/plugin-sdk/mattermost";
 import { normalizeResolvedSecretInputString, normalizeSecretInputString } from "../secret-input.js";
 import type {
   MattermostAccountConfig,
@@ -36,7 +36,7 @@ const {
 export { listMattermostAccountIds, resolveDefaultMattermostAccountId };
 
 function resolveAccountConfig(
-  cfg: NanoSolanaConfig,
+  cfg: NanoClawdConfig,
   accountId: string,
 ): MattermostAccountConfig | undefined {
   const accounts = cfg.channels?.mattermost?.accounts;
@@ -47,7 +47,7 @@ function resolveAccountConfig(
 }
 
 function mergeMattermostAccountConfig(
-  cfg: NanoSolanaConfig,
+  cfg: NanoClawdConfig,
   accountId: string,
 ): MattermostAccountConfig {
   const {
@@ -90,7 +90,7 @@ function resolveMattermostRequireMention(config: MattermostAccountConfig): boole
 }
 
 export function resolveMattermostAccount(params: {
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   accountId?: string | null;
   allowUnresolvedSecretRef?: boolean;
 }): ResolvedMattermostAccount {
@@ -149,7 +149,7 @@ export function resolveMattermostReplyToMode(
   return account.config.replyToMode ?? "off";
 }
 
-export function listEnabledMattermostAccounts(cfg: NanoSolanaConfig): ResolvedMattermostAccount[] {
+export function listEnabledMattermostAccounts(cfg: NanoClawdConfig): ResolvedMattermostAccount[] {
   return listMattermostAccountIds(cfg)
     .map((accountId) => resolveMattermostAccount({ cfg, accountId }))
     .filter((account) => account.enabled);

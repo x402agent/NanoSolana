@@ -27,14 +27,14 @@ public struct BridgeInvokeResponse: Codable, Sendable {
     public let id: String
     public let ok: Bool
     public let payloadJSON: String?
-    public let error: NanoSolanaNodeError?
+    public let error: NanoClawdNodeError?
 
     public init(
         type: String = "invoke-res",
         id: String,
         ok: Bool,
         payloadJSON: String? = nil,
-        error: NanoSolanaNodeError? = nil)
+        error: NanoClawdNodeError? = nil)
     {
         self.type = type
         self.id = id

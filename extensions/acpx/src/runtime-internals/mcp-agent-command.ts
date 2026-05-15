@@ -4,7 +4,7 @@ import { spawnAndCollect, type SpawnCommandOptions } from "./process.js";
 
 const ACPX_BUILTIN_AGENT_COMMANDS: Record<string, string> = {
   codex: "npx @zed-industries/codex-acp",
-  claude: "npx -y @zed-industries/claude-agent-acp",
+  clawd: "npx -y @zed-industries/clawd-agent-acp",
   gemini: "gemini",
   opencode: "npx -y opencode-ai acp",
   pi: "npx pi-acp",

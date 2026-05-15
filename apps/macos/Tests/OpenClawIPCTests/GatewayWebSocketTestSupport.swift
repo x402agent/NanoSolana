@@ -1,5 +1,5 @@
 import Foundation
-import NanoSolanaKit
+import NanoClawdKit
 
 extension WebSocketTasking {
     /// Keep unit-test doubles resilient to protocol additions.

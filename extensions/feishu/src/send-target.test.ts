@@ -1,4 +1,4 @@
-import type { TamaGObotConfig } from "nanosolana/plugin-sdk/feishu";
+import type { TamaGObotConfig } from "nanoclawd/plugin-sdk/feishu";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { resolveFeishuSendTarget } from "./send-target.js";
 

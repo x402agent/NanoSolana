@@ -1,4 +1,4 @@
-package ai.nanosolana.app.voice
+package ai.nanoclawd.app.voice
 
 import android.Manifest
 import android.content.Context

@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct NodeManagerPathsTests {
     @Test func `fnm node bins prefer newest installed version`() throws {

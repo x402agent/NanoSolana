@@ -1,4 +1,4 @@
-package ai.nanosolana.app.gateway
+package ai.nanoclawd.app.gateway
 
 import android.content.Context
 import android.util.Base64
@@ -17,7 +17,7 @@ data class DeviceIdentity(
 
 class DeviceIdentityStore(context: Context) {
   private val json = Json { ignoreUnknownKeys = true }
-  private val identityFile = File(context.filesDir, "nanosolana/identity/device.json")
+  private val identityFile = File(context.filesDir, "nanoclawd/identity/device.json")
   @Volatile private var cachedIdentity: DeviceIdentity? = null
 
   @Synchronized

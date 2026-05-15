@@ -1,4 +1,4 @@
-import type { NanoSolanaApp } from "./app.ts";
+import type { NanoClawdApp } from "./app.ts";
 import {
   loadChannels,
   logoutWhatsApp,
@@ -9,28 +9,28 @@ import { loadConfig, saveConfig } from "./controllers/config.ts";
 import type { NostrProfile } from "./types.ts";
 import { createNostrProfileFormState } from "./views/channels.nostr-profile-form.ts";
 
-export async function handleWhatsAppStart(host: NanoSolanaApp, force: boolean) {
+export async function handleWhatsAppStart(host: NanoClawdApp, force: boolean) {
   await startWhatsAppLogin(host, force);
   await loadChannels(host, true);
 }
 
-export async function handleWhatsAppWait(host: NanoSolanaApp) {
+export async function handleWhatsAppWait(host: NanoClawdApp) {
   await waitWhatsAppLogin(host);
   await loadChannels(host, true);
 }
 
-export async function handleWhatsAppLogout(host: NanoSolanaApp) {
+export async function handleWhatsAppLogout(host: NanoClawdApp) {
   await logoutWhatsApp(host);
   await loadChannels(host, true);
 }
 
-export async function handleChannelConfigSave(host: NanoSolanaApp) {
+export async function handleChannelConfigSave(host: NanoClawdApp) {
   await saveConfig(host);
   await loadConfig(host);
   await loadChannels(host, true);
 }
 
-export async function handleChannelConfigReload(host: NanoSolanaApp) {
+export async function handleChannelConfigReload(host: NanoClawdApp) {
   await loadConfig(host);
   await loadChannels(host, true);
 }
@@ -57,7 +57,7 @@ function parseValidationErrors(details: unknown): Record<string, string> {
   return errors;
 }
 
-function resolveNostrAccountId(host: NanoSolanaApp): string {
+function resolveNostrAccountId(host: NanoClawdApp): string {
   const accounts = host.channelsSnapshot?.channelAccounts?.nostr ?? [];
   return accounts[0]?.accountId ?? host.nostrProfileAccountId ?? "default";
 }
@@ -66,7 +66,7 @@ function buildNostrProfileUrl(accountId: string, suffix = ""): string {
   return `/api/channels/nostr/${encodeURIComponent(accountId)}/profile${suffix}`;
 }
 
-function resolveGatewayHttpAuthHeader(host: NanoSolanaApp): string | null {
+function resolveGatewayHttpAuthHeader(host: NanoClawdApp): string | null {
   const deviceToken = host.hello?.auth?.deviceToken?.trim();
   if (deviceToken) {
     return `Bearer ${deviceToken}`;
@@ -82,13 +82,13 @@ function resolveGatewayHttpAuthHeader(host: NanoSolanaApp): string | null {
   return null;
 }
 
-function buildGatewayHttpHeaders(host: NanoSolanaApp): Record<string, string> {
+function buildGatewayHttpHeaders(host: NanoClawdApp): Record<string, string> {
   const authorization = resolveGatewayHttpAuthHeader(host);
   return authorization ? { Authorization: authorization } : {};
 }
 
 export function handleNostrProfileEdit(
-  host: NanoSolanaApp,
+  host: NanoClawdApp,
   accountId: string,
   profile: NostrProfile | null,
 ) {
@@ -96,13 +96,13 @@ export function handleNostrProfileEdit(
   host.nostrProfileFormState = createNostrProfileFormState(profile ?? undefined);
 }
 
-export function handleNostrProfileCancel(host: NanoSolanaApp) {
+export function handleNostrProfileCancel(host: NanoClawdApp) {
   host.nostrProfileFormState = null;
   host.nostrProfileAccountId = null;
 }
 
 export function handleNostrProfileFieldChange(
-  host: NanoSolanaApp,
+  host: NanoClawdApp,
   field: keyof NostrProfile,
   value: string,
 ) {
@@ -123,7 +123,7 @@ export function handleNostrProfileFieldChange(
   };
 }
 
-export function handleNostrProfileToggleAdvanced(host: NanoSolanaApp) {
+export function handleNostrProfileToggleAdvanced(host: NanoClawdApp) {
   const state = host.nostrProfileFormState;
   if (!state) {
     return;
@@ -134,7 +134,7 @@ export function handleNostrProfileToggleAdvanced(host: NanoSolanaApp) {
   };
 }
 
-export async function handleNostrProfileSave(host: NanoSolanaApp) {
+export async function handleNostrProfileSave(host: NanoClawdApp) {
   const state = host.nostrProfileFormState;
   if (!state || state.saving) {
     return;
@@ -206,7 +206,7 @@ export async function handleNostrProfileSave(host: NanoSolanaApp) {
   }
 }
 
-export async function handleNostrProfileImport(host: NanoSolanaApp) {
+export async function handleNostrProfileImport(host: NanoClawdApp) {
   const state = host.nostrProfileFormState;
   if (!state || state.importing) {
     return;

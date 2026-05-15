@@ -1,4 +1,4 @@
-package ai.nanosolana.app.voice
+package ai.nanoclawd.app.voice
 
 import android.media.MediaDataSource
 import kotlin.math.min

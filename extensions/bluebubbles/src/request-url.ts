@@ -1,1 +1,1 @@
-export { resolveRequestUrl } from "nanosolana/plugin-sdk/bluebubbles";
+export { resolveRequestUrl } from "nanoclawd/plugin-sdk/bluebubbles";

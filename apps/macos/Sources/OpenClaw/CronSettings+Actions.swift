@@ -1,5 +1,5 @@
 import Foundation
-import NanoSolanaProtocol
+import NanoClawdProtocol
 
 extension CronSettings {
     func save(payload: [String: AnyCodable]) async {

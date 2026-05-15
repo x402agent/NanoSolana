@@ -1,4 +1,4 @@
-import { MarkdownConfigSchema } from "nanosolana/plugin-sdk/twitch";
+import { MarkdownConfigSchema } from "nanoclawd/plugin-sdk/twitch";
 import { z } from "zod";
 
 /**

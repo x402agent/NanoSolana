@@ -102,11 +102,11 @@ describe("llm-task tool (json-only)", () => {
       payloads: [{ text: JSON.stringify({ ok: true }) }],
     });
     const tool = createLlmTaskTool(fakeApi());
-    await tool.execute("id", { prompt: "x", provider: "anthropic", model: "claude-4-sonnet" });
+    await tool.execute("id", { prompt: "x", provider: "anthropic", model: "clawd-4-sonnet" });
     // oxlint-disable-next-line typescript/no-explicit-any
     const call = (runEmbeddedPiAgent as any).mock.calls[0]?.[0];
     expect(call.provider).toBe("anthropic");
-    expect(call.model).toBe("claude-4-sonnet");
+    expect(call.model).toBe("clawd-4-sonnet");
   });
 
   it("passes thinking override to embedded runner", async () => {
@@ -172,7 +172,7 @@ describe("llm-task tool (json-only)", () => {
       fakeApi({ pluginConfig: { allowedModels: ["openai-codex/gpt-5.2"] } }),
     );
     await expect(
-      tool.execute("id", { prompt: "x", provider: "anthropic", model: "claude-4-sonnet" }),
+      tool.execute("id", { prompt: "x", provider: "anthropic", model: "clawd-4-sonnet" }),
     ).rejects.toThrow(/not allowed/i);
   });
 

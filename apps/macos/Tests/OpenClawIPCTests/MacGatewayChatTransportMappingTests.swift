@@ -1,13 +1,13 @@
-import NanoSolanaChatUI
-import NanoSolanaProtocol
+import NanoClawdChatUI
+import NanoClawdProtocol
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct MacGatewayChatTransportMappingTests {
     @Test func `snapshot maps to health`() {
         let snapshot = Snapshot(
             presence: [],
-            health: NanoSolanaProtocol.AnyCodable(["ok": NanoSolanaProtocol.AnyCodable(false)]),
+            health: NanoClawdProtocol.AnyCodable(["ok": NanoClawdProtocol.AnyCodable(false)]),
             stateversion: StateVersion(presence: 1, health: 1),
             uptimems: 123,
             configpath: nil,
@@ -39,7 +39,7 @@ struct MacGatewayChatTransportMappingTests {
         let frame = EventFrame(
             type: "event",
             event: "health",
-            payload: NanoSolanaProtocol.AnyCodable(["ok": NanoSolanaProtocol.AnyCodable(true)]),
+            payload: NanoClawdProtocol.AnyCodable(["ok": NanoClawdProtocol.AnyCodable(true)]),
             seq: 1,
             stateversion: nil)
 
@@ -62,10 +62,10 @@ struct MacGatewayChatTransportMappingTests {
     }
 
     @Test func `chat event maps to chat`() {
-        let payload = NanoSolanaProtocol.AnyCodable([
-            "runId": NanoSolanaProtocol.AnyCodable("run-1"),
-            "sessionKey": NanoSolanaProtocol.AnyCodable("main"),
-            "state": NanoSolanaProtocol.AnyCodable("final"),
+        let payload = NanoClawdProtocol.AnyCodable([
+            "runId": NanoClawdProtocol.AnyCodable("run-1"),
+            "sessionKey": NanoClawdProtocol.AnyCodable("main"),
+            "state": NanoClawdProtocol.AnyCodable("final"),
         ])
         let frame = EventFrame(type: "event", event: "chat", payload: payload, seq: 1, stateversion: nil)
         let mapped = MacGatewayChatTransport.mapPushToTransportEvent(.event(frame))
@@ -84,7 +84,7 @@ struct MacGatewayChatTransportMappingTests {
         let frame = EventFrame(
             type: "event",
             event: "unknown",
-            payload: NanoSolanaProtocol.AnyCodable(["a": NanoSolanaProtocol.AnyCodable(1)]),
+            payload: NanoClawdProtocol.AnyCodable(["a": NanoClawdProtocol.AnyCodable(1)]),
             seq: 1,
             stateversion: nil)
         let mapped = MacGatewayChatTransport.mapPushToTransportEvent(.event(frame))

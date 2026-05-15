@@ -1,7 +1,7 @@
 import Foundation
-import NanoSolanaProtocol
+import NanoClawdProtocol
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 @MainActor
 struct AgentEventStoreTests {
@@ -15,7 +15,7 @@ struct AgentEventStoreTests {
             seq: 1,
             stream: "test",
             ts: 0,
-            data: [:] as [String: NanoSolanaProtocol.AnyCodable],
+            data: [:] as [String: NanoClawdProtocol.AnyCodable],
             summary: nil))
         #expect(store.events.count == 1)
 
@@ -32,7 +32,7 @@ struct AgentEventStoreTests {
                 seq: i,
                 stream: "test",
                 ts: Double(i),
-                data: [:] as [String: NanoSolanaProtocol.AnyCodable],
+                data: [:] as [String: NanoClawdProtocol.AnyCodable],
                 summary: nil))
         }
 

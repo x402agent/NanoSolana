@@ -1,12 +1,12 @@
 {
-  "name": "@nanosolana/synology-chat",
+  "name": "@nanoclawd/synology-chat",
   "version": "2026.3.11",
-  "description": "Synology Chat channel plugin for NanoSolana",
+  "description": "Synology Chat channel plugin for NanoClawd",
   "type": "module",
   "dependencies": {
     "zod": "^4.3.6"
   },
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./index.ts"
     ],
@@ -16,11 +16,11 @@
       "selectionLabel": "Synology Chat (Webhook)",
       "docsPath": "/channels/synology-chat",
       "docsLabel": "synology-chat",
-      "blurb": "Connect your Synology NAS Chat to NanoSolana with full agent capabilities.",
+      "blurb": "Connect your Synology NAS Chat to NanoClawd with full agent capabilities.",
       "order": 90
     },
     "install": {
-      "npmSpec": "@nanosolana/synology-chat",
+      "npmSpec": "@nanoclawd/synology-chat",
       "localPath": "extensions/synology-chat",
       "defaultChoice": "npm"
     }

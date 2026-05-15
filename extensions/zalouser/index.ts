@@ -1,5 +1,5 @@
-import type { AnyAgentTool, NanoSolanaPluginApi } from "nanosolana/plugin-sdk/zalouser";
-import { emptyPluginConfigSchema } from "nanosolana/plugin-sdk/zalouser";
+import type { AnyAgentTool, NanoClawdPluginApi } from "nanoclawd/plugin-sdk/zalouser";
+import { emptyPluginConfigSchema } from "nanoclawd/plugin-sdk/zalouser";
 import { zalouserDock, zalouserPlugin } from "./src/channel.js";
 import { setZalouserRuntime } from "./src/runtime.js";
 import { ZalouserToolSchema, executeZalouserTool } from "./src/tool.js";
@@ -9,7 +9,7 @@ const plugin = {
   name: "Zalo Personal",
   description: "Zalo personal account messaging via native zca-js integration",
   configSchema: emptyPluginConfigSchema(),
-  register(api: NanoSolanaPluginApi) {
+  register(api: NanoClawdPluginApi) {
     setZalouserRuntime(api.runtime);
     api.registerChannel({ plugin: zalouserPlugin, dock: zalouserDock });
 

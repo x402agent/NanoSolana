@@ -1,14 +1,14 @@
 {
-  "name": "@nanosolana/llm-task",
+  "name": "@nanoclawd/llm-task",
   "version": "2026.3.11",
   "private": true,
-  "description": "NanoSolana JSON-only LLM task plugin",
+  "description": "NanoClawd JSON-only LLM task plugin",
   "type": "module",
   "dependencies": {
     "@sinclair/typebox": "0.34.48",
     "ajv": "^8.18.0"
   },
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./index.ts"
     ]

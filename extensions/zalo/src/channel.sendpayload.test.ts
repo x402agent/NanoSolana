@@ -1,4 +1,4 @@
-import type { ReplyPayload } from "nanosolana/plugin-sdk/zalo";
+import type { ReplyPayload } from "nanoclawd/plugin-sdk/zalo";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   installSendPayloadContractSuite,

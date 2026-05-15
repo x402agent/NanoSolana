@@ -1,5 +1,5 @@
 ---
-summary: "Solana Claude Go extension system — repo reality and integration points"
+summary: "Solana Clawd Go extension system — repo reality and integration points"
 title: "Extensions"
 ---
 

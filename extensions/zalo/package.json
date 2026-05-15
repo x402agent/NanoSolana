@@ -1,13 +1,13 @@
 {
-  "name": "@nanosolana/zalo",
+  "name": "@nanoclawd/zalo",
   "version": "2026.3.11",
-  "description": "NanoSolana Zalo channel plugin",
+  "description": "NanoClawd Zalo channel plugin",
   "type": "module",
   "dependencies": {
     "undici": "7.22.0",
     "zod": "^4.3.6"
   },
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./index.ts"
     ],
@@ -25,7 +25,7 @@
       "quickstartAllowFrom": true
     },
     "install": {
-      "npmSpec": "@nanosolana/zalo",
+      "npmSpec": "@nanoclawd/zalo",
       "localPath": "extensions/zalo",
       "defaultChoice": "npm"
     }

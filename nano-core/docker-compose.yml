@@ -1,4 +1,4 @@
-# NanoSolana Docker Compose
+# NanoClawd Docker Compose
 # Runs nano-core gateway + agent container with healthcheck
 #
 # Usage:
@@ -11,7 +11,7 @@ services:
     build:
       context: .
       dockerfile: container/Dockerfile
-    container_name: nanosolana-gateway
+    container_name: nanoclawd-gateway
     ports:
       - "${NANO_GATEWAY_PORT:-18789}:18789"
       - "${NANO_BRIDGE_PORT:-18790}:18790"
@@ -30,8 +30,8 @@ services:
       retries: 3
       start_period: 15s
     volumes:
-      - nanosolana-data:/workspace
+      - nanoclawd-data:/workspace
       - ./groups:/workspace/groups
 
 volumes:
-  nanosolana-data:
+  nanoclawd-data:

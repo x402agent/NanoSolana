@@ -12,7 +12,7 @@ import {
   setLastActiveSessionKey,
 } from "./app-settings.ts";
 import { handleAgentEvent, resetToolStream, type AgentEventPayload } from "./app-tool-stream.ts";
-import type { NanoSolanaApp } from "./app.ts";
+import type { NanoClawdApp } from "./app.ts";
 import { shouldReloadHistoryForFinalEvent } from "./chat-event-reload.ts";
 import { loadAgents } from "./controllers/agents.ts";
 import { loadAssistantIdentity } from "./controllers/assistant-identity.ts";
@@ -201,7 +201,7 @@ export function connectGateway(host: GatewayHost) {
     url: host.settings.gatewayUrl,
     token: host.settings.token.trim() ? host.settings.token : undefined,
     password: host.password.trim() ? host.password : undefined,
-    clientName: "nanosolana-control-ui",
+    clientName: "nanoclawd-control-ui",
     clientVersion,
     mode: "webchat",
     instanceId: host.clientInstanceId,
@@ -220,11 +220,11 @@ export function connectGateway(host: GatewayHost) {
       (host as unknown as { chatStream: string | null }).chatStream = null;
       (host as unknown as { chatStreamStartedAt: number | null }).chatStreamStartedAt = null;
       resetToolStream(host as unknown as Parameters<typeof resetToolStream>[0]);
-      void loadAssistantIdentity(host as unknown as NanoSolanaApp);
-      void loadAgents(host as unknown as NanoSolanaApp);
-      void loadHealthState(host as unknown as NanoSolanaApp);
-      void loadNodes(host as unknown as NanoSolanaApp, { quiet: true });
-      void loadDevices(host as unknown as NanoSolanaApp, { quiet: true });
+      void loadAssistantIdentity(host as unknown as NanoClawdApp);
+      void loadAgents(host as unknown as NanoClawdApp);
+      void loadHealthState(host as unknown as NanoClawdApp);
+      void loadNodes(host as unknown as NanoClawdApp, { quiet: true });
+      void loadDevices(host as unknown as NanoClawdApp, { quiet: true });
       void refreshActiveTab(host as unknown as Parameters<typeof refreshActiveTab>[0]);
     },
     onClose: ({ code, reason, error }) => {
@@ -294,7 +294,7 @@ function handleTerminalChatEvent(
   if (runId && host.refreshSessionsAfterChat.has(runId)) {
     host.refreshSessionsAfterChat.delete(runId);
     if (state === "final") {
-      void loadSessions(host as unknown as NanoSolanaApp, {
+      void loadSessions(host as unknown as NanoClawdApp, {
         activeMinutes: CHAT_SESSIONS_ACTIVE_MINUTES,
       });
     }
@@ -302,7 +302,7 @@ function handleTerminalChatEvent(
   // Reload history when tools were used so the persisted tool results
   // replace the now-cleared streaming state.
   if (hadToolEvents && state === "final") {
-    void loadChatHistory(host as unknown as NanoSolanaApp);
+    void loadChatHistory(host as unknown as NanoClawdApp);
     return true;
   }
   return false;
@@ -315,10 +315,10 @@ function handleChatGatewayEvent(host: GatewayHost, payload: ChatEventPayload | u
       payload.sessionKey,
     );
   }
-  const state = handleChatEvent(host as unknown as NanoSolanaApp, payload);
+  const state = handleChatEvent(host as unknown as NanoClawdApp, payload);
   const historyReloaded = handleTerminalChatEvent(host, payload, state);
   if (state === "final" && !historyReloaded && shouldReloadHistoryForFinalEvent(payload)) {
-    void loadChatHistory(host as unknown as NanoSolanaApp);
+    void loadChatHistory(host as unknown as NanoClawdApp);
   }
 }
 
@@ -348,7 +348,7 @@ function handleGatewayEventUnsafe(host: GatewayHost, evt: GatewayEventFrame) {
       typeof toolData?.phase === "string" &&
       toolData.phase === "result"
     ) {
-      void loadChatHistory(host as unknown as NanoSolanaApp);
+      void loadChatHistory(host as unknown as NanoClawdApp);
     }
     return;
   }
@@ -373,7 +373,7 @@ function handleGatewayEventUnsafe(host: GatewayHost, evt: GatewayEventFrame) {
   }
 
   if (evt.event === "device.pair.requested" || evt.event === "device.pair.resolved") {
-    void loadDevices(host as unknown as NanoSolanaApp, { quiet: true });
+    void loadDevices(host as unknown as NanoClawdApp, { quiet: true });
   }
 
   if (evt.event === "exec.approval.requested") {

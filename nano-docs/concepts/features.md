@@ -1,11 +1,11 @@
 ---
-summary: "Solana Claude Go features overview and capabilities"
+summary: "Solana Clawd Go features overview and capabilities"
 title: "Features"
 ---
 
 # Features
 
-Solana Claude Go is a monorepo for autonomous Solana agents, registry tooling, and Pump integrations.
+Solana Clawd Go is a monorepo for autonomous Solana agents, registry tooling, and Pump integrations.
 
 ## Core capabilities
 
@@ -18,7 +18,7 @@ Solana Claude Go is a monorepo for autonomous Solana agents, registry tooling, a
 
 ### 🧩 Runtime + bridge split
 - `nano-core/` is the shipped runtime and npm package.
-- `pump/` is a Solana Claude Go-facing Pump bridge layer for swarm operations.
+- `pump/` is a Solana Clawd Go-facing Pump bridge layer for swarm operations.
 - `pump-fun-sdk-main/` is vendored upstream ecosystem code used by the bridge.
 - `nanohub/` is a separate skill registry app and CLI.
 

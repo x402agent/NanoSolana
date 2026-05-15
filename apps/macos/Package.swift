@@ -1,18 +1,18 @@
 // swift-tools-version: 6.2
-// Package manifest for the NanoSolana macOS companion (menu bar app + IPC library).
+// Package manifest for the NanoClawd macOS companion (menu bar app + IPC library).
 
 import PackageDescription
 
 let package = Package(
-    name: "NanoSolana",
+    name: "NanoClawd",
     platforms: [
         .macOS(.v15),
     ],
     products: [
-        .library(name: "NanoSolanaIPC", targets: ["NanoSolanaIPC"]),
-        .library(name: "NanoSolanaDiscovery", targets: ["NanoSolanaDiscovery"]),
-        .executable(name: "NanoSolana", targets: ["NanoSolana"]),
-        .executable(name: "nanosolana-mac", targets: ["NanoSolanaMacCLI"]),
+        .library(name: "NanoClawdIPC", targets: ["NanoClawdIPC"]),
+        .library(name: "NanoClawdDiscovery", targets: ["NanoClawdDiscovery"]),
+        .executable(name: "NanoClawd", targets: ["NanoClawd"]),
+        .executable(name: "nanoclawd-mac", targets: ["NanoClawdMacCLI"]),
     ],
     dependencies: [
         .package(url: "https://github.com/orchetect/MenuBarExtraAccess", exact: "1.3.0"),
@@ -20,33 +20,33 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-log.git", from: "1.8.0"),
         .package(url: "https://github.com/sparkle-project/Sparkle", from: "2.8.1"),
         .package(url: "https://github.com/steipete/Peekaboo.git", branch: "main"),
-        .package(path: "../shared/NanoSolanaKit"),
+        .package(path: "../shared/NanoClawdKit"),
         .package(path: "../../Swabble"),
     ],
     targets: [
         .target(
-            name: "NanoSolanaIPC",
+            name: "NanoClawdIPC",
             dependencies: [],
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),
             ]),
         .target(
-            name: "NanoSolanaDiscovery",
+            name: "NanoClawdDiscovery",
             dependencies: [
-                .product(name: "NanoSolanaKit", package: "NanoSolanaKit"),
+                .product(name: "NanoClawdKit", package: "NanoClawdKit"),
             ],
-            path: "Sources/NanoSolanaDiscovery",
+            path: "Sources/NanoClawdDiscovery",
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),
             ]),
         .executableTarget(
-            name: "NanoSolana",
+            name: "NanoClawd",
             dependencies: [
-                "NanoSolanaIPC",
-                "NanoSolanaDiscovery",
-                .product(name: "NanoSolanaKit", package: "NanoSolanaKit"),
-                .product(name: "NanoSolanaChatUI", package: "NanoSolanaKit"),
-                .product(name: "NanoSolanaProtocol", package: "NanoSolanaKit"),
+                "NanoClawdIPC",
+                "NanoClawdDiscovery",
+                .product(name: "NanoClawdKit", package: "NanoClawdKit"),
+                .product(name: "NanoClawdChatUI", package: "NanoClawdKit"),
+                .product(name: "NanoClawdProtocol", package: "NanoClawdKit"),
                 .product(name: "SwabbleKit", package: "swabble"),
                 .product(name: "MenuBarExtraAccess", package: "MenuBarExtraAccess"),
                 .product(name: "Subprocess", package: "swift-subprocess"),
@@ -59,30 +59,30 @@ let package = Package(
                 "Resources/Info.plist",
             ],
             resources: [
-                .copy("Resources/NanoSolana.icns"),
+                .copy("Resources/NanoClawd.icns"),
                 .copy("Resources/DeviceModels"),
             ],
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),
             ]),
         .executableTarget(
-            name: "NanoSolanaMacCLI",
+            name: "NanoClawdMacCLI",
             dependencies: [
-                "NanoSolanaDiscovery",
-                .product(name: "NanoSolanaKit", package: "NanoSolanaKit"),
-                .product(name: "NanoSolanaProtocol", package: "NanoSolanaKit"),
+                "NanoClawdDiscovery",
+                .product(name: "NanoClawdKit", package: "NanoClawdKit"),
+                .product(name: "NanoClawdProtocol", package: "NanoClawdKit"),
             ],
-            path: "Sources/NanoSolanaMacCLI",
+            path: "Sources/NanoClawdMacCLI",
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),
             ]),
         .testTarget(
-            name: "NanoSolanaIPCTests",
+            name: "NanoClawdIPCTests",
             dependencies: [
-                "NanoSolanaIPC",
-                "NanoSolana",
-                "NanoSolanaDiscovery",
-                .product(name: "NanoSolanaProtocol", package: "NanoSolanaKit"),
+                "NanoClawdIPC",
+                "NanoClawd",
+                "NanoClawdDiscovery",
+                .product(name: "NanoClawdProtocol", package: "NanoClawdKit"),
                 .product(name: "SwabbleKit", package: "swabble"),
             ],
             swiftSettings: [

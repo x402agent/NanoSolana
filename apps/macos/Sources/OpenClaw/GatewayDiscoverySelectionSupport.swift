@@ -1,4 +1,4 @@
-import NanoSolanaDiscovery
+import NanoClawdDiscovery
 
 @MainActor
 enum GatewayDiscoverySelectionSupport {
@@ -17,11 +17,11 @@ enum GatewayDiscoverySelectionSupport {
         state.remoteTarget = GatewayDiscoveryHelpers.sshTarget(for: gateway) ?? ""
 
         if let endpoint = GatewayDiscoveryHelpers.serviceEndpoint(for: gateway) {
-            NanoSolanaConfigFile.setRemoteGatewayUrl(
+            NanoClawdConfigFile.setRemoteGatewayUrl(
                 host: endpoint.host,
                 port: endpoint.port)
         } else {
-            NanoSolanaConfigFile.clearRemoteGatewayUrl()
+            NanoClawdConfigFile.clearRemoteGatewayUrl()
         }
     }
 

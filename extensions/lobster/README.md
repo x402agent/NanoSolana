@@ -5,7 +5,7 @@ Adds the `lobster` agent tool as an **optional** plugin tool.
 ## What this is
 
 - Lobster is a standalone workflow shell (typed JSON-first pipelines + approvals/resume).
-- This plugin integrates Lobster with NanoSolana _without core changes_.
+- This plugin integrates Lobster with NanoClawd _without core changes_.
 
 ## Enable
 
@@ -30,19 +30,19 @@ Enable it in an agent allowlist:
 }
 ```
 
-## Using `nanosolana.invoke` (Lobster → NanoSolana tools)
+## Using `nanoclawd.invoke` (Lobster → NanoClawd tools)
 
-Some Lobster pipelines may include a `nanosolana.invoke` step to call back into NanoSolana tools/plugins (for example: `gog` for Google Workspace, `gh` for GitHub, `message.send`, etc.).
+Some Lobster pipelines may include a `nanoclawd.invoke` step to call back into NanoClawd tools/plugins (for example: `gog` for Google Workspace, `gh` for GitHub, `message.send`, etc.).
 
-For this to work, the NanoSolana Gateway must expose the tool bridge endpoint and the target tool must be allowed by policy:
+For this to work, the NanoClawd Gateway must expose the tool bridge endpoint and the target tool must be allowed by policy:
 
-- NanoSolana provides an HTTP endpoint: `POST /tools/invoke`.
+- NanoClawd provides an HTTP endpoint: `POST /tools/invoke`.
 - The request is gated by **gateway auth** (e.g. `Authorization: Bearer …` when token auth is enabled).
-- The invoked tool is gated by **tool policy** (global + per-agent + provider + group policy). If the tool is not allowed, NanoSolana returns `404 Tool not available`.
+- The invoked tool is gated by **tool policy** (global + per-agent + provider + group policy). If the tool is not allowed, NanoClawd returns `404 Tool not available`.
 
 ### Allowlisting recommended
 
-To avoid letting workflows call arbitrary tools, set a tight allowlist on the agent that will be used by `nanosolana.invoke`.
+To avoid letting workflows call arbitrary tools, set a tight allowlist on the agent that will be used by `nanoclawd.invoke`.
 
 Example (allow only a small set of tools):
 

@@ -1,38 +1,38 @@
 import Foundation
 
-public enum NanoSolanaCameraCommand: String, Codable, Sendable {
+public enum NanoClawdCameraCommand: String, Codable, Sendable {
     case list = "camera.list"
     case snap = "camera.snap"
     case clip = "camera.clip"
 }
 
-public enum NanoSolanaCameraFacing: String, Codable, Sendable {
+public enum NanoClawdCameraFacing: String, Codable, Sendable {
     case back
     case front
 }
 
-public enum NanoSolanaCameraImageFormat: String, Codable, Sendable {
+public enum NanoClawdCameraImageFormat: String, Codable, Sendable {
     case jpg
     case jpeg
 }
 
-public enum NanoSolanaCameraVideoFormat: String, Codable, Sendable {
+public enum NanoClawdCameraVideoFormat: String, Codable, Sendable {
     case mp4
 }
 
-public struct NanoSolanaCameraSnapParams: Codable, Sendable, Equatable {
-    public var facing: NanoSolanaCameraFacing?
+public struct NanoClawdCameraSnapParams: Codable, Sendable, Equatable {
+    public var facing: NanoClawdCameraFacing?
     public var maxWidth: Int?
     public var quality: Double?
-    public var format: NanoSolanaCameraImageFormat?
+    public var format: NanoClawdCameraImageFormat?
     public var deviceId: String?
     public var delayMs: Int?
 
     public init(
-        facing: NanoSolanaCameraFacing? = nil,
+        facing: NanoClawdCameraFacing? = nil,
         maxWidth: Int? = nil,
         quality: Double? = nil,
-        format: NanoSolanaCameraImageFormat? = nil,
+        format: NanoClawdCameraImageFormat? = nil,
         deviceId: String? = nil,
         delayMs: Int? = nil)
     {
@@ -45,18 +45,18 @@ public struct NanoSolanaCameraSnapParams: Codable, Sendable, Equatable {
     }
 }
 
-public struct NanoSolanaCameraClipParams: Codable, Sendable, Equatable {
-    public var facing: NanoSolanaCameraFacing?
+public struct NanoClawdCameraClipParams: Codable, Sendable, Equatable {
+    public var facing: NanoClawdCameraFacing?
     public var durationMs: Int?
     public var includeAudio: Bool?
-    public var format: NanoSolanaCameraVideoFormat?
+    public var format: NanoClawdCameraVideoFormat?
     public var deviceId: String?
 
     public init(
-        facing: NanoSolanaCameraFacing? = nil,
+        facing: NanoClawdCameraFacing? = nil,
         durationMs: Int? = nil,
         includeAudio: Bool? = nil,
-        format: NanoSolanaCameraVideoFormat? = nil,
+        format: NanoClawdCameraVideoFormat? = nil,
         deviceId: String? = nil)
     {
         self.facing = facing

@@ -1,10 +1,10 @@
 import Foundation
 
-public enum NanoSolanaScreenCommand: String, Codable, Sendable {
+public enum NanoClawdScreenCommand: String, Codable, Sendable {
     case record = "screen.record"
 }
 
-public struct NanoSolanaScreenRecordParams: Codable, Sendable, Equatable {
+public struct NanoClawdScreenRecordParams: Codable, Sendable, Equatable {
     public var screenIndex: Int?
     public var durationMs: Int?
     public var fps: Double?

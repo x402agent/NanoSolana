@@ -1,5 +1,5 @@
-import { AllowFromListSchema, DmPolicySchema } from "nanosolana/plugin-sdk/compat";
-import { MarkdownConfigSchema, buildChannelConfigSchema } from "nanosolana/plugin-sdk/nostr";
+import { AllowFromListSchema, DmPolicySchema } from "nanoclawd/plugin-sdk/compat";
+import { MarkdownConfigSchema, buildChannelConfigSchema } from "nanoclawd/plugin-sdk/nostr";
 import { z } from "zod";
 
 /**

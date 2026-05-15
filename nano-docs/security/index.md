@@ -1,5 +1,5 @@
 ---
-summary: "Solana Claude Go security model — current implementation notes"
+summary: "Solana Clawd Go security model — current implementation notes"
 title: "Security"
 ---
 
@@ -9,7 +9,7 @@ This page describes the security model that exists in the current checkout.
 
 ## Threat boundaries
 
-Solana Claude Go assumes:
+Solana Clawd Go assumes:
 
 - the local host is trusted
 - the network is hostile
@@ -41,7 +41,7 @@ Important: older docs referenced PBKDF2. That is not what the current code does.
 
 The gateway supports:
 
-- `X-Solana Claude Go-Secret: ...`
+- `X-Solana Clawd Go-Secret: ...`
 - `Authorization: Bearer ...`
 - HMAC-SHA256 authentication for WebSocket clients
 
@@ -50,7 +50,7 @@ Examples:
 ```bash
 curl http://127.0.0.1:18790/health
 
-curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Clawd Go-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/status
 ```
 

@@ -1,11 +1,11 @@
-import { createScopedChannelConfigBase } from "nanosolana/plugin-sdk/compat";
+import { createScopedChannelConfigBase } from "nanoclawd/plugin-sdk/compat";
 import {
   buildOpenGroupPolicyConfigureRouteAllowlistWarning,
   collectAllowlistProviderGroupPolicyWarnings,
   createScopedAccountConfigAccessors,
   createScopedDmSecurityResolver,
   formatNormalizedAllowFromEntries,
-} from "nanosolana/plugin-sdk/compat";
+} from "nanoclawd/plugin-sdk/compat";
 import {
   applyAccountNameToChannelSection,
   applySetupAccountConfigPatch,
@@ -27,9 +27,9 @@ import {
   type ChannelMessageActionAdapter,
   type ChannelPlugin,
   type ChannelStatusIssue,
-  type NanoSolanaConfig,
-} from "nanosolana/plugin-sdk/googlechat";
-import { GoogleChatConfigSchema } from "nanosolana/plugin-sdk/googlechat";
+  type NanoClawdConfig,
+} from "nanoclawd/plugin-sdk/googlechat";
+import { GoogleChatConfigSchema } from "nanoclawd/plugin-sdk/googlechat";
 import {
   listGoogleChatAccountIds,
   resolveDefaultGoogleChatAccountId,

@@ -1,5 +1,5 @@
 /**
- * Nano Solana — Legacy Memory Engine
+ * Nano Clawd — Legacy Memory Engine
  *
  * Generic memory engine kept for backward compatibility.
  * New code should use ScgVault (3-tier epistemological memory).

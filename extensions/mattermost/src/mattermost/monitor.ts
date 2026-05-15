@@ -1,10 +1,10 @@
 import type {
   ChannelAccountSnapshot,
   ChatType,
-  NanoSolanaConfig,
+  NanoClawdConfig,
   ReplyPayload,
   RuntimeEnv,
-} from "nanosolana/plugin-sdk/mattermost";
+} from "nanoclawd/plugin-sdk/mattermost";
 import {
   buildAgentMediaPayload,
   buildModelsProviderData,
@@ -30,7 +30,7 @@ import {
   warnMissingProviderGroupPolicyFallbackOnce,
   listSkillCommandsForAgents,
   type HistoryEntry,
-} from "nanosolana/plugin-sdk/mattermost";
+} from "nanoclawd/plugin-sdk/mattermost";
 import { getMattermostRuntime } from "../runtime.js";
 import { resolveMattermostAccount, resolveMattermostReplyToMode } from "./accounts.js";
 import {
@@ -100,7 +100,7 @@ export type MonitorMattermostOpts = {
   botToken?: string;
   baseUrl?: string;
   accountId?: string;
-  config?: NanoSolanaConfig;
+  config?: NanoClawdConfig;
   runtime?: RuntimeEnv;
   abortSignal?: AbortSignal;
   statusSink?: (patch: Partial<ChannelAccountSnapshot>) => void;
@@ -182,7 +182,7 @@ function channelChatType(kind: ChatType): "direct" | "group" | "channel" {
 }
 
 export type MattermostRequireMentionResolverInput = {
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   channel: "mattermost";
   accountId: string;
   groupId: string;
@@ -191,7 +191,7 @@ export type MattermostRequireMentionResolverInput = {
 
 export type MattermostMentionGateInput = {
   kind: ChatType;
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   accountId: string;
   channelId: string;
   threadRootId?: string;
@@ -394,10 +394,10 @@ export async function monitorMattermostProvider(opts: MonitorMattermostOpts = {}
     try {
       const teams = await fetchMattermostUserTeams(client, botUserId);
 
-      // Use the *runtime* listener port when available (e.g. `nanosolana gateway run --port <port>`).
-      // The gateway sets NANOSOLANA_GATEWAY_PORT when it boots, but the config file may still contain
+      // Use the *runtime* listener port when available (e.g. `nanoclawd gateway run --port <port>`).
+      // The gateway sets NANOCLAWD_GATEWAY_PORT when it boots, but the config file may still contain
       // a different port.
-      const envPortRaw = process.env.NANOSOLANA_GATEWAY_PORT?.trim();
+      const envPortRaw = process.env.NANOCLAWD_GATEWAY_PORT?.trim();
       const envPort = parseStrictPositiveInteger(envPortRaw);
       const slashGatewayPort = envPort ?? cfg.gateway?.port ?? 18789;
 

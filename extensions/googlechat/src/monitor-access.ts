@@ -10,8 +10,8 @@ import {
   resolveMentionGatingWithBypass,
   resolveSenderScopedGroupPolicy,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "nanosolana/plugin-sdk/googlechat";
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/googlechat";
+} from "nanoclawd/plugin-sdk/googlechat";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/googlechat";
 import type { ResolvedGoogleChatAccount } from "./accounts.js";
 import { sendGoogleChatMessage } from "./api.js";
 import type { GoogleChatCoreRuntime } from "./monitor-types.js";
@@ -130,7 +130,7 @@ function warnDeprecatedUsersEmailEntries(logVerbose: (message: string) => void, 
 
 export async function applyGoogleChatInboundAccessPolicy(params: {
   account: ResolvedGoogleChatAccount;
-  config: NanoSolanaConfig;
+  config: NanoClawdConfig;
   core: GoogleChatCoreRuntime;
   space: GoogleChatSpace;
   message: GoogleChatMessage;

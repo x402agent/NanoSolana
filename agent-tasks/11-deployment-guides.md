@@ -38,7 +38,7 @@ Expand the existing `docs/deployment.md` from a basic quickstart into a producti
 - **outsiders-bot** — No Dockerfile or railway.json; document Node.js deployment
 - **swarm** — Orchestrator deployment with bot fleet management
 - **dashboard** — Unified control panel deployment
-- **mcp-server** — CLI tool integration (Claude Desktop, VS Code, Cursor)
+- **mcp-server** — CLI tool integration (Clawd Desktop, VS Code, Cursor)
 
 ## Services Inventory
 

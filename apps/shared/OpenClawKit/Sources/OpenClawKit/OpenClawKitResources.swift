@@ -1,7 +1,7 @@
 import Foundation
 
-public enum NanoSolanaKitResources {
-    /// Resource bundle for NanoSolanaKit.
+public enum NanoClawdKitResources {
+    /// Resource bundle for NanoClawdKit.
     ///
     /// Locates the SwiftPM-generated resource bundle, checking multiple locations:
     /// 1. Inside Bundle.main (packaged apps)
@@ -13,7 +13,7 @@ public enum NanoSolanaKitResources {
     /// SwiftPM's expectations.
     public static let bundle: Bundle = locateBundle()
 
-    private static let bundleName = "NanoSolanaKit_NanoSolanaKit"
+    private static let bundleName = "NanoClawdKit_NanoClawdKit"
 
     private static func locateBundle() -> Bundle {
         // 1. Check inside Bundle.main (packaged apps copy resources here)

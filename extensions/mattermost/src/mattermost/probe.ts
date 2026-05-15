@@ -1,4 +1,4 @@
-import type { BaseProbeResult } from "nanosolana/plugin-sdk/mattermost";
+import type { BaseProbeResult } from "nanoclawd/plugin-sdk/mattermost";
 import { normalizeMattermostBaseUrl, readMattermostError, type MattermostUser } from "./client.js";
 
 export type MattermostProbe = BaseProbeResult & {

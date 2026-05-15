@@ -13,7 +13,7 @@ Model Context Protocol server exposing tools, resources, and prompts for AI agen
 ## Architecture
 
 ```
-AI Agent (Claude, etc.)
+AI Agent (Clawd, etc.)
         │
     stdio transport
         │

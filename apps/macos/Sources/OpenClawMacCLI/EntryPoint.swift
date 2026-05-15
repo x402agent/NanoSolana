@@ -6,7 +6,7 @@ private struct RootCommand {
 }
 
 @main
-struct NanoSolanaMacCLI {
+struct NanoClawdMacCLI {
     static func main() async {
         let args = Array(CommandLine.arguments.dropFirst())
         let command = parseRootCommand(args)
@@ -22,7 +22,7 @@ struct NanoSolanaMacCLI {
         case "wizard":
             await runWizardCommand(command?.args ?? [])
         default:
-            fputs("nanosolana-mac: unknown command\n", stderr)
+            fputs("nanoclawd-mac: unknown command\n", stderr)
             printUsage()
             exit(1)
         }
@@ -36,21 +36,21 @@ private func parseRootCommand(_ args: [String]) -> RootCommand? {
 
 private func printUsage() {
     print("""
-    nanosolana-mac
+    nanoclawd-mac
 
     Usage:
-      nanosolana-mac connect [--url <ws://host:port>] [--token <token>] [--password <password>]
+      nanoclawd-mac connect [--url <ws://host:port>] [--token <token>] [--password <password>]
                            [--mode <local|remote>] [--timeout <ms>] [--probe] [--json]
                            [--client-id <id>] [--client-mode <mode>] [--display-name <name>]
                            [--role <role>] [--scopes <a,b,c>]
-      nanosolana-mac discover [--timeout <ms>] [--json] [--include-local]
-      nanosolana-mac wizard [--url <ws://host:port>] [--token <token>] [--password <password>]
+      nanoclawd-mac discover [--timeout <ms>] [--json] [--include-local]
+      nanoclawd-mac wizard [--url <ws://host:port>] [--token <token>] [--password <password>]
                           [--mode <local|remote>] [--workspace <path>] [--json]
 
     Examples:
-      nanosolana-mac connect
-      nanosolana-mac connect --url ws://127.0.0.1:18789 --json
-      nanosolana-mac discover --timeout 3000 --json
-      nanosolana-mac wizard --mode local
+      nanoclawd-mac connect
+      nanoclawd-mac connect --url ws://127.0.0.1:18789 --json
+      nanoclawd-mac discover --timeout 3000 --json
+      nanoclawd-mac wizard --mode local
     """)
 }

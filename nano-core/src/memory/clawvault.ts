@@ -1,5 +1,5 @@
 /**
- * Nano Solana — ScgVault: 3-Tier Epistemological Memory Engine
+ * Nano Clawd — ScgVault: 3-Tier Epistemological Memory Engine
  *
  * The brain's long-term memory system. Organizes knowledge into three tiers:
  *   KNOWN    — empirical facts with short TTL (60s)

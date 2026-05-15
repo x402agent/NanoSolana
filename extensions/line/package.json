@@ -1,10 +1,10 @@
 {
-  "name": "@nanosolana/line",
+  "name": "@nanoclawd/line",
   "version": "2026.3.11",
   "private": true,
-  "description": "NanoSolana LINE channel plugin",
+  "description": "NanoClawd LINE channel plugin",
   "type": "module",
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./index.ts"
     ],
@@ -19,7 +19,7 @@
       "quickstartAllowFrom": true
     },
     "install": {
-      "npmSpec": "@nanosolana/line",
+      "npmSpec": "@nanoclawd/line",
       "localPath": "extensions/line",
       "defaultChoice": "npm"
     }

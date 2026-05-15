@@ -1,4 +1,4 @@
-# NanoSolana Android App
+# NanoClawd Android App
 
 **Status: Alpha** — Android companion for your TamaGObot trading agent.
 
@@ -9,7 +9,7 @@
 - 💬 Chat with your agent (Telegram bridge)
 - 🔔 Push notifications for trade signals
 - 🔐 Biometric lock + encrypted token storage
-- 📡 QR code pairing with NanoSolana gateway
+- 📡 QR code pairing with NanoClawd gateway
 
 ## Build & Run
 
@@ -23,7 +23,7 @@ cd apps/android
 
 ```bash
 # Terminal 1: Start gateway
-nanosolana gateway run --port 18789
+nanoclawd gateway run --port 18789
 
 # Terminal 2: USB tunnel
 adb reverse tcp:18789 tcp:18789
@@ -34,8 +34,8 @@ In app **Connect → Manual**: Host `127.0.0.1`, Port `18789`, TLS off.
 ## Approve Pairing
 
 ```bash
-nanosolana devices list
-nanosolana devices approve <requestId>
+nanoclawd devices list
+nanoclawd devices approve <requestId>
 ```
 
 ## Kotlin Lint + Format
@@ -49,7 +49,7 @@ cd apps/android
 ## Tech Stack
 
 - Kotlin + Jetpack Compose
-- Material 3 (NanoSolana dark theme)
+- Material 3 (NanoClawd dark theme)
 - Encrypted SharedPreferences
 - WebSocket gateway client
 
@@ -59,4 +59,4 @@ Contributions welcome. Open an issue or reach out on Discord.
 
 ---
 
-**NanoSolana Labs** · MIT License
+**NanoClawd Labs** · MIT License

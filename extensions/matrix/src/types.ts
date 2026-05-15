@@ -1,4 +1,4 @@
-import type { DmPolicy, GroupPolicy, SecretInput } from "nanosolana/plugin-sdk/matrix";
+import type { DmPolicy, GroupPolicy, SecretInput } from "nanoclawd/plugin-sdk/matrix";
 export type { DmPolicy, GroupPolicy };
 
 export type ReplyToMode = "off" | "first" | "all";

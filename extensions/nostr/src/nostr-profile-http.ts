@@ -13,7 +13,7 @@ import {
   isBlockedHostnameOrIp,
   readJsonBodyWithLimit,
   requestBodyErrorToText,
-} from "nanosolana/plugin-sdk/nostr";
+} from "nanoclawd/plugin-sdk/nostr";
 import { z } from "zod";
 import { publishNostrProfile, getNostrProfileState } from "./channel.js";
 import { NostrProfileSchema, type NostrProfile } from "./config-schema.js";

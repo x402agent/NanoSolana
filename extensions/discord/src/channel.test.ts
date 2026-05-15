@@ -1,4 +1,4 @@
-import type { NanoSolanaConfig, PluginRuntime } from "nanosolana/plugin-sdk/discord";
+import type { NanoClawdConfig, PluginRuntime } from "nanoclawd/plugin-sdk/discord";
 import { describe, expect, it, vi } from "vitest";
 import { discordPlugin } from "./channel.js";
 import { setDiscordRuntime } from "./runtime.js";
@@ -15,7 +15,7 @@ describe("discordPlugin outbound", () => {
     } as unknown as PluginRuntime);
 
     const result = await discordPlugin.outbound!.sendMedia!({
-      cfg: {} as NanoSolanaConfig,
+      cfg: {} as NanoClawdConfig,
       to: "channel:123",
       text: "hi",
       mediaUrl: "/tmp/image.png",

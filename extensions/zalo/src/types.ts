@@ -1,4 +1,4 @@
-import type { SecretInput } from "nanosolana/plugin-sdk/zalo";
+import type { SecretInput } from "nanoclawd/plugin-sdk/zalo";
 
 export type ZaloAccountConfig = {
   /** Optional display name for this account (used in CLI/UI lists). */

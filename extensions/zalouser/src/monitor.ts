@@ -7,13 +7,13 @@ import {
   clearHistoryEntriesIfEnabled,
   recordPendingHistoryEntryIfEnabled,
   resolveDmGroupAccessWithLists,
-} from "nanosolana/plugin-sdk/compat";
+} from "nanoclawd/plugin-sdk/compat";
 import type {
   MarkdownTableMode,
-  NanoSolanaConfig,
+  NanoClawdConfig,
   OutboundReplyPayload,
   RuntimeEnv,
-} from "nanosolana/plugin-sdk/zalouser";
+} from "nanoclawd/plugin-sdk/zalouser";
 import {
   createTypingCallbacks,
   createScopedPairingAccess,
@@ -29,7 +29,7 @@ import {
   sendMediaWithLeadingCaption,
   summarizeMapping,
   warnMissingProviderGroupPolicyFallbackOnce,
-} from "nanosolana/plugin-sdk/zalouser";
+} from "nanoclawd/plugin-sdk/zalouser";
 import {
   buildZalouserGroupCandidates,
   findZalouserGroupEntry,
@@ -53,7 +53,7 @@ import {
 
 export type ZalouserMonitorOptions = {
   account: ResolvedZalouserAccount;
-  config: NanoSolanaConfig;
+  config: NanoClawdConfig;
   runtime: RuntimeEnv;
   abortSignal: AbortSignal;
   statusSink?: (patch: { lastInboundAt?: number; lastOutboundAt?: number }) => void;
@@ -138,14 +138,14 @@ function createDeferred<T>() {
   return { promise, resolve, reject };
 }
 
-function resolveZalouserDmSessionScope(config: NanoSolanaConfig) {
+function resolveZalouserDmSessionScope(config: NanoClawdConfig) {
   const configured = config.session?.dmScope;
   return configured === "main" || !configured ? "per-channel-peer" : configured;
 }
 
 function resolveZalouserInboundSessionKey(params: {
   core: ZalouserCoreRuntime;
-  config: NanoSolanaConfig;
+  config: NanoClawdConfig;
   route: { agentId: string; accountId: string; sessionKey: string };
   storePath: string;
   isGroup: boolean;
@@ -249,7 +249,7 @@ async function sendZalouserDeliveryAcks(params: {
 async function processMessage(
   message: ZaloInboundMessage,
   account: ResolvedZalouserAccount,
-  config: NanoSolanaConfig,
+  config: NanoClawdConfig,
   core: ZalouserCoreRuntime,
   runtime: RuntimeEnv,
   historyState: ZalouserGroupHistoryState,
@@ -694,7 +694,7 @@ async function deliverZalouserReply(params: {
   isGroup: boolean;
   runtime: RuntimeEnv;
   core: ZalouserCoreRuntime;
-  config: NanoSolanaConfig;
+  config: NanoClawdConfig;
   accountId?: string;
   statusSink?: (patch: { lastInboundAt?: number; lastOutboundAt?: number }) => void;
   tableMode?: MarkdownTableMode;
@@ -958,7 +958,7 @@ export const __testing = {
   processMessage: async (params: {
     message: ZaloInboundMessage;
     account: ResolvedZalouserAccount;
-    config: NanoSolanaConfig;
+    config: NanoClawdConfig;
     runtime: RuntimeEnv;
     historyState?: {
       historyLimit?: number;

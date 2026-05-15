@@ -1,4 +1,4 @@
-# MiniMax OAuth (NanoSolana plugin)
+# MiniMax OAuth (NanoClawd plugin)
 
 OAuth provider plugin for **MiniMax** (OAuth).
 
@@ -7,19 +7,19 @@ OAuth provider plugin for **MiniMax** (OAuth).
 Bundled plugins are disabled by default. Enable this one:
 
 ```bash
-nanosolana plugins enable minimax-portal-auth
+nanoclawd plugins enable minimax-portal-auth
 ```
 
 Restart the Gateway after enabling.
 
 ```bash
-nanosolana gateway restart
+nanoclawd gateway restart
 ```
 
 ## Authenticate
 
 ```bash
-nanosolana models auth login --provider minimax-portal --set-default
+nanoclawd models auth login --provider minimax-portal --set-default
 ```
 
 You will be prompted to select an endpoint:

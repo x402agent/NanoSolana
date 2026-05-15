@@ -1,6 +1,6 @@
 import Foundation
 
-public enum NanoSolanaCanvasCommand: String, Codable, Sendable {
+public enum NanoClawdCanvasCommand: String, Codable, Sendable {
     case present = "canvas.present"
     case hide = "canvas.hide"
     case navigate = "canvas.navigate"

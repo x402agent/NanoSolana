@@ -1,9 +1,9 @@
-import NanoSolanaProtocol
+import NanoClawdProtocol
 import SwiftUI
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
-private typealias ProtoAnyCodable = NanoSolanaProtocol.AnyCodable
+private typealias ProtoAnyCodable = NanoClawdProtocol.AnyCodable
 
 @Suite(.serialized)
 @MainActor

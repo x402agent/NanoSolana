@@ -20,7 +20,7 @@ describe('webhook config', () => {
     delete process.env.SITE_URL
     process.env.DISCORD_WEBHOOK_URL = 'https://example.com'
     const config = getWebhookConfig()
-    expect(config.siteUrl).toBe('https://nanosolana.netlify.app')
+    expect(config.siteUrl).toBe('https://nanoclawd.netlify.app')
   })
 })
 
@@ -36,7 +36,7 @@ describe('webhook filtering', () => {
     const config = {
       url: 'https://example.com',
       highlightedOnly: true,
-      siteUrl: 'https://nanosolana.netlify.app',
+      siteUrl: 'https://nanoclawd.netlify.app',
     }
     const allowed = shouldSendWebhook(
       'skill.publish',
@@ -50,7 +50,7 @@ describe('webhook filtering', () => {
     const config = {
       url: 'https://example.com',
       highlightedOnly: true,
-      siteUrl: 'https://nanosolana.netlify.app',
+      siteUrl: 'https://nanoclawd.netlify.app',
     }
     const allowed = shouldSendWebhook(
       'skill.highlighted',
@@ -65,9 +65,9 @@ describe('payload building', () => {
   it('builds canonical url with owner', () => {
     const url = buildSkillUrl(
       { slug: 'beeper', displayName: 'Beeper', ownerHandle: 'KrauseFx' },
-      'https://nanosolana.netlify.app',
+      'https://nanoclawd.netlify.app',
     )
-    expect(url).toBe('https://nanosolana.netlify.app/KrauseFx/beeper')
+    expect(url).toBe('https://nanoclawd.netlify.app/KrauseFx/beeper')
   })
 
   it('builds a publish embed', () => {
@@ -84,7 +84,7 @@ describe('payload building', () => {
       {
         url: 'https://example.com',
         highlightedOnly: false,
-        siteUrl: 'https://nanosolana.netlify.app',
+        siteUrl: 'https://nanoclawd.netlify.app',
       },
     )
     const embed = payload.embeds[0]

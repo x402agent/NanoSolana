@@ -1,4 +1,4 @@
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/mattermost";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/mattermost";
 import { describe, expect, it } from "vitest";
 import { mattermostOnboardingAdapter } from "./onboarding.js";
 
@@ -16,7 +16,7 @@ describe("mattermost onboarding status", () => {
             },
           },
         },
-      } as NanoSolanaConfig,
+      } as NanoClawdConfig,
       accountOverrides: {},
     });
 

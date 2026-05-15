@@ -1,4 +1,4 @@
-# NanoSolana UI deployment
+# NanoClawd UI deployment
 [build]
   base = "ui"
   command = "npm install && npm run build"

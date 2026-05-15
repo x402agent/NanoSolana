@@ -1,11 +1,11 @@
 import Foundation
-import NanoSolanaIPC
+import NanoClawdIPC
 import Security
 import UserNotifications
 
 @MainActor
 struct NotificationManager {
-    private let logger = Logger(subsystem: "ai.nanosolana", category: "notifications")
+    private let logger = Logger(subsystem: "ai.nanoclawd", category: "notifications")
 
     private static let hasTimeSensitiveEntitlement: Bool = {
         guard let task = SecTaskCreateFromSelf(nil) else { return false }

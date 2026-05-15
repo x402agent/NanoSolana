@@ -69,14 +69,14 @@ export function parseClawdisMetadata(frontmatter: ParsedSkillFrontmatter) {
       : undefined
   const tamagobotMeta = metadataRecord?.tamagobot
   const clawdisMeta = metadataRecord?.clawdis
-  const nanosolanaMeta = metadataRecord?.nanosolana
+  const nanoclawdMeta = metadataRecord?.nanoclawd
   const metadataSource =
     tamagobotMeta && typeof tamagobotMeta === 'object' && !Array.isArray(tamagobotMeta)
       ? (tamagobotMeta as Record<string, unknown>)
       : clawdisMeta && typeof clawdisMeta === 'object' && !Array.isArray(clawdisMeta)
         ? (clawdisMeta as Record<string, unknown>)
-        : nanosolanaMeta && typeof nanosolanaMeta === 'object' && !Array.isArray(nanosolanaMeta)
-          ? (nanosolanaMeta as Record<string, unknown>)
+        : nanoclawdMeta && typeof nanoclawdMeta === 'object' && !Array.isArray(nanoclawdMeta)
+          ? (nanoclawdMeta as Record<string, unknown>)
           : undefined
   const clawdisRaw = metadataSource ?? frontmatter.clawdis
 

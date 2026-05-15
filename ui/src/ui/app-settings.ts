@@ -7,7 +7,7 @@ import {
   stopDebugPolling,
 } from "./app-polling.ts";
 import { scheduleChatScroll, scheduleLogsScroll } from "./app-scroll.ts";
-import type { NanoSolanaApp } from "./app.ts";
+import type { NanoClawdApp } from "./app.ts";
 import { loadAgentIdentities, loadAgentIdentity } from "./controllers/agent-identity.ts";
 import { loadAgentSkills } from "./controllers/agent-skills.ts";
 import { loadAgents } from "./controllers/agents.ts";
@@ -205,33 +205,33 @@ export async function refreshActiveTab(host: SettingsHost) {
     await loadChannelsTab(host);
   }
   if (host.tab === "instances") {
-    await loadPresence(host as unknown as NanoSolanaApp);
+    await loadPresence(host as unknown as NanoClawdApp);
   }
   if (host.tab === "sessions") {
-    await loadSessions(host as unknown as NanoSolanaApp);
+    await loadSessions(host as unknown as NanoClawdApp);
   }
   if (host.tab === "cron") {
     await loadCron(host);
   }
   if (host.tab === "skills") {
-    await loadSkills(host as unknown as NanoSolanaApp);
+    await loadSkills(host as unknown as NanoClawdApp);
   }
   if (host.tab === "agents") {
-    await loadAgents(host as unknown as NanoSolanaApp);
-    await loadConfig(host as unknown as NanoSolanaApp);
+    await loadAgents(host as unknown as NanoClawdApp);
+    await loadConfig(host as unknown as NanoClawdApp);
     const agentIds = host.agentsList?.agents?.map((entry) => entry.id) ?? [];
     if (agentIds.length > 0) {
-      void loadAgentIdentities(host as unknown as NanoSolanaApp, agentIds);
+      void loadAgentIdentities(host as unknown as NanoClawdApp, agentIds);
     }
     const agentId =
       host.agentsSelectedId ?? host.agentsList?.defaultId ?? host.agentsList?.agents?.[0]?.id;
     if (agentId) {
-      void loadAgentIdentity(host as unknown as NanoSolanaApp, agentId);
+      void loadAgentIdentity(host as unknown as NanoClawdApp, agentId);
       if (host.agentsPanel === "skills") {
-        void loadAgentSkills(host as unknown as NanoSolanaApp, agentId);
+        void loadAgentSkills(host as unknown as NanoClawdApp, agentId);
       }
       if (host.agentsPanel === "channels") {
-        void loadChannels(host as unknown as NanoSolanaApp, false);
+        void loadChannels(host as unknown as NanoClawdApp, false);
       }
       if (host.agentsPanel === "cron") {
         void loadCron(host);
@@ -239,10 +239,10 @@ export async function refreshActiveTab(host: SettingsHost) {
     }
   }
   if (host.tab === "nodes") {
-    await loadNodes(host as unknown as NanoSolanaApp);
-    await loadDevices(host as unknown as NanoSolanaApp);
-    await loadConfig(host as unknown as NanoSolanaApp);
-    await loadExecApprovals(host as unknown as NanoSolanaApp);
+    await loadNodes(host as unknown as NanoClawdApp);
+    await loadDevices(host as unknown as NanoClawdApp);
+    await loadConfig(host as unknown as NanoClawdApp);
+    await loadExecApprovals(host as unknown as NanoClawdApp);
   }
   if (host.tab === "chat") {
     await refreshChat(host as unknown as Parameters<typeof refreshChat>[0]);
@@ -259,16 +259,16 @@ export async function refreshActiveTab(host: SettingsHost) {
     host.tab === "infrastructure" ||
     host.tab === "aiAgents"
   ) {
-    await loadConfigSchema(host as unknown as NanoSolanaApp);
-    await loadConfig(host as unknown as NanoSolanaApp);
+    await loadConfigSchema(host as unknown as NanoClawdApp);
+    await loadConfig(host as unknown as NanoClawdApp);
   }
   if (host.tab === "debug") {
-    await loadDebug(host as unknown as NanoSolanaApp);
+    await loadDebug(host as unknown as NanoClawdApp);
     host.eventLog = host.eventLogBuffer;
   }
   if (host.tab === "logs") {
     host.logsAtBottom = true;
-    await loadLogs(host as unknown as NanoSolanaApp, { reset: true });
+    await loadLogs(host as unknown as NanoClawdApp, { reset: true });
     scheduleLogsScroll(host as unknown as Parameters<typeof scheduleLogsScroll>[0], true);
   }
 }
@@ -277,7 +277,7 @@ export function inferBasePath() {
   if (typeof window === "undefined") {
     return "";
   }
-  const configured = window.__NANOSOLANA_CONTROL_UI_BASE_PATH__;
+  const configured = window.__NANOCLAWD_CONTROL_UI_BASE_PATH__;
   if (typeof configured === "string" && configured.trim()) {
     return normalizeBasePath(configured);
   }
@@ -460,7 +460,7 @@ export function syncUrlWithSessionKey(host: SettingsHost, sessionKey: string, re
 }
 
 export async function loadOverview(host: SettingsHost) {
-  const app = host as unknown as NanoSolanaApp;
+  const app = host as unknown as NanoClawdApp;
   await Promise.allSettled([
     loadChannels(app, false),
     loadPresence(app),
@@ -497,7 +497,7 @@ export function hasMissingSkillDependencies(
   return Object.values(missing).some((value) => Array.isArray(value) && value.length > 0);
 }
 
-async function loadOverviewLogs(host: NanoSolanaApp) {
+async function loadOverviewLogs(host: NanoClawdApp) {
   if (!host.client || !host.connected) {
     return;
   }
@@ -523,7 +523,7 @@ async function loadOverviewLogs(host: NanoSolanaApp) {
   }
 }
 
-function buildAttentionItems(host: NanoSolanaApp) {
+function buildAttentionItems(host: NanoClawdApp) {
   const items: AttentionItem[] = [];
 
   if (host.lastError) {
@@ -544,7 +544,7 @@ function buildAttentionItems(host: NanoSolanaApp) {
       title: "Missing operator.read scope",
       description:
         "This connection does not have the operator.read scope. Some features may be unavailable.",
-      href: "https://docs.nanosolana.com/web/dashboard",
+      href: "https://docs.nanoclawd.com/web/dashboard",
       external: true,
     });
   }
@@ -601,14 +601,14 @@ function buildAttentionItems(host: NanoSolanaApp) {
 
 export async function loadChannelsTab(host: SettingsHost) {
   await Promise.all([
-    loadChannels(host as unknown as NanoSolanaApp, true),
-    loadConfigSchema(host as unknown as NanoSolanaApp),
-    loadConfig(host as unknown as NanoSolanaApp),
+    loadChannels(host as unknown as NanoClawdApp, true),
+    loadConfigSchema(host as unknown as NanoClawdApp),
+    loadConfig(host as unknown as NanoClawdApp),
   ]);
 }
 
 export async function loadCron(host: SettingsHost) {
-  const app = host as unknown as NanoSolanaApp;
+  const app = host as unknown as NanoClawdApp;
   const activeCronJobId = app.cronRunsScope === "job" ? app.cronRunsJobId : null;
   await Promise.all([
     loadChannels(app, false),

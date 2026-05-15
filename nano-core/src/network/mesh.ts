@@ -1,5 +1,5 @@
 /**
- * Solana Claude Go — Nano Network (Tailscale + tmux mesh)
+ * Solana Clawd Go — Nano Network (Tailscale + tmux mesh)
  *
  * Provides the `nano` one-shot command for communicating with
  * SCG agents everywhere using:

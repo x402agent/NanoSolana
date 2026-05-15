@@ -10,7 +10,7 @@ import {
   readStringParam,
   type ChannelMessageActionAdapter,
   type ChannelMessageActionName,
-} from "nanosolana/plugin-sdk/bluebubbles";
+} from "nanoclawd/plugin-sdk/bluebubbles";
 import { resolveBlueBubblesAccount } from "./accounts.js";
 import { sendBlueBubblesAttachment } from "./attachments.js";
 import {

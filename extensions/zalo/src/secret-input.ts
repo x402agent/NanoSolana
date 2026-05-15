@@ -3,7 +3,7 @@ import {
   hasConfiguredSecretInput,
   normalizeResolvedSecretInputString,
   normalizeSecretInputString,
-} from "nanosolana/plugin-sdk/zalo";
+} from "nanoclawd/plugin-sdk/zalo";
 
 export {
   buildSecretInputSchema,

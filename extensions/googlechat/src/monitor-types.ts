@@ -1,4 +1,4 @@
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/googlechat";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/googlechat";
 import type { ResolvedGoogleChatAccount } from "./accounts.js";
 import type { GoogleChatAudienceType } from "./auth.js";
 import { getGoogleChatRuntime } from "./runtime.js";
@@ -10,7 +10,7 @@ export type GoogleChatRuntimeEnv = {
 
 export type GoogleChatMonitorOptions = {
   account: ResolvedGoogleChatAccount;
-  config: NanoSolanaConfig;
+  config: NanoClawdConfig;
   runtime: GoogleChatRuntimeEnv;
   abortSignal: AbortSignal;
   webhookPath?: string;
@@ -22,7 +22,7 @@ export type GoogleChatCoreRuntime = ReturnType<typeof getGoogleChatRuntime>;
 
 export type WebhookTarget = {
   account: ResolvedGoogleChatAccount;
-  config: NanoSolanaConfig;
+  config: NanoClawdConfig;
   runtime: GoogleChatRuntimeEnv;
   core: GoogleChatCoreRuntime;
   path: string;

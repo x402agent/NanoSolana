@@ -8,12 +8,12 @@ enum LaunchdManager {
         try? process.run()
     }
 
-    static func startNanoSolana() {
+    static func startNanoClawd() {
         let userTarget = "gui/\(getuid())/\(launchdLabel)"
         self.runLaunchctl(["kickstart", "-k", userTarget])
     }
 
-    static func stopNanoSolana() {
+    static func stopNanoClawd() {
         let userTarget = "gui/\(getuid())/\(launchdLabel)"
         self.runLaunchctl(["stop", userTarget])
     }

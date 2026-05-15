@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { Readable } from "stream";
-import { withTempDownloadPath, type TamaGObotConfig } from "nanosolana/plugin-sdk/feishu";
+import { withTempDownloadPath, type TamaGObotConfig } from "nanoclawd/plugin-sdk/feishu";
 import { resolveFeishuAccount } from "./accounts.js";
 import { createFeishuClient } from "./client.js";
 import { normalizeFeishuExternalKey } from "./external-keys.js";
@@ -110,7 +110,7 @@ export async function downloadImageFeishu(params: {
 
   const buffer = await readFeishuResponseBuffer({
     response,
-    tmpDirPrefix: "nanosolana-feishu-img-",
+    tmpDirPrefix: "nanoclawd-feishu-img-",
     errorPrefix: "Feishu image download failed",
   });
   return { buffer };
@@ -149,7 +149,7 @@ export async function downloadMessageResourceFeishu(params: {
 
   const buffer = await readFeishuResponseBuffer({
     response,
-    tmpDirPrefix: "nanosolana-feishu-resource-",
+    tmpDirPrefix: "nanoclawd-feishu-resource-",
     errorPrefix: "Feishu message resource download failed",
   });
   return { buffer };

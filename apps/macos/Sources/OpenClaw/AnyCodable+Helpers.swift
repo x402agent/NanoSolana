@@ -1,6 +1,6 @@
 import Foundation
-import NanoSolanaKit
+import NanoClawdKit
 
-// Prefer the NanoSolanaKit wrapper to keep gateway request payloads consistent.
-typealias AnyCodable = NanoSolanaKit.AnyCodable
-typealias InstanceIdentity = NanoSolanaKit.InstanceIdentity
+// Prefer the NanoClawdKit wrapper to keep gateway request payloads consistent.
+typealias AnyCodable = NanoClawdKit.AnyCodable
+typealias InstanceIdentity = NanoClawdKit.InstanceIdentity

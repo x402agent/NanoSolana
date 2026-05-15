@@ -69,7 +69,7 @@ prose help
 
 ### What AI assistants are supported?
 
-Claude Code, OpenCode, and Amp. Any harness that runs a sufficiently intelligent model and supports primitives like subagents are considered "Prose Complete".
+Clawd Code, OpenCode, and Amp. Any harness that runs a sufficiently intelligent model and supports primitives like subagents are considered "Prose Complete".
 
 ### How is this a VM?
 
@@ -93,7 +93,7 @@ We started with YAML. The problem: loops, conditionals, and variable declaration
 
 ### Why not LangChain/CrewAI/AutoGen?
 
-Those are orchestration libraries—they coordinate agents from outside. OpenProse runs inside the agent session—the session itself is the IoC container. This means zero external dependencies and portability across any AI assistant. Switch from Claude Code to Codex? Your .prose files still work.
+Those are orchestration libraries—they coordinate agents from outside. OpenProse runs inside the agent session—the session itself is the IoC container. This means zero external dependencies and portability across any AI assistant. Switch from Clawd Code to Codex? Your .prose files still work.
 
 ---
 

@@ -2,7 +2,7 @@ import {
   applyWindowsSpawnProgramPolicy,
   materializeWindowsSpawnProgram,
   resolveWindowsSpawnProgramCandidate,
-} from "nanosolana/plugin-sdk/lobster";
+} from "nanoclawd/plugin-sdk/lobster";
 
 type SpawnTarget = {
   command: string;

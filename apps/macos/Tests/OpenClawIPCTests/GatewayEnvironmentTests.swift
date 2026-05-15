@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 struct GatewayEnvironmentTests {
     @Test func `semver parses common forms`() {
@@ -34,7 +34,7 @@ struct GatewayEnvironmentTests {
     @Test func `gateway port defaults and respects override`() async {
         let configPath = TestIsolation.tempConfigPath()
         await TestIsolation.withIsolatedState(
-            env: ["NANOSOLANA_CONFIG_PATH": configPath],
+            env: ["NANOCLAWD_CONFIG_PATH": configPath],
             defaults: ["gatewayPort": nil])
         {
             let defaultPort = GatewayEnvironment.gatewayPort()

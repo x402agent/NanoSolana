@@ -1,28 +1,28 @@
-import NanoSolanaKit
+import NanoClawdKit
 import Foundation
 import Testing
 
 @Suite struct CanvasA2UIActionTests {
     @Test func sanitizeTagValueIsStable() {
-        #expect(NanoSolanaCanvasA2UIAction.sanitizeTagValue("Hello World!") == "Hello_World_")
-        #expect(NanoSolanaCanvasA2UIAction.sanitizeTagValue("  ") == "-")
-        #expect(NanoSolanaCanvasA2UIAction.sanitizeTagValue("macOS 26.2") == "macOS_26.2")
+        #expect(NanoClawdCanvasA2UIAction.sanitizeTagValue("Hello World!") == "Hello_World_")
+        #expect(NanoClawdCanvasA2UIAction.sanitizeTagValue("  ") == "-")
+        #expect(NanoClawdCanvasA2UIAction.sanitizeTagValue("macOS 26.2") == "macOS_26.2")
     }
 
     @Test func extractActionNameAcceptsNameOrAction() {
-        #expect(NanoSolanaCanvasA2UIAction.extractActionName(["name": "Hello"]) == "Hello")
-        #expect(NanoSolanaCanvasA2UIAction.extractActionName(["action": "Wave"]) == "Wave")
-        #expect(NanoSolanaCanvasA2UIAction.extractActionName(["name": "  ", "action": "Fallback"]) == "Fallback")
-        #expect(NanoSolanaCanvasA2UIAction.extractActionName(["action": " "]) == nil)
+        #expect(NanoClawdCanvasA2UIAction.extractActionName(["name": "Hello"]) == "Hello")
+        #expect(NanoClawdCanvasA2UIAction.extractActionName(["action": "Wave"]) == "Wave")
+        #expect(NanoClawdCanvasA2UIAction.extractActionName(["name": "  ", "action": "Fallback"]) == "Fallback")
+        #expect(NanoClawdCanvasA2UIAction.extractActionName(["action": " "]) == nil)
     }
 
     @Test func formatAgentMessageIsTokenEfficientAndUnambiguous() {
-        let messageContext = NanoSolanaCanvasA2UIAction.AgentMessageContext(
+        let messageContext = NanoClawdCanvasA2UIAction.AgentMessageContext(
             actionName: "Get Weather",
             session: .init(key: "main", surfaceId: "main"),
             component: .init(id: "btnWeather", host: "Peter’s iPad", instanceId: "ipad16,6"),
             contextJSON: "{\"city\":\"Vienna\"}")
-        let msg = NanoSolanaCanvasA2UIAction.formatAgentMessage(messageContext)
+        let msg = NanoClawdCanvasA2UIAction.formatAgentMessage(messageContext)
 
         #expect(msg.contains("CANVAS_A2UI "))
         #expect(msg.contains("action=Get_Weather"))

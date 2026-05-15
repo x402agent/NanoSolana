@@ -1,5 +1,5 @@
 import Foundation
 
-public enum NanoSolanaBrowserCommand: String, Codable, Sendable {
+public enum NanoClawdBrowserCommand: String, Codable, Sendable {
     case proxy = "browser.proxy"
 }

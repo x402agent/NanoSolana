@@ -1,17 +1,17 @@
 {
-  "name": "@nanosolana/extension-pumpfun",
+  "name": "@nanoclawd/extension-pumpfun",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "PumpFun protocol extension for NanoSolana — bonding curve trading, token launch monitoring, fee tracking",
+  "description": "PumpFun protocol extension for NanoClawd — bonding curve trading, token launch monitoring, fee tracking",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./src/index.ts"
     ],
     "install": {
-      "npmSpec": "@nanosolana/extension-pumpfun",
+      "npmSpec": "@nanoclawd/extension-pumpfun",
       "localPath": "extensions/pumpfun",
       "defaultChoice": "local"
     }

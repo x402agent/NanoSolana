@@ -1,8 +1,8 @@
 # Contributing to NanoHub
 
-Welcome. NanoHub is the public skill registry for [NanoSolana](https://github.com/nanosolana/nanosolana). We appreciate bug fixes, documentation improvements, and feature contributions.
+Welcome. NanoHub is the public skill registry for [NanoClawd](https://github.com/nanoclawd/nanoclawd). We appreciate bug fixes, documentation improvements, and feature contributions.
 
-- **Questions?** Ask in the NanoSolana Discord.
+- **Questions?** Ask in the NanoClawd Discord.
 - **Bug fixes** — PRs are welcome.
 - **New features or architectural changes** — start with a discussion first so we can align on scope.
 
@@ -159,7 +159,7 @@ AI-assisted contributions are welcome. When submitting AI-generated or AI-assist
 
 ## Security Reporting
 
-Report vulnerabilities to **security@nanosolana.ai** with:
+Report vulnerabilities to **security@nanoclawd.ai** with:
 
 - Severity assessment
 - Technical reproduction steps

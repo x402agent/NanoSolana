@@ -11,11 +11,11 @@
  * - setTwitchAccount config updates
  */
 
-import type { WizardPrompter } from "nanosolana/plugin-sdk/twitch";
+import type { WizardPrompter } from "nanoclawd/plugin-sdk/twitch";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { TwitchAccountConfig } from "./types.js";
 
-vi.mock("nanosolana/plugin-sdk/twitch", () => ({
+vi.mock("nanoclawd/plugin-sdk/twitch", () => ({
   formatDocsLink: (url: string, fallback: string) => fallback || url,
   promptChannelAccessConfig: vi.fn(async () => null),
 }));

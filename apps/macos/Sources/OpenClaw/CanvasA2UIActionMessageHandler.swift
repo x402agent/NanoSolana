@@ -1,11 +1,11 @@
 import AppKit
 import Foundation
-import NanoSolanaIPC
-import NanoSolanaKit
+import NanoClawdIPC
+import NanoClawdKit
 import WebKit
 
 final class CanvasA2UIActionMessageHandler: NSObject, WKScriptMessageHandler {
-    static let messageName = "nanosolanaCanvasA2UIAction"
+    static let messageName = "nanoclawdCanvasA2UIAction"
     static let allMessageNames = [messageName]
 
     private let sessionKey: String
@@ -53,7 +53,7 @@ final class CanvasA2UIActionMessageHandler: NSObject, WKScriptMessageHandler {
         }()
         guard !userAction.isEmpty else { return }
 
-        guard let name = NanoSolanaCanvasA2UIAction.extractActionName(userAction) else { return }
+        guard let name = NanoClawdCanvasA2UIAction.extractActionName(userAction) else { return }
         let actionId =
             (userAction["id"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty
                 ?? UUID().uuidString
@@ -65,15 +65,15 @@ final class CanvasA2UIActionMessageHandler: NSObject, WKScriptMessageHandler {
         let sourceComponentId = (userAction["sourceComponentId"] as? String)?
             .trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty ?? "-"
         let instanceId = InstanceIdentity.instanceId.lowercased()
-        let contextJSON = NanoSolanaCanvasA2UIAction.compactJSON(userAction["context"])
+        let contextJSON = NanoClawdCanvasA2UIAction.compactJSON(userAction["context"])
 
         // Token-efficient and unambiguous. The agent should treat this as a UI event and (by default) update Canvas.
-        let messageContext = NanoSolanaCanvasA2UIAction.AgentMessageContext(
+        let messageContext = NanoClawdCanvasA2UIAction.AgentMessageContext(
             actionName: name,
             session: .init(key: self.sessionKey, surfaceId: surfaceId),
             component: .init(id: sourceComponentId, host: InstanceIdentity.displayName, instanceId: instanceId),
             contextJSON: contextJSON)
-        let text = NanoSolanaCanvasA2UIAction.formatAgentMessage(messageContext)
+        let text = NanoClawdCanvasA2UIAction.formatAgentMessage(messageContext)
 
         Task { [weak webView] in
             if AppStateStore.shared.connectionMode == .local {
@@ -92,7 +92,7 @@ final class CanvasA2UIActionMessageHandler: NSObject, WKScriptMessageHandler {
 
             await MainActor.run {
                 guard let webView else { return }
-                let js = NanoSolanaCanvasA2UIAction.jsDispatchA2UIActionStatus(
+                let js = NanoClawdCanvasA2UIAction.jsDispatchA2UIActionStatus(
                     actionId: actionId,
                     ok: result.ok,
                     error: result.error)
@@ -112,5 +112,5 @@ final class CanvasA2UIActionMessageHandler: NSObject, WKScriptMessageHandler {
         LocalNetworkURLSupport.isLocalNetworkHTTPURL(url)
     }
 
-    // Formatting helpers live in NanoSolanaKit (`NanoSolanaCanvasA2UIAction`).
+    // Formatting helpers live in NanoClawdKit (`NanoClawdCanvasA2UIAction`).
 }

@@ -1,1 +1,1 @@
-export { promptAccountId, resolveAccountIdForConfigure } from "nanosolana/plugin-sdk/mattermost";
+export { promptAccountId, resolveAccountIdForConfigure } from "nanoclawd/plugin-sdk/mattermost";

@@ -16,7 +16,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { query, HookCallback, PreCompactHookInput, PreToolUseHookInput } from '@anthropic-ai/claude-agent-sdk';
+import { query, HookCallback, PreCompactHookInput, PreToolUseHookInput } from '@anthropic-ai/clawd-agent-sdk';
 import { fileURLToPath } from 'url';
 
 interface ContainerInput {
@@ -185,9 +185,9 @@ function createPreCompactHook(): HookCallback {
 }
 
 // Secrets to strip from Bash tool subprocess environments.
-// These are needed by claude-code for API auth but should never
+// These are needed by clawd-code for API auth but should never
 // be visible to commands Kit runs.
-const SECRET_ENV_VARS = ['ANTHROPIC_API_KEY', 'CLAUDE_CODE_OAUTH_TOKEN'];
+const SECRET_ENV_VARS = ['ANTHROPIC_API_KEY', 'CLAWD_CODE_OAUTH_TOKEN'];
 
 function createSanitizeBashHook(): HookCallback {
   return async (input, _toolUseId, _context) => {
@@ -390,15 +390,15 @@ async function runQuery(
   let messageCount = 0;
   let resultCount = 0;
 
-  // Load global CLAUDE.md as additional system context (shared across all groups)
-  const globalClaudeMdPath = '/workspace/global/CLAUDE.md';
-  let globalClaudeMd: string | undefined;
-  if (!containerInput.isMain && fs.existsSync(globalClaudeMdPath)) {
-    globalClaudeMd = fs.readFileSync(globalClaudeMdPath, 'utf-8');
+  // Load global CLAWD.md as additional system context (shared across all groups)
+  const globalClawdMdPath = '/workspace/global/CLAWD.md';
+  let globalClawdMd: string | undefined;
+  if (!containerInput.isMain && fs.existsSync(globalClawdMdPath)) {
+    globalClawdMd = fs.readFileSync(globalClawdMdPath, 'utf-8');
   }
 
   // Discover additional directories mounted at /workspace/extra/*
-  // These are passed to the SDK so their CLAUDE.md files are loaded automatically
+  // These are passed to the SDK so their CLAWD.md files are loaded automatically
   const extraDirs: string[] = [];
   const extraBase = '/workspace/extra';
   if (fs.existsSync(extraBase)) {
@@ -420,8 +420,8 @@ async function runQuery(
       additionalDirectories: extraDirs.length > 0 ? extraDirs : undefined,
       resume: sessionId,
       resumeSessionAt: resumeAt,
-      systemPrompt: globalClaudeMd
-        ? { type: 'preset' as const, preset: 'claude_code' as const, append: globalClaudeMd }
+      systemPrompt: globalClawdMd
+        ? { type: 'preset' as const, preset: 'clawd_code' as const, append: globalClawdMd }
         : undefined,
       allowedTools: [
         'Bash',

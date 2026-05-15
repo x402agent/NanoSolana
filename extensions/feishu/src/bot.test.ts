@@ -1,4 +1,4 @@
-import type { TamaGObotConfig, PluginRuntime, RuntimeEnv } from "nanosolana/plugin-sdk/feishu";
+import type { TamaGObotConfig, PluginRuntime, RuntimeEnv } from "nanoclawd/plugin-sdk/feishu";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createPluginRuntimeMock } from "../../test-utils/plugin-runtime-mock.js";
 import type { FeishuMessageEvent } from "./bot.js";

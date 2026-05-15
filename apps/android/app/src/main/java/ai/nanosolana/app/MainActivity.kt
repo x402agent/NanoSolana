@@ -1,4 +1,4 @@
-package ai.nanosolana.app
+package ai.nanoclawd.app
 
 import android.os.Bundle
 import android.view.WindowManager
@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import ai.nanosolana.app.ui.RootScreen
-import ai.nanosolana.app.ui.NanoSolanaTheme
+import ai.nanoclawd.app.ui.RootScreen
+import ai.nanoclawd.app.ui.NanoClawdTheme
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
     }
 
     setContent {
-      NanoSolanaTheme {
+      NanoClawdTheme {
         Surface(modifier = Modifier) {
           RootScreen(viewModel = viewModel)
         }

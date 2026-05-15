@@ -1,7 +1,7 @@
 import AppKit
 import SwiftUI
 
-struct GlowingNanoSolanaIcon: View {
+struct GlowingNanoClawdIcon: View {
     @Environment(\.scenePhase) private var scenePhase
 
     let size: CGFloat

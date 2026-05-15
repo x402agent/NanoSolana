@@ -1,4 +1,4 @@
-package ai.nanosolana.app.ui
+package ai.nanoclawd.app.ui
 
 import android.Manifest
 import android.content.Context
@@ -65,10 +65,10 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import ai.nanosolana.app.BuildConfig
-import ai.nanosolana.app.LocationMode
-import ai.nanosolana.app.MainViewModel
-import ai.nanosolana.app.node.DeviceNotificationListenerService
+import ai.nanoclawd.app.BuildConfig
+import ai.nanoclawd.app.LocationMode
+import ai.nanoclawd.app.MainViewModel
+import ai.nanoclawd.app.node.DeviceNotificationListenerService
 
 @Composable
 fun SettingsSheet(viewModel: MainViewModel) {
@@ -757,7 +757,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
             modifier = Modifier.fillMaxWidth(),
             colors = listItemColors,
             headlineContent = { Text("While Using", style = mobileHeadline) },
-            supportingContent = { Text("Only while NanoSolana is open.", style = mobileCallout) },
+            supportingContent = { Text("Only while NanoClawd is open.", style = mobileCallout) },
             trailingContent = {
               RadioButton(
                 selected = locationMode == LocationMode.WhileUsing,
@@ -796,7 +796,7 @@ fun SettingsSheet(viewModel: MainViewModel) {
         modifier = Modifier.settingsRowModifier(),
         colors = listItemColors,
         headlineContent = { Text("Prevent Sleep", style = mobileHeadline) },
-        supportingContent = { Text("Keeps the screen awake while NanoSolana is open.", style = mobileCallout) },
+        supportingContent = { Text("Keeps the screen awake while NanoClawd is open.", style = mobileCallout) },
         trailingContent = { Switch(checked = preventSleep, onCheckedChange = viewModel::setPreventSleep) },
       )
     }

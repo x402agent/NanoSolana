@@ -1,5 +1,5 @@
-import type { NanoSolanaPluginApi } from "nanosolana/plugin-sdk/nextcloud-talk";
-import { emptyPluginConfigSchema } from "nanosolana/plugin-sdk/nextcloud-talk";
+import type { NanoClawdPluginApi } from "nanoclawd/plugin-sdk/nextcloud-talk";
+import { emptyPluginConfigSchema } from "nanoclawd/plugin-sdk/nextcloud-talk";
 import { nextcloudTalkPlugin } from "./src/channel.js";
 import { setNextcloudTalkRuntime } from "./src/runtime.js";
 
@@ -8,7 +8,7 @@ const plugin = {
   name: "Nextcloud Talk",
   description: "Nextcloud Talk channel plugin",
   configSchema: emptyPluginConfigSchema(),
-  register(api: NanoSolanaPluginApi) {
+  register(api: NanoClawdPluginApi) {
     setNextcloudTalkRuntime(api.runtime);
     api.registerChannel({ plugin: nextcloudTalkPlugin });
   },

@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { NanoSolanaPluginApi, NanoSolanaPluginService } from "nanosolana/plugin-sdk/phone-control";
+import type { NanoClawdPluginApi, NanoClawdPluginService } from "nanoclawd/plugin-sdk/phone-control";
 
 type ArmGroup = "camera" | "screen" | "writes" | "all";
 
@@ -155,18 +155,18 @@ async function writeArmState(statePath: string, state: ArmStateFile | null): Pro
   await fs.writeFile(statePath, `${JSON.stringify(state, null, 2)}\n`, "utf8");
 }
 
-function normalizeDenyList(cfg: NanoSolanaPluginApi["config"]): string[] {
+function normalizeDenyList(cfg: NanoClawdPluginApi["config"]): string[] {
   return uniqSorted([...(cfg.gateway?.nodes?.denyCommands ?? [])]);
 }
 
-function normalizeAllowList(cfg: NanoSolanaPluginApi["config"]): string[] {
+function normalizeAllowList(cfg: NanoClawdPluginApi["config"]): string[] {
   return uniqSorted([...(cfg.gateway?.nodes?.allowCommands ?? [])]);
 }
 
 function patchConfigNodeLists(
-  cfg: NanoSolanaPluginApi["config"],
+  cfg: NanoClawdPluginApi["config"],
   next: { allowCommands: string[]; denyCommands: string[] },
-): NanoSolanaPluginApi["config"] {
+): NanoClawdPluginApi["config"] {
   return {
     ...cfg,
     gateway: {
@@ -181,7 +181,7 @@ function patchConfigNodeLists(
 }
 
 async function disarmNow(params: {
-  api: NanoSolanaPluginApi;
+  api: NanoClawdPluginApi;
   stateDir: string;
   statePath: string;
   reason: string;
@@ -283,10 +283,10 @@ function formatStatus(state: ArmStateFile | null): string {
   return `Phone control: armed (${until}).\nTemporarily allowed: ${cmdLabel}`;
 }
 
-export default function register(api: NanoSolanaPluginApi) {
+export default function register(api: NanoClawdPluginApi) {
   let expiryInterval: ReturnType<typeof setInterval> | null = null;
 
-  const timerService: NanoSolanaPluginService = {
+  const timerService: NanoClawdPluginService = {
     id: "phone-control-expiry",
     start: async (ctx) => {
       const statePath = resolveStatePath(ctx.stateDir);

@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { resolvePreferredNanoSolanaTmpDir } from "../../../src/infra/tmp-nanosolana-dir.js";
+import { resolvePreferredNanoClawdTmpDir } from "../../../src/infra/tmp-nanoclawd-dir.js";
 
 const createFeishuClientMock = vi.hoisted(() => vi.fn());
 const resolveFeishuAccountMock = vi.hoisted(() => vi.fn());
@@ -50,7 +50,7 @@ function expectPathIsolatedToTmpRoot(pathValue: string, key: string): void {
   expect(pathValue).not.toContain(key);
   expect(pathValue).not.toContain("..");
 
-  const tmpRoot = path.resolve(resolvePreferredNanoSolanaTmpDir());
+  const tmpRoot = path.resolve(resolvePreferredNanoClawdTmpDir());
   const resolved = path.resolve(pathValue);
   const rel = path.relative(tmpRoot, resolved);
   expect(rel === ".." || rel.startsWith(`..${path.sep}`)).toBe(false);
@@ -270,7 +270,7 @@ describe("sendMediaFeishu msg_type routing", () => {
       contentType: "application/pdf",
     });
 
-    const roots = ["/allowed/workspace", "/tmp/nanosolana"];
+    const roots = ["/allowed/workspace", "/tmp/nanoclawd"];
     await sendMediaFeishu({
       cfg: {} as any,
       to: "user:ou_target",

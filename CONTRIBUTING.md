@@ -1,12 +1,12 @@
-# Contributing to NanoSolana
+# Contributing to NanoClawd
 
-Thank you for your interest in NanoSolana. We're building the future of autonomous financial agents, and we want your help.
+Thank you for your interest in NanoClawd. We're building the future of autonomous financial agents, and we want your help.
 
 ## Quick Start for Contributors
 
 ```bash
-git clone https://github.com/x402agent/NanoSolana.git
-cd NanoSolana/nano-core
+git clone https://github.com/x402agent/NanoClawd.git
+cd NanoClawd/nano-core
 npm install
 npm run dev
 ```
@@ -55,7 +55,7 @@ npm run dev
 
 ## Financial Code Standards
 
-Since NanoSolana handles real money, financial code has extra requirements:
+Since NanoClawd handles real money, financial code has extra requirements:
 
 - **All trading logic** must have unit tests with edge cases (zero balance, max slippage, API failure)
 - **All wallet operations** must be tested with mock keypairs — never real keys in tests
@@ -78,7 +78,7 @@ security: upgrade HMAC to use SHA-512
 
 **Do NOT open a public issue for security vulnerabilities.**
 
-Email security@nanosolana.com with details. We will respond within 48 hours.
+Email security@nanoclawd.com with details. We will respond within 48 hours.
 
 ## License
 

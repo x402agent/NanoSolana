@@ -1,4 +1,4 @@
-import type { AnyAgentTool, NanoSolanaPluginApi } from "nanosolana/plugin-sdk/feishu";
+import type { AnyAgentTool, NanoClawdPluginApi } from "nanoclawd/plugin-sdk/feishu";
 
 type ToolContextLike = {
   agentAccountId?: string;
@@ -34,10 +34,10 @@ function asToolLike(tool: AnyAgentTool, fallbackName?: string): ToolLike {
   };
 }
 
-export function createToolFactoryHarness(cfg: NanoSolanaPluginApi["config"]) {
+export function createToolFactoryHarness(cfg: NanoClawdPluginApi["config"]) {
   const registered: RegisteredTool[] = [];
 
-  const api: Pick<NanoSolanaPluginApi, "config" | "logger" | "registerTool"> = {
+  const api: Pick<NanoClawdPluginApi, "config" | "logger" | "registerTool"> = {
     config: cfg,
     logger: {
       info: () => {},
@@ -70,7 +70,7 @@ export function createToolFactoryHarness(cfg: NanoSolanaPluginApi["config"]) {
   };
 
   return {
-    api: api as NanoSolanaPluginApi,
+    api: api as NanoClawdPluginApi,
     resolveTool,
   };
 }

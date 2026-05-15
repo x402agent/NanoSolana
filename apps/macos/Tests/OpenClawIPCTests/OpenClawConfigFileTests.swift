@@ -1,13 +1,13 @@
 import Foundation
 import Testing
-@testable import NanoSolana
+@testable import NanoClawd
 
 @Suite(.serialized)
-struct NanoSolanaConfigFileTests {
+struct NanoClawdConfigFileTests {
     private func makeConfigOverridePath() -> String {
         FileManager().temporaryDirectory
-            .appendingPathComponent("nanosolana-config-\(UUID().uuidString)")
-            .appendingPathComponent("nanosolana.json")
+            .appendingPathComponent("nanoclawd-config-\(UUID().uuidString)")
+            .appendingPathComponent("nanoclawd.json")
             .path
     }
 
@@ -15,8 +15,8 @@ struct NanoSolanaConfigFileTests {
     func `config path respects env override`() async {
         let override = self.makeConfigOverridePath()
 
-        await TestIsolation.withEnvValues(["NANOSOLANA_CONFIG_PATH": override]) {
-            #expect(NanoSolanaConfigFile.url().path == override)
+        await TestIsolation.withEnvValues(["NANOCLAWD_CONFIG_PATH": override]) {
+            #expect(NanoClawdConfigFile.url().path == override)
         }
     }
 
@@ -25,18 +25,18 @@ struct NanoSolanaConfigFileTests {
     func `remote gateway port parses and matches host`() async {
         let override = self.makeConfigOverridePath()
 
-        await TestIsolation.withEnvValues(["NANOSOLANA_CONFIG_PATH": override]) {
-            NanoSolanaConfigFile.saveDict([
+        await TestIsolation.withEnvValues(["NANOCLAWD_CONFIG_PATH": override]) {
+            NanoClawdConfigFile.saveDict([
                 "gateway": [
                     "remote": [
                         "url": "ws://gateway.ts.net:19999",
                     ],
                 ],
             ])
-            #expect(NanoSolanaConfigFile.remoteGatewayPort() == 19999)
-            #expect(NanoSolanaConfigFile.remoteGatewayPort(matchingHost: "gateway.ts.net") == 19999)
-            #expect(NanoSolanaConfigFile.remoteGatewayPort(matchingHost: "gateway") == 19999)
-            #expect(NanoSolanaConfigFile.remoteGatewayPort(matchingHost: "other.ts.net") == nil)
+            #expect(NanoClawdConfigFile.remoteGatewayPort() == 19999)
+            #expect(NanoClawdConfigFile.remoteGatewayPort(matchingHost: "gateway.ts.net") == 19999)
+            #expect(NanoClawdConfigFile.remoteGatewayPort(matchingHost: "gateway") == 19999)
+            #expect(NanoClawdConfigFile.remoteGatewayPort(matchingHost: "other.ts.net") == nil)
         }
     }
 
@@ -45,16 +45,16 @@ struct NanoSolanaConfigFileTests {
     func `set remote gateway url preserves scheme`() async {
         let override = self.makeConfigOverridePath()
 
-        await TestIsolation.withEnvValues(["NANOSOLANA_CONFIG_PATH": override]) {
-            NanoSolanaConfigFile.saveDict([
+        await TestIsolation.withEnvValues(["NANOCLAWD_CONFIG_PATH": override]) {
+            NanoClawdConfigFile.saveDict([
                 "gateway": [
                     "remote": [
                         "url": "wss://old-host:111",
                     ],
                 ],
             ])
-            NanoSolanaConfigFile.setRemoteGatewayUrl(host: "new-host", port: 2222)
-            let root = NanoSolanaConfigFile.loadDict()
+            NanoClawdConfigFile.setRemoteGatewayUrl(host: "new-host", port: 2222)
+            let root = NanoClawdConfigFile.loadDict()
             let url = ((root["gateway"] as? [String: Any])?["remote"] as? [String: Any])?["url"] as? String
             #expect(url == "wss://new-host:2222")
         }
@@ -65,8 +65,8 @@ struct NanoSolanaConfigFileTests {
     func `clear remote gateway url removes only url field`() async {
         let override = self.makeConfigOverridePath()
 
-        await TestIsolation.withEnvValues(["NANOSOLANA_CONFIG_PATH": override]) {
-            NanoSolanaConfigFile.saveDict([
+        await TestIsolation.withEnvValues(["NANOCLAWD_CONFIG_PATH": override]) {
+            NanoClawdConfigFile.saveDict([
                 "gateway": [
                     "remote": [
                         "url": "wss://old-host:111",
@@ -74,8 +74,8 @@ struct NanoSolanaConfigFileTests {
                     ],
                 ],
             ])
-            NanoSolanaConfigFile.clearRemoteGatewayUrl()
-            let root = NanoSolanaConfigFile.loadDict()
+            NanoClawdConfigFile.clearRemoteGatewayUrl()
+            let root = NanoClawdConfigFile.loadDict()
             let remote = ((root["gateway"] as? [String: Any])?["remote"] as? [String: Any]) ?? [:]
             #expect((remote["url"] as? String) == nil)
             #expect((remote["token"] as? String) == "tok")
@@ -85,15 +85,15 @@ struct NanoSolanaConfigFileTests {
     @Test
     func `state dir override sets config path`() async {
         let dir = FileManager().temporaryDirectory
-            .appendingPathComponent("nanosolana-state-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("nanoclawd-state-\(UUID().uuidString)", isDirectory: true)
             .path
 
         await TestIsolation.withEnvValues([
-            "NANOSOLANA_CONFIG_PATH": nil,
-            "NANOSOLANA_STATE_DIR": dir,
+            "NANOCLAWD_CONFIG_PATH": nil,
+            "NANOCLAWD_STATE_DIR": dir,
         ]) {
-            #expect(NanoSolanaConfigFile.stateDirURL().path == dir)
-            #expect(NanoSolanaConfigFile.url().path == "\(dir)/nanosolana.json")
+            #expect(NanoClawdConfigFile.stateDirURL().path == dir)
+            #expect(NanoClawdConfigFile.url().path == "\(dir)/nanoclawd.json")
         }
     }
 
@@ -101,17 +101,17 @@ struct NanoSolanaConfigFileTests {
     @Test
     func `save dict appends config audit log`() async throws {
         let stateDir = FileManager().temporaryDirectory
-            .appendingPathComponent("nanosolana-state-\(UUID().uuidString)", isDirectory: true)
-        let configPath = stateDir.appendingPathComponent("nanosolana.json")
+            .appendingPathComponent("nanoclawd-state-\(UUID().uuidString)", isDirectory: true)
+        let configPath = stateDir.appendingPathComponent("nanoclawd.json")
         let auditPath = stateDir.appendingPathComponent("logs/config-audit.jsonl")
 
         defer { try? FileManager().removeItem(at: stateDir) }
 
         try await TestIsolation.withEnvValues([
-            "NANOSOLANA_STATE_DIR": stateDir.path,
-            "NANOSOLANA_CONFIG_PATH": configPath.path,
+            "NANOCLAWD_STATE_DIR": stateDir.path,
+            "NANOCLAWD_CONFIG_PATH": configPath.path,
         ]) {
-            NanoSolanaConfigFile.saveDict([
+            NanoClawdConfigFile.saveDict([
                 "gateway": ["mode": "local"],
             ])
 
@@ -129,7 +129,7 @@ struct NanoSolanaConfigFileTests {
                 return
             }
             let auditRoot = try JSONSerialization.jsonObject(with: Data(last.utf8)) as? [String: Any]
-            #expect(auditRoot?["source"] as? String == "macos-nanosolana-config-file")
+            #expect(auditRoot?["source"] as? String == "macos-nanoclawd-config-file")
             #expect(auditRoot?["event"] as? String == "config.write")
             #expect(auditRoot?["result"] as? String == "success")
             #expect(auditRoot?["configPath"] as? String == configPath.path)

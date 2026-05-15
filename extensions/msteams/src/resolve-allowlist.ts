@@ -1,4 +1,4 @@
-import { mapAllowlistResolutionInputs } from "nanosolana/plugin-sdk/compat";
+import { mapAllowlistResolutionInputs } from "nanoclawd/plugin-sdk/compat";
 import { searchGraphUsers } from "./graph-users.js";
 import {
   listChannelsForTeam,

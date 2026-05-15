@@ -44,10 +44,10 @@ describe("acpx plugin config parsing", () => {
       rawConfig: {
         command: "../acpx/dist/cli.js",
       },
-      workspaceDir: "/home/user/repos/nanosolana",
+      workspaceDir: "/home/user/repos/nanoclawd",
     });
 
-    expect(resolved.command).toBe(path.resolve("/home/user/repos/nanosolana", "../acpx/dist/cli.js"));
+    expect(resolved.command).toBe(path.resolve("/home/user/repos/nanoclawd", "../acpx/dist/cli.js"));
     expect(resolved.expectedVersion).toBeUndefined();
     expect(resolved.allowPluginLocalInstall).toBe(false);
     expect(resolved.stripProviderAuthEnvVars).toBe(false);

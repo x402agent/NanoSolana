@@ -1,4 +1,4 @@
-import type { NanoSolanaPluginConfigSchema } from "nanosolana/plugin-sdk/diffs";
+import type { NanoClawdPluginConfigSchema } from "nanoclawd/plugin-sdk/diffs";
 import {
   DIFF_IMAGE_QUALITY_PRESETS,
   DIFF_INDICATORS,
@@ -197,7 +197,7 @@ const DIFFS_PLUGIN_CONFIG_JSON_SCHEMA = {
   },
 } as const;
 
-export const diffsPluginConfigSchema: NanoSolanaPluginConfigSchema = {
+export const diffsPluginConfigSchema: NanoClawdPluginConfigSchema = {
   safeParse(value: unknown) {
     if (value === undefined) {
       return { success: true, data: undefined };

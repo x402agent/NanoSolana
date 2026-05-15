@@ -1,5 +1,5 @@
 import XCTest
-@testable import NanoSolanaKit
+@testable import NanoClawdKit
 
 final class TalkHistoryTimestampTests: XCTestCase {
     func testSecondsTimestampsAreAcceptedWithSmallTolerance() {

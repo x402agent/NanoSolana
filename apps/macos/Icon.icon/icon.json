@@ -6,8 +6,8 @@
     {
       "layers" : [
         {
-          "image-name" : "nanosolana-mac.png",
-          "name" : "nanosolana-mac",
+          "image-name" : "nanoclawd-mac.png",
+          "name" : "nanoclawd-mac",
           "position" : {
             "scale" : 1.07,
             "translation-in-points" : [

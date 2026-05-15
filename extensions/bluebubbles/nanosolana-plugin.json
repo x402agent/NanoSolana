@@ -1,7 +1,7 @@
 {
   "id": "bluebubbles",
   "name": "BlueBubbles",
-  "description": "NanoSolana BlueBubbles bridge — iMessage integration via BlueBubbles server",
+  "description": "NanoClawd BlueBubbles bridge — iMessage integration via BlueBubbles server",
   "channels": ["bluebubbles"],
   "configSchema": {
     "type": "object",

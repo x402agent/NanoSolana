@@ -1,5 +1,5 @@
-import { DEFAULT_ACCOUNT_ID } from "nanosolana/plugin-sdk/account-id";
-import type { NanoSolanaConfig } from "nanosolana/plugin-sdk/zalouser";
+import { DEFAULT_ACCOUNT_ID } from "nanoclawd/plugin-sdk/account-id";
+import type { NanoClawdConfig } from "nanoclawd/plugin-sdk/zalouser";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   getZcaUserInfo,
@@ -19,8 +19,8 @@ vi.mock("./zalo-js.js", () => ({
 const mockCheckAuthenticated = vi.mocked(checkZaloAuthenticated);
 const mockGetUserInfo = vi.mocked(getZaloUserInfo);
 
-function asConfig(value: unknown): NanoSolanaConfig {
-  return value as NanoSolanaConfig;
+function asConfig(value: unknown): NanoClawdConfig {
+  return value as NanoClawdConfig;
 }
 
 describe("zalouser account resolution", () => {

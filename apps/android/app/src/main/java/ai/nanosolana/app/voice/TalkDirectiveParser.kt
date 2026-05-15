@@ -1,4 +1,4 @@
-package ai.nanosolana.app.voice
+package ai.nanoclawd.app.voice
 
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement

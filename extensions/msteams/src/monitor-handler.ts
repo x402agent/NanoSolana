@@ -1,4 +1,4 @@
-import type { NanoSolanaConfig, RuntimeEnv } from "nanosolana/plugin-sdk/msteams";
+import type { NanoClawdConfig, RuntimeEnv } from "nanoclawd/plugin-sdk/msteams";
 import type { MSTeamsConversationStore } from "./conversation-store.js";
 import { buildFileInfoCard, parseFileConsentInvoke, uploadToConsentUrl } from "./file-consent.js";
 import { normalizeMSTeamsConversationId } from "./inbound.js";
@@ -25,7 +25,7 @@ export type MSTeamsActivityHandler = {
 };
 
 export type MSTeamsMessageHandlerDeps = {
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   runtime: RuntimeEnv;
   appId: string;
   adapter: MSTeamsAdapter;

@@ -1,12 +1,12 @@
 {
-  "name": "@nanosolana/bluebubbles",
+  "name": "@nanoclawd/bluebubbles",
   "version": "2026.3.11",
-  "description": "NanoSolana BlueBubbles channel plugin",
+  "description": "NanoClawd BlueBubbles channel plugin",
   "type": "module",
   "dependencies": {
     "zod": "^4.3.6"
   },
-  "nanosolana": {
+  "nanoclawd": {
     "extensions": [
       "./index.ts"
     ],
@@ -28,7 +28,7 @@
       "order": 75
     },
     "install": {
-      "npmSpec": "@nanosolana/bluebubbles",
+      "npmSpec": "@nanoclawd/bluebubbles",
       "localPath": "extensions/bluebubbles",
       "defaultChoice": "npm"
     }

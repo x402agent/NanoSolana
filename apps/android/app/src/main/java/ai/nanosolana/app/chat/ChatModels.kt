@@ -1,4 +1,4 @@
-package ai.nanosolana.app.chat
+package ai.nanoclawd.app.chat
 
 data class ChatMessage(
   val id: String,

@@ -1,14 +1,14 @@
 import AppKit
 import Foundation
-import NanoSolanaChatUI
-import NanoSolanaKit
-import NanoSolanaProtocol
+import NanoClawdChatUI
+import NanoClawdKit
+import NanoClawdProtocol
 import OSLog
 import QuartzCore
 import SwiftUI
 
-private let webChatSwiftLogger = Logger(subsystem: "ai.nanosolana", category: "WebChatSwiftUI")
-private let webChatThinkingLevelDefaultsKey = "nanosolana.webchat.thinkingLevel"
+private let webChatSwiftLogger = Logger(subsystem: "ai.nanoclawd", category: "WebChatSwiftUI")
+private let webChatThinkingLevelDefaultsKey = "nanoclawd.webchat.thinkingLevel"
 
 private enum WebChatSwiftUILayout {
     static let windowSize = NSSize(width: 500, height: 840)
@@ -17,12 +17,12 @@ private enum WebChatSwiftUILayout {
     static let anchorPadding: CGFloat = 8
 }
 
-struct MacGatewayChatTransport: NanoSolanaChatTransport {
-    func requestHistory(sessionKey: String) async throws -> NanoSolanaChatHistoryPayload {
+struct MacGatewayChatTransport: NanoClawdChatTransport {
+    func requestHistory(sessionKey: String) async throws -> NanoClawdChatHistoryPayload {
         try await GatewayConnection.shared.chatHistory(sessionKey: sessionKey)
     }
 
-    func listModels() async throws -> [NanoSolanaChatModelChoice] {
+    func listModels() async throws -> [NanoClawdChatModelChoice] {
         do {
             let data = try await GatewayConnection.shared.request(
                 method: "models.list",
@@ -47,7 +47,7 @@ struct MacGatewayChatTransport: NanoSolanaChatTransport {
             timeoutMs: 10000)
     }
 
-    func listSessions(limit: Int?) async throws -> NanoSolanaChatSessionsListResponse {
+    func listSessions(limit: Int?) async throws -> NanoClawdChatSessionsListResponse {
         var params: [String: AnyCodable] = [
             "includeGlobal": AnyCodable(true),
             "includeUnknown": AnyCodable(false),
@@ -59,7 +59,7 @@ struct MacGatewayChatTransport: NanoSolanaChatTransport {
             method: "sessions.list",
             params: params,
             timeoutMs: 15000)
-        return try JSONDecoder().decode(NanoSolanaChatSessionsListResponse.self, from: data)
+        return try JSONDecoder().decode(NanoClawdChatSessionsListResponse.self, from: data)
     }
 
     func setSessionModel(sessionKey: String, model: String?) async throws {
@@ -89,7 +89,7 @@ struct MacGatewayChatTransport: NanoSolanaChatTransport {
         message: String,
         thinking: String,
         idempotencyKey: String,
-        attachments: [NanoSolanaChatAttachmentPayload]) async throws -> NanoSolanaChatSendResponse
+        attachments: [NanoClawdChatAttachmentPayload]) async throws -> NanoClawdChatSendResponse
     {
         try await GatewayConnection.shared.chatSend(
             sessionKey: sessionKey,
@@ -103,7 +103,7 @@ struct MacGatewayChatTransport: NanoSolanaChatTransport {
         try await GatewayConnection.shared.healthOK(timeoutMs: timeoutMs)
     }
 
-    func events() -> AsyncStream<NanoSolanaChatTransportEvent> {
+    func events() -> AsyncStream<NanoClawdChatTransportEvent> {
         AsyncStream { continuation in
             let task = Task {
                 do {
@@ -127,11 +127,11 @@ struct MacGatewayChatTransport: NanoSolanaChatTransport {
         }
     }
 
-    static func mapPushToTransportEvent(_ push: GatewayPush) -> NanoSolanaChatTransportEvent? {
+    static func mapPushToTransportEvent(_ push: GatewayPush) -> NanoClawdChatTransportEvent? {
         switch push {
         case let .snapshot(hello):
             let ok = (try? JSONDecoder().decode(
-                NanoSolanaGatewayHealthOK.self,
+                NanoClawdGatewayHealthOK.self,
                 from: JSONEncoder().encode(hello.snapshot.health)))?.ok ?? true
             return .health(ok: ok)
 
@@ -140,7 +140,7 @@ struct MacGatewayChatTransport: NanoSolanaChatTransport {
             case "health":
                 guard let payload = evt.payload else { return nil }
                 let ok = (try? JSONDecoder().decode(
-                    NanoSolanaGatewayHealthOK.self,
+                    NanoClawdGatewayHealthOK.self,
                     from: JSONEncoder().encode(payload)))?.ok ?? true
                 return .health(ok: ok)
             case "tick":
@@ -148,7 +148,7 @@ struct MacGatewayChatTransport: NanoSolanaChatTransport {
             case "chat":
                 guard let payload = evt.payload else { return nil }
                 guard let chat = try? JSONDecoder().decode(
-                    NanoSolanaChatEventPayload.self,
+                    NanoClawdChatEventPayload.self,
                     from: JSONEncoder().encode(payload))
                 else {
                     return nil
@@ -157,7 +157,7 @@ struct MacGatewayChatTransport: NanoSolanaChatTransport {
             case "agent":
                 guard let payload = evt.payload else { return nil }
                 guard let agent = try? JSONDecoder().decode(
-                    NanoSolanaAgentEventPayload.self,
+                    NanoClawdAgentEventPayload.self,
                     from: JSONEncoder().encode(payload))
                 else {
                     return nil
@@ -172,8 +172,8 @@ struct MacGatewayChatTransport: NanoSolanaChatTransport {
         }
     }
 
-    private static func mapModelChoice(_ model: NanoSolanaProtocol.ModelChoice) -> NanoSolanaChatModelChoice {
-        NanoSolanaChatModelChoice(
+    private static func mapModelChoice(_ model: NanoClawdProtocol.ModelChoice) -> NanoClawdChatModelChoice {
+        NanoClawdChatModelChoice(
             modelID: model.id,
             name: model.name,
             provider: model.provider,
@@ -187,7 +187,7 @@ struct MacGatewayChatTransport: NanoSolanaChatTransport {
 final class WebChatSwiftUIWindowController {
     private let presentation: WebChatPresentation
     private let sessionKey: String
-    private let hosting: NSHostingController<NanoSolanaChatView>
+    private let hosting: NSHostingController<NanoClawdChatView>
     private let contentController: NSViewController
     private var window: NSWindow?
     private var dismissMonitor: Any?
@@ -198,10 +198,10 @@ final class WebChatSwiftUIWindowController {
         self.init(sessionKey: sessionKey, presentation: presentation, transport: MacGatewayChatTransport())
     }
 
-    init(sessionKey: String, presentation: WebChatPresentation, transport: any NanoSolanaChatTransport) {
+    init(sessionKey: String, presentation: WebChatPresentation, transport: any NanoClawdChatTransport) {
         self.sessionKey = sessionKey
         self.presentation = presentation
-        let vm = NanoSolanaChatViewModel(
+        let vm = NanoClawdChatViewModel(
             sessionKey: sessionKey,
             transport: transport,
             initialThinkingLevel: Self.persistedThinkingLevel(),
@@ -209,7 +209,7 @@ final class WebChatSwiftUIWindowController {
                 UserDefaults.standard.set(level, forKey: webChatThinkingLevelDefaultsKey)
             })
         let accent = Self.color(fromHex: AppStateStore.shared.seamColorHex)
-        self.hosting = NSHostingController(rootView: NanoSolanaChatView(
+        self.hosting = NSHostingController(rootView: NanoClawdChatView(
             viewModel: vm,
             showsSessionSwitcher: true,
             userAccent: accent))
@@ -327,7 +327,7 @@ final class WebChatSwiftUIWindowController {
                 styleMask: [.titled, .closable, .resizable, .miniaturizable],
                 backing: .buffered,
                 defer: false)
-            window.title = "NanoSolana Chat"
+            window.title = "NanoClawd Chat"
             window.contentViewController = contentViewController
             window.isReleasedWhenClosed = false
             window.titleVisibility = .visible
@@ -370,7 +370,7 @@ final class WebChatSwiftUIWindowController {
 
     private static func makeContentController(
         for presentation: WebChatPresentation,
-        hosting: NSHostingController<NanoSolanaChatView>) -> NSViewController
+        hosting: NSHostingController<NanoClawdChatView>) -> NSViewController
     {
         let controller = NSViewController()
         let effectView = NSVisualEffectView()

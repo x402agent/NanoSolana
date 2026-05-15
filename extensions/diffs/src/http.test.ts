@@ -10,7 +10,7 @@ describe("createDiffsHttpHandler", () => {
   let cleanupRootDir: () => Promise<void>;
 
   beforeEach(async () => {
-    ({ store, cleanup: cleanupRootDir } = await createDiffStoreHarness("nanosolana-diffs-http-"));
+    ({ store, cleanup: cleanupRootDir } = await createDiffStoreHarness("nanoclawd-diffs-http-"));
   });
 
   afterEach(async () => {
@@ -97,7 +97,7 @@ describe("createDiffsHttpHandler", () => {
 
     expect(handled).toBe(true);
     expect(res.statusCode).toBe(200);
-    expect(String(res.body)).toContain("nanosolanaDiffsReady");
+    expect(String(res.body)).toContain("nanoclawdDiffsReady");
   });
 
   it.each([

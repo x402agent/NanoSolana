@@ -1,10 +1,10 @@
 import type {
   ChannelOnboardingAdapter,
   ChannelOnboardingDmPolicy,
-  NanoSolanaConfig,
+  NanoClawdConfig,
   SecretInput,
   WizardPrompter,
-} from "nanosolana/plugin-sdk/zalo";
+} from "nanoclawd/plugin-sdk/zalo";
 import {
   buildSingleChannelSecretPromptState,
   DEFAULT_ACCOUNT_ID,
@@ -15,7 +15,7 @@ import {
   runSingleChannelSecretStep,
   resolveAccountIdForConfigure,
   setTopLevelChannelDmPolicyWithAllowFrom,
-} from "nanosolana/plugin-sdk/zalo";
+} from "nanoclawd/plugin-sdk/zalo";
 import { listZaloAccountIds, resolveDefaultZaloAccountId, resolveZaloAccount } from "./accounts.js";
 
 const channel = "zalo" as const;
@@ -23,24 +23,24 @@ const channel = "zalo" as const;
 type UpdateMode = "polling" | "webhook";
 
 function setZaloDmPolicy(
-  cfg: NanoSolanaConfig,
+  cfg: NanoClawdConfig,
   dmPolicy: "pairing" | "allowlist" | "open" | "disabled",
 ) {
   return setTopLevelChannelDmPolicyWithAllowFrom({
     cfg,
     channel: "zalo",
     dmPolicy,
-  }) as NanoSolanaConfig;
+  }) as NanoClawdConfig;
 }
 
 function setZaloUpdateMode(
-  cfg: NanoSolanaConfig,
+  cfg: NanoClawdConfig,
   accountId: string,
   mode: UpdateMode,
   webhookUrl?: string,
   webhookSecret?: SecretInput,
   webhookPath?: string,
-): NanoSolanaConfig {
+): NanoClawdConfig {
   const isDefault = accountId === DEFAULT_ACCOUNT_ID;
   if (mode === "polling") {
     if (isDefault) {
@@ -56,7 +56,7 @@ function setZaloUpdateMode(
           ...cfg.channels,
           zalo: rest,
         },
-      } as NanoSolanaConfig;
+      } as NanoClawdConfig;
     }
     const accounts = { ...cfg.channels?.zalo?.accounts } as Record<string, Record<string, unknown>>;
     const existing = accounts[accountId] ?? {};
@@ -71,7 +71,7 @@ function setZaloUpdateMode(
           accounts,
         },
       },
-    } as NanoSolanaConfig;
+    } as NanoClawdConfig;
   }
 
   if (isDefault) {
@@ -86,7 +86,7 @@ function setZaloUpdateMode(
           webhookPath,
         },
       },
-    } as NanoSolanaConfig;
+    } as NanoClawdConfig;
   }
 
   const accounts = { ...cfg.channels?.zalo?.accounts } as Record<string, Record<string, unknown>>;
@@ -105,7 +105,7 @@ function setZaloUpdateMode(
         accounts,
       },
     },
-  } as NanoSolanaConfig;
+  } as NanoClawdConfig;
 }
 
 async function noteZaloTokenHelp(prompter: WizardPrompter): Promise<void> {
@@ -115,17 +115,17 @@ async function noteZaloTokenHelp(prompter: WizardPrompter): Promise<void> {
       "2) Create a bot and get the token",
       "3) Token looks like 12345689:abc-xyz",
       "Tip: you can also set ZALO_BOT_TOKEN in your env.",
-      "Docs: https://docs.nanosolana.ai/channels/zalo",
+      "Docs: https://docs.nanoclawd.ai/channels/zalo",
     ].join("\n"),
     "Zalo bot token",
   );
 }
 
 async function promptZaloAllowFrom(params: {
-  cfg: NanoSolanaConfig;
+  cfg: NanoClawdConfig;
   prompter: WizardPrompter;
   accountId: string;
-}): Promise<NanoSolanaConfig> {
+}): Promise<NanoClawdConfig> {
   const { cfg, prompter, accountId } = params;
   const resolved = resolveZaloAccount({ cfg, accountId });
   const existingAllowFrom = resolved.config.allowFrom ?? [];
@@ -159,7 +159,7 @@ async function promptZaloAllowFrom(params: {
           allowFrom: unique,
         },
       },
-    } as NanoSolanaConfig;
+    } as NanoClawdConfig;
   }
 
   return {
@@ -180,7 +180,7 @@ async function promptZaloAllowFrom(params: {
         },
       },
     },
-  } as NanoSolanaConfig;
+  } as NanoClawdConfig;
 }
 
 const dmPolicy: ChannelOnboardingDmPolicy = {
@@ -281,7 +281,7 @@ export const zaloOnboardingAdapter: ChannelOnboardingAdapter = {
                   enabled: true,
                 },
               },
-            } as NanoSolanaConfig)
+            } as NanoClawdConfig)
           : cfg,
       applySet: async (cfg, value) =>
         zaloAccountId === DEFAULT_ACCOUNT_ID
@@ -295,7 +295,7 @@ export const zaloOnboardingAdapter: ChannelOnboardingAdapter = {
                   botToken: value,
                 },
               },
-            } as NanoSolanaConfig)
+            } as NanoClawdConfig)
           : ({
               ...cfg,
               channels: {
@@ -313,7 +313,7 @@ export const zaloOnboardingAdapter: ChannelOnboardingAdapter = {
                   },
                 },
               },
-            } as NanoSolanaConfig),
+            } as NanoClawdConfig),
     });
     next = tokenStep.cfg;
 
