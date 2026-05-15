@@ -1,5 +1,5 @@
 /**
- * Solana Claude Go — Wallet Manager
+ * Solana Clawd Go — Wallet Manager
  *
  * Creates an Ed25519 keypair at "agent birth" — the wallet is the
  * agent's on-chain identity, tied to its heartbeat.

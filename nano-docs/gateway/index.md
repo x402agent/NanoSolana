@@ -103,27 +103,27 @@ curl http://127.0.0.1:18790/health
 ### Protected status endpoint
 
 ```bash
-curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Clawd Go-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/status
 ```
 
 ### Useful additional endpoint checks
 
 ```bash
-curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Clawd Go-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/framework
 
-curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Clawd Go-Secret: $NANO_GATEWAY_SECRET" \
   "http://127.0.0.1:18790/api/docs?q=gateway"
 
-curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Clawd Go-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/tasks
 ```
 
 ## Auth model
 
 - WebSocket auth: HMAC-SHA256 signature on the initial auth frame
-- HTTP auth: `X-Solana Claude Go-Secret` or `Authorization: Bearer ...`
+- HTTP auth: `X-Solana Clawd Go-Secret` or `Authorization: Bearer ...`
 - API auth is enforced on `/api/*` routes only when `NANO_GATEWAY_SECRET` is
   configured
 - Comparison: timing-safe comparison in the gateway implementation
@@ -150,7 +150,7 @@ curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
 - `scg nodes` and `scg bots` are the current operator-facing mesh
   views.
 - `scg docs` now indexes both `nano-docs/` and `pump/docs/`, so the
-  gateway can surface both Solana Claude Go and Pump material through one searchable
+  gateway can surface both Solana Clawd Go and Pump material through one searchable
   corpus.
 - UI and browser integrations use the `/api/extension/*` endpoints exposed by
   the gateway.

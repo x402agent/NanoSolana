@@ -1,5 +1,5 @@
 /**
- * Solana Claude Go — Go Binary Bridge
+ * Solana Clawd Go — Go Binary Bridge
  *
  * Bidirectional communication layer between this TypeScript runtime
  * and the complementary solana-clawd Go binary.

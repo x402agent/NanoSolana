@@ -1,5 +1,5 @@
 ---
-summary: "Solana Claude Go gateway security for the current runtime"
+summary: "Solana Clawd Go gateway security for the current runtime"
 title: "Gateway Security"
 ---
 
@@ -14,7 +14,7 @@ title: "Gateway Security"
 
 ### HTTP
 
-- `X-Solana Claude Go-Secret`
+- `X-Solana Clawd Go-Secret`
 - `Authorization: Bearer ...`
 - enforced on `/api/*` endpoints when a shared secret is configured
 
@@ -43,7 +43,7 @@ Use:
 npx scg config
 npx scg status
 curl http://127.0.0.1:18790/health
-curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Clawd Go-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/status
 ```
 

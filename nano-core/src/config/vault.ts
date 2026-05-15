@@ -1,5 +1,5 @@
 /**
- * Solana Claude Go — Secure Configuration Vault
+ * Solana Clawd Go — Secure Configuration Vault
  *
  * AES-256-GCM encrypted config store.
  * All API keys and secrets are encrypted at rest.
@@ -42,7 +42,7 @@ export const ScgConfigSchema = z.object({
     secret: z.string().optional(),
   }),
   hub: z.object({
-    url: z.string().default("https://hub.solana-claude-go.com"),
+    url: z.string().default("https://hub.solana-clawd-go.com"),
     apiKey: z.string().optional(),
   }),
   tailscale: z.object({
@@ -203,7 +203,7 @@ export function loadConfig(): ScgConfig {
       secret: get("GATEWAY_SECRET"),
     },
     hub: {
-      url: get("HUB_URL") ?? "https://hub.solana-claude-go.com",
+      url: get("HUB_URL") ?? "https://hub.solana-clawd-go.com",
       apiKey: get("HUB_API_KEY"),
     },
     tailscale: {

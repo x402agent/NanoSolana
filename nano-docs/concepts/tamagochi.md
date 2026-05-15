@@ -1,11 +1,11 @@
 ---
-summary: "Solana Claude Go TamaGOchi pet engine — evolution, mood, and wallet heartbeat"
+summary: "Solana Clawd Go TamaGOchi pet engine — evolution, mood, and wallet heartbeat"
 title: "TamaGOchi Pet"
 ---
 
 # TamaGOchi pet engine
 
-Every Solana Claude Go agent has a virtual pet — the **TamaGOchi** — that is born with
+Every Solana Clawd Go agent has a virtual pet — the **TamaGOchi** — that is born with
 the agent's wallet and evolves based on trading performance.
 
 ## Lifecycle

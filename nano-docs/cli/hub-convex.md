@@ -7,7 +7,7 @@ title: "hub-convex"
 
 Use NanoHub web plus the `nanohub` CLI with Convex-backed auth and publishing.
 
-Solana Claude Go now exposes read-only public skill discovery directly through the
+Solana Clawd Go now exposes read-only public skill discovery directly through the
 runtime CLI:
 
 ```bash

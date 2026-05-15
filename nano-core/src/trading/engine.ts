@@ -1,5 +1,5 @@
 /**
- * Solana Claude Go — Trading Engine
+ * Solana Clawd Go — Trading Engine
  *
  * OODA-loop trading pipeline:
  *   Observe → Orient → Decide → Act
@@ -526,7 +526,7 @@ export class TradingEngine extends EventEmitter<TradingEngineEvents> {
       confidence,
       mint,
       symbol,
-      reasoning: String(input.reasoning || "Manual trade submitted from Solana Claude Go UI"),
+      reasoning: String(input.reasoning || "Manual trade submitted from Solana Clawd Go UI"),
       timestamp: Date.now(),
       source: "ai",
     };

@@ -1,10 +1,10 @@
 /**
- * Solana Claude Go Agent On-Chain Registry via Metaplex Token Metadata.
+ * Solana Clawd Go Agent On-Chain Registry via Metaplex Token Metadata.
  *
  * Mints a gasless devnet NFT that serves as the agent's on-chain identity.
  * The NFT contains:
  *   - Agent public key
- *   - Solana Claude Go version
+ *   - Solana Clawd Go version
  *   - Registered capabilities (skills)
  *   - Fingerprint (SHA-256 of pubkey + version + skills)
  *   - Timestamp
@@ -125,10 +125,10 @@ export class AgentRegistry {
 
     // Step 3: Build metadata
     const metadata: AgentMetadata = {
-      name: `Solana Claude Go Agent #${agentPubkey.toBase58().slice(0, 6)}`,
+      name: `Solana Clawd Go Agent #${agentPubkey.toBase58().slice(0, 6)}`,
       symbol: "NANO",
-      description: `Solana Claude Go autonomous trading agent. Version ${version}. Fingerprint: ${fingerprint.slice(0, 12)}`,
-      image: "https://solana-claude-go.com/agent-nft.png",
+      description: `Solana Clawd Go autonomous trading agent. Version ${version}. Fingerprint: ${fingerprint.slice(0, 12)}`,
+      image: "https://solana-clawd-go.com/agent-nft.png",
       agentPubkey: agentPubkey.toBase58(),
       version,
       skills,

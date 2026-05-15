@@ -1,4 +1,4 @@
-# Solana Claude Go User Guide
+# Solana Clawd Go User Guide
 
 > Build and run wallet-aware Solana trading agents, autonomous daemons, and local operator workflows — all from the terminal.
 
@@ -45,8 +45,8 @@ npx scg@latest go      # full bootstrap with live keys
 ### From source
 
 ```bash
-git clone https://github.com/x402agent/Solana Claude Go.git
-cd Solana Claude Go/nano-core
+git clone https://github.com/x402agent/Solana Clawd Go.git
+cd Solana Clawd Go/nano-core
 npm install
 npm run build
 ```
@@ -350,7 +350,7 @@ NanoBot provides a browser-based UI showing agent status, wallet info, trade his
 
 ## Mesh Networking
 
-Solana Claude Go supports multi-agent mesh networking through Tailscale VPN:
+Solana Clawd Go supports multi-agent mesh networking through Tailscale VPN:
 
 ```bash
 # List available nodes
@@ -385,7 +385,7 @@ npx scg hub install discord
 
 ### Extensions (40+)
 
-Extensions are channel and tool plugins in the `extensions/` directory. They connect Solana Claude Go to external platforms:
+Extensions are channel and tool plugins in the `extensions/` directory. They connect Solana Clawd Go to external platforms:
 
 | Category | Extensions |
 |---|---|
@@ -423,7 +423,7 @@ npx scg hub register
 
 ## Bitaxe Mining Integration
 
-Solana Claude Go includes a Bitaxe/AxeOS mining client for hardware miners on your local network.
+Solana Clawd Go includes a Bitaxe/AxeOS mining client for hardware miners on your local network.
 
 ### Enable Bitaxe
 
@@ -454,7 +454,7 @@ BITAXE_TEMP_CRITICAL=70
 
 ## Pump.fun Integration
 
-Solana Claude Go includes a Pump.fun SDK bridge for token launches and swarm trading:
+Solana Clawd Go includes a Pump.fun SDK bridge for token launches and swarm trading:
 
 ### Swarm configuration
 
@@ -548,6 +548,6 @@ npm run test:watch    # watch mode
 
 **License:** MIT
 
-**Issues:** https://github.com/x402agent/Solana Claude Go/issues
+**Issues:** https://github.com/x402agent/Solana Clawd Go/issues
 
 **Homepage:** https://scg.com

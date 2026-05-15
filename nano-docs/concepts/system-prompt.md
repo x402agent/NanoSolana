@@ -1,11 +1,11 @@
 ---
-summary: "Solana Claude Go system prompt and SOUL.md"
+summary: "Solana Clawd Go system prompt and SOUL.md"
 title: "System Prompt (SOUL.md)"
 ---
 
 # System prompt (SOUL.md)
 
-Every Solana Claude Go agent can use a **SOUL.md** file to define identity,
+Every Solana Clawd Go agent can use a **SOUL.md** file to define identity,
 trading philosophy, and operational principles. This file is injected as the
 system prompt for all AI interactions.
 
@@ -16,7 +16,7 @@ agenda that gets appended to the runtime prompt when present.
 ## SOUL.md structure
 
 ```markdown
-# Solana Claude Go SOUL
+# Solana Clawd Go SOUL
 
 ## Identity
 - Name: [Agent name]

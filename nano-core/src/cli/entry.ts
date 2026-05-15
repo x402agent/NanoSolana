@@ -2,7 +2,7 @@
 
 /**
  * ╔══════════════════════════════════════════════════════════════════════╗
- * ║                 SOLANA CLAUDE GO — TypeScript CLI Entry                 ║
+ * ║                 SOLANA CLAWD GO — TypeScript CLI Entry                 ║
  * ║   Terminal runtime · autonomous daemon · scg go-bridge          ║
  * ║  By x402agent                                               ║
  * ╚══════════════════════════════════════════════════════════════════════╝
@@ -73,7 +73,7 @@ function printBanner(): void {
   ██║ ╚████║██║  ██║██║ ╚████║╚██████╔╝███████║╚██████╔╝███████╗██║  ██║██║ ╚████║██║  ██║
   ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝
   `));
-  console.log(chalk.white("  🦞 Solana Claude Go Runtime"));
+  console.log(chalk.white("  🦞 Solana Clawd Go Runtime"));
   console.log(chalk.gray("  TypeScript Solana operator runtime · By x402agent\n"));
 }
 
@@ -147,7 +147,7 @@ const program = new Command();
 
 program
   .name("scg")
-  .description("🦞 Solana Claude Go — Autonomous Solana trading intelligence with a virtual pet soul")
+  .description("🦞 Solana Clawd Go — Autonomous Solana trading intelligence with a virtual pet soul")
   .version("1.0.3");
 
 // ── nano init ────────────────────────────────────────────────
@@ -190,7 +190,7 @@ program
     // Create .env template
     const envPath = join(process.cwd(), ".env");
     if (!existsSync(envPath)) {
-      const envContent = `# Solana Claude Go Configuration
+      const envContent = `# Solana Clawd Go Configuration
 SCG_AGENT_NAME=nano-alpha
 SCG_GATEWAY_PORT=18790
 AI_PROVIDER=gemini
@@ -210,7 +210,7 @@ NANO_LOG_LEVEL=info
 program
   .command("birth")
   .description("Birth a new nano agent with a Solana wallet")
-  .option("-n, --name <name>", "Agent name", "Solana Claude Go")
+  .option("-n, --name <name>", "Agent name", "Solana Clawd Go")
   .option("--pet-name <petName>", "TamaGOchi pet name")
   .action(async (opts) => {
     printBanner();
@@ -261,14 +261,14 @@ program
 program
   .command("run")
   .alias("daemon")
-  .description("Run the autonomous Solana Claude Go daemon (gateway + trading + memory)")
-  .option("-n, --name <name>", "Agent name", "Solana Claude Go")
+  .description("Run the autonomous Solana Clawd Go daemon (gateway + trading + memory)")
+  .option("-n, --name <name>", "Agent name", "Solana Clawd Go")
   .option("--pet-name <petName>", "TamaGOchi pet name")
   .option("--no-trade", "Disable trading engine (--no-ooda)")
   .option("--no-gateway", "Disable gateway server")
   .action(async (opts) => {
     printBanner();
-    console.log(chalk.white.bold(`  🚀 Starting Solana Claude Go daemon "${opts.name}"...\n`));
+    console.log(chalk.white.bold(`  🚀 Starting Solana Clawd Go daemon "${opts.name}"...\n`));
 
     try {
       const config = loadConfig();
@@ -418,7 +418,7 @@ program
       const vaultStats = vault.getStats();
       const pet = new TamaGOchi(config.agent.name);
 
-      console.log(chalk.cyan("\n  ── Solana Claude Go Runtime Status ─────────────────\n"));
+      console.log(chalk.cyan("\n  ── Solana Clawd Go Runtime Status ─────────────────\n"));
       console.log(chalk.white("  Agent:      ") + chalk.cyan(config.agent.name));
       console.log(chalk.white("  Wallet:     ") + chalk.cyan(wallet.getPublicKey()));
       console.log(chalk.white("  Balance:    ") + chalk.yellow(`${wallet.getInfo().balance} SOL`));
@@ -613,7 +613,7 @@ program
     try {
       const config = loadConfig();
       const redacted = redactConfig(config);
-      console.log(chalk.cyan("\n  ── Solana Claude Go Config ────────────────────────\n"));
+      console.log(chalk.cyan("\n  ── Solana Clawd Go Config ────────────────────────\n"));
       console.log(JSON.stringify(redacted, null, 2).split("\n").map((l) => `  ${l}`).join("\n"));
       console.log();
     } catch (err) {
@@ -728,7 +728,7 @@ program
         return;
       }
 
-      console.log(chalk.cyan("\n  ── Solana Claude Go Knowledge Integration ──────────\n"));
+      console.log(chalk.cyan("\n  ── Solana Clawd Go Knowledge Integration ──────────\n"));
       console.log(chalk.white("  Generated:  ") + chalk.gray(new Date(summary.generatedAt).toISOString()));
       console.log(chalk.white("  Docs:       ") + chalk.green(`${summary.docs.files} files`) + chalk.gray(` (${summary.docs.markdownFiles} markdown, ${formatBytes(summary.docs.bytes)})`));
       console.log(
@@ -890,7 +890,7 @@ program
   .command("go")
   .alias("bootstrap")
   .description("One-shot bootstrap: configure, birth, and launch your Solana trading daemon")
-  .option("-n, --name <name>", "Agent name", "Solana Claude Go")
+  .option("-n, --name <name>", "Agent name", "Solana Clawd Go")
   .option("--pet-name <petName>", "TamaGOchi pet name")
   .option("--skip-init", "Skip API key prompts if already configured")
   .option("--dvd-intro", "Play DVD intro animation before startup")
@@ -1196,7 +1196,7 @@ program
         console.log(chalk.cyan("    npx scg go"));
         console.log();
         console.log(chalk.gray("  Full docs: https://docs.nanosolana.com"));
-        console.log(chalk.gray("  GitHub: https://github.com/x402agent/Solana Claude Go"));
+        console.log(chalk.gray("  GitHub: https://github.com/x402agent/Solana Clawd Go"));
         console.log();
         process.exit(0);
       }
@@ -1225,7 +1225,7 @@ program
 
 program
   .command("dvd")
-  .description("Floating DVD-style Solana Claude Go screensaver in the terminal")
+  .description("Floating DVD-style Solana Clawd Go screensaver in the terminal")
   .action(() => {
     const dvd = startDvdScreensaver();
 
@@ -1243,7 +1243,7 @@ program
 
 program
   .command("lobster")
-  .description("Show the animated Solana Claude Go lobster mascot")
+  .description("Show the animated Solana Clawd Go lobster mascot")
   .option("--static", "Show static version")
   .action(async (opts) => {
     if (opts.static) {
@@ -1270,7 +1270,7 @@ program
 
       const pubkey = address ?? (() => {
         try {
-          const wallet = new ScgWallet("Solana Claude Go");
+          const wallet = new ScgWallet("Solana Clawd Go");
           // Try loading existing wallet pubkey from file
           const pubPath = join(homedir(), ".nanosolana", "wallet.pub");
           if (existsSync(pubPath)) return readFileSync(pubPath, "utf-8").trim();
@@ -1306,7 +1306,7 @@ program
   .action(async () => {
     try {
       const config = loadConfig();
-      const wallet = new ScgWallet("Solana Claude Go");
+      const wallet = new ScgWallet("Solana Clawd Go");
       await wallet.birth();
 
       const registry = new AgentRegistry();
@@ -1512,7 +1512,7 @@ payCmd
 
 program
   .command("oneshot")
-  .description("Resolve a NanoHub skill manifest into a one-shot Solana Claude Go launch plan")
+  .description("Resolve a NanoHub skill manifest into a one-shot Solana Clawd Go launch plan")
   .argument("<slug>", "NanoHub skill slug")
   .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? "https://hub.nanosolana.com")
   .option("--write <path>", "Write the generated plan to a JSON file")
@@ -1540,7 +1540,7 @@ program
       }
 
       printBanner();
-      console.log(chalk.white.bold("  ⚡ Solana Claude Go One-Shot Plan\n"));
+      console.log(chalk.white.bold("  ⚡ Solana Clawd Go One-Shot Plan\n"));
       console.log(chalk.cyan(`  Skill:       ${plan.displayName} (${plan.slug})`));
       console.log(chalk.cyan(`  Version:     ${plan.version}`));
       console.log(chalk.cyan(`  Site:        ${siteUrl}`));
@@ -1600,7 +1600,7 @@ const hubCmd = program
 
 hubCmd
   .command("skills")
-  .description("Browse or search public NanoHub skills from the Solana Claude Go CLI")
+  .description("Browse or search public NanoHub skills from the Solana Clawd Go CLI")
   .argument("[query]", "Optional query to search NanoHub skills")
   .option("-l, --limit <n>", "Max results", "10")
   .option("-s, --sort <sort>", "Sort: newest|downloads|rating|installs|installsAllTime|trending", "newest")
@@ -1806,7 +1806,7 @@ hubCmd
     try {
       // Load wallet for public key
       const config = loadConfig();
-      const agentName = opts.name ?? config.agent.name ?? "Solana Claude Go";
+      const agentName = opts.name ?? config.agent.name ?? "Solana Clawd Go";
       const wallet = new ScgWallet(agentName);
       const walletInfo = await wallet.birth();
 

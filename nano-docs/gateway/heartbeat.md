@@ -5,7 +5,7 @@ title: "Heartbeat"
 
 # Heartbeat
 
-In the current Solana Claude Go runtime, heartbeat means the wallet heartbeat and the
+In the current Solana Clawd Go runtime, heartbeat means the wallet heartbeat and the
 gateway event stream built on top of it. It is not a separate prompt scheduler.
 
 ## What happens today
@@ -51,7 +51,7 @@ The CLI runtime prints a rolling local heartbeat line with:
 
 ```bash
 curl http://127.0.0.1:18790/health
-curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Clawd Go-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/status
 ```
 

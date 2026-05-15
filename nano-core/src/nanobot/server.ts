@@ -105,7 +105,7 @@ export class ScgBotServer {
     const nanoHome = join(home, ".nanosolana");
 
     const status: StatusResponse = {
-      agent: "Solana Claude Go",
+      agent: "Solana Clawd Go",
       version: "0.1.0",
       platform: `${platform()}/${arch()}`,
       time: new Date().toISOString(),
@@ -497,7 +497,7 @@ const NANOBOT_HTML = `<!DOCTYPE html>
     </div>
 
     <div class="status-bar">
-      Solana Claude Go · 🦞 ScgBot · <span id="clock"></span>
+      Solana Clawd Go · 🦞 ScgBot · <span id="clock"></span>
     </div>
   </div>
 

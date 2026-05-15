@@ -1,5 +1,5 @@
 ---
-summary: "Beginner-first CLI guide for Solana Claude Go with copy/paste startup paths and shipped command reference"
+summary: "Beginner-first CLI guide for Solana Clawd Go with copy/paste startup paths and shipped command reference"
 title: "CLI Reference"
 ---
 

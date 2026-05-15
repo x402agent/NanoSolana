@@ -1,5 +1,5 @@
 /**
- * Solana Claude Go — Hub Bridge
+ * Solana Clawd Go — Hub Bridge
  *
  * Connects the SCG Hub (web dashboard) to the core agent.
  * Provides real-time WebSocket feeds from:

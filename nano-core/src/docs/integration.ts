@@ -1,7 +1,7 @@
 /**
- * Solana Claude Go Docs + Extensions Integration
+ * Solana Clawd Go Docs + Extensions Integration
  *
- * Builds a searchable snapshot of the requested Solana Claude Go knowledge corpus:
+ * Builds a searchable snapshot of the requested Solana Clawd Go knowledge corpus:
  * - nano-docs/*
  * - pump/docs/*
  * - extensions/* (metadata + file counts)

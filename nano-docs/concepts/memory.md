@@ -5,7 +5,7 @@ title: "Memory (ScgVault)"
 
 # Memory (ScgVault)
 
-Solana Claude Go uses ScgVault to separate fresh observations from learned patterns and
+Solana Clawd Go uses ScgVault to separate fresh observations from learned patterns and
 looser inferences.
 
 ## Three tiers

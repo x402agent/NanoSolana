@@ -3,9 +3,9 @@ summary: "OODA agent loop lifecycle, trading integration, and stream events"
 title: "Agent Loop (OODA)"
 ---
 
-# Agent loop (Solana Claude Go OODA)
+# Agent loop (Solana Clawd Go OODA)
 
-The Solana Claude Go agent runtime runs a continuous **OODA loop** (Observe → Orient → Decide → Act)
+The Solana Clawd Go agent runtime runs a continuous **OODA loop** (Observe → Orient → Decide → Act)
 for autonomous trading. Each loop cycle processes market data, reasons through the
 AI provider, and optionally executes trades.
 

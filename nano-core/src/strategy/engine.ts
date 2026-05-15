@@ -1,5 +1,5 @@
 /**
- * Solana Claude Go — RSI + EMA + ATR Strategy Engine
+ * Solana Clawd Go — RSI + EMA + ATR Strategy Engine
  *
  * Three conditions must all fire simultaneously:
  *

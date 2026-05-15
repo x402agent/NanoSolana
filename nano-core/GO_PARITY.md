@@ -1,9 +1,9 @@
-# Go Package Parity Map — solana-claude-go
+# Go Package Parity Map — solana-clawd-go
 
-This file maps the Go daemon package surface from `solana-claude-go` (github.com/x402agent/solana-claude-go)
+This file maps the Go daemon package surface from `solana-clawd-go` (github.com/x402agent/solana-clawd-go)
 into the current TypeScript runtime in `nano-core/src/*`.
 
-The TypeScript runtime (`solana-claude-go` npm package, binary `clawd`) is the
+The TypeScript runtime (`solana-clawd-go` npm package, binary `clawd`) is the
 **complementary runtime** to the Go binary. Both runtimes can run together:
 
 - The Go binary handles low-level systems tasks (keypair, RPC, tx signing, hardware).
@@ -83,7 +83,7 @@ Status meanings:
 | `tamagochi` | `src/pet/tamagochi.ts` | `covered` | Companion state engine exists. |
 | `voice` | none | `planned` | No dedicated voice module in the current package. |
 
-## Go Bridge (New — solana-claude-go protocol)
+## Go Bridge (New — solana-clawd-go protocol)
 
 The `src/go-bridge/client.ts` module (`GoBridgeClient`) is the protocol implementation
 for TypeScript ↔ Go binary communication. It covers:
@@ -118,5 +118,5 @@ For the current TypeScript build, the highest-confidence story is:
 - bootstrap with `clawd go`
 - run the daemon with `clawd daemon`
 - use ScgVault, ScgBot, ScgHub manifests, and the strategy engine as the core runtime
-- connect to the solana-claude-go Go binary via `GoBridgeClient` for keypair ops and tx signing
+- connect to the solana-clawd-go Go binary via `GoBridgeClient` for keypair ops and tx signing
 - treat Aster, Hyperliquid, Honcho, hardware, MCP, media, and voice as parity targets

@@ -1,5 +1,5 @@
 ---
-summary: "Beginner-first guide to Solana Claude Go trading runtime entrypoints, safety model, and operator checks"
+summary: "Beginner-first guide to Solana Clawd Go trading runtime entrypoints, safety model, and operator checks"
 title: "Trading (CLI Surface)"
 ---
 
@@ -43,7 +43,7 @@ npx scg demo --duration 60
 ```bash
 npx scg status
 npx scg vault
-curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Clawd Go-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/status
 ```
 

@@ -1,5 +1,5 @@
 /**
- * Solana Claude Go Terminal Animations v2
+ * Solana Clawd Go Terminal Animations v2
  *
  * Epic startup experience with `unicode-animations` braille spinners,
  * gradient banners, animated lobsters, progress bars, phase transitions,
@@ -321,7 +321,7 @@ export function animateLobster(durationMs = 2400): Promise<void> {
       // Animated name with sparkles
       const sparkles = frame % 3 === 0 ? "✦" : frame % 3 === 1 ? "✧" : "⋆";
       process.stdout.write(
-        `${CLEAR_LINE}  ${chalk.hex(SOL_GREEN)(sparkles)} ${gradientText("  Solana Claude Go", SOLANA_GRADIENT)} ${chalk.hex(SOL_GREEN)(sparkles)}\n`,
+        `${CLEAR_LINE}  ${chalk.hex(SOL_GREEN)(sparkles)} ${gradientText("  Solana Clawd Go", SOLANA_GRADIENT)} ${chalk.hex(SOL_GREEN)(sparkles)}\n`,
       );
       process.stdout.write(
         `${CLEAR_LINE}  ${chalk.gray("    v1.0.1 · Solana Agent Framework")}\n`,
@@ -354,7 +354,7 @@ export async function printMegaLobster(): Promise<void> {
 
 const DVD_LOGO = [
   "╔═══════════════════════════════╗",
-  "║      🦞 Solana Claude Go 🦞         ║",
+  "║      🦞 Solana Clawd Go 🦞         ║",
   "║   ════════════════════════    ║",
   "║  Autonomous Solana Agent      ║",
   "║  OODA · ScgVault · TamaGOchi ║",
@@ -437,7 +437,7 @@ export function startDvdScreensaver(): { stop: () => void } {
     const cornerText = cornerHits > 0 ? ` │ 🎯 Corner: ${cornerHits}` : "";
     process.stdout.write(
       chalk.bgHex("#0a0a1a").hex(SOL_GREEN)(
-        ` 🦞 Solana Claude Go DVD │ Bounces: ${hits}${cornerText} │ ${new Date().toLocaleTimeString()} │ Ctrl+C to exit `.padEnd(cols),
+        ` 🦞 Solana Clawd Go DVD │ Bounces: ${hits}${cornerText} │ ${new Date().toLocaleTimeString()} │ Ctrl+C to exit `.padEnd(cols),
       ),
     );
   }, 50);
@@ -663,7 +663,7 @@ export async function printCompleteBanner(stats: {
   console.log();
   console.log(`  ${chalk.hex(SOL_GREEN)("━".repeat(lineW))}`);
   console.log();
-  console.log(gradientText("  🦞 Solana Claude Go Agent Online", SOLANA_GRADIENT));
+  console.log(gradientText("  🦞 Solana Clawd Go Agent Online", SOLANA_GRADIENT));
   console.log();
 
   await systemBootReadout([

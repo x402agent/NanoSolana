@@ -1,11 +1,11 @@
 ---
-summary: "Solana Claude Go model providers and AI integration"
+summary: "Solana Clawd Go model providers and AI integration"
 title: "Model Providers"
 ---
 
 # Model providers
 
-Solana Claude Go uses **OpenRouter** as its primary AI gateway, with the `healer-alpha`
+Solana Clawd Go uses **OpenRouter** as its primary AI gateway, with the `healer-alpha`
 model as the default. The architecture supports multiple providers.
 
 ## Default: OpenRouter + healer-alpha
@@ -72,7 +72,7 @@ AI_MODEL=openrouter/healer-alpha
 
 ## Model failover
 
-If the primary model fails, Solana Claude Go can fall back:
+If the primary model fails, Solana Clawd Go can fall back:
 
 ```json5
 {

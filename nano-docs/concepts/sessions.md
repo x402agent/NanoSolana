@@ -1,11 +1,11 @@
 ---
-summary: "Solana Claude Go session management, persistence, and pruning"
+summary: "Solana Clawd Go session management, persistence, and pruning"
 title: "Sessions"
 ---
 
 # Sessions
 
-Solana Claude Go manages conversation sessions per channel and per user. Sessions
+Solana Clawd Go manages conversation sessions per channel and per user. Sessions
 maintain context across messages and OODA cycles.
 
 ## Session types

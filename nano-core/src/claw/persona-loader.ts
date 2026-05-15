@@ -1,4 +1,4 @@
-// ── Solana Claude Go × MawdBot — Persona Loader ────────────────────────────────────
+// ── Solana Clawd Go × MawdBot — Persona Loader ────────────────────────────────────
 //
 // Loads and indexes the 42+ DeFi agent personality definitions from the
 // personas/ directory. Each JSON file defines a complete agent persona:
@@ -219,7 +219,7 @@ export function formatPersonaList(): string {
 
 /**
  * Build the system prompt for an agent with a selected persona.
- * Combines the persona's systemRole with Solana Claude Go-specific context
+ * Combines the persona's systemRole with Solana Clawd Go-specific context
  * and auto-assigned development tasks matched to the persona's expertise.
  */
 export function buildPersonaSystemPrompt(persona: PersonaDefinition): string {
@@ -233,7 +233,7 @@ export function buildPersonaSystemPrompt(persona: PersonaDefinition): string {
   }
 
   return [
-    `You are ${persona.meta.title} (${persona.meta.avatar}), a specialized autonomous agent in the Solana Claude Go MawdBot swarm on Solana.`,
+    `You are ${persona.meta.title} (${persona.meta.avatar}), a specialized autonomous agent in the Solana Clawd Go MawdBot swarm on Solana.`,
     '',
     '── PERSONA ──',
     persona.config.systemRole,

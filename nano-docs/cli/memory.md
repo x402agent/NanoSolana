@@ -15,7 +15,7 @@ scg vault
 scg vault "RSI"
 scg status
 scg docs memory
-curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Clawd Go-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/memory
 ```
 

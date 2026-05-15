@@ -1,4 +1,4 @@
-// ── Solana Claude Go — Agent Task Loader ────────────────────────────────────────────
+// ── Solana Clawd Go — Agent Task Loader ────────────────────────────────────────────
 //
 // Loads agent tasks from the agent-tasks/ directory and provides
 // persona-aware task matching. When an agent is spawned with a persona,

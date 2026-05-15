@@ -1,5 +1,5 @@
 /**
- * Solana Claude Go Registry Module — barrel export.
+ * Solana Clawd Go Registry Module — barrel export.
  */
 
 export {
