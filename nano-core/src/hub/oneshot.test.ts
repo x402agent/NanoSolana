@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { buildSolana clawdOneShotPlan } from "./oneshot.js";
+import { buildScgOneShotPlan } from "./oneshot.js";
 
 describe("hub/oneshot", () => {
   it("builds a ready plan when env and launch metadata are present", () => {
-    const plan = buildSolana clawdOneShotPlan({
+    const plan = buildScgOneShotPlan({
       schemaVersion: 1,
       kind: "skill",
       slug: "token-tracker",
@@ -38,7 +38,7 @@ describe("hub/oneshot", () => {
   });
 
   it("marks env and oauth blockers when setup is incomplete", () => {
-    const plan = buildSolana clawdOneShotPlan({
+    const plan = buildScgOneShotPlan({
       schemaVersion: 1,
       kind: "skill",
       slug: "discord-agent",
