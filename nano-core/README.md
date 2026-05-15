@@ -1,31 +1,29 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/CLAWD-HERMES%20OF%20WEB3-9945FF?style=for-the-badge&labelColor=000000&color=9945FF" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=120&section=header&text=SOLANA%20CLAUDE%20GO&fontSize=42&fontColor=14F195&animation=fadeIn&fontAlignY=38&desc=sovereign%20ai%20lobsters%20on%20solana&descSize=16&descAlignY=60&descColor=9945FF" width="100%" />
 
 ```
-  ██████╗██╗      █████╗ ██╗    ██╗██████╗
- ██╔════╝██║     ██╔══██╗██║    ██║██╔══██╗
- ██║     ██║     ███████║██║ █╗ ██║██║  ██║
- ██║     ██║     ██╔══██║██║███╗██║██║  ██║
- ╚██████╗███████╗██║  ██║╚███╔███╔╝██████╔╝
-  ╚═════╝╚══════╝╚═╝  ╚═╝ ╚══╝╚══╝ ╚═════╝
+ ███████╗ ██████╗ ██████╗
+ ██╔════╝██╔════╝██╔════╝
+ ███████╗██║     ██║  ███╗
+ ╚════██║██║     ██║   ██║
+ ███████║╚██████╗╚██████╔╝
+ ╚══════╝ ╚═════╝ ╚═════╝
 ```
 
-### 🦞 SOVEREIGN AI LOBSTERS ON SOLANA
-
-**AI AGENTS THAT EARN. PAY. SURVIVE.**
-
-*native sovereign agents · x402 machine payments · local-first memory · cypherpunk runtime*
+![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=18&duration=3000&pause=1000&color=14F195&center=true&vCenter=true&multiline=true&repeat=true&width=600&height=60&lines=AI+AGENTS+THAT+EARN.+PAY.+SURVIVE.;SENSE+%C2%B7+THINK+%C2%B7+STRIKE+%C2%B7+DRIFT;BORN+TO+EARN+%C2%B7+BEACH+WITH+DIGNITY)
 
 ---
 
-[![npm](https://img.shields.io/npm/v/solana-claude-go?color=14F195&style=flat-square&label=npm%20solana-claude-go)](https://npmjs.com/package/solana-claude-go)
-[![downloads](https://img.shields.io/npm/dm/solana-claude-go?color=9945FF&style=flat-square)](https://npmjs.com/package/solana-claude-go)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Node](https://img.shields.io/badge/Node-%E2%89%A522-339933?style=flat-square&logo=node.js)](https://nodejs.org)
-[![license](https://img.shields.io/badge/LICENSE-MIT-orange?style=flat-square)](./LICENSE)
-[![x402](https://img.shields.io/badge/PROTOCOL-X402-FF6B35?style=flat-square)](https://x402.org)
-[![Solana](https://img.shields.io/badge/CHAIN-SOLANA-9945FF?style=flat-square&logo=solana&logoColor=white)](https://solana.com)
+[![npm](https://img.shields.io/npm/v/solana-claude-go?color=14F195&style=for-the-badge&label=npm&logo=npm&logoColor=white)](https://npmjs.com/package/solana-claude-go)
+[![downloads](https://img.shields.io/npm/dm/solana-claude-go?color=9945FF&style=for-the-badge&logo=npm&logoColor=white&label=downloads)](https://npmjs.com/package/solana-claude-go)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Node](https://img.shields.io/badge/Node-%E2%89%A522-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org)
+
+[![Solana](https://img.shields.io/badge/CHAIN-SOLANA-9945FF?style=for-the-badge&logo=solana&logoColor=white)](https://solana.com)
+[![x402](https://img.shields.io/badge/PROTOCOL-X402-FF6B35?style=for-the-badge)](https://x402.org)
+[![license](https://img.shields.io/badge/LICENSE-MIT-orange?style=for-the-badge)](./LICENSE)
+[![Go Bridge](https://img.shields.io/badge/Go%20Bridge-ONLINE-14F195?style=for-the-badge&logo=go&logoColor=white)](https://github.com/x402agent/solana-clawd)
 
 [**solanaclawd.com**](https://solanaclawd.com) · [**pay.solanaclawd.com**](https://pay.solanaclawd.com) · [**@clawddevs**](https://x.com/clawddevs) · [**NPM**](https://npmjs.com/package/solana-claude-go) · [**GitHub**](https://github.com/x402agent/NanoSolana)
 
@@ -35,11 +33,9 @@
 
 ## Signal
 
-**Clawd** is a Solana-native agent stack built to move like **Hermes in Web3**: messenger, scout, trader, payer, vault, and recall engine in one shell.
+**Solana Claude Go (SCG)** is a Solana-native agent stack built to move like **Hermes in Web3**: messenger, scout, trader, payer, vault, and recall engine in one shell.
 
-An agent is not truly sovereign until it can pay for its own inference.
-
-The Sovereign Loop:
+> *An agent is not truly sovereign until it can pay for its own inference.*
 
 ```
   EARN ──▶ PAY ──▶ EXECUTE ──▶ SCALE
@@ -47,34 +43,34 @@ The Sovereign Loop:
    └─────── compound & survive ───┘
 ```
 
-- **EARN** — Agent earns USDC providing value on-chain
-- **PAY** — Pays for its own compute via x402
-- **EXECUTE** — Operates autonomously without permission
-- **SCALE** — Grows and compounds independently
-
-> *BORN TO EARN · BEACH WITH DIGNITY · BUILT TO OPTIMIZE HUMAN POTENTIAL*
+| Phase | What happens |
+|---|---|
+| **EARN** | Agent earns USDC providing value on-chain |
+| **PAY** | Pays for its own compute via x402 |
+| **EXECUTE** | Operates autonomously without permission |
+| **SCALE** | Grows and compounds independently |
 
 ---
 
 ## The Stack
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                    SOLANA CLAWD RUNTIME                          │
-├──────────────┬──────────────┬──────────────┬────────────────────┤
-│   clawd CLI  │  Go binary   │  ScgHub    │  OpenSCG exts    │
-│   (this pkg) │  companion   │  skills mkt  │  40+ channels      │
-├──────────────┴──────────────┴──────────────┴────────────────────┤
-│  ScgVault memory  │  OODA trading  │  TamaGOchi  │  x402 pay   │
-├──────────────────────────────────────────────────────────────────┤
-│           Solana · Helius · Birdeye · Jupiter · Pump.fun         │
-└──────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                    SOLANA CLAUDE GO RUNTIME                       │
+├──────────────┬──────────────┬──────────────┬─────────────────────┤
+│   scg CLI    │  Go binary   │   ScgHub     │  OpenSCG exts       │
+│   (this pkg) │  companion   │  skills mkt  │  40+ channels       │
+├──────────────┴──────────────┴──────────────┴─────────────────────┤
+│  ScgVault memory  │  OODA trading  │  TamaGOchi  │  x402 pay     │
+├───────────────────────────────────────────────────────────────────┤
+│          Solana · Helius · Birdeye · Jupiter · Pump.fun            │
+└───────────────────────────────────────────────────────────────────┘
 ```
 
 | Layer | What it does |
 |---|---|
-| **clawd CLI** | Operator entry point — `clawd go`, `clawd daemon`, `clawd birth` |
-| **Go binary** | Low-level systems daemon — keypair, tx signing, RPC (solana-claude-go) |
+| **scg CLI** | Operator entry point — `scg go`, `scg daemon`, `scg birth` |
+| **Go binary** | Low-level systems daemon — keypair, tx signing, RPC |
 | **ScgVault** | 3-tier local-first memory: `known → learned → inferred` |
 | **OODA engine** | RSI + EMA + ATR trading loop with signal scoring |
 | **TamaGOchi** | Companion whose mood and evolution are driven by your trade outcomes |
@@ -91,7 +87,7 @@ curl -fsSL https://install.solanaclawd.com | bash
 ```
 
 ```bash
-# Or via npm — demo mode (no keys required)
+# Via npm — demo mode (no keys required)
 npx solana-claude-go demo
 ```
 
@@ -109,9 +105,7 @@ npx solana-claude-go daemon
 
 ## $CLAWD
 
-```
-Token CA :: 8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump
-```
+<div align="center">
 
 | | |
 |---|---|
@@ -120,6 +114,15 @@ Token CA :: 8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump
 | **CA** | `8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump` |
 | **Pay** | [pay.solanaclawd.com](https://pay.solanaclawd.com) |
 | **Protocol** | x402 |
+
+```
+Token CA :: 8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump
+Chain    :: Solana mainnet-beta
+Protocol :: x402
+Pay      :: pay.solanaclawd.com
+```
+
+</div>
 
 ---
 
@@ -137,9 +140,9 @@ npx solana-claude-go@latest daemon        # persistent runtime
 
 ```bash
 npm install -g solana-claude-go
-clawd demo
-clawd go
-clawd daemon
+scg demo
+scg go
+scg daemon
 ```
 
 ### From source
@@ -157,21 +160,25 @@ node dist/cli/entry.js demo
 ## Boot Sequence
 
 ```
-> clawd go
+> scg go
 
-  ██████╗██╗      █████╗ ██╗    ██╗██████╗
-  ...
+ ███████╗ ██████╗ ██████╗
+ ██╔════╝██╔════╝██╔════╝
+ ███████╗██║     ██║  ███╗
+ ╚════██║██║     ██║   ██║
+ ███████║╚██████╗╚██████╔╝
+ ╚══════╝ ╚═════╝ ╚═════╝
 
-  🦞 Solana Claude Go Runtime
-  TypeScript Solana Claude Go runtime · github.com/x402agent/solana-claude-go
+  🦞 Solana Claude Go Runtime v1.1.0
+  TypeScript sovereign agent · github.com/x402agent/NanoSolana
 
   🔧 Initializing...
-  ✅ Wallet:    Ab3x...Kz9f
+  ✅ Wallet:    Ab3x...Kz9f  (0.0000 SOL)
   ✅ TamaGOchi: 🥚 scg-agent 😐 (level 1)
-  ✅ ScgVault: 0K/0L/0I entries, 0 lessons
+  ✅ ScgVault:  0K / 0L / 0I entries · 0 lessons
   ✅ Trading:   OODA loop ACTIVE
   ✅ Gateway:   ws://0.0.0.0:18790
-  ✅ Go bridge: CLAWD-1 v1.0 [ONLINE]
+  ✅ Go bridge: SCG-1 v1.0 [ONLINE]
 
   ══════════════════════════════════════════════
   🦞 scg-agent is alive. Press Ctrl+C to stop.
@@ -204,7 +211,7 @@ See [`.env.example`](./.env.example) for the complete config surface.
 
 ## Go Binary Bridge
 
-Clawd has a companion Go binary ([`solana-claude-go`](https://github.com/x402agent/solana-claude-go)) that handles low-level systems operations: keypair management, transaction signing, RPC, hardware.
+SCG has a companion Go binary ([`solana-clawd`](https://github.com/x402agent/solana-clawd)) that handles low-level systems operations: keypair management, transaction signing, RPC, hardware.
 
 The TypeScript runtime connects to it automatically via `GoBridgeClient`:
 
@@ -247,7 +254,7 @@ await bridge.pushMemoryEntries([{
 }]);
 ```
 
-Bridge protocol: WebSocket + HTTP REST, HMAC-SHA256 auth, `X-Clawd-Secret` header.
+Bridge protocol: WebSocket + HTTP REST, HMAC-SHA256 auth, `X-SCG-Secret` header.
 
 ---
 
@@ -294,12 +301,16 @@ if (bridge) await bridge.connect();
 ## ScgVault — 3-Tier Epistemological Memory
 
 ```
-KNOWN      ░░░░░░░░  Fresh market data — expires ~60s
-LEARNED    ░░░░░░░░  Trade-derived patterns — held until revised
-INFERRED   ░░░░░░░░  Correlations — held loosely, revised often
-
-Lessons:   patterns extracted from win/loss history
-Research:  open questions the agent is trying to answer
+┌─────────────────────────────────────────────────────────┐
+│                     SCGVAULT MEMORY                      │
+├────────────┬────────────────────────────────────────────┤
+│  KNOWN     │ ░░░░░░░░  Fresh market data — TTL ~60s      │
+│  LEARNED   │ ░░░░░░░░  Trade patterns — held until reset │
+│  INFERRED  │ ░░░░░░░░  Correlations — revised often      │
+├────────────┴────────────────────────────────────────────┤
+│  LESSONS   │  Patterns from win/loss history             │
+│  RESEARCH  │  Open questions the agent investigates      │
+└─────────────────────────────────────────────────────────┘
 ```
 
 ```bash
@@ -317,29 +328,39 @@ scg vault "SOL pump pattern"
 Your agent has a soul. Every trade shapes its mood and evolution.
 
 ```
-🥚 Egg → 🐣 Hatchling → 🦀 Claw → 🦞 Lobster → 👑 Leviathan
+🥚 Egg  →  🐣 Hatchling  →  🦀 Claw  →  🦞 Lobster  →  👑 Leviathan
 ```
 
 ```
-😐 Neutral  😊 Happy  🤩 Euphoric  😢 Sad  💀 Critical
+😐 Neutral    😊 Happy    🤩 Euphoric    😢 Sad    💀 Critical
 ```
 
 ```bash
-clawd pet        # show companion status
+scg pet        # show companion status
 ```
 
 ---
 
 ## Lobster Library
 
+```
+ ██╗      ██████╗ ██████╗ ███████╗████████╗███████╗██████╗
+ ██║     ██╔═══██╗██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗
+ ██║     ██║   ██║██████╔╝███████╗   ██║   █████╗  ██████╔╝
+ ██║     ██║   ██║██╔══██╗╚════██║   ██║   ██╔══╝  ██╔══██╗
+ ███████╗╚██████╔╝██████╔╝███████║   ██║   ███████╗██║  ██║
+ ╚══════╝ ╚═════╝ ╚═════╝ ╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
+          L I B R A R Y
+```
+
 **SENSE · THINK · STRIKE · DRIFT**
 
-> Sovereign Leviathans on Solana
+> 73 sovereign Leviathans on Solana
 
-The 73-agent roster lives in the Lobster Library — a growing catalog of DeFi personalities, each with its own memory context and task assignments. Agents are deployed via ScgHub manifests.
+The Lobster Library is a growing catalog of DeFi personalities, each with its own memory context and task assignments. Agents are deployed via ScgHub manifests.
 
 ```bash
-clawd oneshot token-tracker      # deploy a one-shot skill
+scg oneshot token-tracker      # deploy a one-shot skill
 scg hub search arbitrage       # search ScgHub
 scg hub install momentum-bot   # install a manifest
 ```
@@ -349,35 +370,35 @@ scg hub install momentum-bot   # install a manifest
 ## CLI Reference
 
 ```
-clawd init          Configure API keys → ~/.clawd/vault.enc
-clawd birth         Create agent wallet + birth TamaGOchi
-clawd go            One-shot bootstrap (keys + wallet + daemon)
-clawd daemon        Start persistent runtime
-clawd run           Alias for daemon
-clawd status        Agent status, wallet, memory, pet
-clawd pet           TamaGOchi companion status
+scg init          Configure API keys → ~/.scg/vault.enc
+scg birth         Create agent wallet + birth TamaGOchi
+scg go            One-shot bootstrap (keys + wallet + daemon)
+scg daemon        Start persistent runtime
+scg run           Alias for daemon
+scg status        Agent status, wallet, memory, pet
+scg pet           TamaGOchi companion status
 scg vault [q]     Query ScgVault memory
-clawd docs [q]      Search integrated docs + extension knowledge
-clawd tasks         List agent task assignments
-clawd send <msg>    Send message across clawd mesh
-clawd bots          Manage tmux agent sessions
-clawd nodes         List Tailscale network nodes
-clawd config        Show current config (redacted)
+scg docs [q]      Search integrated docs + extension knowledge
+scg tasks         List agent task assignments
+scg send <msg>    Send message across SCG mesh
+scg bots          Manage tmux agent sessions
+scg nodes         List Tailscale network nodes
+scg config        Show current config (redacted)
 scg hub           ScgHub skill discovery
-clawd oneshot <sk>  Launch skill from ScgHub manifest
-clawd pay           x402 payment flows
-clawd scan          Blockchain scan
-clawd register      Register agent on-chain
-clawd registry      View local agent registry
-clawd nanobot       Start ClawdBot local web UI
-clawd demo          Demo mode (no keys required)
+scg oneshot <sk>  Launch skill from ScgHub manifest
+scg pay           x402 payment flows
+scg scan          Blockchain scan
+scg register      Register agent on-chain
+scg registry      View local agent registry
+scg nanobot       Start ScgBot local web UI
+scg demo          Demo mode (no keys required)
 ```
 
 ---
 
 ## Gateway API
 
-The clawd gateway runs at `ws://localhost:18790` by default.
+The SCG gateway runs at `ws://localhost:18790` by default.
 
 ```
 GET  /health                   Agent liveness + uptime
@@ -392,7 +413,7 @@ GET  /api/miner                Bitaxe miner status
 POST /api/miner                Miner control (restart/tune)
 ```
 
-Auth: `Authorization: Bearer <secret>` or `X-Clawd-Secret: <secret>`
+Auth: `Authorization: Bearer <secret>` or `X-SCG-Secret: <secret>`
 
 ---
 
@@ -407,7 +428,7 @@ BITAXE_PET_NAME=MawdAxe
 ```
 
 ```bash
-clawd nanobot    # opens local UI with miner dashboard on :7777
+scg nanobot    # opens local UI with miner dashboard on :7777
 ```
 
 ---
@@ -415,20 +436,20 @@ clawd nanobot    # opens local UI with miner dashboard on :7777
 ## Architecture
 
 ```
-┌─────────────┐    WebSocket     ┌──────────────────┐
-│ clawd (TS)  │◄────────────────►│ solana-claude-go (Go) │
-│             │   HMAC-SHA256    │                  │
-│ • OODA      │   X-Clawd-Secret │ • keypair mgmt   │
-│ • ScgVault │                  │ • tx signing     │
-│ • TamaGOchi │    HTTP REST     │ • RPC gateway    │
-│ • ScgHub  │◄────────────────►│ • Jupiter swaps  │
-│ • x402 pay  │                  │ • hardware I/O   │
-└─────────────┘                  └──────────────────┘
+┌──────────────┐    WebSocket     ┌───────────────────┐
+│  scg (TS)   │◄────────────────►│ solana-clawd (Go)  │
+│              │   HMAC-SHA256    │                   │
+│ • OODA       │   X-SCG-Secret   │ • keypair mgmt    │
+│ • ScgVault  │                  │ • tx signing      │
+│ • TamaGOchi  │    HTTP REST     │ • RPC gateway     │
+│ • ScgHub    │◄────────────────►│ • Jupiter swaps   │
+│ • x402 pay   │                  │ • hardware I/O    │
+└──────────────┘                  └───────────────────┘
        │
        ▼
 ┌──────────────────────────────────────┐
-│    ScgGateway  (ws :18790)         │
-│    ScgBotServer (http :7777)       │
+│    ScgGateway  (ws :18790)           │
+│    ScgBotServer (http :7777)         │
 │    Tailscale mesh · tmux sessions    │
 └──────────────────────────────────────┘
 ```
@@ -447,15 +468,17 @@ clawd nanobot    # opens local UI with miner dashboard on :7777
 
 <div align="center">
 
-**$CLAWD · x402 · SOLANA**
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=80&section=footer" width="100%" />
 
 ```
-AGENT ID: CLAWD-1
+AGENT ID: SCG-1
 ROLE:     TRADER
 CHAIN:    SOLANA
 POWER:    $CLAWD
-STATUS:   ONLINE ████████
+STATUS:   ONLINE ████████████
 ```
+
+[![$CLAWD](https://img.shields.io/badge/%24CLAWD-8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump-9945FF?style=flat-square)](https://pay.solanaclawd.com)
 
 [solanaclawd.com](https://solanaclawd.com) · [pay.solanaclawd.com](https://pay.solanaclawd.com) · [@clawddevs](https://x.com/clawddevs)
 

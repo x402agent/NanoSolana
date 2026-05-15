@@ -6,10 +6,10 @@
  * Exports all core modules for programmatic usage.
  */
 
-export { readClawdRuntimeAsset, resolveClawdRuntimeAsset } from "./runtime/assets.js";
+export { readScgRuntimeAsset, resolveScgRuntimeAsset } from "./runtime/assets.js";
 
 // Config & Security
-export { loadConfig, saveSecrets, loadSecrets, redactConfig, ensureClawdHome, encrypt, decrypt } from "./config/vault.js";
+export { loadConfig, saveSecrets, loadSecrets, redactConfig, ensureScgHome, encrypt, decrypt } from "./config/vault.js";
 export type { ScgConfig } from "./config/vault.js";
 
 // Solana Wallet
@@ -112,33 +112,33 @@ export type { ScgNode, TmuxSession, ScgNetworkEvents } from "./network/mesh.js";
 // Docs + Extensions Knowledge Integration
 export {
   getScgKnowledgeSnapshot,
-  clearClawdKnowledgeCache,
+  clearScgKnowledgeCache,
   getScgKnowledgeSummary,
   searchScgKnowledge,
 } from "./docs/integration.js";
 export type {
-  ClawdDocArea,
-  ClawdDocIndexEntry,
-  ClawdDocAreaSnapshot,
-  ClawdExtensionIndexEntry,
-  ClawdKnowledgeSnapshot,
-  ClawdKnowledgeSnapshotOptions,
-  ClawdKnowledgeSummary,
-  ClawdKnowledgeSearchMatch,
+  ScgDocArea,
+  ScgDocIndexEntry,
+  ScgDocAreaSnapshot,
+  ScgExtensionIndexEntry,
+  ScgKnowledgeSnapshot,
+  ScgKnowledgeSnapshotOptions,
+  ScgKnowledgeSummary,
+  ScgKnowledgeSearchMatch,
 } from "./docs/integration.js";
 
 // Extension Catalog
 export {
-  resolveClawdRepositoryRoot,
-  scanClawdExtensions,
+  resolveScgRepositoryRoot,
+  scanScgExtensions,
   getExtensionCatalogSummary,
 } from "./extensions/catalog.js";
 export type {
-  ClawdExtensionKind,
-  ClawdExtensionMetadataSource,
-  ClawdExtensionInstallMetadata,
-  ClawdExtensionCatalogEntry,
-  ClawdExtensionCatalogSnapshot,
+  ScgExtensionKind,
+  ScgExtensionMetadataSource,
+  ScgExtensionInstallMetadata,
+  ScgExtensionCatalogEntry,
+  ScgExtensionCatalogSnapshot,
 } from "./extensions/catalog.js";
 
 // Telegram Persistence

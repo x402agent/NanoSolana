@@ -1,7 +1,7 @@
 {
   "name": "solana-claude-go",
-  "version": "1.0.3",
-  "description": "TypeScript runtime and CLI for Solana Claude Go — sovereign AI agents that earn, pay, and survive on Solana. Complements the solana-clawd Go binary.",
+  "version": "1.1.0",
+  "description": "Sovereign AI agents that earn, pay, and survive on Solana. TypeScript runtime + scg CLI — OODA trading, 3-tier memory, x402 payments, TamaGOchi companion, Go binary bridge.",
   "keywords": [
     "solana",
     "claude",
@@ -43,8 +43,8 @@
     "x402"
   ],
   "license": "MIT",
-  "author": "x402agent (https://github.com/x402agent/solana-clawd)",
-  "homepage": "https://solanaclaude.com",
+  "author": "x402agent (https://github.com/x402agent)",
+  "homepage": "https://solanaclawd.com",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/x402agent/NanoSolana.git",
@@ -71,7 +71,8 @@
   ],
   "type": "module",
   "bin": {
-    "scg": "dist/cli/entry.js"
+    "scg": "dist/cli/entry.js",
+    "solana-claude-go": "dist/cli/entry.js"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
