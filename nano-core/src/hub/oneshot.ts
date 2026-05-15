@@ -1,30 +1,30 @@
-export interface ClawdHubManifestFile {
+export interface ScgHubManifestFile {
   path: string;
   size: number;
   sha256?: string | null;
   contentType?: string | null;
 }
 
-export interface ClawdHubManifestOwner {
+export interface ScgHubManifestOwner {
   handle?: string | null;
   displayName?: string | null;
   image?: string | null;
 }
 
-export interface ClawdHubManifestEnvVar {
+export interface ScgHubManifestEnvVar {
   name: string;
   required?: boolean;
   description?: string | null;
 }
 
-export interface ClawdHubManifestDependency {
+export interface ScgHubManifestDependency {
   name?: string;
   kind?: string;
   package?: string;
   version?: string;
 }
 
-export interface ClawdHubManifestInstallSpec {
+export interface ScgHubManifestInstallSpec {
   kind?: string;
   package?: string;
   version?: string;
@@ -33,18 +33,18 @@ export interface ClawdHubManifestInstallSpec {
   bins?: string[];
 }
 
-export interface ClawdHubSkillManifest {
+export interface ScgHubSkillManifest {
   schemaVersion: number;
   kind: "skill";
   slug: string;
   displayName: string;
   summary?: string | null;
   version: string;
-  owner?: ClawdHubManifestOwner | null;
+  owner?: ScgHubManifestOwner | null;
   tags?: string[];
-  files?: ClawdHubManifestFile[];
-  install?: ClawdHubManifestInstallSpec[];
-  dependencies?: ClawdHubManifestDependency[];
+  files?: ScgHubManifestFile[];
+  install?: ScgHubManifestInstallSpec[];
+  dependencies?: ScgHubManifestDependency[];
   nix?: {
     plugin?: string | null;
     systems?: string[];
@@ -55,7 +55,7 @@ export interface ClawdHubSkillManifest {
     example?: string | null;
   } | null;
   requirements?: {
-    env?: ClawdHubManifestEnvVar[];
+    env?: ScgHubManifestEnvVar[];
     bins?: string[];
     anyBins?: string[];
     config?: string[];
@@ -76,11 +76,11 @@ export interface ClawdHubSkillManifest {
   };
 }
 
-export interface ClawdHubSkillManifestResponse {
-  manifest: ClawdHubSkillManifest;
+export interface ScgHubSkillManifestResponse {
+  manifest: ScgHubSkillManifest;
 }
 
-export interface ClawdOneShotStep {
+export interface ScgOneShotStep {
   key: string;
   title: string;
   status: "ready" | "needs_input" | "optional";
@@ -88,7 +88,7 @@ export interface ClawdOneShotStep {
   data?: Record<string, unknown>;
 }
 
-export interface ClawdOneShotPlan {
+export interface ScgOneShotPlan {
   slug: string;
   displayName: string;
   version: string;
@@ -105,20 +105,20 @@ export interface ClawdOneShotPlan {
   linkedSkills: string[];
   installPackages: string[];
   warnings: string[];
-  steps: ClawdOneShotStep[];
+  steps: ScgOneShotStep[];
 }
 
 function uniqueStrings(values: Array<string | null | undefined>): string[] {
   return [...new Set(values.map((value) => value?.trim()).filter((value): value is string => Boolean(value)))];
 }
 
-export function buildClawdOneShotPlan(
-  manifest: ClawdHubSkillManifest,
+export function buildScgOneShotPlan(
+  manifest: ScgHubSkillManifest,
   options: {
     env?: Record<string, string | undefined>;
     siteUrl?: string | null;
   } = {},
-): ClawdOneShotPlan {
+): ScgOneShotPlan {
   const env = options.env ?? process.env;
   const requiredEnv = (manifest.requirements?.env ?? [])
     .filter((item) => item.required !== false)
@@ -144,7 +144,7 @@ export function buildClawdOneShotPlan(
 
   const warnings: string[] = [];
   if (!entryCommand) {
-    warnings.push("No entry command declared in the ClawdHub manifest.");
+    warnings.push("No entry command declared in the ScgHub manifest.");
   }
   if (extensions.length === 0) {
     warnings.push("No extension graph declared for this skill.");
@@ -154,12 +154,12 @@ export function buildClawdOneShotPlan(
     if (trimmed) warnings.push(trimmed);
   }
 
-  const steps: ClawdOneShotStep[] = [
+  const steps: ScgOneShotStep[] = [
     {
       key: "resolve",
-      title: "Resolve ClawdHub bundle",
+      title: "Resolve ScgHub bundle",
       status: "ready",
-      details: `Resolved from ClawdHub.`,
+      details: `Resolved from ScgHub.`,
       data: {
         slug: manifest.slug,
         version: manifest.version,

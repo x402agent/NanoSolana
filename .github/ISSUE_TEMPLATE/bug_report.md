@@ -8,7 +8,7 @@ assignees: ''
 
 **Component**
 - [ ] Trading Engine
-- [ ] Memory (ClawVault)
+- [ ] Memory (ScgVault)
 - [ ] Gateway
 - [ ] Wallet
 - [ ] CLI

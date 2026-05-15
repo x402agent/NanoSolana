@@ -1,4 +1,4 @@
-// ── Solana clawd — Payment Agent ────────────────────────────────────────────────
+// ── Solana Claude Go — Payment Agent ────────────────────────────────────────────────
 //
 // Production-grade wrapper around @pump-fun/agent-payments-sdk PumpAgent.
 // Handles invoice creation, payment instruction building, verification,
@@ -27,9 +27,9 @@ import type {
 } from './types.js';
 import { CURRENCY_MINTS, CURRENCY_DECIMALS } from './types.js';
 
-// ── ClawdPaymentAgent ────────────────────────────────────────────────────────
+// ── ScgPaymentAgent ────────────────────────────────────────────────────────
 
-export class ClawdPaymentAgent {
+export class ScgPaymentAgent {
   private agent: PumpAgent;
   private config: PaymentConfig;
   private connection: Connection;

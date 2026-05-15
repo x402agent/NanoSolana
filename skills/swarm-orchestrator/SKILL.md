@@ -75,7 +75,7 @@ All bots communicate through a pub/sub event bus:
 
 ## Memory System
 
-Each agent gets its own ClawVault with 3-tier epistemological memory:
+Each agent gets its own ScgVault with 3-tier epistemological memory:
 
 - **KNOWN** (60s TTL) — live market data
 - **LEARNED** (7d TTL) — validated patterns

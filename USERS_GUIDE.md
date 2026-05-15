@@ -1,4 +1,4 @@
-# NanoSolana User Guide
+# Solana Claude Go User Guide
 
 > Build and run wallet-aware Solana trading agents, autonomous daemons, and local operator workflows — all from the terminal.
 
@@ -29,7 +29,7 @@
 | **Node.js** | 22.0.0+ | Required. Check with `node -v` |
 | **npm** | Bundled with Node | Used for dependency management |
 | **Git** | Any recent | To clone the repo |
-| **tmux** | Any | Optional — needed for `nanosolana bots` multi-bot management |
+| **tmux** | Any | Optional — needed for `scg bots` multi-bot management |
 | **Tailscale** | Any | Optional — needed for mesh networking across machines |
 
 ## Installation
@@ -38,15 +38,15 @@
 
 ```bash
 # Run directly — no clone needed
-npx nanosolana@latest demo    # simulation mode, no API keys
-npx nanosolana@latest go      # full bootstrap with live keys
+npx scg@latest demo    # simulation mode, no API keys
+npx scg@latest go      # full bootstrap with live keys
 ```
 
 ### From source
 
 ```bash
-git clone https://github.com/x402agent/NanoSolana.git
-cd NanoSolana/nano-core
+git clone https://github.com/x402agent/Solana Claude Go.git
+cd Solana Claude Go/nano-core
 npm install
 npm run build
 ```
@@ -58,7 +58,7 @@ cd nano-core
 bash scripts/install-cli.sh
 ```
 
-After this, the `nanosolana` command is available system-wide.
+After this, the `scg` command is available system-wide.
 
 ## Build from Source
 
@@ -106,10 +106,10 @@ This produces:
 ```bash
 cd nano-core
 npm install && npm run build
-npx nanosolana demo
+npx scg demo
 ```
 
-Demo mode runs the full runtime in simulation: wallet lifecycle, ClawVault memory, TamaGOchi state, and the OODA trading loop — all without real transactions or API keys.
+Demo mode runs the full runtime in simulation: wallet lifecycle, ScgVault memory, TamaGOchi state, and the OODA trading loop — all without real transactions or API keys.
 
 ### Full bootstrap
 
@@ -121,14 +121,14 @@ cp .env.example .env
 #   HELIUS_RPC_URL
 #   HELIUS_API_KEY
 npm install && npm run build
-npx nanosolana go
+npx scg go
 ```
 
-`nanosolana go` performs the complete first-run sequence:
-1. Collects and encrypts secrets into `~/.nanosolana/vault.enc`
+`scg go` performs the complete first-run sequence:
+1. Collects and encrypts secrets into `~/.scg/vault.enc`
 2. Creates or restores the local Solana wallet
 3. Boots the TamaGOchi companion state
-4. Starts ClawVault epistemological memory
+4. Starts ScgVault epistemological memory
 5. Starts the OODA trading runtime
 6. Starts the local gateway server
 7. Attempts a Helius wallet scan and registry flow
@@ -138,7 +138,7 @@ npx nanosolana go
 Once your state is initialized, start the daemon directly:
 
 ```bash
-npx nanosolana daemon
+npx scg daemon
 ```
 
 ## Configuration
@@ -169,10 +169,10 @@ cp .env.example .env
 
 ### Encrypted vault
 
-All secrets are stored encrypted at `~/.nanosolana/vault.enc` using AES-256-GCM. The interactive `init` command guides you through setting these:
+All secrets are stored encrypted at `~/.scg/vault.enc` using AES-256-GCM. The interactive `init` command guides you through setting these:
 
 ```bash
-npx nanosolana init
+npx scg init
 ```
 
 ### Gateway configuration
@@ -187,17 +187,17 @@ npx nanosolana init
 
 | Variable | Default | Description |
 |---|---|---|
-| `NANO_MEMORY_DB_PATH` | `~/.nanosolana/memory.db` | SQLite database path for ClawVault |
+| `SCG_MEMORY_DB_PATH` | `~/.scg/memory.db` | SQLite database path for ScgVault |
 | `NANO_MEMORY_TEMPORAL_DECAY_HOURS` | `168` (7 days) | How long before KNOWN entries decay |
 
 ### Data directory
 
-All persistent state lives under `~/.nanosolana/`:
+All persistent state lives under `~/.scg/`:
 
 ```
-~/.nanosolana/
+~/.scg/
   vault.enc          # AES-256-GCM encrypted secrets
-  memory.db          # ClawVault SQLite database
+  memory.db          # ScgVault SQLite database
   tamagochi.json     # TamaGOchi pet state
   wallet.json        # Wallet metadata
 ```
@@ -208,60 +208,60 @@ All persistent state lives under `~/.nanosolana/`:
 
 | Command | Description |
 |---|---|
-| `nanosolana init` | Interactive setup — prompts for API keys and encrypts them |
-| `nanosolana birth [-n name] [--pet-name name]` | Create a new agent with a Solana wallet and TamaGOchi pet |
-| `nanosolana go` | One-shot bootstrap — init + birth + run in a single command |
-| `nanosolana bootstrap` | Alias for `go` |
-| `nanosolana run [-n name] [--no-trade] [--no-gateway]` | Start the autonomous daemon |
-| `nanosolana daemon` | Alias for `run` |
-| `nanosolana demo` | Simulation mode — full runtime loop, no API keys needed |
+| `scg init` | Interactive setup — prompts for API keys and encrypts them |
+| `scg birth [-n name] [--pet-name name]` | Create a new agent with a Solana wallet and TamaGOchi pet |
+| `scg go` | One-shot bootstrap — init + birth + run in a single command |
+| `scg bootstrap` | Alias for `go` |
+| `scg run [-n name] [--no-trade] [--no-gateway]` | Start the autonomous daemon |
+| `scg daemon` | Alias for `run` |
+| `scg demo` | Simulation mode — full runtime loop, no API keys needed |
 
 ### Status and Inspection
 
 | Command | Description |
 |---|---|
-| `nanosolana status` | Show agent status: wallet, balance, TamaGOchi, ClawVault stats, mesh |
-| `nanosolana pet` | Display TamaGOchi pet status and mood |
-| `nanosolana config` | Show current configuration (secrets redacted) |
-| `nanosolana vault [query]` | Query ClawVault memory — shows tiers, lessons, research agenda |
-| `nanosolana docs [query]` | Browse integrated docs and extension knowledge corpus |
-| `nanosolana tasks [query] [-p persona]` | Inspect the automated task registry |
-| `nanosolana scan` | Helius blockchain scan of the agent's wallet |
+| `scg status` | Show agent status: wallet, balance, TamaGOchi, ScgVault stats, mesh |
+| `scg pet` | Display TamaGOchi pet status and mood |
+| `scg config` | Show current configuration (secrets redacted) |
+| `scg vault [query]` | Query ScgVault memory — shows tiers, lessons, research agenda |
+| `scg docs [query]` | Browse integrated docs and extension knowledge corpus |
+| `scg tasks [query] [-p persona]` | Inspect the automated task registry |
+| `scg scan` | Helius blockchain scan of the agent's wallet |
 
 ### Multi-Bot Management
 
 | Command | Description |
 |---|---|
-| `nanosolana bots list` | List running nano bot tmux sessions |
-| `nanosolana bots spawn <name>` | Spawn a new bot in a tmux session |
-| `nanosolana bots attach <name>` | Attach to a running bot session |
-| `nanosolana bots kill <name>` | Kill a bot session |
+| `scg bots list` | List running nano bot tmux sessions |
+| `scg bots spawn <name>` | Spawn a new bot in a tmux session |
+| `scg bots attach <name>` | Attach to a running bot session |
+| `scg bots kill <name>` | Kill a bot session |
 
 ### Network and Messaging
 
 | Command | Description |
 |---|---|
-| `nanosolana nodes` | List Tailscale nodes in the nano mesh |
-| `nanosolana send <message> [-t hostname]` | Send a message to bots across the mesh (or broadcast) |
+| `scg nodes` | List Tailscale nodes in the nano mesh |
+| `scg send <message> [-t hostname]` | Send a message to bots across the mesh (or broadcast) |
 
 ### NanoHub
 
 | Command | Description |
 |---|---|
-| `nanosolana hub` | Browse the NanoHub skill registry |
-| `nanosolana hub search <query>` | Search for skills |
-| `nanosolana hub install <skill>` | Install a skill pack |
-| `nanosolana hub register` | Register your agent with NanoHub |
+| `scg hub` | Browse the NanoHub skill registry |
+| `scg hub search <query>` | Search for skills |
+| `scg hub install <skill>` | Install a skill pack |
+| `scg hub register` | Register your agent with NanoHub |
 
 ### Other
 
 | Command | Description |
 |---|---|
-| `nanosolana nanobot` | Launch the NanoBot local web dashboard |
-| `nanosolana oneshot` | Run a one-shot plan from a NanoHub manifest |
-| `nanosolana pay` | Agent payment operations |
-| `nanosolana register` | Register the agent on-chain (Metaplex NFT on devnet) |
-| `nanosolana registry` | Browse the on-chain agent registry |
+| `scg nanobot` | Launch the NanoBot local web dashboard |
+| `scg oneshot` | Run a one-shot plan from a NanoHub manifest |
+| `scg pay` | Agent payment operations |
+| `scg register` | Register the agent on-chain (Metaplex NFT on devnet) |
+| `scg registry` | Browse the on-chain agent registry |
 
 ## Core Concepts
 
@@ -271,13 +271,13 @@ The trading engine follows the OODA decision cycle:
 
 1. **Observe** — Ingest real-time market data from Birdeye (prices, volume, momentum)
 2. **Orient** — Run RSI, EMA, and ATR technical indicators to generate signals
-3. **Decide** — AI reasoning (via OpenRouter) evaluates signals against ClawVault memory and TamaGOchi risk modifier
+3. **Decide** — AI reasoning (via OpenRouter) evaluates signals against ScgVault memory and TamaGOchi risk modifier
 4. **Act** — Execute trades through Jupiter DEX aggregation
-5. **Learn** — Record outcomes in ClawVault, update TamaGOchi state
+5. **Learn** — Record outcomes in ScgVault, update TamaGOchi state
 
-### ClawVault (3-Tier Epistemological Memory)
+### ScgVault (3-Tier Epistemological Memory)
 
-ClawVault is the agent's memory system with three knowledge tiers:
+ScgVault is the agent's memory system with three knowledge tiers:
 
 | Tier | Description | Retention |
 |---|---|---|
@@ -301,36 +301,36 @@ Every agent has a TamaGOchi companion whose state is driven by trading performan
 
 ### Encrypted Vault
 
-All secrets are encrypted at rest using AES-256-GCM and stored in `~/.nanosolana/vault.enc`. The gateway uses HMAC-SHA256 for request authentication, and wallet operations use Ed25519 signatures with timing-safe comparison.
+All secrets are encrypted at rest using AES-256-GCM and stored in `~/.scg/vault.enc`. The gateway uses HMAC-SHA256 for request authentication, and wallet operations use Ed25519 signatures with timing-safe comparison.
 
 ## Running the Daemon
 
 ### Basic daemon start
 
 ```bash
-npx nanosolana run
+npx scg run
 ```
 
-This starts all subsystems: wallet heartbeat, ClawVault memory, TamaGOchi lifecycle, OODA trading engine, and the gateway server.
+This starts all subsystems: wallet heartbeat, ScgVault memory, TamaGOchi lifecycle, OODA trading engine, and the gateway server.
 
 ### Daemon options
 
 ```bash
 # Custom agent name
-npx nanosolana run -n my-agent --pet-name Crabby
+npx scg run -n my-agent --pet-name Crabby
 
 # Disable trading (memory + gateway only)
-npx nanosolana run --no-trade
+npx scg run --no-trade
 
 # Disable gateway (trading + memory only)
-npx nanosolana run --no-gateway
+npx scg run --no-gateway
 ```
 
 ### What runs in the daemon
 
 1. **Wallet** — heartbeat polling for balance changes
 2. **TamaGOchi** — lifecycle timer for mood/evolution
-3. **ClawVault** — autonomous memory with decay, reflection, and lesson extraction
+3. **ScgVault** — autonomous memory with decay, reflection, and lesson extraction
 4. **Trading Engine** — OODA loop with RSI/EMA/ATR signals
 5. **Gateway** — HTTP + WebSocket server on port 18790
 
@@ -343,29 +343,29 @@ Press `Ctrl+C`. The daemon cleanly stops all subsystems and saves state.
 Launch the local dashboard:
 
 ```bash
-npx nanosolana nanobot
+npx scg nanobot
 ```
 
-NanoBot provides a browser-based UI showing agent status, wallet info, trade history, ClawVault memory, and TamaGOchi state.
+NanoBot provides a browser-based UI showing agent status, wallet info, trade history, ScgVault memory, and TamaGOchi state.
 
 ## Mesh Networking
 
-NanoSolana supports multi-agent mesh networking through Tailscale VPN:
+Solana Claude Go supports multi-agent mesh networking through Tailscale VPN:
 
 ```bash
 # List available nodes
-npx nanosolana nodes
+npx scg nodes
 
 # Send a message to all online nodes
-npx nanosolana send "check SOL price"
+npx scg send "check SOL price"
 
 # Send to a specific node
-npx nanosolana send "status report" -t my-server
+npx scg send "status report" -t my-server
 
 # Spawn multiple bots
-npx nanosolana bots spawn alpha
-npx nanosolana bots spawn beta
-npx nanosolana bots list
+npx scg bots spawn alpha
+npx scg bots spawn beta
+npx scg bots list
 ```
 
 **Requirements:** Tailscale installed and connected. tmux installed for multi-bot sessions.
@@ -379,13 +379,13 @@ Skills are composable agent capabilities in `SKILL.md` format, found in the `ski
 Browse and install skills via NanoHub:
 
 ```bash
-npx nanosolana hub search discord
-npx nanosolana hub install discord
+npx scg hub search discord
+npx scg hub install discord
 ```
 
 ### Extensions (40+)
 
-Extensions are channel and tool plugins in the `extensions/` directory. They connect NanoSolana to external platforms:
+Extensions are channel and tool plugins in the `extensions/` directory. They connect Solana Claude Go to external platforms:
 
 | Category | Extensions |
 |---|---|
@@ -409,21 +409,21 @@ bun run dev
 
 ```bash
 # Browse available skills
-npx nanosolana hub
+npx scg hub
 
 # Search for skills
-npx nanosolana hub search "trading"
+npx scg hub search "trading"
 
 # Install a skill
-npx nanosolana hub install <skill-name>
+npx scg hub install <skill-name>
 
 # Register your agent
-npx nanosolana hub register
+npx scg hub register
 ```
 
 ## Bitaxe Mining Integration
 
-NanoSolana includes a Bitaxe/AxeOS mining client for hardware miners on your local network.
+Solana Claude Go includes a Bitaxe/AxeOS mining client for hardware miners on your local network.
 
 ### Enable Bitaxe
 
@@ -448,13 +448,13 @@ BITAXE_TEMP_CRITICAL=70
 
 ### Surfaces
 
-- **NanoBot dashboard** — `npx nanosolana nanobot`
+- **NanoBot dashboard** — `npx scg nanobot`
 - **Gateway endpoints** — `/api/miner` and `/api/extension/miner`
 - **Chrome extension** — options page miner controls
 
 ## Pump.fun Integration
 
-NanoSolana includes a Pump.fun SDK bridge for token launches and swarm trading:
+Solana Claude Go includes a Pump.fun SDK bridge for token launches and swarm trading:
 
 ### Swarm configuration
 
@@ -505,7 +505,7 @@ Make sure you ran `npm run build` after any source changes. The CLI runs from `d
 
 ### Vault password issues
 
-If you forget your vault password, delete `~/.nanosolana/vault.enc` and re-run `npx nanosolana init`. This will not delete your wallet if you have the private key backed up elsewhere.
+If you forget your vault password, delete `~/.scg/vault.enc` and re-run `npx scg init`. This will not delete your wallet if you have the private key backed up elsewhere.
 
 ### Gateway won't start
 
@@ -528,13 +528,13 @@ Demo mode should work without any configuration. If it crashes, ensure you have 
 ```bash
 node -v   # must be >= 22.0.0
 cd nano-core && rm -rf node_modules dist && npm install && npm run build
-npx nanosolana demo
+npx scg demo
 ```
 
 ### Tailscale / mesh not working
 
 - Verify Tailscale is installed and connected: `tailscale status`
-- The `nanosolana nodes` command will report "not available" if Tailscale is missing
+- The `scg nodes` command will report "not available" if Tailscale is missing
 
 ### Tests
 
@@ -548,6 +548,6 @@ npm run test:watch    # watch mode
 
 **License:** MIT
 
-**Issues:** https://github.com/x402agent/NanoSolana/issues
+**Issues:** https://github.com/x402agent/Solana Claude Go/issues
 
-**Homepage:** https://nanosolana.com
+**Homepage:** https://scg.com

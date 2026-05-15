@@ -1,5 +1,5 @@
 /**
- * Nano Solana — ClawVault: 3-Tier Epistemological Memory Engine
+ * Nano Solana — ScgVault: 3-Tier Epistemological Memory Engine
  *
  * The brain's long-term memory system. Organizes knowledge into three tiers:
  *   KNOWN    — empirical facts with short TTL (60s)
@@ -62,7 +62,7 @@ export interface ResearchAgenda {
   resolvedAt?: number;
 }
 
-export interface ClawVaultEvents {
+export interface ScgVaultEvents {
   entryStored: (entry: VaultEntry) => void;
   entryExpired: (entry: VaultEntry) => void;
   lessonLearned: (lesson: Lesson) => void;
@@ -80,9 +80,9 @@ const TIER_TTL: Record<KnowledgeTier, number> = {
 
 const GC_INTERVAL = 5 * 60 * 1000; // 5 minutes
 
-// ── ClawVault ────────────────────────────────────────────────
+// ── ScgVault ────────────────────────────────────────────────
 
-export class ClawVault extends EventEmitter<ClawVaultEvents> {
+export class ScgVault extends EventEmitter<ScgVaultEvents> {
   private entries: Map<string, VaultEntry> = new Map();
   private trades: TradeRecord[] = [];
   private lessons: Lesson[] = [];

@@ -1,10 +1,10 @@
-// ── Solana clawd — Payments Module ──────────────────────────────────────────────
+// ── Solana Claude Go — Payments Module ──────────────────────────────────────────────
 //
 // Tokenized agent payment system built on @pump-fun/agent-payments-sdk.
 // Enables agents to charge users for actions via on-chain invoice payments.
 //
 // Architecture:
-//   ClawdPaymentAgent wraps PumpAgent with:
+//   ScgPaymentAgent wraps PumpAgent with:
 //     - Invoice creation with auto-generated memos
 //     - Payment instruction building for USDC and SOL
 //     - Server-side verification with retry logic
@@ -18,7 +18,7 @@
 //   - Amount validation before any instruction building
 // ─────────────────────────────────────────────────────────────────────────────
 
-export { ClawdPaymentAgent } from './agent.js';
+export { ScgPaymentAgent } from './agent.js';
 
 export type {
   PaymentCurrency,
@@ -36,13 +36,13 @@ export { CURRENCY_MINTS, CURRENCY_DECIMALS } from './types.js';
 // ── Factory ─────────────────────────────────────────────────────────────────
 
 import type { PaymentConfig } from './types.js';
-import { ClawdPaymentAgent } from './agent.js';
+import { ScgPaymentAgent } from './agent.js';
 
 /**
- * Create a ClawdPaymentAgent from environment variables.
+ * Create a ScgPaymentAgent from environment variables.
  * Reads AGENT_TOKEN_MINT_ADDRESS, CURRENCY_MINT, SOLANA_RPC_URL.
  */
-export function createPaymentAgent(overrides?: Partial<PaymentConfig>): ClawdPaymentAgent {
+export function createPaymentAgent(overrides?: Partial<PaymentConfig>): ScgPaymentAgent {
   const agentTokenMint = overrides?.agentTokenMint ?? process.env.AGENT_TOKEN_MINT_ADDRESS;
   if (!agentTokenMint) {
     throw new Error(
@@ -71,5 +71,5 @@ export function createPaymentAgent(overrides?: Partial<PaymentConfig>): ClawdPay
     environment: overrides?.environment ?? 'mainnet',
   };
 
-  return new ClawdPaymentAgent(config);
+  return new ScgPaymentAgent(config);
 }

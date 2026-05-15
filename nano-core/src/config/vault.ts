@@ -1,5 +1,5 @@
 /**
- * Solana clawd — Secure Configuration Vault
+ * Solana Claude Go — Secure Configuration Vault
  *
  * AES-256-GCM encrypted config store.
  * All API keys and secrets are encrypted at rest.
@@ -13,9 +13,9 @@ import { homedir } from "node:os";
 import { z } from "zod";
 
 // ── Config Schema ────────────────────────────────────────────
-export const ClawdConfigSchema = z.object({
+export const ScgConfigSchema = z.object({
   agent: z.object({
-    name: z.string().default("clawd-agent"),
+    name: z.string().default("scg-agent"),
     id: z.string().optional(),
     heartbeatMs: z.number().default(5000),
   }),
@@ -42,7 +42,7 @@ export const ClawdConfigSchema = z.object({
     secret: z.string().optional(),
   }),
   hub: z.object({
-    url: z.string().default("https://hub.solana-clawd.com"),
+    url: z.string().default("https://hub.solana-claude-go.com"),
     apiKey: z.string().optional(),
   }),
   tailscale: z.object({
@@ -56,7 +56,7 @@ export const ClawdConfigSchema = z.object({
     baseUrl: z.string().default("https://openrouter.ai/api/v1"),
   }),
   memory: z.object({
-    dbPath: z.string().default("~/.clawd/memory.db"),
+    dbPath: z.string().default("~/.scg/memory.db"),
     embeddingProvider: z.string().default("openrouter"),
     temporalDecayHours: z.number().default(168),
   }),
@@ -68,10 +68,12 @@ export const ClawdConfigSchema = z.object({
   }),
 });
 
-export type ClawdConfig = z.infer<typeof ClawdConfigSchema>;
+export type ScgConfig = z.infer<typeof ScgConfigSchema>;
 
-/** @deprecated Use ClawdConfig */
-export type NanoConfig = ClawdConfig;
+/** @deprecated Use ScgConfig */
+export type NanoConfig = ScgConfig;
+/** @deprecated Use ScgConfig */
+export type ClawdConfig = ScgConfig;
 
 // ── Encryption Primitives ────────────────────────────────────
 
@@ -94,13 +96,7 @@ export function encrypt(plaintext: string, password: string): string {
   encrypted += cipher.final("hex");
   const authTag = cipher.getAuthTag();
 
-  // Format: salt:iv:authTag:ciphertext (all hex)
-  return [
-    salt.toString("hex"),
-    iv.toString("hex"),
-    authTag.toString("hex"),
-    encrypted,
-  ].join(":");
+  return [salt.toString("hex"), iv.toString("hex"), authTag.toString("hex"), encrypted].join(":");
 }
 
 export function decrypt(encryptedStr: string, password: string): string {
@@ -123,30 +119,33 @@ export function decrypt(encryptedStr: string, password: string): string {
 
 // ── Vault ────────────────────────────────────────────────────
 
-const CLAWD_HOME = join(homedir(), ".clawd");
-const VAULT_FILE = join(CLAWD_HOME, "vault.enc");
-const CONFIG_FILE = join(CLAWD_HOME, "config.json");
+const SCG_HOME = join(homedir(), ".scg");
+const VAULT_FILE = join(SCG_HOME, "vault.enc");
+const CONFIG_FILE = join(SCG_HOME, "config.json");
 
-export function ensureClawdHome(): string {
-  if (!existsSync(CLAWD_HOME)) {
-    mkdirSync(CLAWD_HOME, { recursive: true, mode: 0o700 });
+export function ensureScgHome(): string {
+  if (!existsSync(SCG_HOME)) {
+    mkdirSync(SCG_HOME, { recursive: true, mode: 0o700 });
   }
-  return CLAWD_HOME;
+  return SCG_HOME;
 }
 
-/** @deprecated Use ensureClawdHome */
-export const ensureNanoHome = ensureClawdHome;
+/** @deprecated Use ensureScgHome */
+export const ensureNanoHome = ensureScgHome;
+/** @deprecated Use ensureScgHome */
+export const ensureClawdHome = ensureScgHome;
 
 export function getVaultPassword(): string {
-  const machineId = process.env.CLAWD_VAULT_PASSWORD
+  const machineId = process.env.SCG_VAULT_PASSWORD
+    ?? process.env.CLAWD_VAULT_PASSWORD
     ?? process.env.NANO_VAULT_PASSWORD
     ?? process.env.USER
-    ?? "clawd-default";
+    ?? "scg-default";
   return createHash("sha256").update(machineId).digest("hex");
 }
 
 export function saveSecrets(secrets: Record<string, string>): void {
-  ensureClawdHome();
+  ensureScgHome();
   const password = getVaultPassword();
   const plaintext = JSON.stringify(secrets, null, 2);
   const encrypted = encrypt(plaintext, password);
@@ -165,20 +164,26 @@ export function loadSecrets(): Record<string, string> {
   }
 }
 
-export function loadConfig(): ClawdConfig {
+export function loadConfig(): ScgConfig {
   const env = process.env;
   const secrets = loadSecrets();
 
+  // Helper: read from SCG_*, CLAWD_* (compat), NANO_* (legacy compat)
+  const get = (key: string, fallback?: string): string | undefined =>
+    env[`SCG_${key}`] ?? env[`CLAWD_${key}`] ?? env[`NANO_${key}`]
+    ?? secrets[`SCG_${key}`] ?? secrets[`CLAWD_${key}`] ?? secrets[`NANO_${key}`]
+    ?? fallback;
+
   const raw = {
     agent: {
-      name: env.CLAWD_AGENT_NAME ?? env.NANO_AGENT_NAME ?? secrets.CLAWD_AGENT_NAME ?? secrets.NANO_AGENT_NAME ?? "clawd-agent",
-      id: env.CLAWD_AGENT_ID ?? env.NANO_AGENT_ID ?? secrets.CLAWD_AGENT_ID ?? secrets.NANO_AGENT_ID,
-      heartbeatMs: Number(env.CLAWD_AGENT_HEARTBEAT_INTERVAL_MS ?? env.NANO_AGENT_HEARTBEAT_INTERVAL_MS ?? 5000),
+      name: get("AGENT_NAME") ?? "scg-agent",
+      id: get("AGENT_ID"),
+      heartbeatMs: Number(get("AGENT_HEARTBEAT_INTERVAL_MS") ?? 5000),
     },
     wallet: {
-      privateKey: env.CLAWD_WALLET_PRIVATE_KEY ?? env.NANO_WALLET_PRIVATE_KEY ?? secrets.CLAWD_WALLET_PRIVATE_KEY ?? secrets.NANO_WALLET_PRIVATE_KEY,
-      publicKey: env.CLAWD_WALLET_PUBLIC_KEY ?? env.NANO_WALLET_PUBLIC_KEY ?? secrets.CLAWD_WALLET_PUBLIC_KEY ?? secrets.NANO_WALLET_PUBLIC_KEY,
-      mnemonic: env.CLAWD_WALLET_MNEMONIC ?? env.NANO_WALLET_MNEMONIC ?? secrets.CLAWD_WALLET_MNEMONIC ?? secrets.NANO_WALLET_MNEMONIC,
+      privateKey: get("WALLET_PRIVATE_KEY"),
+      publicKey: get("WALLET_PUBLIC_KEY"),
+      mnemonic: get("WALLET_MNEMONIC"),
     },
     helius: {
       rpcUrl: env.HELIUS_RPC_URL ?? secrets.HELIUS_RPC_URL ?? "",
@@ -193,44 +198,44 @@ export function loadConfig(): ClawdConfig {
       apiKey: env.JUPITER_API_KEY ?? secrets.JUPITER_API_KEY ?? "",
     },
     gateway: {
-      port: Number(env.CLAWD_GATEWAY_PORT ?? env.NANO_GATEWAY_PORT ?? 18790),
-      host: env.CLAWD_GATEWAY_HOST ?? env.NANO_GATEWAY_HOST ?? "0.0.0.0",
-      secret: env.CLAWD_GATEWAY_SECRET ?? env.NANO_GATEWAY_SECRET ?? secrets.CLAWD_GATEWAY_SECRET ?? secrets.NANO_GATEWAY_SECRET,
+      port: Number(get("GATEWAY_PORT") ?? 18790),
+      host: get("GATEWAY_HOST") ?? "0.0.0.0",
+      secret: get("GATEWAY_SECRET"),
     },
     hub: {
-      url: env.CLAWD_HUB_URL ?? env.NANO_HUB_URL ?? "https://hub.solana-clawd.com",
-      apiKey: env.CLAWD_HUB_API_KEY ?? env.NANO_HUB_API_KEY ?? secrets.CLAWD_HUB_API_KEY ?? secrets.NANO_HUB_API_KEY,
+      url: get("HUB_URL") ?? "https://hub.solana-claude-go.com",
+      apiKey: get("HUB_API_KEY"),
     },
     tailscale: {
       authKey: env.TAILSCALE_AUTH_KEY ?? secrets.TAILSCALE_AUTH_KEY,
       domain: env.TAILSCALE_DOMAIN ?? secrets.TAILSCALE_DOMAIN,
     },
     ai: {
-      provider: env.AI_PROVIDER ?? env.OPENROUTER_MODEL ? "openrouter" : "openrouter",
+      provider: env.AI_PROVIDER ?? "openrouter",
       apiKey: env.OPENROUTER_API_KEY ?? env.AI_API_KEY ?? secrets.OPENROUTER_API_KEY ?? secrets.AI_API_KEY ?? "",
       model: env.OPENROUTER_MODEL ?? env.AI_MODEL ?? "openrouter/healer-alpha",
       baseUrl: env.OPENROUTER_BASE_URL ?? "https://openrouter.ai/api/v1",
     },
     memory: {
-      dbPath: env.CLAWD_MEMORY_DB_PATH ?? env.NANO_MEMORY_DB_PATH ?? "~/.clawd/memory.db",
-      embeddingProvider: env.CLAWD_MEMORY_EMBEDDING_PROVIDER ?? env.NANO_MEMORY_EMBEDDING_PROVIDER ?? "openrouter",
-      temporalDecayHours: Number(env.CLAWD_MEMORY_TEMPORAL_DECAY_HOURS ?? env.NANO_MEMORY_TEMPORAL_DECAY_HOURS ?? 168),
+      dbPath: get("MEMORY_DB_PATH") ?? "~/.scg/memory.db",
+      embeddingProvider: get("MEMORY_EMBEDDING_PROVIDER") ?? "openrouter",
+      temporalDecayHours: Number(get("MEMORY_TEMPORAL_DECAY_HOURS") ?? 168),
     },
     go: {
-      enabled: (env.CLAWD_GO_ENABLED ?? "false").toLowerCase() === "true",
-      host: env.CLAWD_GO_HOST ?? "127.0.0.1",
-      port: Number(env.CLAWD_GO_PORT ?? 18800),
-      secret: env.CLAWD_GO_SECRET ?? secrets.CLAWD_GO_SECRET,
+      enabled: (get("GO_ENABLED") ?? "false").toLowerCase() === "true",
+      host: get("GO_HOST") ?? "127.0.0.1",
+      port: Number(get("GO_PORT") ?? 18800),
+      secret: get("GO_SECRET"),
     },
   };
 
-  return ClawdConfigSchema.parse(raw);
+  return ScgConfigSchema.parse(raw);
 }
 
 /**
  * Redact a config object for safe display/logging.
  */
-export function redactConfig(config: ClawdConfig): Record<string, unknown> {
+export function redactConfig(config: ScgConfig): Record<string, unknown> {
   const mask = (val: string | undefined) =>
     val ? `${val.slice(0, 4)}...${val.slice(-4)}` : "(not set)";
 
@@ -240,29 +245,13 @@ export function redactConfig(config: ClawdConfig): Record<string, unknown> {
       publicKey: mask(config.wallet.publicKey),
       privateKey: config.wallet.privateKey ? "***REDACTED***" : "(not set)",
     },
-    helius: {
-      rpcUrl: mask(config.helius.rpcUrl),
-      apiKey: mask(config.helius.apiKey),
-      wssUrl: mask(config.helius.wssUrl),
-    },
-    birdeye: {
-      apiKey: mask(config.birdeye.apiKey),
-      wssUrl: config.birdeye.wssUrl,
-    },
+    helius: { rpcUrl: mask(config.helius.rpcUrl), apiKey: mask(config.helius.apiKey), wssUrl: mask(config.helius.wssUrl) },
+    birdeye: { apiKey: mask(config.birdeye.apiKey), wssUrl: config.birdeye.wssUrl },
     jupiter: { apiKey: mask(config.jupiter.apiKey) },
-    gateway: {
-      port: config.gateway.port,
-      host: config.gateway.host,
-      secret: config.gateway.secret ? "***REDACTED***" : "(not set)",
-    },
+    gateway: { port: config.gateway.port, host: config.gateway.host, secret: config.gateway.secret ? "***REDACTED***" : "(not set)" },
     hub: { url: config.hub.url },
     ai: { provider: config.ai.provider, model: config.ai.model, baseUrl: config.ai.baseUrl, apiKey: mask(config.ai.apiKey) },
     memory: config.memory,
-    go: {
-      enabled: config.go.enabled,
-      host: config.go.host,
-      port: config.go.port,
-      secret: config.go.secret ? "***REDACTED***" : "(not set)",
-    },
+    go: { enabled: config.go.enabled, host: config.go.host, port: config.go.port, secret: config.go.secret ? "***REDACTED***" : "(not set)" },
   };
 }

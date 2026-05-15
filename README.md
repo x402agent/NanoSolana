@@ -13,7 +13,7 @@
 
 **AI AGENTS THAT EARN. PAY. SURVIVE.**
 
-[![npm](https://img.shields.io/npm/v/solana-clawd?color=14F195&style=flat-square&label=npm)](https://npmjs.com/package/solana-clawd)
+[![npm](https://img.shields.io/npm/v/solana-claude-go?color=14F195&style=flat-square&label=npm)](https://npmjs.com/package/solana-claude-go)
 [![license](https://img.shields.io/badge/license-MIT-orange?style=flat-square)](./LICENSE)
 [![Solana](https://img.shields.io/badge/SOLANA-9945FF?style=flat-square&logo=solana&logoColor=white)](https://solana.com)
 [![x402](https://img.shields.io/badge/x402-FF6B35?style=flat-square)](https://x402.org)
@@ -30,12 +30,12 @@
 
 **Clawd** is a Solana-native agent stack built to move like Hermes in Web3: messenger, scout, trader, payer, vault, and recall engine in one shell.
 
-This monorepo contains the TypeScript runtime that is the **complementary counterpart** to the [`solana-clawd`](https://github.com/x402agent/solana-clawd) Go binary. Together they form a full sovereign agent node:
+This monorepo contains the TypeScript runtime that is the **complementary counterpart** to the [`solana-claude-go`](https://github.com/x402agent/solana-claude-go) Go binary. Together they form a full sovereign agent node:
 
 | Layer | Repo | Role |
 |---|---|---|
 | **TypeScript runtime** | `NanoSolana` (this repo) | AI reasoning, memory, trading strategy, UX, extensions |
-| **Go binary** | [`solana-clawd`](https://github.com/x402agent/solana-clawd) | Keypair management, tx signing, low-level RPC, hardware |
+| **Go binary** | [`solana-claude-go`](https://github.com/x402agent/solana-claude-go) | Keypair management, tx signing, low-level RPC, hardware |
 
 ---
 
@@ -57,13 +57,13 @@ Pay      :: pay.solanaclawd.com
 curl -fsSL https://install.solanaclawd.com | bash
 
 # Or via npx (demo mode — no keys needed)
-npx solana-clawd demo
+npx solana-claude-go demo
 
 # Full one-shot bootstrap
-npx solana-clawd go
+npx solana-claude-go go
 
 # Persistent daemon
-npx solana-clawd daemon
+npx solana-claude-go daemon
 ```
 
 ---
@@ -72,29 +72,29 @@ npx solana-clawd daemon
 
 ```
 NanoSolana/
-├── nano-core/          # npm package: solana-clawd  · binary: clawd
+├── nano-core/          # npm package: solana-claude-go  · binary: clawd
 │   ├── src/
 │   │   ├── cli/        # clawd CLI entry + animations
 │   │   ├── config/     # ClawdConfig + AES-256-GCM vault
-│   │   ├── wallet/     # ClawdWallet — Ed25519 keypair + heartbeat
+│   │   ├── wallet/     # ScgWallet — Ed25519 keypair + heartbeat
 │   │   ├── trading/    # OODA engine — Birdeye + Jupiter
 │   │   ├── strategy/   # RSI · EMA · ATR signal scoring
-│   │   ├── memory/     # ClawVault — known/learned/inferred
-│   │   ├── gateway/    # ClawdGateway — WebSocket + HTTP API
+│   │   ├── memory/     # ScgVault — known/learned/inferred
+│   │   ├── gateway/    # ScgGateway — WebSocket + HTTP API
 │   │   ├── go-bridge/  # GoBridgeClient — TS ↔ Go protocol
-│   │   ├── hub/        # ClawdHub skill marketplace client
-│   │   ├── nanobot/    # ClawdBotServer — local web UI
-│   │   ├── network/    # ClawdNetworkClient — Tailscale + tmux
+│   │   ├── hub/        # ScgHub skill marketplace client
+│   │   ├── nanobot/    # ScgBotServer — local web UI
+│   │   ├── network/    # ScgNetworkClient — Tailscale + tmux
 │   │   ├── pet/        # TamaGOchi companion
-│   │   ├── payments/   # ClawdPaymentAgent — x402 / pump.fun
+│   │   ├── payments/   # ScgPaymentAgent — x402 / pump.fun
 │   │   ├── bitaxe/     # Bitaxe AxeOS miner client
 │   │   ├── claw/       # Clawd orchestrator + personas + pump swarm
 │   │   └── ai/         # AIProvider — OpenRouter / Claude
-│   └── package.json    # name: "solana-clawd", bin: "clawd"
+│   └── package.json    # name: "solana-claude-go", bin: "clawd"
 │
 ├── extensions/         # 40+ communication channel plugins
-├── skills/             # 70+ ClawdHub SKILL.md manifests
-├── nanohub/            # ClawdHub marketplace web app
+├── skills/             # 70+ ScgHub SKILL.md manifests
+├── nanohub/            # ScgHub marketplace web app
 ├── pump/               # Pump.fun bridge layer
 ├── ui/                 # Control surface UI
 └── apps/               # Android · macOS native apps
@@ -120,16 +120,16 @@ Agents earn USDC providing value on-chain, pay for their own compute via x402, e
 
 ```ts
 import {
-  ClawdWallet,          // Ed25519 wallet + heartbeat
-  ClawVault,            // 3-tier epistemological memory
+  ScgWallet,          // Ed25519 wallet + heartbeat
+  ScgVault,            // 3-tier epistemological memory
   TradingEngine,        // OODA loop — RSI/EMA/ATR
   TamaGOchi,            // Trade-driven companion
-  ClawdGateway,         // WebSocket + HTTP gateway
+  ScgGateway,         // WebSocket + HTTP gateway
   GoBridgeClient,       // TS ↔ Go binary bridge
-  ClawdPaymentAgent,    // x402 payment flows
+  ScgPaymentAgent,    // x402 payment flows
   AIProvider,           // OpenRouter / Claude
   loadConfig,           // ClawdConfig loader
-} from "solana-clawd";
+} from "solana-claude-go";
 ```
 
 ---

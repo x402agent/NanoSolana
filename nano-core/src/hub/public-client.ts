@@ -1,10 +1,10 @@
 import type {
-  ClawdHubSkillManifestResponse,
+  ScgHubSkillManifestResponse,
 } from "./oneshot.js";
 
-const DEFAULT_CLAWDHUB_SITE_URL = "https://hub.solana-clawd.com";
+const DEFAULT_SCGHUB_SITE_URL = "https://hub.solana-claude-go.com";
 
-export type ClawdHubExploreSort =
+export type ScgHubExploreSort =
   | "newest"
   | "downloads"
   | "rating"
@@ -12,7 +12,7 @@ export type ClawdHubExploreSort =
   | "installsAllTime"
   | "trending";
 
-export interface ClawdHubSkillListItem {
+export interface ScgHubSkillListItem {
   slug: string;
   displayName?: string | null;
   summary?: string | null;
@@ -27,7 +27,7 @@ export interface ClawdHubSkillListItem {
   } | null;
 }
 
-export interface ClawdHubSkillDetail extends ClawdHubSkillListItem {
+export interface ScgHubSkillDetail extends ScgHubSkillListItem {
   owner?: {
     handle?: string | null;
     displayName?: string | null;
@@ -35,7 +35,7 @@ export interface ClawdHubSkillDetail extends ClawdHubSkillListItem {
   } | null;
 }
 
-export interface ClawdHubSearchResult {
+export interface ScgHubSearchResult {
   score: number;
   slug?: string | null;
   displayName?: string | null;
@@ -44,13 +44,13 @@ export interface ClawdHubSearchResult {
   updatedAt?: number | null;
 }
 
-export interface ClawdHubSkillsResponse {
-  items: ClawdHubSkillListItem[];
+export interface ScgHubSkillsResponse {
+  items: ScgHubSkillListItem[];
   nextCursor?: string | null;
 }
 
-export interface ClawdHubSkillResponse {
-  skill: ClawdHubSkillDetail | null;
+export interface ScgHubSkillResponse {
+  skill: ScgHubSkillDetail | null;
   latestVersion?: {
     version: string;
     createdAt?: number;
@@ -63,42 +63,42 @@ export interface ClawdHubSkillResponse {
   } | null;
 }
 
-export interface ClawdHubSearchResponse {
-  results: ClawdHubSearchResult[];
+export interface ScgHubSearchResponse {
+  results: ScgHubSearchResult[];
 }
 
-export interface ClawdHubSkillFileResponse {
+export interface ScgHubSkillFileResponse {
   content: string;
   contentType?: string | null;
   path?: string | null;
   version?: string | null;
 }
 
-export function normalizeClawdHubSiteUrl(raw?: string | null): string {
-  const candidate = raw?.trim() || DEFAULT_CLAWDHUB_SITE_URL;
+export function normalizeScgHubSiteUrl(raw?: string | null): string {
+  const candidate = raw?.trim() || DEFAULT_SCGHUB_SITE_URL;
   const normalized = candidate.startsWith("http://") || candidate.startsWith("https://")
     ? candidate
     : `https://${candidate}`;
   return normalized.replace(/\/+$/, "");
 }
 
-export function getClawdHubSiteUrl(override?: string | null): string {
-  return normalizeClawdHubSiteUrl(override ?? process.env.CLAWD_HUB_URL ?? DEFAULT_CLAWDHUB_SITE_URL);
+export function getScgHubSiteUrl(override?: string | null): string {
+  return normalizeScgHubSiteUrl(override ?? process.env.SCG_HUB_URL ?? DEFAULT_SCGHUB_SITE_URL);
 }
 
-export function getClawdHubApiBaseUrl(override?: string | null): string {
-  return `${getClawdHubSiteUrl(override)}/api/v1`;
+export function getScgHubApiBaseUrl(override?: string | null): string {
+  return `${getScgHubSiteUrl(override)}/api/v1`;
 }
 
-export function getClawdHubDiscoveryUrl(override?: string | null): string {
-  return `${getClawdHubSiteUrl(override)}/.well-known/nanohub.json`;
+export function getScgHubDiscoveryUrl(override?: string | null): string {
+  return `${getScgHubSiteUrl(override)}/.well-known/nanohub.json`;
 }
 
-export function getClawdHubSkillUrl(
+export function getScgHubSkillUrl(
   slug: string,
   options: { siteUrl?: string | null; ownerHandle?: string | null } = {},
 ): string {
-  const siteUrl = getClawdHubSiteUrl(options.siteUrl);
+  const siteUrl = getScgHubSiteUrl(options.siteUrl);
   const safeSlug = encodeURIComponent(slug.trim());
   if (options.ownerHandle?.trim()) {
     return `${siteUrl}/${encodeURIComponent(options.ownerHandle.trim())}/${safeSlug}`;
@@ -106,7 +106,7 @@ export function getClawdHubSkillUrl(
   return `${siteUrl}/skills/${safeSlug}`;
 }
 
-export function getClawdHubApiSort(sort?: string | null): string {
+export function getScgHubApiSort(sort?: string | null): string {
   const normalized = sort?.trim().toLowerCase();
   if (!normalized || normalized === "newest" || normalized === "updated") {
     return "updated";
@@ -137,53 +137,53 @@ export function getClawdHubApiSort(sort?: string | null): string {
   );
 }
 
-export async function listClawdHubSkills(options: {
+export async function listScgHubSkills(options: {
   siteUrl?: string | null;
   limit?: number;
   sort?: string | null;
   highlightedOnly?: boolean;
-} = {}): Promise<ClawdHubSkillsResponse> {
-  const url = new URL(`${getClawdHubApiBaseUrl(options.siteUrl)}/skills`);
+} = {}): Promise<ScgHubSkillsResponse> {
+  const url = new URL(`${getScgHubApiBaseUrl(options.siteUrl)}/skills`);
   if (options.limit) {
-    url.searchParams.set("limit", String(clampClawdHubLimit(options.limit)));
+    url.searchParams.set("limit", String(clampScgHubLimit(options.limit)));
   }
-  const apiSort = getClawdHubApiSort(options.sort);
+  const apiSort = getScgHubApiSort(options.sort);
   if (apiSort !== "updated") {
     url.searchParams.set("sort", apiSort);
   }
   if (options.highlightedOnly) {
     url.searchParams.set("highlightedOnly", "true");
   }
-  return fetchClawdHubJson<ClawdHubSkillsResponse>(url.toString());
+  return fetchScgHubJson<ScgHubSkillsResponse>(url.toString());
 }
 
-export async function searchClawdHubSkills(options: {
+export async function searchScgHubSkills(options: {
   query: string;
   siteUrl?: string | null;
   limit?: number;
   highlightedOnly?: boolean;
-}): Promise<ClawdHubSearchResponse> {
-  const url = new URL(`${getClawdHubApiBaseUrl(options.siteUrl)}/search`);
+}): Promise<ScgHubSearchResponse> {
+  const url = new URL(`${getScgHubApiBaseUrl(options.siteUrl)}/search`);
   url.searchParams.set("q", options.query.trim());
   if (options.limit) {
-    url.searchParams.set("limit", String(clampClawdHubLimit(options.limit)));
+    url.searchParams.set("limit", String(clampScgHubLimit(options.limit)));
   }
   if (options.highlightedOnly) {
     url.searchParams.set("highlightedOnly", "true");
   }
-  return fetchClawdHubJson<ClawdHubSearchResponse>(url.toString());
+  return fetchScgHubJson<ScgHubSearchResponse>(url.toString());
 }
 
-export async function getClawdHubSkill(
+export async function getScgHubSkill(
   slug: string,
   options: { siteUrl?: string | null } = {},
-): Promise<ClawdHubSkillResponse> {
-  return fetchClawdHubJson<ClawdHubSkillResponse>(
-    `${getClawdHubApiBaseUrl(options.siteUrl)}/skills/${encodeURIComponent(slug.trim())}`,
+): Promise<ScgHubSkillResponse> {
+  return fetchScgHubJson<ScgHubSkillResponse>(
+    `${getScgHubApiBaseUrl(options.siteUrl)}/skills/${encodeURIComponent(slug.trim())}`,
   );
 }
 
-export async function getClawdHubSkillFile(
+export async function getScgHubSkillFile(
   slug: string,
   options: {
     path?: string;
@@ -191,8 +191,8 @@ export async function getClawdHubSkillFile(
     version?: string | null;
     tag?: string | null;
   } = {},
-): Promise<ClawdHubSkillFileResponse> {
-  const url = new URL(`${getClawdHubApiBaseUrl(options.siteUrl)}/skills/${encodeURIComponent(slug.trim())}/file`);
+): Promise<ScgHubSkillFileResponse> {
+  const url = new URL(`${getScgHubApiBaseUrl(options.siteUrl)}/skills/${encodeURIComponent(slug.trim())}/file`);
   url.searchParams.set("path", options.path?.trim() || "SKILL.md");
   if (options.version?.trim()) {
     url.searchParams.set("version", options.version.trim());
@@ -200,24 +200,24 @@ export async function getClawdHubSkillFile(
   if (options.tag?.trim()) {
     url.searchParams.set("tag", options.tag.trim());
   }
-  return fetchClawdHubJson<ClawdHubSkillFileResponse>(url.toString());
+  return fetchScgHubJson<ScgHubSkillFileResponse>(url.toString());
 }
 
-export async function getClawdHubSkillManifest(
+export async function getScgHubSkillManifest(
   slug: string,
   options: { siteUrl?: string | null } = {},
-): Promise<ClawdHubSkillManifestResponse> {
-  return fetchClawdHubJson<ClawdHubSkillManifestResponse>(
-    `${getClawdHubApiBaseUrl(options.siteUrl)}/skills/${encodeURIComponent(slug.trim())}/manifest`,
+): Promise<ScgHubSkillManifestResponse> {
+  return fetchScgHubJson<ScgHubSkillManifestResponse>(
+    `${getScgHubApiBaseUrl(options.siteUrl)}/skills/${encodeURIComponent(slug.trim())}/manifest`,
   );
 }
 
-export function clampClawdHubLimit(limit: number, fallback = 10): number {
+export function clampScgHubLimit(limit: number, fallback = 10): number {
   if (!Number.isFinite(limit)) return fallback;
   return Math.max(1, Math.min(200, Math.floor(limit)));
 }
 
-async function fetchClawdHubJson<T>(url: string): Promise<T> {
+async function fetchScgHubJson<T>(url: string): Promise<T> {
   const response = await fetch(url, {
     headers: {
       Accept: "application/json",
@@ -231,7 +231,7 @@ async function fetchClawdHubJson<T>(url: string): Promise<T> {
     const message = payload && typeof payload === "object" && payload !== null
       ? ("error" in payload && payload.error) || ("message" in payload && payload.message)
       : undefined;
-    throw new Error(message || `ClawdHub request failed (${response.status})`);
+    throw new Error(message || `ScgHub request failed (${response.status})`);
   }
 
   return payload as T;

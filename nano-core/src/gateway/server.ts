@@ -18,15 +18,15 @@ import { createServer, type IncomingMessage, type ServerResponse } from "node:ht
 import { WebSocketServer, WebSocket } from "ws";
 import { createHmac, timingSafeEqual, randomBytes } from "node:crypto";
 import { EventEmitter } from "eventemitter3";
-import type { ClawdConfig } from "../config/vault.js";
-import type { ClawdWallet } from "../wallet/manager.js";
+import type { ScgConfig } from "../config/vault.js";
+import type { ScgWallet } from "../wallet/manager.js";
 import type { TradingEngine, ManualTradeInput } from "../trading/engine.js";
 import type { MemoryEngine } from "../memory/engine.js";
-import { getClawdKnowledgeSnapshot, getClawdKnowledgeSummary, searchClawdKnowledge } from "../docs/integration.js";
+import { getScgKnowledgeSnapshot, getScgKnowledgeSummary, searchScgKnowledge } from "../docs/integration.js";
 import { TelegramConversationStore } from "../telegram/persistence.js";
 import { getPersona } from "../claw/persona-loader.js";
 import { getTaskSummary, getTasksForPersona, loadAllTasks, searchTasks } from "../claw/task-loader.js";
-import { getClawdHubApiBaseUrl, getClawdHubDiscoveryUrl, getClawdHubSiteUrl } from "../hub/public-client.js";
+import { getScgHubApiBaseUrl, getScgHubDiscoveryUrl, getScgHubSiteUrl } from "../hub/public-client.js";
 import { createBitaxeClientFromEnv, type BitaxeClient } from "../bitaxe/client.js";
 
 // ── Types ────────────────────────────────────────────────────
@@ -78,7 +78,7 @@ class RateLimiter {
 
 // ── Gateway Server ───────────────────────────────────────────
 
-export class ClawdGateway extends EventEmitter<GatewayEvents> {
+export class ScgGateway extends EventEmitter<GatewayEvents> {
   private server: ReturnType<typeof createServer> | null = null;
   private wss: WebSocketServer | null = null;
   private agents: Map<string, ConnectedAgent> = new Map();
@@ -97,8 +97,8 @@ export class ClawdGateway extends EventEmitter<GatewayEvents> {
     };
 
   constructor(
-    private config: ClawdConfig,
-    private wallet: ClawdWallet,
+    private config: ScgConfig,
+    private wallet: ScgWallet,
     private trading: TradingEngine,
     private memory: MemoryEngine,
   ) {
@@ -113,7 +113,7 @@ export class ClawdGateway extends EventEmitter<GatewayEvents> {
     return new Promise((resolve) => {
       this.server = createServer((req, res) => {
         void this.handleHttp(req, res).catch((err) => {
-          console.error("ClawdGateway HTTP error", err);
+          console.error("ScgGateway HTTP error", err);
           if (!res.headersSent) {
             res.writeHead(500, { "Content-Type": "application/json" });
           }
@@ -131,7 +131,7 @@ export class ClawdGateway extends EventEmitter<GatewayEvents> {
 
       this.server.listen(this.config.gateway.port, this.config.gateway.host, () => {
         console.log(
-          `🌐 Clawd Gateway running on ${this.config.gateway.host}:${this.config.gateway.port}`,
+          `🌐 SCG Gateway running on ${this.config.gateway.host}:${this.config.gateway.port}`,
         );
         resolve();
       });
@@ -378,7 +378,7 @@ export class ClawdGateway extends EventEmitter<GatewayEvents> {
     // CORS
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Clawd-Secret");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-SCG-Secret");
 
     if (req.method === "OPTIONS") {
       res.writeHead(204);
@@ -426,7 +426,7 @@ export class ClawdGateway extends EventEmitter<GatewayEvents> {
             lastHeartbeat: a.lastHeartbeat,
           })),
           framework: {
-            name: "Solana clawd",
+            name: "Solana Claude Go",
             features: [
               "gateway",
               "trading-engine",
@@ -451,9 +451,9 @@ export class ClawdGateway extends EventEmitter<GatewayEvents> {
         const limit = this.parsePositiveInteger(url.searchParams.get("limit"), 10);
         const refresh = this.parseBoolean(url.searchParams.get("refresh"));
 
-        const snapshot = getClawdKnowledgeSnapshot({ refresh });
-        const summary = getClawdKnowledgeSummary(snapshot);
-        const matches = query ? searchClawdKnowledge(snapshot, query, limit) : [];
+        const snapshot = getScgKnowledgeSnapshot({ refresh });
+        const summary = getScgKnowledgeSummary(snapshot);
+        const matches = query ? searchScgKnowledge(snapshot, query, limit) : [];
 
         res.writeHead(200, { "Content-Type": "application/json" });
         res.end(JSON.stringify({
@@ -550,7 +550,7 @@ export class ClawdGateway extends EventEmitter<GatewayEvents> {
             },
             wallet: this.wallet.getInfo(),
             telegram: this.extensionTelegramConfig,
-            catalog: getClawdKnowledgeSnapshot().extensions.entries,
+            catalog: getScgKnowledgeSnapshot().extensions.entries,
           }));
           break;
         }
@@ -660,8 +660,8 @@ export class ClawdGateway extends EventEmitter<GatewayEvents> {
         const replyText = this.buildExtensionReply(content);
         const assistantMessage = this.telegramStore.addMessage({
           chatId,
-          userId: "clawd-agent",
-          userName: "Solana clawd",
+          userId: "scg-agent",
+          userName: "Solana Claude Go",
           role: "assistant",
           content: replyText,
           metadata: {
@@ -749,13 +749,13 @@ export class ClawdGateway extends EventEmitter<GatewayEvents> {
    * Build framework snapshot for dashboard clients (macOS app / future web UIs).
    */
   private getFrameworkSnapshot(): Record<string, unknown> {
-    const knowledgeSummary = getClawdKnowledgeSummary();
-    const extensionSnapshot = getClawdKnowledgeSnapshot().extensions;
+    const knowledgeSummary = getScgKnowledgeSummary();
+    const extensionSnapshot = getScgKnowledgeSnapshot().extensions;
     const taskSummary = getTaskSummary(loadAllTasks());
-    const publicHubSiteUrl = getClawdHubSiteUrl();
+    const publicHubSiteUrl = getScgHubSiteUrl();
 
     return {
-      project: "Solana clawd",
+      project: "Solana Claude Go",
       agent: {
         id: this.wallet.getAgentId(),
         name: this.wallet.getInfo().agentName,
@@ -779,8 +779,8 @@ export class ClawdGateway extends EventEmitter<GatewayEvents> {
       hub: {
         runtimeUrl: this.config.hub.url,
         publicSiteUrl: publicHubSiteUrl,
-        publicApiBaseUrl: getClawdHubApiBaseUrl(publicHubSiteUrl),
-        discoveryUrl: getClawdHubDiscoveryUrl(publicHubSiteUrl),
+        publicApiBaseUrl: getScgHubApiBaseUrl(publicHubSiteUrl),
+        discoveryUrl: getScgHubDiscoveryUrl(publicHubSiteUrl),
       },
       knowledge: knowledgeSummary,
       tasks: taskSummary,
@@ -1010,7 +1010,7 @@ export class ClawdGateway extends EventEmitter<GatewayEvents> {
     const lower = trimmed.toLowerCase();
 
     if (!trimmed) {
-      return "I received an empty message. Send a prompt and I will route it through the Solana clawd gateway.";
+      return "I received an empty message. Send a prompt and I will route it through the Solana Claude Go gateway.";
     }
 
     if (lower.includes("status")) {
@@ -1033,7 +1033,7 @@ export class ClawdGateway extends EventEmitter<GatewayEvents> {
         : "Telegram relay is currently disabled. Enable it in the extension settings.";
     }
 
-    return `Solana clawd received: "${trimmed}". Your message has been stored in gateway memory and can be forwarded to Telegram if enabled.`;
+    return `Solana Claude Go received: "${trimmed}". Your message has been stored in gateway memory and can be forwarded to Telegram if enabled.`;
   }
 
   /**
@@ -1044,7 +1044,7 @@ export class ClawdGateway extends EventEmitter<GatewayEvents> {
     if (!expectedSecret) return true;
 
     const bearerToken = this.extractBearerToken(req.headers.authorization);
-    const headerSecret = this.firstHeaderValue(req.headers["x-clawd-secret"]);
+    const headerSecret = this.firstHeaderValue(req.headers["x-scg-secret"]);
 
     const candidates = [bearerToken, headerSecret]
       .filter((value): value is string => Boolean(value && value.trim().length > 0))

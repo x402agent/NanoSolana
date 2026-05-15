@@ -1,5 +1,5 @@
 /**
- * Solana clawd Agent Birth Certificate — Devnet Gasless NFT via Metaplex
+ * Solana Claude Go Agent Birth Certificate — Devnet Gasless NFT via Metaplex
  *
  * Every TamaGObot agent mints a Birth Certificate NFT at creation time.
  * - Uses Metaplex Token Metadata program on Solana devnet.
@@ -52,7 +52,7 @@ export interface MintResult {
 
 const DEVNET_RPC = "https://api.devnet.solana.com";
 const NFT_SYMBOL = "NSBIRTH";
-const NFT_COLLECTION_NAME = "Solana clawd TamaGObot Birth Certificates";
+const NFT_COLLECTION_NAME = "Solana Claude Go TamaGObot Birth Certificates";
 
 // ── PDA derivations ────────────────────────────────────────────────────────
 
@@ -106,9 +106,9 @@ function buildOffchainMetadata(meta: BirthCertificateMetadata): object {
   return {
     name: `TamaGObot #${meta.agentId.slice(0, 8)}`,
     symbol: NFT_SYMBOL,
-    description: `Birth certificate for Solana clawd TamaGObot agent ${meta.agentId}. Born ${new Date(meta.bornAt).toISOString()}.`,
-    image: "https://solana-clawd.com/birth-cert.png",
-    external_url: "https://solana-clawd.com",
+    description: `Birth certificate for Solana Claude Go TamaGObot agent ${meta.agentId}. Born ${new Date(meta.bornAt).toISOString()}.`,
+    image: "https://solana-claude-go.com/birth-cert.png",
+    external_url: "https://solana-claude-go.com",
     attributes: [
       { trait_type: "Agent ID", value: meta.agentId },
       { trait_type: "Wallet", value: meta.walletPublicKey },
@@ -178,7 +178,7 @@ export async function mintBirthCertificate(
 
   // In production, upload offchainMeta to Arweave/IPFS and use that URI.
   // For devnet, we use a placeholder URI with the agent ID.
-  const metadataUri = `https://solana-clawd.com/api/birth-cert/${metadata.agentId}`;
+  const metadataUri = `https://solana-claude-go.com/api/birth-cert/${metadata.agentId}`;
 
   const createMetadataIx = createCreateMetadataAccountV3Instruction(
     {

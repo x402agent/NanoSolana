@@ -2,7 +2,7 @@
  * Nano Solana — Legacy Memory Engine
  *
  * Generic memory engine kept for backward compatibility.
- * New code should use ClawVault (3-tier epistemological memory).
+ * New code should use ScgVault (3-tier epistemological memory).
  */
 
 import { EventEmitter } from "eventemitter3";

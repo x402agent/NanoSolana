@@ -1,5 +1,5 @@
 ---
-summary: "Beginner-focused guide to NanoSolana gateway startup, auth, and day-one operations"
+summary: "Beginner-focused guide to Solana Claude Go gateway startup, auth, and day-one operations"
 title: "Gateway (CLI Surface)"
 ---
 
@@ -7,7 +7,7 @@ title: "Gateway (CLI Surface)"
 
 This page explains how operators use the gateway **from the CLI today**.
 
-Important: there is no shipped `nanosolana gateway ...` command subtree yet. The
+Important: there is no shipped `scg gateway ...` command subtree yet. The
 gateway is started as part of runtime startup.
 
 ## Start the gateway (copy/paste)
@@ -15,21 +15,21 @@ gateway is started as part of runtime startup.
 ### Recommended (all-in-one)
 
 ```bash
-npx nanosolana go
+npx scg go
 ```
 
 With optional DVD intro startup sequence:
 
 ```bash
-npx nanosolana go --dvd-intro
+npx scg go --dvd-intro
 ```
 
 ### Manual startup flow
 
 ```bash
-npx nanosolana init
-npx nanosolana birth --name MyAgent
-npx nanosolana run
+npx scg init
+npx scg birth --name MyAgent
+npx scg run
 ```
 
 ### Gateway-only development
@@ -43,9 +43,9 @@ npm run gateway
 ## Day-one health checks
 
 ```bash
-npx nanosolana status
+npx scg status
 curl http://127.0.0.1:18790/health
-curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/status
 ```
 
@@ -60,7 +60,7 @@ Current defaults come from `nano-core/src/config/vault.ts`:
 Auth behavior:
 
 - if `NANO_GATEWAY_SECRET` is set, `/api/*` routes require auth
-- use `X-NanoSolana-Secret: <secret>` header or `Authorization: Bearer <secret>`
+- use `X-Solana Claude Go-Secret: <secret>` header or `Authorization: Bearer <secret>`
 - `/health` remains open for liveness checks
 
 ## Gateway endpoints you will use first
@@ -79,11 +79,11 @@ Auth behavior:
 ## Useful operator commands around the gateway
 
 ```bash
-npx nanosolana status
-npx nanosolana send "ping"
-npx nanosolana nodes
-npx nanosolana bots list
-npx nanosolana docs "gateway"
+npx scg status
+npx scg send "ping"
+npx scg nodes
+npx scg bots list
+npx scg docs "gateway"
 ```
 
 ## Cross-links

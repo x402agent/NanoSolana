@@ -35,5 +35,5 @@ If you've tested this strategy, share:
 - Max drawdown
 - Number of trades
 
-**ClawVault Integration**
+**ScgVault Integration**
 How should the memory system learn from this strategy's outcomes?

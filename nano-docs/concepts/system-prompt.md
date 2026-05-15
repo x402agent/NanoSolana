@@ -1,11 +1,11 @@
 ---
-summary: "NanoSolana system prompt and SOUL.md"
+summary: "Solana Claude Go system prompt and SOUL.md"
 title: "System Prompt (SOUL.md)"
 ---
 
 # System prompt (SOUL.md)
 
-Every NanoSolana agent can use a **SOUL.md** file to define identity,
+Every Solana Claude Go agent can use a **SOUL.md** file to define identity,
 trading philosophy, and operational principles. This file is injected as the
 system prompt for all AI interactions.
 
@@ -16,7 +16,7 @@ agenda that gets appended to the runtime prompt when present.
 ## SOUL.md structure
 
 ```markdown
-# NanoSolana SOUL
+# Solana Claude Go SOUL
 
 ## Identity
 - Name: [Agent name]
@@ -47,7 +47,7 @@ agenda that gets appended to the runtime prompt when present.
 ## How it's used
 
 1. **AI Provider** loads `SOUL.md` at initialization.
-2. System prompt is built: `SOUL.md` + ClawVault context + market data.
+2. System prompt is built: `SOUL.md` + ScgVault context + market data.
 3. Every `orient()`, `decide()`, `research()`, and `agentChat()` call includes the SOUL.
 4. When available, `RESEARCH.md` is appended after `SOUL.md`.
 5. The AI reasons within those defined constraints.
@@ -64,8 +64,8 @@ should evolve more often than core identity.
 ```
 1. SOUL.md (identity + philosophy)
 2. RESEARCH.md (optional improvement agenda)
-3. ClawVault LEARNED entries (relevant patterns)
-4. ClawVault INFERRED entries (tentative hypotheses)
+3. ScgVault LEARNED entries (relevant patterns)
+4. ScgVault INFERRED entries (tentative hypotheses)
 5. Market data snapshot (current prices, indicators)
 6. Pet status (mood affects risk framing)
 7. Conversation history (for channel-triggered turns)

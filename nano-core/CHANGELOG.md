@@ -60,7 +60,7 @@ NanoSolana hits 1.0! Production-ready autonomous trading agents on Solana.
 ### 🏗️ Architecture
 
 - OODA Trading Loop (Observe → Orient → Decide → Act → Learn)
-- ClawVault 3-tier epistemological memory (Known/Learned/Inferred)
+- ScgVault 3-tier epistemological memory (Known/Learned/Inferred)
 - TamaGOchi virtual pet risk modifier
 - Mesh networking via Tailscale VPN
 - On-chain NFT identity via Metaplex (devnet)
@@ -72,7 +72,7 @@ NanoSolana hits 1.0! Production-ready autonomous trading agents on Solana.
 ### Added
 
 - OODA trading engine with Jupiter Ultra Swap
-- ClawVault 3-tier memory with experience replay
+- ScgVault 3-tier memory with experience replay
 - TamaGOchi pet engine with mood-based risk modification
 - Helius blockchain scanner (DAS API, Enhanced Transactions)
 - On-chain agent registry (Metaplex NFT)

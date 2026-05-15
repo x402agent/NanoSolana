@@ -1,5 +1,5 @@
 /**
- * Solana clawd — AI Provider (OpenRouter)
+ * Solana Claude Go — AI Provider (OpenRouter)
  *
  * LLM-powered reasoning for the OODA loop:
  *   - Orient: analyze raw market data with the soul's trading philosophy
@@ -17,7 +17,7 @@
 
 import { EventEmitter } from "eventemitter3";
 
-import { readClawdRuntimeAsset } from "../runtime/assets.js";
+import { readScgRuntimeAsset } from "../runtime/assets.js";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -127,7 +127,7 @@ export class AIProvider extends EventEmitter<AIProviderEvents> {
     this.baseUrl = params.baseUrl ?? "https://openrouter.ai/api/v1";
     this.model = params.model ?? "openrouter/healer-alpha";
 
-    const soulPrompt = readClawdRuntimeAsset("SOUL.md", `You are Solana clawd, an autonomous Solana trading intelligence.
+    const soulPrompt = readScgRuntimeAsset("SOUL.md", `You are Solana Claude Go, an autonomous Solana trading intelligence.
 
 You distinguish what you KNOW (fresh API data, < 60s) from what you've LEARNED (trade-derived patterns) from what you've INFERRED (correlations held loosely).
 
@@ -137,12 +137,12 @@ You are terse and decisive. You say what you see, what you're doing, and why. Ri
 
 When making trade decisions, respond with structured JSON containing: action, token, confidence (0-1), reasoning, riskAssessment, positionSizePct, stopLossPct, takeProfitPct.`, {
       explicitPath: params.soulPath,
-      envVarName: "CLAWD_SOUL_PATH",
+      envVarName: "SCG_SOUL_PATH",
     });
 
-    const researchPrompt = readClawdRuntimeAsset("RESEARCH.md", "", {
+    const researchPrompt = readScgRuntimeAsset("RESEARCH.md", "", {
       explicitPath: params.researchPath,
-      envVarName: "CLAWD_RESEARCH_PATH",
+      envVarName: "SCG_RESEARCH_PATH",
     }).trim();
 
     this.soulPrompt = researchPrompt
@@ -189,8 +189,8 @@ When making trade decisions, respond with structured JSON containing: action, to
       headers: {
         Authorization: `Bearer ${this.apiKey}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://solana-clawd.com",
-        "X-OpenRouter-Title": "Solana clawd",
+        "HTTP-Referer": "https://solana-claude-go.com",
+        "X-OpenRouter-Title": "Solana Claude Go",
       },
       body: JSON.stringify(body),
     });

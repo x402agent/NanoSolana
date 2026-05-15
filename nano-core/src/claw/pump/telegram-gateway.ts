@@ -1,4 +1,4 @@
-// ── Solana clawd × PumpFun — Telegram Gateway ─────────────────────────────────
+// ── Solana Claude Go × PumpFun — Telegram Gateway ─────────────────────────────────
 //
 // The Telegram Gateway connects the swarm to Telegram, allowing users
 // to spawn, manage, and monitor financial agents via chat commands.
@@ -231,7 +231,7 @@ export class TelegramGateway {
     const health = this.swarm.getSwarmHealth();
     const agents = this.swarm.getAllAgents();
 
-    let msg = '🐝 <b>Solana clawd Swarm Dashboard</b>\n\n';
+    let msg = '🐝 <b>Solana Claude Go Swarm Dashboard</b>\n\n';
     msg += `🤖 Agents: <b>${health.activeAgents}</b>/${health.totalAgents}\n`;
     msg += `❌ Errors: <b>${health.errorAgents}</b>\n`;
     msg += `⏱ Uptime: <b>${formatUptime(health.uptimeSeconds)}</b>\n`;
@@ -333,7 +333,7 @@ export class TelegramGateway {
       msg += `🎭 Role: <code>${agent.identity.role}</code>\n`;
       msg += personaLine;
       msg += `🔑 Wallet: <code>${sdk.shortenAddress(agent.identity.walletAddress)}</code>\n`;
-      msg += `🧠 Memory: ClawVault active (3-tier epistemological)\n`;
+      msg += `🧠 Memory: ScgVault active (3-tier epistemological)\n`;
       msg += `📊 Status: ${statusIcon(agent.status)} ${agent.status}\n`;
       await this.sendMessage(cmd.chatId, msg);
     } catch (err) {
@@ -693,7 +693,7 @@ export class TelegramGateway {
   }
 
   private async cmdHelp(cmd: GatewayCommand): Promise<void> {
-    let msg = '🐝 <b>Solana clawd Pump.Fun Swarm</b>\n\n';
+    let msg = '🐝 <b>Solana Claude Go Pump.Fun Swarm</b>\n\n';
     msg += '<b>Swarm Management:</b>\n';
     msg += '  /swarm — Dashboard overview\n';
     msg += '  /spawn &lt;role&gt; — Spawn agent\n';

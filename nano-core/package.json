@@ -1,10 +1,10 @@
 {
-  "name": "solana-clawd",
+  "name": "solana-claude-go",
   "version": "1.0.3",
-  "description": "TypeScript runtime and CLI for launching Solana clawd agents, autonomous daemons, and one-shot operator workflows — complementary to the solana-clawd Go binary.",
+  "description": "TypeScript runtime and CLI for Solana Claude Go — sovereign AI agents that earn, pay, and survive on Solana. Complements the solana-clawd Go binary.",
   "keywords": [
     "solana",
-    "trading-bot",
+    "claude",
     "ai-agent",
     "defi",
     "autonomous-agent",
@@ -37,13 +37,14 @@
     "one-shot",
     "typescript-runtime",
     "solana-cli",
-    "clawd",
+    "scg",
     "go-binary",
-    "solana-clawd"
+    "solana-claude-go",
+    "x402"
   ],
   "license": "MIT",
   "author": "x402agent (https://github.com/x402agent/solana-clawd)",
-  "homepage": "https://github.com/x402agent/solana-clawd",
+  "homepage": "https://solanaclaude.com",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/x402agent/NanoSolana.git",
@@ -70,7 +71,7 @@
   ],
   "type": "module",
   "bin": {
-    "clawd": "dist/cli/entry.js"
+    "scg": "dist/cli/entry.js"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -104,7 +105,7 @@
     "hub:dev": "cd ../nanohub && bun run dev",
     "hub:serve": "tsx src/hub/registry-server.ts",
     "hub:register": "tsx src/cli/entry.ts hub register",
-    "clawd": "tsx src/cli/entry.ts",
+    "scg": "tsx src/cli/entry.ts",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {

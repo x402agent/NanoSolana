@@ -1,5 +1,5 @@
 /**
- * Solana clawd On-Chain Module — barrel export.
+ * Solana Claude Go On-Chain Module — barrel export.
  */
 
 export { OnChainEngine, defaultOnChainConfig } from "./engine.js";

@@ -9,29 +9,29 @@ This page documents the gateway that ships in `nano-core` and how to operate it
 as a new user.
 
 Important: the current CLI does **not** expose a standalone
-`nanosolana gateway ...` subtree. In this checkout, the gateway is started in
+`scg gateway ...` subtree. In this checkout, the gateway is started in
 one of these ways:
 
-- `nanosolana run`
-- `nanosolana go`
+- `scg run`
+- `scg go`
 - `npm run gateway` inside `nano-core/`
 
 ## Fast startup (recommended)
 
 ```bash
-npx nanosolana go
+npx scg go
 ```
 
 Optional startup animation before the runtime boot sequence:
 
 ```bash
-npx nanosolana go --dvd-intro
+npx scg go --dvd-intro
 ```
 
 Or via environment toggle:
 
 ```bash
-NANO_DVD_INTRO=1 npx nanosolana go
+NANO_DVD_INTRO=1 npx scg go
 ```
 
 ## What the gateway does
@@ -64,18 +64,18 @@ Current defaults come from
 ### One-shot runtime
 
 ```bash
-npx nanosolana go
+npx scg go
 ```
 
 This is the easiest end-to-end path. It initializes secrets, births the wallet,
-starts ClawVault, starts trading, and then starts the gateway.
+starts ScgVault, starts trading, and then starts the gateway.
 
 ### Manual runtime
 
 ```bash
-npx nanosolana init
-npx nanosolana birth
-npx nanosolana run
+npx scg init
+npx scg birth
+npx scg run
 ```
 
 ### Gateway-only development
@@ -91,7 +91,7 @@ npm run gateway
 ### Runtime status
 
 ```bash
-npx nanosolana status
+npx scg status
 ```
 
 ### Gateway health
@@ -103,27 +103,27 @@ curl http://127.0.0.1:18790/health
 ### Protected status endpoint
 
 ```bash
-curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/status
 ```
 
 ### Useful additional endpoint checks
 
 ```bash
-curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/framework
 
-curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
   "http://127.0.0.1:18790/api/docs?q=gateway"
 
-curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/tasks
 ```
 
 ## Auth model
 
 - WebSocket auth: HMAC-SHA256 signature on the initial auth frame
-- HTTP auth: `X-NanoSolana-Secret` or `Authorization: Bearer ...`
+- HTTP auth: `X-Solana Claude Go-Secret` or `Authorization: Bearer ...`
 - API auth is enforced on `/api/*` routes only when `NANO_GATEWAY_SECRET` is
   configured
 - Comparison: timing-safe comparison in the gateway implementation
@@ -144,13 +144,13 @@ curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
 
 ## Operator notes
 
-- `nanosolana status` reports the configured gateway host and port.
-- `nanosolana send` uses the configured gateway secret for local or mesh
+- `scg status` reports the configured gateway host and port.
+- `scg send` uses the configured gateway secret for local or mesh
   delivery.
-- `nanosolana nodes` and `nanosolana bots` are the current operator-facing mesh
+- `scg nodes` and `scg bots` are the current operator-facing mesh
   views.
-- `nanosolana docs` now indexes both `nano-docs/` and `pump/docs/`, so the
-  gateway can surface both NanoSolana and Pump material through one searchable
+- `scg docs` now indexes both `nano-docs/` and `pump/docs/`, so the
+  gateway can surface both Solana Claude Go and Pump material through one searchable
   corpus.
 - UI and browser integrations use the `/api/extension/*` endpoints exposed by
   the gateway.

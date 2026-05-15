@@ -1,7 +1,7 @@
 /**
- * Solana clawd Docs + Extensions Integration
+ * Solana Claude Go Docs + Extensions Integration
  *
- * Builds a searchable snapshot of the requested Solana clawd knowledge corpus:
+ * Builds a searchable snapshot of the requested Solana Claude Go knowledge corpus:
  * - nano-docs/*
  * - pump/docs/*
  * - extensions/* (metadata + file counts)
@@ -11,10 +11,10 @@ import { existsSync, readdirSync, readFileSync, statSync, type Dirent } from "no
 import { extname, join, relative, resolve } from "node:path";
 
 import {
-  resolveClawdRepositoryRoot,
-  scanClawdExtensions,
-  type ClawdExtensionCatalogEntry,
-  type ClawdExtensionCatalogSnapshot,
+  resolveScgRepositoryRoot,
+  scanScgExtensions,
+  type ScgExtensionCatalogEntry,
+  type ScgExtensionCatalogSnapshot,
 } from "../extensions/catalog.js";
 
 const DOC_AREAS = [
@@ -32,9 +32,9 @@ const DOC_AREAS = [
 const MARKDOWN_EXTENSIONS = new Set([".md", ".mdx"]);
 const DEFAULT_CACHE_TTL_MS = 60_000;
 
-export type ClawdDocArea = (typeof DOC_AREAS)[number]["area"];
+export type ScgDocArea = (typeof DOC_AREAS)[number]["area"];
 
-export interface ClawdDocIndexEntry {
+export interface ScgDocIndexEntry {
   path: string;
   bytes: number;
   updatedAt: number;
@@ -43,33 +43,33 @@ export interface ClawdDocIndexEntry {
   headings: string[];
 }
 
-export interface ClawdDocAreaSnapshot {
-  area: ClawdDocArea;
+export interface ScgDocAreaSnapshot {
+  area: ScgDocArea;
   path: string;
   files: number;
   markdownFiles: number;
   bytes: number;
   updatedAt: number | null;
-  entries: ClawdDocIndexEntry[];
+  entries: ScgDocIndexEntry[];
 }
 
-export type ClawdExtensionIndexEntry = ClawdExtensionCatalogEntry;
+export type ScgExtensionIndexEntry = ScgExtensionCatalogEntry;
 
-export interface ClawdKnowledgeSnapshot {
+export interface ScgKnowledgeSnapshot {
   generatedAt: number;
   repoRoot: string;
   docs: {
-    areas: ClawdDocAreaSnapshot[];
+    areas: ScgDocAreaSnapshot[];
     totals: {
       files: number;
       markdownFiles: number;
       bytes: number;
     };
   };
-  extensions: ClawdExtensionCatalogSnapshot;
+  extensions: ScgExtensionCatalogSnapshot;
 }
 
-export interface ClawdKnowledgeSummary {
+export interface ScgKnowledgeSummary {
   generatedAt: number;
   docs: {
     areas: number;
@@ -85,7 +85,7 @@ export interface ClawdKnowledgeSummary {
   };
 }
 
-export interface ClawdKnowledgeSearchMatch {
+export interface ScgKnowledgeSearchMatch {
   type: "doc" | "extension";
   id: string;
   path: string;
@@ -94,20 +94,20 @@ export interface ClawdKnowledgeSearchMatch {
   score: number;
 }
 
-export interface ClawdKnowledgeSnapshotOptions {
+export interface ScgKnowledgeSnapshotOptions {
   refresh?: boolean;
   cacheTtlMs?: number;
 }
 
-let cachedSnapshot: ClawdKnowledgeSnapshot | null = null;
+let cachedSnapshot: ScgKnowledgeSnapshot | null = null;
 let cacheUpdatedAt = 0;
 
 /**
  * Build (or return cached) docs/extensions snapshot.
  */
-export function getClawdKnowledgeSnapshot(
-  options: ClawdKnowledgeSnapshotOptions = {},
-): ClawdKnowledgeSnapshot {
+export function getScgKnowledgeSnapshot(
+  options: ScgKnowledgeSnapshotOptions = {},
+): ScgKnowledgeSnapshot {
   const ttlMs = options.cacheTtlMs ?? DEFAULT_CACHE_TTL_MS;
   const now = Date.now();
 
@@ -115,7 +115,7 @@ export function getClawdKnowledgeSnapshot(
     return cachedSnapshot;
   }
 
-  const snapshot = buildClawdKnowledgeSnapshot();
+  const snapshot = buildScgKnowledgeSnapshot();
   cachedSnapshot = snapshot;
   cacheUpdatedAt = now;
   return snapshot;
@@ -124,7 +124,7 @@ export function getClawdKnowledgeSnapshot(
 /**
  * Clear in-memory snapshot cache.
  */
-export function clearClawdKnowledgeCache(): void {
+export function clearScgKnowledgeCache(): void {
   cachedSnapshot = null;
   cacheUpdatedAt = 0;
 }
@@ -132,9 +132,9 @@ export function clearClawdKnowledgeCache(): void {
 /**
  * Generate compact summary for gateway/framework surfaces.
  */
-export function getClawdKnowledgeSummary(
-  snapshot: ClawdKnowledgeSnapshot = getClawdKnowledgeSnapshot(),
-): ClawdKnowledgeSummary {
+export function getScgKnowledgeSummary(
+  snapshot: ScgKnowledgeSnapshot = getScgKnowledgeSnapshot(),
+): ScgKnowledgeSummary {
   return {
     generatedAt: snapshot.generatedAt,
     docs: {
@@ -155,17 +155,17 @@ export function getClawdKnowledgeSummary(
 /**
  * Search docs + extension metadata by free-text query.
  */
-export function searchClawdKnowledge(
-  snapshot: ClawdKnowledgeSnapshot,
+export function searchScgKnowledge(
+  snapshot: ScgKnowledgeSnapshot,
   query: string,
   limit = 10,
-): ClawdKnowledgeSearchMatch[] {
+): ScgKnowledgeSearchMatch[] {
   const normalizedQuery = query.trim().toLowerCase();
   if (!normalizedQuery) return [];
 
   const terms = normalizedQuery.split(/\s+/).filter((token) => token.length > 0);
   const boundedLimit = clamp(limit, 1, 100);
-  const matches: ClawdKnowledgeSearchMatch[] = [];
+  const matches: ScgKnowledgeSearchMatch[] = [];
 
   for (const area of snapshot.docs.areas) {
     for (const entry of area.entries) {
@@ -228,8 +228,8 @@ export function searchClawdKnowledge(
     .slice(0, boundedLimit);
 }
 
-function buildClawdKnowledgeSnapshot(): ClawdKnowledgeSnapshot {
-  const repoRoot = resolveClawdRepositoryRoot();
+function buildScgKnowledgeSnapshot(): ScgKnowledgeSnapshot {
+  const repoRoot = resolveScgRepositoryRoot();
   const docAreas = DOC_AREAS.map((area) => scanDocsArea(repoRoot, area));
 
   const docTotals = docAreas.reduce(
@@ -241,7 +241,7 @@ function buildClawdKnowledgeSnapshot(): ClawdKnowledgeSnapshot {
     { files: 0, markdownFiles: 0, bytes: 0 },
   );
 
-  const extensionSnapshot = scanClawdExtensions(repoRoot);
+  const extensionSnapshot = scanScgExtensions(repoRoot);
 
   return {
     generatedAt: Date.now(),
@@ -257,7 +257,7 @@ function buildClawdKnowledgeSnapshot(): ClawdKnowledgeSnapshot {
 function scanDocsArea(
   repoRoot: string,
   areaDefinition: (typeof DOC_AREAS)[number],
-): ClawdDocAreaSnapshot {
+): ScgDocAreaSnapshot {
   const areaDirectory = join(repoRoot, areaDefinition.directory);
   const files = walkFiles(areaDirectory);
 
@@ -265,7 +265,7 @@ function scanDocsArea(
   let markdownCount = 0;
   let bytes = 0;
   let latestUpdatedAt: number | null = null;
-  const entries: ClawdDocIndexEntry[] = [];
+  const entries: ScgDocIndexEntry[] = [];
 
   for (const filePath of files) {
     const stat = safeStat(filePath);

@@ -1,11 +1,11 @@
 ---
-summary: "NanoSolana TamaGOchi pet engine — evolution, mood, and wallet heartbeat"
+summary: "Solana Claude Go TamaGOchi pet engine — evolution, mood, and wallet heartbeat"
 title: "TamaGOchi Pet"
 ---
 
 # TamaGOchi pet engine
 
-Every NanoSolana agent has a virtual pet — the **TamaGOchi** — that is born with
+Every Solana Claude Go agent has a virtual pet — the **TamaGOchi** — that is born with
 the agent's wallet and evolves based on trading performance.
 
 ## Lifecycle
@@ -26,14 +26,14 @@ graph LR
 The TamaGOchi is "born" when the agent wallet is created:
 
 ```bash
-nanosolana birth
+scg birth
 ```
 
 This:
 1. Generates an Ed25519 keypair (Solana wallet).
 2. Encrypts the private key in the vault (AES-256-GCM).
 3. Creates the TamaGOchi egg and transitions to larva when the wallet is created.
-4. Persists state under `~/.nanosolana/tamagochi.json`.
+4. Persists state under `~/.scg/tamagochi.json`.
 
 ## State
 
@@ -63,7 +63,7 @@ The pet's mood directly modifies the trading engine's risk parameters:
 
 ## Feeding
 
-The current CLI does not expose a dedicated `nanosolana pet feed` subcommand.
+The current CLI does not expose a dedicated `scg pet feed` subcommand.
 Feeding exists in the pet engine API and is used internally by runtime flows.
 
 ## Heartbeat integration
@@ -94,7 +94,7 @@ underlying runtime state to become healthy again.
 
 ## File
 
-Pet state is stored at `~/.nanosolana/tamagochi.json`:
+Pet state is stored at `~/.scg/tamagochi.json`:
 
 ```json
 {

@@ -11,7 +11,7 @@
 import {
   NanoWallet,
   TradingEngine,
-  ClawVault,
+  ScgVault,
   TamaGOchi,
   NanoNetworkClient,
   TailscaleDiscovery,
@@ -22,7 +22,7 @@ interface AgentInstance {
   name: string;
   wallet: NanoWallet;
   engine: TradingEngine;
-  memory: ClawVault;
+  memory: ScgVault;
   pet: TamaGOchi;
 }
 
@@ -30,7 +30,7 @@ async function spawnAgent(name: string, config: any): Promise<AgentInstance> {
   const wallet = new NanoWallet(name);
   await wallet.birth();
 
-  const memory = new ClawVault();
+  const memory = new ScgVault();
   memory.startAutonomous();
 
   const pet = new TamaGOchi(name);

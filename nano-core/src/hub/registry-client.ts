@@ -1,13 +1,13 @@
 /**
- * ClawdHub — Supabase Registry Client
+ * ScgHub — Supabase Registry Client
  *
- * Provides programmatic access to the ClawdHub agent registry
+ * Provides programmatic access to the ScgHub agent registry
  * backed by Supabase PostgreSQL + Storage.
  *
  * Used by:
- *   - CLI `clawd hub register`
+ *   - CLI `SCG hub register`
  *   - Registration API server
- *   - ClawdHub web UI (read-only)
+ *   - ScgHub web UI (read-only)
  */
 
 import { createHash, randomUUID } from "node:crypto";
@@ -155,7 +155,7 @@ export class HubRegistryClient {
   }
 
   /**
-   * Register a new agent in the ClawdHub registry.
+   * Register a new agent in the ScgHub registry.
    */
   async registerAgent(input: RegisterAgentInput): Promise<{
     agent: HubAgent;

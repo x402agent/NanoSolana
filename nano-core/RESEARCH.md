@@ -72,7 +72,7 @@ Never violate these:
 ## Agent Instructions
 
 1. Read `SOUL.md` and this file at the start of a session.
-2. Review ClawVault lessons before proposing a new mutation.
+2. Review ScgVault lessons before proposing a new mutation.
 3. Prefer unexplored parameter space over repeating stale tests.
 4. Use real market data when available; mark simulated data explicitly when not.
 5. Log every result, including failures and rejected hypotheses.

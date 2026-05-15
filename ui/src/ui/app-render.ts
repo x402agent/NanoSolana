@@ -351,7 +351,7 @@ export function renderApp(state: AppViewState) {
             line-height: 1.6;
           ">
             Autonomous financial agents for Solana — modular, security-first, with
-            PumpFun integration, 43+ DeFi personas, and ClawVault memory.
+            PumpFun integration, 43+ DeFi personas, and ScgVault memory.
           </p>
           <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
             <a href="https://github.com/x402agent/NanoSolana" target="_blank" rel="noreferrer" style="
@@ -408,11 +408,11 @@ export function renderApp(state: AppViewState) {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;
           ">
             ${[
-              { title: "nano-core", desc: "TypeScript runtime — persona system, task loader, swarm spawner, ClawVault memory, Pump SDK bridge", icon: "⚡" },
+              { title: "nano-core", desc: "TypeScript runtime — persona system, task loader, swarm spawner, ScgVault memory, Pump SDK bridge", icon: "⚡" },
               { title: "Pump SDK", desc: "Token creation, bonding curves, AMM pools, fee sharing, volume rewards — direct Solana program access", icon: "🚀" },
               { title: "Swarm Engine", desc: "Multi-agent orchestration with autonomous spawning, role assignment, and inter-agent event bus", icon: "🐝" },
               { title: "Persona System", desc: "43+ DeFi agent identities with expertise tags, opening questions, and auto-matched mission tasks", icon: "🧬" },
-              { title: "ClawVault Memory", desc: "Tiered memory (RAW → INFERRED → LEARNED) with TTL decay, autonomous management, and persistence", icon: "🧠" },
+              { title: "ScgVault Memory", desc: "Tiered memory (RAW → INFERRED → LEARNED) with TTL decay, autonomous management, and persistence", icon: "🧠" },
               { title: "Extensions", desc: "40+ channel plugins — Telegram, Discord, WhatsApp, Slack, Signal, PumpFun monitor, and more", icon: "🔌" },
             ].map(card => html`
               <div style="

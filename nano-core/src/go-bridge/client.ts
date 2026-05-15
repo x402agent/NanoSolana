@@ -1,5 +1,5 @@
 /**
- * Solana clawd — Go Binary Bridge
+ * Solana Claude Go — Go Binary Bridge
  *
  * Bidirectional communication layer between this TypeScript runtime
  * and the complementary solana-clawd Go binary.
@@ -11,14 +11,14 @@
  * This bridge lets both runtimes share:
  *   - Wallet state and balances
  *   - Trading signals and executions
- *   - Memory entries (ClawVault ↔ Go state store)
+ *   - Memory entries (ScgVault ↔ Go state store)
  *   - Agent heartbeats and health
  *   - Commands (e.g. sign tx, send SOL, swap via Jupiter)
  *
- * Transport: HTTP REST + WebSocket (Go binary listens on CLAWD_GO_PORT,
- * default 18800; TypeScript gateway on CLAWD_GATEWAY_PORT, default 18790).
+ * Transport: HTTP REST + WebSocket (Go binary listens on SCG_GO_PORT,
+ * default 18800; TypeScript gateway on SCG_GATEWAY_PORT, default 18790).
  *
- * Auth: shared HMAC-SHA256 secret (CLAWD_GO_SECRET env var).
+ * Auth: shared HMAC-SHA256 secret (SCG_GO_SECRET env var).
  */
 
 import { createHmac } from "node:crypto";
@@ -350,7 +350,7 @@ export class GoBridgeClient extends EventEmitter<GoBridgeEvents> {
     const url = `http://${this.config.host}:${this.config.port}${path}`;
     const headers: Record<string, string> = { "Content-Type": "application/json" };
     if (this.config.secret) {
-      headers["X-Clawd-Secret"] = this.config.secret;
+      headers["X-SCG-Secret"] = this.config.secret;
     }
 
     const res = await fetch(url, { headers });
@@ -362,7 +362,7 @@ export class GoBridgeClient extends EventEmitter<GoBridgeEvents> {
     const url = `http://${this.config.host}:${this.config.port}${path}`;
     const headers: Record<string, string> = { "Content-Type": "application/json" };
     if (this.config.secret) {
-      headers["X-Clawd-Secret"] = this.config.secret;
+      headers["X-SCG-Secret"] = this.config.secret;
     }
 
     const res = await fetch(url, {
@@ -460,14 +460,14 @@ export class GoBridgeClient extends EventEmitter<GoBridgeEvents> {
 // ── Factory ─────────────────────────────────────────────────────
 
 export function createGoBridgeFromEnv(): GoBridgeClient | null {
-  const enabled = (process.env.CLAWD_GO_ENABLED ?? "false").toLowerCase() === "true";
+  const enabled = (process.env.SCG_GO_ENABLED ?? "false").toLowerCase() === "true";
   if (!enabled) return null;
 
   return new GoBridgeClient({
-    host: process.env.CLAWD_GO_HOST ?? "127.0.0.1",
-    port: Number(process.env.CLAWD_GO_PORT ?? 18800),
-    secret: process.env.CLAWD_GO_SECRET,
-    reconnectMs: Number(process.env.CLAWD_GO_RECONNECT_MS ?? 5000),
-    pingIntervalMs: Number(process.env.CLAWD_GO_PING_MS ?? 15000),
+    host: process.env.SCG_GO_HOST ?? "127.0.0.1",
+    port: Number(process.env.SCG_GO_PORT ?? 18800),
+    secret: process.env.SCG_GO_SECRET,
+    reconnectMs: Number(process.env.SCG_GO_RECONNECT_MS ?? 5000),
+    pingIntervalMs: Number(process.env.SCG_GO_PING_MS ?? 15000),
   });
 }

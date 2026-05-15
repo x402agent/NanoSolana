@@ -1,7 +1,7 @@
 /**
- * Solana clawd — Hub Bridge
+ * Solana Claude Go — Hub Bridge
  *
- * Connects the Clawd Hub (web dashboard) to the core agent.
+ * Connects the SCG Hub (web dashboard) to the core agent.
  * Provides real-time WebSocket feeds from:
  *   - Trading engine (signals, prices, executions)
  *   - Memory engine (lessons, stats)
@@ -13,8 +13,8 @@
 
 import { WebSocket } from "ws";
 import { EventEmitter } from "eventemitter3";
-import type { ClawdConfig } from "../config/vault.js";
-import type { ClawdWallet, WalletInfo } from "../wallet/manager.js";
+import type { ScgConfig } from "../config/vault.js";
+import type { ScgWallet, WalletInfo } from "../wallet/manager.js";
 import type { TradingEngine, TokenPrice, TradeSignal } from "../trading/engine.js";
 import type { MemoryEngine, Lesson } from "../memory/engine.js";
 
@@ -36,7 +36,7 @@ export interface HubBridgeEvents {
 
 // ── Hub Bridge ────────────────────────────────────────────────
 
-export class ClawdHubBridge extends EventEmitter<HubBridgeEvents> {
+export class ScgHubBridge extends EventEmitter<HubBridgeEvents> {
   private ws: WebSocket | null = null;
   private reconnectTimer: ReturnType<typeof setInterval> | null = null;
   private isConnected = false;
@@ -44,7 +44,7 @@ export class ClawdHubBridge extends EventEmitter<HubBridgeEvents> {
   constructor(
     private hubUrl: string,
     private hubApiKey: string | undefined,
-    private wallet: ClawdWallet,
+    private wallet: ScgWallet,
     private trading: TradingEngine,
     private memory: MemoryEngine,
   ) {
@@ -52,7 +52,7 @@ export class ClawdHubBridge extends EventEmitter<HubBridgeEvents> {
   }
 
   /**
-   * Connect to the Clawd Hub WebSocket.
+   * Connect to the SCG Hub WebSocket.
    */
   async connect(): Promise<void> {
     const wsUrl = this.hubUrl

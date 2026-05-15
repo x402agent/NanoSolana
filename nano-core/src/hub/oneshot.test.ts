@@ -27,7 +27,7 @@ describe("hub/oneshot", () => {
       install: [{ kind: "node", package: "token-tracker" }],
     }, {
       env: { BIRDEYE_API_KEY: "test" },
-      siteUrl: "https://hub.solana-clawd.com",
+      siteUrl: "https://hub.solana-claude-go.com",
     });
 
     expect(plan.readyToLaunch).toBe(true);
@@ -63,7 +63,7 @@ describe("hub/oneshot", () => {
     expect(plan.readyToLaunch).toBe(false);
     expect(plan.missingEnv).toEqual(["DISCORD_BOT_TOKEN"]);
     expect(plan.requiredOAuth).toEqual(["github", "discord"]);
-    expect(plan.warnings).toContain("No entry command declared in the ClawdHub manifest.");
+    expect(plan.warnings).toContain("No entry command declared in the ScgHub manifest.");
     expect(plan.warnings).toContain("No extension graph declared for this skill.");
   });
 });

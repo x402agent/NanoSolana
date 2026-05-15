@@ -1,5 +1,5 @@
 /**
- * Solana clawd — Main Entry
+ * Solana Claude Go — Main Entry
  *
  * TypeScript runtime for Solana agents, daemons, and operator tooling.
  *
@@ -10,10 +10,10 @@ export { readClawdRuntimeAsset, resolveClawdRuntimeAsset } from "./runtime/asset
 
 // Config & Security
 export { loadConfig, saveSecrets, loadSecrets, redactConfig, ensureClawdHome, encrypt, decrypt } from "./config/vault.js";
-export type { ClawdConfig } from "./config/vault.js";
+export type { ScgConfig } from "./config/vault.js";
 
 // Solana Wallet
-export { ClawdWallet } from "./wallet/manager.js";
+export { ScgWallet } from "./wallet/manager.js";
 export type { WalletInfo, WalletEvents } from "./wallet/manager.js";
 
 // Trading Engine (OODA)
@@ -24,9 +24,9 @@ export type { TokenPrice, TradeSignal, TradeExecution, TradeOutcome, TradingEngi
 export { StrategyEngine, calculateRSI, calculateEMA, calculateATR, DEFAULT_PARAMS } from "./strategy/engine.js";
 export type { StrategyParams, OHLCV, Signal, StrategyEvents } from "./strategy/engine.js";
 
-// ClawVault Memory (3-tier epistemological)
-export { ClawVault } from "./memory/clawvault.js";
-export type { VaultEntry, TradeRecord, Lesson, ResearchAgenda, KnowledgeTier, ClawVaultEvents } from "./memory/clawvault.js";
+// ScgVault Memory (3-tier epistemological)
+export { ScgVault } from "./memory/clawvault.js";
+export type { VaultEntry, TradeRecord, Lesson, ResearchAgenda, KnowledgeTier, ScgVaultEvents } from "./memory/clawvault.js";
 
 // Legacy generic memory (kept for compatibility)
 export { MemoryEngine } from "./memory/engine.js";
@@ -40,7 +40,7 @@ export { TamaGOchi, STAGE_EMOJI, MOOD_EMOJI } from "./pet/tamagochi.js";
 export type { TamaGOchiState, EvolutionStage, Mood, TamaGOchiEvents } from "./pet/tamagochi.js";
 
 // Gateway Server
-export { ClawdGateway } from "./gateway/server.js";
+export { ScgGateway } from "./gateway/server.js";
 export type { GatewayMessage, ConnectedAgent, GatewayEvents } from "./gateway/server.js";
 
 // Bitaxe mining
@@ -66,55 +66,55 @@ export type {
 } from "./bitaxe/client.js";
 
 // Hub Bridge
-export { ClawdHubBridge } from "./hub/bridge.js";
+export { ScgHubBridge } from "./hub/bridge.js";
 export type { HubUpdate, HubBridgeEvents } from "./hub/bridge.js";
 export {
-  normalizeClawdHubSiteUrl,
-  getClawdHubSiteUrl,
-  getClawdHubApiBaseUrl,
-  getClawdHubDiscoveryUrl,
-  getClawdHubSkillUrl,
-  getClawdHubApiSort,
-  listClawdHubSkills,
-  searchClawdHubSkills,
-  getClawdHubSkill,
-  getClawdHubSkillFile,
-  getClawdHubSkillManifest,
-  clampClawdHubLimit,
+  normalizeScgHubSiteUrl,
+  getScgHubSiteUrl,
+  getScgHubApiBaseUrl,
+  getScgHubDiscoveryUrl,
+  getScgHubSkillUrl,
+  getScgHubApiSort,
+  listScgHubSkills,
+  searchScgHubSkills,
+  getScgHubSkill,
+  getScgHubSkillFile,
+  getScgHubSkillManifest,
+  clampScgHubLimit,
 } from "./hub/public-client.js";
 export type {
-  ClawdHubExploreSort,
-  ClawdHubSkillListItem,
-  ClawdHubSkillDetail,
-  ClawdHubSearchResult,
-  ClawdHubSkillsResponse,
-  ClawdHubSkillResponse,
-  ClawdHubSearchResponse,
-  ClawdHubSkillFileResponse,
+  ScgHubExploreSort,
+  ScgHubSkillListItem,
+  ScgHubSkillDetail,
+  ScgHubSearchResult,
+  ScgHubSkillsResponse,
+  ScgHubSkillResponse,
+  ScgHubSearchResponse,
+  ScgHubSkillFileResponse,
 } from "./hub/public-client.js";
-export { buildClawdOneShotPlan } from "./hub/oneshot.js";
+export { buildScgOneShotPlan } from "./hub/oneshot.js";
 export type {
-  ClawdHubManifestFile,
-  ClawdHubManifestOwner,
-  ClawdHubManifestEnvVar,
-  ClawdHubManifestDependency,
-  ClawdHubManifestInstallSpec,
-  ClawdHubSkillManifest,
-  ClawdHubSkillManifestResponse,
-  ClawdOneShotStep,
-  ClawdOneShotPlan,
+  ScgHubManifestFile,
+  ScgHubManifestOwner,
+  ScgHubManifestEnvVar,
+  ScgHubManifestDependency,
+  ScgHubManifestInstallSpec,
+  ScgHubSkillManifest,
+  ScgHubSkillManifestResponse,
+  ScgOneShotStep,
+  ScgOneShotPlan,
 } from "./hub/oneshot.js";
 
 // Network (Tailscale + tmux)
-export { TailscaleDiscovery, TmuxManager, ClawdNetworkClient } from "./network/mesh.js";
-export type { ClawdNode, TmuxSession, ClawdNetworkEvents } from "./network/mesh.js";
+export { TailscaleDiscovery, TmuxManager, ScgNetworkClient } from "./network/mesh.js";
+export type { ScgNode, TmuxSession, ScgNetworkEvents } from "./network/mesh.js";
 
 // Docs + Extensions Knowledge Integration
 export {
-  getClawdKnowledgeSnapshot,
+  getScgKnowledgeSnapshot,
   clearClawdKnowledgeCache,
-  getClawdKnowledgeSummary,
-  searchClawdKnowledge,
+  getScgKnowledgeSummary,
+  searchScgKnowledge,
 } from "./docs/integration.js";
 export type {
   ClawdDocArea,
@@ -309,7 +309,7 @@ export type {
 } from "./claw/pump/types.js";
 
 // ── Tokenized Agent Payments — On-Chain Invoice System ──────────────────────
-export { ClawdPaymentAgent, createPaymentAgent, CURRENCY_MINTS, CURRENCY_DECIMALS } from "./payments/index.js";
+export { ScgPaymentAgent, createPaymentAgent, CURRENCY_MINTS, CURRENCY_DECIMALS } from "./payments/index.js";
 export type {
   PaymentCurrency,
   Invoice,
@@ -337,7 +337,7 @@ export type {
   PersonaCategory,
 } from "./claw/persona-loader.js";
 
-// ── Go Binary Bridge — solana-clawd communication layer ────────────────────
+// ── Go Binary Bridge — solana-claude-go communication layer ────────────────────
 export { GoBridgeClient, createGoBridgeFromEnv } from "./go-bridge/client.js";
 export type {
   GoBridgeMessageType,

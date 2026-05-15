@@ -104,4 +104,4 @@ const sol = getSellSolAmountFromTokenAmount({
 
 ## Agent Integration
 
-The OODA trading loop uses these analytics automatically during the **Observe** phase to pull bonding curve data into ClawVault KNOWN memory.
+The OODA trading loop uses these analytics automatically during the **Observe** phase to pull bonding curve data into ScgVault KNOWN memory.

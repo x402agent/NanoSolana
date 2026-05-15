@@ -2,29 +2,29 @@
 
 /**
  * ╔══════════════════════════════════════════════════════════════════════╗
- * ║                 SOLANA CLAWD — TypeScript CLI Entry                 ║
- * ║   Terminal runtime · autonomous daemon · clawd-go bridge          ║
+ * ║                 SOLANA CLAUDE GO — TypeScript CLI Entry                 ║
+ * ║   Terminal runtime · autonomous daemon · scg go-bridge          ║
  * ║  By x402agent                                               ║
  * ╚══════════════════════════════════════════════════════════════════════╝
  *
- * The `clawd` command — one-shot interface for:
+ * The `scg` command — one-shot interface for:
  *   - Birthing agents with Solana wallets + TamaGOchi pets
  *   - Starting the OODA trading engine (RSI + EMA + ATR)
- *   - Communicating with clawd agents across Tailscale mesh
- *   - ClawVault 3-tier memory (known → learned → inferred)
+ *   - Communicating with scg agents across Tailscale mesh
+ *   - ScgVault 3-tier memory (known → learned → inferred)
  *   - TamaGOchi pet whose mood/evolution is driven by trades
  */
 
 import { Command } from "commander";
 import chalk from "chalk";
 import { loadConfig, saveSecrets, loadSecrets, redactConfig, ensureClawdHome } from "../config/vault.js";
-import { ClawdWallet } from "../wallet/manager.js";
+import { ScgWallet } from "../wallet/manager.js";
 import { TradingEngine } from "../trading/engine.js";
-import { ClawVault } from "../memory/clawvault.js";
-import { ClawdGateway } from "../gateway/server.js";
+import { ScgVault } from "../memory/clawvault.js";
+import { ScgGateway } from "../gateway/server.js";
 import { TamaGOchi, STAGE_EMOJI, MOOD_EMOJI } from "../pet/tamagochi.js";
-import { TailscaleDiscovery, TmuxManager, ClawdNetworkClient } from "../network/mesh.js";
-import { getClawdKnowledgeSnapshot, getClawdKnowledgeSummary, searchClawdKnowledge } from "../docs/integration.js";
+import { TailscaleDiscovery, TmuxManager, ScgNetworkClient } from "../network/mesh.js";
+import { getScgKnowledgeSnapshot, getScgKnowledgeSummary, searchScgKnowledge } from "../docs/integration.js";
 import {
   playStartupAnimation, animateLobster, printLobster, startDvdScreensaver,
   printSplashBanner, phaseTransition, matrixRain,
@@ -35,7 +35,7 @@ import {
 } from "./animations.js";
 import { HeliusClient, printWalletSnapshot } from "../onchain/helius-client.js";
 import { AgentRegistry, registerOnHeartbeat } from "../registry/agent-registry.js";
-import { ClawdBotServer } from "../nanobot/server.js";
+import { ScgBotServer } from "../nanobot/server.js";
 import {
   getTask,
   getTaskSummary,
@@ -45,17 +45,17 @@ import {
 } from "../claw/task-loader.js";
 import { getPersona, getPersonaTasks } from "../claw/persona-loader.js";
 import {
-  clampClawdHubLimit,
-  getClawdHubDiscoveryUrl,
-  getClawdHubSiteUrl,
-  getClawdHubSkill,
-  getClawdHubSkillFile,
-  getClawdHubSkillManifest,
-  getClawdHubSkillUrl,
-  listClawdHubSkills,
-  searchClawdHubSkills,
+  clampScgHubLimit,
+  getScgHubDiscoveryUrl,
+  getScgHubSiteUrl,
+  getScgHubSkill,
+  getScgHubSkillFile,
+  getScgHubSkillManifest,
+  getScgHubSkillUrl,
+  listScgHubSkills,
+  searchScgHubSkills,
 } from "../hub/public-client.js";
-import { buildClawdOneShotPlan } from "../hub/oneshot.js";
+import { buildScgOneShotPlan } from "../hub/oneshot.js";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { homedir } from "node:os";
@@ -73,7 +73,7 @@ function printBanner(): void {
   ██║ ╚████║██║  ██║██║ ╚████║╚██████╔╝███████║╚██████╔╝███████╗██║  ██║██║ ╚████║██║  ██║
   ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝
   `));
-  console.log(chalk.white("  🦞 Solana clawd Runtime"));
+  console.log(chalk.white("  🦞 Solana Claude Go Runtime"));
   console.log(chalk.gray("  TypeScript Solana operator runtime · By x402agent\n"));
 }
 
@@ -146,8 +146,8 @@ function isTruthy(value: string | undefined): boolean {
 const program = new Command();
 
 program
-  .name("clawd")
-  .description("🦞 Solana clawd — Autonomous Solana trading intelligence with a virtual pet soul")
+  .name("scg")
+  .description("🦞 Solana Claude Go — Autonomous Solana trading intelligence with a virtual pet soul")
   .version("1.0.3");
 
 // ── nano init ────────────────────────────────────────────────
@@ -184,15 +184,15 @@ program
     // Save encrypted
     saveSecrets(secrets);
 
-    console.log(chalk.green("\n  ✅ Secrets encrypted and saved to ~/.clawd/vault.enc"));
+    console.log(chalk.green("\n  ✅ Secrets encrypted and saved to ~/.scg/vault.enc"));
     console.log(chalk.gray("  Keys are AES-256-GCM encrypted at rest.\n"));
 
     // Create .env template
     const envPath = join(process.cwd(), ".env");
     if (!existsSync(envPath)) {
-      const envContent = `# Solana clawd Configuration
-CLAWD_AGENT_NAME=nano-alpha
-CLAWD_GATEWAY_PORT=18790
+      const envContent = `# Solana Claude Go Configuration
+SCG_AGENT_NAME=nano-alpha
+SCG_GATEWAY_PORT=18790
 AI_PROVIDER=gemini
 AI_MODEL=gemini-2.5-pro
 NANO_LOG_LEVEL=info
@@ -201,8 +201,8 @@ NANO_LOG_LEVEL=info
       console.log(chalk.gray("  Created .env with non-sensitive defaults.\n"));
     }
 
-    console.log(chalk.white("  Run ") + chalk.cyan("clawd birth") + chalk.white(" to create your agent."));
-    console.log(chalk.white("  Or run ") + chalk.cyan("clawd go") + chalk.white(" to do everything at once.\n"));
+    console.log(chalk.white("  Run ") + chalk.cyan("scg birth") + chalk.white(" to create your agent."));
+    console.log(chalk.white("  Or run ") + chalk.cyan("scg go") + chalk.white(" to do everything at once.\n"));
   });
 
 // ── nano birth ────────────────────────────────────────────────
@@ -210,7 +210,7 @@ NANO_LOG_LEVEL=info
 program
   .command("birth")
   .description("Birth a new nano agent with a Solana wallet")
-  .option("-n, --name <name>", "Agent name", "Solana clawd")
+  .option("-n, --name <name>", "Agent name", "Solana Claude Go")
   .option("--pet-name <petName>", "TamaGOchi pet name")
   .action(async (opts) => {
     printBanner();
@@ -218,7 +218,7 @@ program
 
     try {
       const config = loadConfig();
-      const wallet = new ClawdWallet(opts.name);
+      const wallet = new ScgWallet(opts.name);
       const info = await wallet.birth();
 
       // Birth the TamaGOchi pet
@@ -247,9 +247,9 @@ program
         }
       }
 
-      console.log(chalk.gray("  Wallet saved to ~/.clawd/vault.enc (encrypted)"));
-      console.log(chalk.gray("  Pet state saved to ~/.clawd/tamagochi.json\n"));
-      console.log(chalk.white("  Run ") + chalk.cyan("clawd run") + chalk.white(" to start the agent.\n"));
+      console.log(chalk.gray("  Wallet saved to ~/.scg/vault.enc (encrypted)"));
+      console.log(chalk.gray("  Pet state saved to ~/.scg/tamagochi.json\n"));
+      console.log(chalk.white("  Run ") + chalk.cyan("scg run") + chalk.white(" to start the agent.\n"));
     } catch (err) {
       console.error(chalk.red(`  ❌ Birth failed: ${(err as Error).message}\n`));
       process.exit(1);
@@ -261,20 +261,20 @@ program
 program
   .command("run")
   .alias("daemon")
-  .description("Run the autonomous Solana clawd daemon (gateway + trading + memory)")
-  .option("-n, --name <name>", "Agent name", "Solana clawd")
+  .description("Run the autonomous Solana Claude Go daemon (gateway + trading + memory)")
+  .option("-n, --name <name>", "Agent name", "Solana Claude Go")
   .option("--pet-name <petName>", "TamaGOchi pet name")
   .option("--no-trade", "Disable trading engine (--no-ooda)")
   .option("--no-gateway", "Disable gateway server")
   .action(async (opts) => {
     printBanner();
-    console.log(chalk.white.bold(`  🚀 Starting Solana clawd daemon "${opts.name}"...\n`));
+    console.log(chalk.white.bold(`  🚀 Starting Solana Claude Go daemon "${opts.name}"...\n`));
 
     try {
       const config = loadConfig();
 
       // 1. Birth wallet
-      const wallet = new ClawdWallet(opts.name);
+      const wallet = new ScgWallet(opts.name);
       const walletInfo = await wallet.birth();
       wallet.startHeartbeat(config.agent.heartbeatMs);
       console.log(chalk.green(`  ✅ Wallet: ${walletInfo.publicKey.slice(0, 8)}...${walletInfo.publicKey.slice(-8)}`));
@@ -287,11 +287,11 @@ program
       const petState = pet.getState();
       console.log(chalk.green(`  ✅ TamaGOchi: ${STAGE_EMOJI[petState.stage]} ${petName} ${MOOD_EMOJI[petState.mood]} (level ${petState.level})`));
 
-      // 3. Start ClawVault memory
-      const vault = new ClawVault();
+      // 3. Start ScgVault memory
+      const vault = new ScgVault();
       vault.startAutonomous();
       const vaultStats = vault.getStats();
-      console.log(chalk.green(`  ✅ ClawVault: ${vaultStats.known}K/${vaultStats.learned}L/${vaultStats.inferred}I entries, ${vaultStats.lessons} lessons`));
+      console.log(chalk.green(`  ✅ ScgVault: ${vaultStats.known}K/${vaultStats.learned}L/${vaultStats.inferred}I entries, ${vaultStats.lessons} lessons`));
 
       // 4. Start trading engine
       const trading = new TradingEngine(config, wallet);
@@ -300,7 +300,7 @@ program
         console.log(chalk.green("  ✅ Trading engine: ACTIVE (OODA loop)"));
       }
 
-      // Wire trading → ClawVault + TamaGOchi
+      // Wire trading → ScgVault + TamaGOchi
       trading.on("signal", (signal) => {
         // Store as KNOWN (fresh market data)
         vault.storeKnown({
@@ -337,7 +337,7 @@ program
         // Gateway still uses the legacy MemoryEngine interface for now
         const { MemoryEngine } = await import("../memory/engine.js");
         const legacyMemory = new MemoryEngine(config.memory.temporalDecayHours);
-        const gateway = new ClawdGateway(config, wallet, trading, legacyMemory);
+        const gateway = new ScgGateway(config, wallet, trading, legacyMemory);
         await gateway.start();
         console.log(chalk.green(`  ✅ Gateway: ws://${config.gateway.host}:${config.gateway.port}`));
       }
@@ -407,23 +407,23 @@ program
 
 program
   .command("status")
-  .description("Show agent status, wallet, TamaGOchi, and ClawVault stats")
+  .description("Show agent status, wallet, TamaGOchi, and ScgVault stats")
   .action(async () => {
     try {
       const config = loadConfig();
-      const wallet = new ClawdWallet(config.agent.name);
+      const wallet = new ScgWallet(config.agent.name);
       await wallet.birth();
 
-      const vault = new ClawVault();
+      const vault = new ScgVault();
       const vaultStats = vault.getStats();
       const pet = new TamaGOchi(config.agent.name);
 
-      console.log(chalk.cyan("\n  ── Solana clawd Runtime Status ─────────────────\n"));
+      console.log(chalk.cyan("\n  ── Solana Claude Go Runtime Status ─────────────────\n"));
       console.log(chalk.white("  Agent:      ") + chalk.cyan(config.agent.name));
       console.log(chalk.white("  Wallet:     ") + chalk.cyan(wallet.getPublicKey()));
       console.log(chalk.white("  Balance:    ") + chalk.yellow(`${wallet.getInfo().balance} SOL`));
       console.log(chalk.white("  TamaGOchi:  ") + chalk.cyan(`${STAGE_EMOJI[pet.getState().stage]} ${pet.getState().name} ${MOOD_EMOJI[pet.getState().mood]}`));
-      console.log(chalk.white("  ClawVault:  ") + chalk.gray(`${vaultStats.known}K ${vaultStats.learned}L ${vaultStats.inferred}I | ${vaultStats.lessons} lessons`));
+      console.log(chalk.white("  ScgVault:  ") + chalk.gray(`${vaultStats.known}K ${vaultStats.learned}L ${vaultStats.inferred}I | ${vaultStats.lessons} lessons`));
       console.log(chalk.white("  Win Rate:   ") + chalk.green(`${(vaultStats.tradeWinRate * 100).toFixed(1)}%`));
       console.log(chalk.white("  Gateway:    ") + chalk.gray(`${config.gateway.host}:${config.gateway.port}`));
 
@@ -467,7 +467,7 @@ program
 
 program
   .command("send")
-  .description("One-shot: send a message to clawd agents across the mesh")
+  .description("One-shot: send a message to scg agents across the mesh")
   .argument("<message>", "Message to send")
   .option("-t, --target <hostname>", "Target specific node (default: broadcast)")
   .action(async (message, opts) => {
@@ -479,7 +479,7 @@ program
         console.log(chalk.yellow("  ⚠️  Tailscale not available. Sending to local gateway only.\n"));
 
         // Connect to local gateway
-        const client = new ClawdNetworkClient(gatewaySecret);
+        const client = new ScgNetworkClient(gatewaySecret);
         const localNode = { hostname: "localhost", ip: "127.0.0.1", online: true, os: process.platform, tailscaleId: "local", lastSeen: Date.now(), gatewayPort: config.gateway.port };
         await client.connectToNode(localNode, config.agent.name);
         client.sendToNode("localhost", message, config.agent.name);
@@ -489,7 +489,7 @@ program
       }
 
       const nodes = TailscaleDiscovery.discoverNodes().filter((n) => n.online);
-      const client = new ClawdNetworkClient(gatewaySecret);
+      const client = new ScgNetworkClient(gatewaySecret);
 
       if (opts.target) {
         const target = nodes.find((n) => n.hostname === opts.target);
@@ -523,18 +523,18 @@ program
     }
   });
 
-// ── clawd agents ────────────────────────────────────────────────
+// ── scg agents ────────────────────────────────────────────────
 
 program
   .command("bots")
-  .description("Manage clawd agents (tmux sessions)")
+  .description("Manage scg agents (tmux sessions)")
   .addCommand(
     new Command("list")
-      .description("List running clawd agent sessions")
+      .description("List running scg agent sessions")
       .action(() => {
         const sessions = TmuxManager.listNanoSessions();
         if (sessions.length === 0) {
-          console.log(chalk.gray("\n  No clawd agent sessions running.\n"));
+          console.log(chalk.gray("\n  No scg agent sessions running.\n"));
           return;
         }
 
@@ -548,12 +548,12 @@ program
   )
   .addCommand(
     new Command("spawn")
-      .description("Spawn a new clawd agent in a tmux session")
+      .description("Spawn a new scg agent in a tmux session")
       .argument("<name>", "Bot name")
       .action((name) => {
-        const ok = TmuxManager.createSession(name, `clawd run --name ${name}`);
+        const ok = TmuxManager.createSession(name, `scg run --name ${name}`);
         if (ok) {
-          console.log(chalk.green(`\n  ✅ Spawned clawd agent "${name}" in tmux session "clawd-${name}"\n`));
+          console.log(chalk.green(`\n  ✅ Spawned scg agent "${name}" in tmux session "scg-${name}"\n`));
         } else {
           console.log(chalk.red(`\n  ❌ Failed to spawn bot "${name}"\n`));
         }
@@ -561,19 +561,19 @@ program
   )
   .addCommand(
     new Command("attach")
-      .description("Attach to a clawd agent session")
+      .description("Attach to a scg agent session")
       .argument("<name>", "Bot name")
       .action((name) => {
-        const sessionName = name.startsWith("nano-") ? name : `clawd-${name}`;
+        const sessionName = name.startsWith("nano-") ? name : `scg-${name}`;
         TmuxManager.attachSession(sessionName);
       }),
   )
   .addCommand(
     new Command("kill")
-      .description("Kill a clawd agent session")
+      .description("Kill a scg agent session")
       .argument("<name>", "Bot name")
       .action((name) => {
-        const sessionName = name.startsWith("nano-") ? name : `clawd-${name}`;
+        const sessionName = name.startsWith("nano-") ? name : `scg-${name}`;
         const ok = TmuxManager.killSession(sessionName);
         if (ok) {
           console.log(chalk.green(`\n  ✅ Killed bot "${sessionName}"\n`));
@@ -613,7 +613,7 @@ program
     try {
       const config = loadConfig();
       const redacted = redactConfig(config);
-      console.log(chalk.cyan("\n  ── Solana clawd Config ────────────────────────\n"));
+      console.log(chalk.cyan("\n  ── Solana Claude Go Config ────────────────────────\n"));
       console.log(JSON.stringify(redacted, null, 2).split("\n").map((l) => `  ${l}`).join("\n"));
       console.log();
     } catch (err) {
@@ -621,17 +621,17 @@ program
     }
   });
 
-// ── nano vault (ClawVault memory) ────────────────────────────
+// ── nano vault (ScgVault memory) ────────────────────────────
 
 program
   .command("vault")
-  .description("Query the ClawVault memory (known → learned → inferred)")
+  .description("Query the ScgVault memory (known → learned → inferred)")
   .argument("[query]", "Search query")
   .action(async (query) => {
-    const vault = new ClawVault();
+    const vault = new ScgVault();
     const stats = vault.getStats();
 
-    console.log(chalk.cyan("\n  ── ClawVault (3-tier epistemological memory) ──\n"));
+    console.log(chalk.cyan("\n  ── ScgVault (3-tier epistemological memory) ──\n"));
     console.log(chalk.white("  KNOWN:     ") + chalk.green(`${stats.known}`) + chalk.gray(" (fresh API data, expires in ~60s)"));
     console.log(chalk.white("  LEARNED:   ") + chalk.blue(`${stats.learned}`) + chalk.gray(" (trade-derived patterns)"));
     console.log(chalk.white("  INFERRED:  ") + chalk.magenta(`${stats.inferred}`) + chalk.gray(" (correlations, held loosely)"));
@@ -690,10 +690,10 @@ program
       const refresh = Boolean(opts.refresh);
       const limit = parsePositiveInteger(opts.limit as string | undefined, 10);
 
-      const snapshot = getClawdKnowledgeSnapshot({ refresh });
-      const summary = getClawdKnowledgeSummary(snapshot);
+      const snapshot = getScgKnowledgeSnapshot({ refresh });
+      const summary = getScgKnowledgeSummary(snapshot);
       const matches = query
-        ? searchClawdKnowledge(snapshot, String(query), limit)
+        ? searchScgKnowledge(snapshot, String(query), limit)
         : [];
 
       if (opts.json) {
@@ -728,7 +728,7 @@ program
         return;
       }
 
-      console.log(chalk.cyan("\n  ── Solana clawd Knowledge Integration ──────────\n"));
+      console.log(chalk.cyan("\n  ── Solana Claude Go Knowledge Integration ──────────\n"));
       console.log(chalk.white("  Generated:  ") + chalk.gray(new Date(summary.generatedAt).toISOString()));
       console.log(chalk.white("  Docs:       ") + chalk.green(`${summary.docs.files} files`) + chalk.gray(` (${summary.docs.markdownFiles} markdown, ${formatBytes(summary.docs.bytes)})`));
       console.log(
@@ -884,13 +884,13 @@ program
     }
   });
 
-// ── clawd go (one-shot everything) ──────────────────────
+// ── scg go (one-shot everything) ──────────────────────
 
 program
   .command("go")
   .alias("bootstrap")
   .description("One-shot bootstrap: configure, birth, and launch your Solana trading daemon")
-  .option("-n, --name <name>", "Agent name", "Solana clawd")
+  .option("-n, --name <name>", "Agent name", "Solana Claude Go")
   .option("--pet-name <petName>", "TamaGOchi pet name")
   .option("--skip-init", "Skip API key prompts if already configured")
   .option("--dvd-intro", "Play DVD intro animation before startup")
@@ -943,7 +943,7 @@ program
         }
 
         saveSecrets(secrets);
-        printSuccess("Secrets encrypted → ~/.clawd/vault.enc\n");
+        printSuccess("Secrets encrypted → ~/.scg/vault.enc\n");
       } else {
         printSuccess("Configuration found — skipping init\n");
       }
@@ -953,7 +953,7 @@ program
       await playStartupAnimation();
 
       const config = loadConfig();
-      const wallet = new ClawdWallet(opts.name);
+      const wallet = new ScgWallet(opts.name);
       const walletInfo = await wallet.birth();
       wallet.startHeartbeat(config.agent.heartbeatMs);
 
@@ -974,11 +974,11 @@ program
       printSuccess(`TamaGOchi hatched: ${STAGE_EMOJI[petState.stage]} ${petName} ${MOOD_EMOJI[petState.mood]}`);
 
       // Phase 4: Memory
-      await phaseTransition("memory", "Phase 4 — ClawVault Memory");
-      const vault = new ClawVault();
+      await phaseTransition("memory", "Phase 4 — ScgVault Memory");
+      const vault = new ScgVault();
       vault.startAutonomous();
       const stats = vault.getStats();
-      printSuccess(`ClawVault online: ${stats.known}K / ${stats.learned}L / ${stats.inferred}I`);
+      printSuccess(`ScgVault online: ${stats.known}K / ${stats.learned}L / ${stats.inferred}I`);
 
       // Phase 5: Trading
       await phaseTransition("trade", "Phase 5 — OODA Trading Engine");
@@ -1022,7 +1022,7 @@ program
       await phaseTransition("gateway", "Phase 6 — Gateway");
       const { MemoryEngine } = await import("../memory/engine.js");
       const legacyMemory = new MemoryEngine(config.memory.temporalDecayHours);
-      const gateway = new ClawdGateway(config, wallet, trading, legacyMemory);
+      const gateway = new ScgGateway(config, wallet, trading, legacyMemory);
       await gateway.start();
       printSuccess(`Gateway: ws://${config.gateway.host}:${config.gateway.port}`);
 
@@ -1111,9 +1111,9 @@ program
     printSuccess(`TamaGOchi: ${STAGE_EMOJI[petState.stage]} DemoBot ${MOOD_EMOJI[petState.mood]}`);
 
     // Create memory
-    const vault = new ClawVault();
+    const vault = new ScgVault();
     vault.startAutonomous();
-    printSuccess("ClawVault: 3-tier memory online");
+    printSuccess("ScgVault: 3-tier memory online");
 
     // Simulated wallet
     console.log(chalk.green("  ✓ Wallet:") + chalk.cyan(" 7xKpR3...demo3nYd") + chalk.yellow(" (1.500 SOL)"));
@@ -1193,10 +1193,10 @@ program
         console.log(chalk.gray(`    Pet mood: ${MOOD_EMOJI[pet.getState().mood]} ${pet.getState().mood}`));
         console.log();
         console.log(chalk.white("  Ready to go live?"));
-        console.log(chalk.cyan("    npx clawd go"));
+        console.log(chalk.cyan("    npx scg go"));
         console.log();
         console.log(chalk.gray("  Full docs: https://docs.nanosolana.com"));
-        console.log(chalk.gray("  GitHub: https://github.com/x402agent/Solana clawd"));
+        console.log(chalk.gray("  GitHub: https://github.com/x402agent/Solana Claude Go"));
         console.log();
         process.exit(0);
       }
@@ -1214,7 +1214,7 @@ program
       clearInterval(loop);
       vault.stopAutonomous();
       console.log(chalk.yellow("\n\n  ⏹  Demo stopped."));
-      console.log(chalk.cyan("  Try the real thing: npx clawd go\n"));
+      console.log(chalk.cyan("  Try the real thing: npx scg go\n"));
       process.exit(0);
     });
 
@@ -1225,7 +1225,7 @@ program
 
 program
   .command("dvd")
-  .description("Floating DVD-style Solana clawd screensaver in the terminal")
+  .description("Floating DVD-style Solana Claude Go screensaver in the terminal")
   .action(() => {
     const dvd = startDvdScreensaver();
 
@@ -1243,7 +1243,7 @@ program
 
 program
   .command("lobster")
-  .description("Show the animated Solana clawd lobster mascot")
+  .description("Show the animated Solana Claude Go lobster mascot")
   .option("--static", "Show static version")
   .action(async (opts) => {
     if (opts.static) {
@@ -1264,13 +1264,13 @@ program
       const config = loadConfig();
       if (!config.helius?.rpcUrl || !config.helius?.apiKey) {
         console.log(chalk.red("\n  ❌ Helius RPC URL and API key required."));
-        console.log(chalk.gray("  Run: clawd init\n"));
+        console.log(chalk.gray("  Run: scg init\n"));
         process.exit(1);
       }
 
       const pubkey = address ?? (() => {
         try {
-          const wallet = new ClawdWallet("Solana clawd");
+          const wallet = new ScgWallet("Solana Claude Go");
           // Try loading existing wallet pubkey from file
           const pubPath = join(homedir(), ".nanosolana", "wallet.pub");
           if (existsSync(pubPath)) return readFileSync(pubPath, "utf-8").trim();
@@ -1279,7 +1279,7 @@ program
       })();
 
       if (!pubkey) {
-        console.log(chalk.red("\n  ❌ No wallet found. Run: clawd birth\n"));
+        console.log(chalk.red("\n  ❌ No wallet found. Run: scg birth\n"));
         process.exit(1);
       }
 
@@ -1306,7 +1306,7 @@ program
   .action(async () => {
     try {
       const config = loadConfig();
-      const wallet = new ClawdWallet("Solana clawd");
+      const wallet = new ScgWallet("Solana Claude Go");
       await wallet.birth();
 
       const registry = new AgentRegistry();
@@ -1341,7 +1341,7 @@ program
       console.log(chalk.white("  Tx:           ") + chalk.gray(result.txSignature.slice(0, 20) + "..."));
       console.log(chalk.white("  Token Acct:   ") + chalk.gray(result.tokenAccount));
       console.log(chalk.white("  Network:      ") + chalk.gray(result.network));
-      console.log(chalk.white("  Saved:        ") + chalk.gray("~/.clawd/registry/registration.json"));
+      console.log(chalk.white("  Saved:        ") + chalk.gray("~/.scg/registry/registration.json"));
       console.log();
       console.log(chalk.hex("#FFAA00")(`  Explorer: https://explorer.solana.com/tx/${result.txSignature}?cluster=devnet\n`));
     } catch (err) {
@@ -1387,7 +1387,7 @@ program
     const port = parseInt(opts.port, 10) || 7777;
     console.log(chalk.hex("#14F195")(`\n  🤖 Starting ClawdBot on http://127.0.0.1:${port}\n`));
 
-    const server = new ClawdBotServer({ port });
+    const server = new ScgBotServer({ port });
     await server.start();
 
     // Keep alive
@@ -1512,16 +1512,16 @@ payCmd
 
 program
   .command("oneshot")
-  .description("Resolve a NanoHub skill manifest into a one-shot Solana clawd launch plan")
+  .description("Resolve a NanoHub skill manifest into a one-shot Solana Claude Go launch plan")
   .argument("<slug>", "NanoHub skill slug")
   .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? "https://hub.nanosolana.com")
   .option("--write <path>", "Write the generated plan to a JSON file")
   .option("--json", "Emit machine-readable JSON")
   .action(async (slug, opts) => {
     try {
-      const siteUrl = getClawdHubSiteUrl(opts.site);
-      const { manifest } = await getClawdHubSkillManifest(String(slug), { siteUrl });
-      const plan = buildClawdOneShotPlan(manifest, {
+      const siteUrl = getScgHubSiteUrl(opts.site);
+      const { manifest } = await getScgHubSkillManifest(String(slug), { siteUrl });
+      const plan = buildScgOneShotPlan(manifest, {
         env: process.env,
         siteUrl,
       });
@@ -1540,7 +1540,7 @@ program
       }
 
       printBanner();
-      console.log(chalk.white.bold("  ⚡ Solana clawd One-Shot Plan\n"));
+      console.log(chalk.white.bold("  ⚡ Solana Claude Go One-Shot Plan\n"));
       console.log(chalk.cyan(`  Skill:       ${plan.displayName} (${plan.slug})`));
       console.log(chalk.cyan(`  Version:     ${plan.version}`));
       console.log(chalk.cyan(`  Site:        ${siteUrl}`));
@@ -1600,7 +1600,7 @@ const hubCmd = program
 
 hubCmd
   .command("skills")
-  .description("Browse or search public NanoHub skills from the Solana clawd CLI")
+  .description("Browse or search public NanoHub skills from the Solana Claude Go CLI")
   .argument("[query]", "Optional query to search NanoHub skills")
   .option("-l, --limit <n>", "Max results", "10")
   .option("-s, --sort <sort>", "Sort: newest|downloads|rating|installs|installsAllTime|trending", "newest")
@@ -1609,11 +1609,11 @@ hubCmd
   .option("--json", "Emit machine-readable JSON")
   .action(async (query, opts) => {
     try {
-      const siteUrl = getClawdHubSiteUrl(opts.site);
-      const limit = clampClawdHubLimit(parsePositiveInteger(opts.limit as string | undefined, 10));
+      const siteUrl = getScgHubSiteUrl(opts.site);
+      const limit = clampScgHubLimit(parsePositiveInteger(opts.limit as string | undefined, 10));
 
       if (query) {
-        const result = await searchClawdHubSkills({
+        const result = await searchScgHubSkills({
           query: String(query),
           siteUrl,
           limit,
@@ -1623,7 +1623,7 @@ hubCmd
         if (opts.json) {
           console.log(JSON.stringify({
             siteUrl,
-            discoveryUrl: getClawdHubDiscoveryUrl(siteUrl),
+            discoveryUrl: getScgHubDiscoveryUrl(siteUrl),
             query: String(query),
             results: result.results,
           }, null, 2));
@@ -1632,7 +1632,7 @@ hubCmd
 
         console.log(chalk.cyan(`\n  ── NanoHub Search ── "${query}" ───────────────────\n`));
         console.log(chalk.gray(`  Site: ${siteUrl}`));
-        console.log(chalk.gray(`  Discovery: ${getClawdHubDiscoveryUrl(siteUrl)}\n`));
+        console.log(chalk.gray(`  Discovery: ${getScgHubDiscoveryUrl(siteUrl)}\n`));
 
         if (result.results.length === 0) {
           console.log(chalk.gray("  No skills matched your query.\n"));
@@ -1648,13 +1648,13 @@ hubCmd
           if (entry.summary) {
             console.log(`     ${chalk.gray(entry.summary)}`);
           }
-          console.log(`     ${chalk.gray(getClawdHubSkillUrl(slug, { siteUrl }))}`);
+          console.log(`     ${chalk.gray(getScgHubSkillUrl(slug, { siteUrl }))}`);
         }
         console.log();
         return;
       }
 
-      const result = await listClawdHubSkills({
+      const result = await listScgHubSkills({
         siteUrl,
         limit,
         sort: String(opts.sort),
@@ -1664,7 +1664,7 @@ hubCmd
       if (opts.json) {
         console.log(JSON.stringify({
           siteUrl,
-          discoveryUrl: getClawdHubDiscoveryUrl(siteUrl),
+          discoveryUrl: getScgHubDiscoveryUrl(siteUrl),
           sort: opts.sort,
           highlightedOnly: Boolean(opts.highlighted),
           ...result,
@@ -1674,7 +1674,7 @@ hubCmd
 
       console.log(chalk.cyan("\n  ── NanoHub Skills ────────────────────────────\n"));
       console.log(chalk.gray(`  Site: ${siteUrl}`));
-      console.log(chalk.gray(`  Discovery: ${getClawdHubDiscoveryUrl(siteUrl)}`));
+      console.log(chalk.gray(`  Discovery: ${getScgHubDiscoveryUrl(siteUrl)}`));
       console.log(chalk.gray(`  Sort: ${opts.sort}${opts.highlighted ? " · highlighted only" : ""}\n`));
 
       if (result.items.length === 0) {
@@ -1690,7 +1690,7 @@ hubCmd
         if (item.summary) {
           console.log(`     ${chalk.gray(item.summary)}`);
         }
-        console.log(`     ${chalk.gray(getClawdHubSkillUrl(item.slug, { siteUrl }))}`);
+        console.log(`     ${chalk.gray(getScgHubSkillUrl(item.slug, { siteUrl }))}`);
       }
       console.log();
     } catch (err) {
@@ -1709,15 +1709,15 @@ hubCmd
   .option("--json", "Emit machine-readable JSON")
   .action(async (slug, opts) => {
     try {
-      const siteUrl = getClawdHubSiteUrl(opts.site);
-      const detail = await getClawdHubSkill(String(slug), { siteUrl });
+      const siteUrl = getScgHubSiteUrl(opts.site);
+      const detail = await getScgHubSkill(String(slug), { siteUrl });
 
       if (!detail.skill) {
         throw new Error(`Skill not found: ${slug}`);
       }
 
       const ownerHandle = detail.owner?.handle ?? undefined;
-      const skillUrl = getClawdHubSkillUrl(detail.skill.slug, {
+      const skillUrl = getScgHubSkillUrl(detail.skill.slug, {
         siteUrl,
         ownerHandle,
       });
@@ -1725,7 +1725,7 @@ hubCmd
       let filePreview: string | undefined;
       if (opts.file !== false) {
         try {
-          const file = await getClawdHubSkillFile(detail.skill.slug, {
+          const file = await getScgHubSkillFile(detail.skill.slug, {
             siteUrl,
             path: String(opts.file || "SKILL.md"),
           });
@@ -1738,7 +1738,7 @@ hubCmd
       if (opts.json) {
         console.log(JSON.stringify({
           siteUrl,
-          discoveryUrl: getClawdHubDiscoveryUrl(siteUrl),
+          discoveryUrl: getScgHubDiscoveryUrl(siteUrl),
           skillUrl,
           ...detail,
           filePreview,
@@ -1806,8 +1806,8 @@ hubCmd
     try {
       // Load wallet for public key
       const config = loadConfig();
-      const agentName = opts.name ?? config.agent.name ?? "Solana clawd";
-      const wallet = new ClawdWallet(agentName);
+      const agentName = opts.name ?? config.agent.name ?? "Solana Claude Go";
+      const wallet = new ScgWallet(agentName);
       const walletInfo = await wallet.birth();
 
       console.log(chalk.cyan(`  Agent:      ${agentName}`));
@@ -1989,8 +1989,8 @@ hubCmd
       };
 
       console.log(chalk.cyan("\n  ── NanoHub Registry Stats ────────────────────\n"));
-      console.log(chalk.white("  Public Site:   ") + chalk.cyan(getClawdHubSiteUrl()));
-      console.log(chalk.white("  Discovery:     ") + chalk.gray(getClawdHubDiscoveryUrl()));
+      console.log(chalk.white("  Public Site:   ") + chalk.cyan(getScgHubSiteUrl()));
+      console.log(chalk.white("  Discovery:     ") + chalk.gray(getScgHubDiscoveryUrl()));
       console.log(chalk.white("  Total Agents:  ") + chalk.green(String(data.totalAgents)));
       console.log(chalk.white("  Active:        ") + chalk.green(String(data.activeAgents)));
       console.log(chalk.white("  Categories:"));

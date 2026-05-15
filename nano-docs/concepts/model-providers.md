@@ -1,11 +1,11 @@
 ---
-summary: "NanoSolana model providers and AI integration"
+summary: "Solana Claude Go model providers and AI integration"
 title: "Model Providers"
 ---
 
 # Model providers
 
-NanoSolana uses **OpenRouter** as its primary AI gateway, with the `healer-alpha`
+Solana Claude Go uses **OpenRouter** as its primary AI gateway, with the `healer-alpha`
 model as the default. The architecture supports multiple providers.
 
 ## Default: OpenRouter + healer-alpha
@@ -72,7 +72,7 @@ AI_MODEL=openrouter/healer-alpha
 
 ## Model failover
 
-If the primary model fails, NanoSolana can fall back:
+If the primary model fails, Solana Claude Go can fall back:
 
 ```json5
 {
@@ -90,5 +90,5 @@ If the primary model fails, NanoSolana can fall back:
 ## Cost management
 
 - shorter runtime loops and frequent external calls increase model spend
-- `nanosolana demo` is the cheapest way to exercise the flow without live keys
+- `scg demo` is the cheapest way to exercise the flow without live keys
 - keep provider guidance aligned with the current env- and vault-based runtime configuration

@@ -1,12 +1,12 @@
 ---
-summary: "Beginner-first CLI guide for NanoSolana with copy/paste startup paths and shipped command reference"
+summary: "Beginner-first CLI guide for Solana Claude Go with copy/paste startup paths and shipped command reference"
 title: "CLI Reference"
 ---
 
 # CLI Reference
 
 This page is the **source-of-truth for shipped commands** in the current
-`nanosolana` CLI (`nano-core/src/cli/entry.ts`).
+`scg` CLI (`nano-core/src/cli/entry.ts`).
 
 If you are new, use one of these three startup tracks.
 
@@ -15,47 +15,47 @@ If you are new, use one of these three startup tracks.
 ### Track A — Safe simulation (no keys)
 
 ```bash
-npx nanosolana demo --duration 30
+npx scg demo --duration 30
 ```
 
 ### Track B — Fast live startup (one command)
 
 ```bash
-npx nanosolana go
+npx scg go
 ```
 
 Optional startup animation:
 
 ```bash
-npx nanosolana go --dvd-intro
+npx scg go --dvd-intro
 ```
 
 Or enable DVD intro by environment variable:
 
 ```bash
-NANO_DVD_INTRO=1 npx nanosolana go
+NANO_DVD_INTRO=1 npx scg go
 ```
 
 Explicit daemon startup:
 
 ```bash
-npx nanosolana daemon
+npx scg daemon
 ```
 
 ### Track C — Explicit manual startup
 
 ```bash
-npx nanosolana init
-npx nanosolana birth --name MyAgent --pet-name MyPet
-npx nanosolana run
+npx scg init
+npx scg birth --name MyAgent --pet-name MyPet
+npx scg run
 ```
 
 In a second terminal:
 
 ```bash
-npx nanosolana status
-npx nanosolana pet
-npx nanosolana vault
+npx scg status
+npx scg pet
+npx scg vault
 ```
 
 ## Detailed pages in this section
@@ -76,92 +76,92 @@ npx nanosolana vault
 ## Shipped top-level commands
 
 ```text
-nanosolana init
-nanosolana birth
-nanosolana run
-nanosolana daemon
-nanosolana status
-nanosolana pet
-nanosolana send
-nanosolana bots
-nanosolana nodes
-nanosolana config
-nanosolana vault [query]
-nanosolana docs [query]
-nanosolana tasks [query]
-nanosolana go [--dvd-intro] [--skip-init]
-nanosolana bootstrap [--dvd-intro] [--skip-init]
-nanosolana demo [--duration]
-nanosolana dvd
-nanosolana lobster [--static]
-nanosolana scan [address]
-nanosolana register
-nanosolana registry
-nanosolana nanobot [--port]
-nanosolana pay invoice|verify|status
-nanosolana hub skills|inspect|register|list|search|heartbeat|status|deregister
+scg init
+scg birth
+scg run
+scg daemon
+scg status
+scg pet
+scg send
+scg bots
+scg nodes
+scg config
+scg vault [query]
+scg docs [query]
+scg tasks [query]
+scg go [--dvd-intro] [--skip-init]
+scg bootstrap [--dvd-intro] [--skip-init]
+scg demo [--duration]
+scg dvd
+scg lobster [--static]
+scg scan [address]
+scg register
+scg registry
+scg nanobot [--port]
+scg pay invoice|verify|status
+scg hub skills|inspect|register|list|search|heartbeat|status|deregister
 ```
 
 ## Command groups
 
 ### Bootstrap and runtime
 
-- `nanosolana init` — prompt for and encrypt secrets in
-  `~/.nanosolana/vault.enc`
-- `nanosolana birth` — create wallet + hatch pet
-- `nanosolana run` — start wallet heartbeat, ClawVault, trading engine, and
+- `scg init` — prompt for and encrypt secrets in
+  `~/.scg/vault.enc`
+- `scg birth` — create wallet + hatch pet
+- `scg run` — start wallet heartbeat, ScgVault, trading engine, and
   gateway
-- `nanosolana daemon` — alias for `run` when you want the long-lived runtime
+- `scg daemon` — alias for `run` when you want the long-lived runtime
   described explicitly
-- `nanosolana go` — one-shot initialization + runtime startup
-- `nanosolana bootstrap` — alias for `go`
-- `nanosolana demo` — simulation mode without API keys
+- `scg go` — one-shot initialization + runtime startup
+- `scg bootstrap` — alias for `go`
+- `scg demo` — simulation mode without API keys
 
 ### Startup visuals and terminal UX
 
-- `nanosolana go --dvd-intro` — plays short DVD-style intro before startup
+- `scg go --dvd-intro` — plays short DVD-style intro before startup
   sequence
-- `NANO_DVD_INTRO=1 nanosolana go` — enables same behavior via env flag
-- `nanosolana dvd` — full-screen terminal DVD screensaver mode
-- `nanosolana lobster` — animated mascot (or `--static`)
+- `NANO_DVD_INTRO=1 scg go` — enables same behavior via env flag
+- `scg dvd` — full-screen terminal DVD screensaver mode
+- `scg lobster` — animated mascot (or `--static`)
 
 ### Inspection and local operations
 
-- `nanosolana status` — wallet, pet, memory, Tailscale, and tmux summary
-- `nanosolana pet` — current pet state
-- `nanosolana config` — redacted runtime config
-- `nanosolana vault [query]` — inspect/search ClawVault entries
-- `nanosolana docs [query]` — inspect indexed docs + extension corpus
-- `nanosolana tasks [query]` — inspect registry-backed task assignments
-- `nanosolana scan [address]` — on-chain wallet snapshot (Helius)
-- `nanosolana register` / `registry` — devnet identity registration and lookup
-- `nanosolana nanobot` — launch local UI companion server
+- `scg status` — wallet, pet, memory, Tailscale, and tmux summary
+- `scg pet` — current pet state
+- `scg config` — redacted runtime config
+- `scg vault [query]` — inspect/search ScgVault entries
+- `scg docs [query]` — inspect indexed docs + extension corpus
+- `scg tasks [query]` — inspect registry-backed task assignments
+- `scg scan [address]` — on-chain wallet snapshot (Helius)
+- `scg register` / `registry` — devnet identity registration and lookup
+- `scg nanobot` — launch local UI companion server
 
 ### Mesh and tmux operations
 
-- `nanosolana send <message> [--target <hostname>]`
-- `nanosolana nodes`
-- `nanosolana bots list|spawn|attach|kill`
+- `scg send <message> [--target <hostname>]`
+- `scg nodes`
+- `scg bots list|spawn|attach|kill`
 
 ### Tokenized agent payments
 
-- `nanosolana pay invoice --user <pubkey> --amount <amount> [--currency USDC|SOL] [--duration 3600]`
-- `nanosolana pay verify --user <pubkey> --memo <memo> --amount <amount> --start <ts> --end <ts>`
-- `nanosolana pay status`
+- `scg pay invoice --user <pubkey> --amount <amount> [--currency USDC|SOL] [--duration 3600]`
+- `scg pay verify --user <pubkey> --memo <memo> --amount <amount> --start <ts> --end <ts>`
+- `scg pay status`
 
 ### NanoHub discovery and registry
 
-- `nanosolana hub skills [query]`
-- `nanosolana hub inspect <slug>`
-- `nanosolana hub register|list|search|heartbeat|status|deregister`
+- `scg hub skills [query]`
+- `scg hub inspect <slug>`
+- `scg hub register|list|search|heartbeat|status|deregister`
 
 ## Important clarifications (new-user safety)
 
-- There is **no shipped** `nanosolana wallet ...` subtree yet.
-- There is **no shipped** `nanosolana trade ...` subtree yet.
-- There is **no shipped** `nanosolana memory ...` subtree yet
-  (`nanosolana vault` is the memory surface).
-- There is **no shipped** `nanosolana gateway ...` subtree yet (gateway starts
+- There is **no shipped** `scg wallet ...` subtree yet.
+- There is **no shipped** `scg trade ...` subtree yet.
+- There is **no shipped** `scg memory ...` subtree yet
+  (`scg vault` is the memory surface).
+- There is **no shipped** `scg gateway ...` subtree yet (gateway starts
   via `run` or `go`, or `npm run gateway` in `nano-core`).
 - Install/publish/sync for skills still live in the dedicated `nanohub` package.
 

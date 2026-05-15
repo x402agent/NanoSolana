@@ -1,5 +1,5 @@
 ---
-summary: "Gateway configuration for the current NanoSolana runtime"
+summary: "Gateway configuration for the current Solana Claude Go runtime"
 title: "Gateway Configuration"
 ---
 
@@ -31,7 +31,7 @@ depending on authenticated gateway access should set it.
 | `BIRDEYE_API_KEY` | Market data |
 | `JUPITER_API_KEY` | Swap API |
 | `TAILSCALE_AUTH_KEY` | Mesh networking |
-| `NANO_HUB_URL` | NanoHub site URL. Public skill discovery defaults to `https://hub.nanosolana.com`; local bridge flows can point at a dev server |
+| `NANO_HUB_URL` | NanoHub site URL. Public skill discovery defaults to `https://hub.scg.com`; local bridge flows can point at a dev server |
 | `NANO_AGENT_HEARTBEAT_INTERVAL_MS` | Wallet heartbeat interval |
 | `AGENT_TOKEN_MINT_ADDRESS` | Agent token mint for payments |
 | `CURRENCY_MINT` | Payment currency mint (default: USDC) |
@@ -50,9 +50,9 @@ OPENROUTER_API_KEY=...
 NANO_AGENT_HEARTBEAT_INTERVAL_MS=5000
 ```
 
-## What `nanosolana init` writes
+## What `scg init` writes
 
-`nanosolana init` stores secrets in `~/.nanosolana/vault.enc` and creates a local
+`scg init` stores secrets in `~/.scg/vault.enc` and creates a local
 `.env` with non-sensitive defaults such as:
 
 ```env
@@ -65,7 +65,7 @@ NANO_LOG_LEVEL=info
 
 ## Current limitation
 
-Older docs referenced `~/.nanosolana/config.json` as the main source of truth.
+Older docs referenced `~/.scg/config.json` as the main source of truth.
 In the current checkout, the actively used configuration path is the environment
 plus the encrypted vault loader. Treat any `config.json` examples as conceptual,
 not authoritative.

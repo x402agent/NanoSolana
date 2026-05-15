@@ -1,4 +1,4 @@
-// ── Solana clawd × PumpFun — Swarm Spawner ─────────────────────────────────────
+// ── Solana Claude Go × PumpFun — Swarm Spawner ─────────────────────────────────────
 //
 // The SwarmSpawner manages the lifecycle of autonomous financial agents.
 // Each agent runs as an isolated async task with its own wallet, strategy,
@@ -26,7 +26,7 @@ import type {
 import * as sdk from './sdk-bridge.js';
 import { getPersona, buildPersonaSystemPrompt, getPersonaTasks } from '../persona-loader.js';
 import { formatPersonaTaskAssignments } from '../task-loader.js';
-import { ClawVault } from '../../memory/clawvault.js';
+import { ScgVault } from '../../memory/clawvault.js';
 
 // ── Agent Name Generator ────────────────────────────────────────────────────
 
@@ -126,7 +126,7 @@ class SwarmEventBus {
 export class SwarmSpawner {
   private agents = new Map<string, AgentState>();
   private intervals = new Map<string, ReturnType<typeof setInterval>>();
-  private agentMemory = new Map<string, ClawVault>();
+  private agentMemory = new Map<string, ScgVault>();
   private config: SwarmConfig;
   private eventBus: SwarmEventBus;
   private startedAt = Date.now();
@@ -152,7 +152,7 @@ export class SwarmSpawner {
    * Spawn a new agent in the swarm.
    * Validates risk limits, creates the agent state, and starts its run loop.
    * If payment gating is enabled, the caller is responsible for verifying
-   * payment via ClawdPaymentAgent before calling spawn.
+   * payment via ScgPaymentAgent before calling spawn.
    */
   async spawn(request: SpawnAgentRequest): Promise<AgentState> {
     // Enforce max agents
@@ -202,9 +202,9 @@ export class SwarmSpawner {
       lastErrorAt: null,
     };
 
-    // ── Epistemological Memory (ClawVault) ────────────────────
+    // ── Epistemological Memory (ScgVault) ────────────────────
     // Each agent gets its own persistent memory vault
-    const memory = new ClawVault();
+    const memory = new ScgVault();
     this.agentMemory.set(id, memory);
 
     // If persona is set, imprint its identity into LEARNED memory
@@ -481,7 +481,7 @@ export class SwarmSpawner {
   }
 
   /** Get an agent's epistemological memory vault */
-  getAgentMemory(agentId: string): ClawVault | null {
+  getAgentMemory(agentId: string): ScgVault | null {
     return this.agentMemory.get(agentId) ?? null;
   }
 

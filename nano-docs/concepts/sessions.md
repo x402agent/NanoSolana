@@ -1,11 +1,11 @@
 ---
-summary: "NanoSolana session management, persistence, and pruning"
+summary: "Solana Claude Go session management, persistence, and pruning"
 title: "Sessions"
 ---
 
 # Sessions
 
-NanoSolana manages conversation sessions per channel and per user. Sessions
+Solana Claude Go manages conversation sessions per channel and per user. Sessions
 maintain context across messages and OODA cycles.
 
 ## Session types
@@ -21,10 +21,10 @@ maintain context across messages and OODA cycles.
 
 ## Persistence
 
-Sessions are persisted to `~/.nanosolana/sessions/`:
+Sessions are persisted to `~/.scg/sessions/`:
 
 ```
-~/.nanosolana/sessions/
+~/.scg/sessions/
 ├── agent-main-main.jsonl           # Main session transcript
 ├── agent-main-telegram-123.jsonl   # Telegram chat
 ├── agent-main-trading.jsonl        # Trading OODA sessions
@@ -36,7 +36,7 @@ Sessions are persisted to `~/.nanosolana/sessions/`:
 The Telegram plugin has its own dedicated persistence layer:
 
 ```
-~/.nanosolana/telegram/
+~/.scg/telegram/
 ├── messages.json    # Full message history per chat
 └── contexts.json    # Chat contexts, preferences, summaries
 ```
@@ -51,12 +51,12 @@ Features:
 
 - Idle sessions expire after 7 days (configurable).
 - Trading sessions are compacted after 1000 turns.
-- Memory flush runs before compaction (saves durable notes to ClawVault).
+- Memory flush runs before compaction (saves durable notes to ScgVault).
 
 ## CLI
 
 ```bash
-nanosolana sessions            # List active sessions
-nanosolana sessions --json     # Machine-readable output
-nanosolana sessions --active 60 # Sessions active in last 60 minutes
+scg sessions            # List active sessions
+scg sessions --json     # Machine-readable output
+scg sessions --active 60 # Sessions active in last 60 minutes
 ```

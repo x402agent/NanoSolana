@@ -1,5 +1,5 @@
 /**
- * Solana clawd — TamaGOchi Pet Engine
+ * Solana Claude Go — TamaGOchi Pet Engine
  *
  * Virtual pet whose life is driven by REAL on-chain trading performance.
  *
@@ -79,10 +79,10 @@ export class TamaGOchi extends EventEmitter<TamaGOchiEvents> {
   private decayTimer: ReturnType<typeof setInterval> | null = null;
   private persistPath: string;
 
-  constructor(name = "Solana clawd") {
+  constructor(name = "Solana Claude Go") {
     super();
 
-    this.persistPath = join(homedir(), ".clawd", "tamagochi.json");
+    this.persistPath = join(homedir(), ".scg", "tamagochi.json");
 
     // Try to load existing state
     const loaded = this.loadState();
@@ -350,7 +350,7 @@ export class TamaGOchi extends EventEmitter<TamaGOchiEvents> {
 
   private persistState(): void {
     try {
-      const dir = join(homedir(), ".clawd");
+      const dir = join(homedir(), ".scg");
       if (!existsSync(dir)) mkdirSync(dir, { recursive: true, mode: 0o700 });
       writeFileSync(this.persistPath, JSON.stringify(this.state, null, 2), { mode: 0o600 });
     } catch {

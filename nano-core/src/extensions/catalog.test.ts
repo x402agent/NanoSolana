@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { scanClawdExtensions } from "./catalog.js";
+import { scanScgExtensions } from "./catalog.js";
 
-describe("scanClawdExtensions", () => {
+describe("scanScgExtensions", () => {
   it("merges manifest, openclaw, and package metadata", () => {
-    const snapshot = scanClawdExtensions();
+    const snapshot = scanScgExtensions();
 
     expect(snapshot.directories).toBeGreaterThanOrEqual(41);
     expect(snapshot.manifests).toBeGreaterThanOrEqual(40);
