@@ -1,7 +1,7 @@
 {
   "id": "memory-lancedb",
   "name": "Memory LanceDB",
-  "description": "NanoSolana vector memory with LanceDB — semantic search for ClawVault entries",
+  "description": "Solana Claude Go vector memory with LanceDB — semantic search for ScgVault entries",
   "configSchema": {
     "type": "object",
     "additionalProperties": false,

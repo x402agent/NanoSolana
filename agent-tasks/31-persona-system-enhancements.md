@@ -27,10 +27,10 @@ Enhance the 43-persona agent system with runtime persona customization, composit
 ## Technical Notes
 
 - Persona loader already supports dynamic reloading via `clearPersonaCache()`
-- ClawVault LEARNED tier should store persona transitions
+- ScgVault LEARNED tier should store persona transitions
 - Consider storing persona performance in `db.ts` SQLite
 
 ## Dependencies
 
 - Persona system (completed)
-- ClawVault integration (completed)
+- ScgVault integration (completed)

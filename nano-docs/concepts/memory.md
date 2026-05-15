@@ -1,11 +1,11 @@
 ---
-summary: "ClawVault 3-tier epistemological memory system"
-title: "Memory (ClawVault)"
+summary: "ScgVault 3-tier epistemological memory system"
+title: "Memory (ScgVault)"
 ---
 
-# Memory (ClawVault)
+# Memory (ScgVault)
 
-NanoSolana uses ClawVault to separate fresh observations from learned patterns and
+Solana Claude Go uses ScgVault to separate fresh observations from learned patterns and
 looser inferences.
 
 ## Three tiers
@@ -27,21 +27,21 @@ looser inferences.
 
 ## Runtime behavior
 
-ClawVault is surfaced today through:
+ScgVault is surfaced today through:
 
-- `nanosolana run`
-- `nanosolana go`
-- `nanosolana status`
-- `nanosolana vault [query]`
+- `scg run`
+- `scg go`
+- `scg status`
+- `scg vault [query]`
 
-The current published CLI does **not** expose a standalone `nanosolana memory ...`
+The current published CLI does **not** expose a standalone `scg memory ...`
 tree.
 
-## What `nanosolana vault` gives you
+## What `scg vault` gives you
 
 ```bash
-npx nanosolana vault
-npx nanosolana vault RSI
+npx scg vault
+npx scg vault RSI
 ```
 
 That command shows:
@@ -64,7 +64,7 @@ The exact file/database layout can evolve; the authoritative runtime entrypoint 
 
 ## Extension tie-ins
 
-ClawVault is also extended by repo-level plugins and UI surfaces, including:
+ScgVault is also extended by repo-level plugins and UI surfaces, including:
 
 - `extensions/memory-core`
 - `extensions/memory-lancedb`
@@ -72,5 +72,5 @@ ClawVault is also extended by repo-level plugins and UI surfaces, including:
 
 ## Compatibility note
 
-Older docs referenced a standalone `nanosolana memory ...` subtree. That command
-family is not part of the current shipped CLI. Use `nanosolana vault` instead.
+Older docs referenced a standalone `scg memory ...` subtree. That command
+family is not part of the current shipped CLI. Use `scg vault` instead.

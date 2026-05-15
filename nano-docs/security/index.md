@@ -1,5 +1,5 @@
 ---
-summary: "NanoSolana security model — current implementation notes"
+summary: "Solana Claude Go security model — current implementation notes"
 title: "Security"
 ---
 
@@ -9,7 +9,7 @@ This page describes the security model that exists in the current checkout.
 
 ## Threat boundaries
 
-NanoSolana assumes:
+Solana Claude Go assumes:
 
 - the local host is trusted
 - the network is hostile
@@ -18,7 +18,7 @@ NanoSolana assumes:
 
 ## Secret storage
 
-Secrets are stored in `~/.nanosolana/vault.enc`.
+Secrets are stored in `~/.scg/vault.enc`.
 
 Current implementation details from
 [`nano-core/src/config/vault.ts`](../../nano-core/src/config/vault.ts):
@@ -35,13 +35,13 @@ Important: older docs referenced PBKDF2. That is not what the current code does.
 
 - wallet keys are generated and then stored in the encrypted vault
 - wallet material is not meant to be logged or shared
-- there is no first-class `nanosolana wallet export` command in the current CLI
+- there is no first-class `scg wallet export` command in the current CLI
 
 ## Gateway auth
 
 The gateway supports:
 
-- `X-NanoSolana-Secret: ...`
+- `X-Solana Claude Go-Secret: ...`
 - `Authorization: Bearer ...`
 - HMAC-SHA256 authentication for WebSocket clients
 
@@ -50,27 +50,27 @@ Examples:
 ```bash
 curl http://127.0.0.1:18790/health
 
-curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/status
 ```
 
 ## Runtime checks you can do today
 
-There is no shipped `nanosolana security audit` command yet. The practical checks
+There is no shipped `scg security audit` command yet. The practical checks
 in the current runtime are:
 
 ```bash
-npx nanosolana config
-npx nanosolana status
-npx nanosolana docs security
-ls -ld ~/.nanosolana
-ls -l ~/.nanosolana/vault.enc
+npx scg config
+npx scg status
+npx scg docs security
+ls -ld ~/.scg
+ls -l ~/.scg/vault.enc
 ```
 
 You should verify:
 
-- `~/.nanosolana` is `0700`
-- `~/.nanosolana/vault.enc` is `0600`
+- `~/.scg` is `0700`
+- `~/.scg/vault.enc` is `0600`
 - `NANO_GATEWAY_SECRET` is set when exposing authenticated endpoints
 - gateway endpoints respond on `18790`, not `18789`
 

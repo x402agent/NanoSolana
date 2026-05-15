@@ -28,7 +28,7 @@ import {
   type TokenPrice,
 
   // Memory
-  ClawVault,
+  ScgVault,
   type VaultEntry,
 
   // Strategy
@@ -71,7 +71,7 @@ async function getBirdeyePrices() {
 // ── Example 2: Memory Without Trading ───────────────────────
 
 function useMemoryStandalone() {
-  const vault = new ClawVault();
+  const vault = new ScgVault();
 
   // Store different knowledge tiers
   vault.storeKnown({
@@ -92,7 +92,7 @@ function useMemoryStandalone() {
 
   // Get stats
   const stats = vault.getStats();
-  console.log(`ClawVault: ${stats.known}K/${stats.learned}L/${stats.inferred}I`);
+  console.log(`ScgVault: ${stats.known}K/${stats.learned}L/${stats.inferred}I`);
 }
 
 // ── Example 3: Pet Without Trading ──────────────────────────

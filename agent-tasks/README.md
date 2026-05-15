@@ -10,14 +10,14 @@
 ```
 Agent Spawn → Persona Selected → Task Loader → Keyword Match → MISSION OBJECTIVES
                                       ↓
-                                 ClawVault LEARNED ← task assignments stored
+                                 ScgVault LEARNED ← task assignments stored
 ```
 
 1. Agent is spawned via `/spawn <role> --persona <id>`
 2. The **Task Loader** scans all task files and extracts keywords/domains
 3. Keywords are matched against the persona's tags, title, and domain affinities
 4. Top 5 matching tasks are injected into the agent's **system prompt** as MISSION OBJECTIVES
-5. Tasks are also stored in the agent's **ClawVault LEARNED** memory
+5. Tasks are also stored in the agent's **ScgVault LEARNED** memory
 
 ### Persona-Domain Affinity Map
 

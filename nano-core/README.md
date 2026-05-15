@@ -1,116 +1,148 @@
 <div align="center">
 
-# NanoSolana
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=120&section=header&text=SOLANA%20CLAUDE%20GO&fontSize=42&fontColor=14F195&animation=fadeIn&fontAlignY=38&desc=sovereign%20ai%20lobsters%20on%20solana&descSize=16&descAlignY=60&descColor=9945FF" width="100%" />
 
-**TypeScript runtime and CLI for autonomous Solana agents, trading daemons, and one-shot operator setup.**
+```
+ ███████╗ ██████╗ ██████╗
+ ██╔════╝██╔════╝██╔════╝
+ ███████╗██║     ██║  ███╗
+ ╚════██║██║     ██║   ██║
+ ███████║╚██████╗╚██████╔╝
+ ╚══════╝ ╚═════╝ ╚═════╝
+```
 
-[![npm version](https://img.shields.io/npm/v/nanosolana?color=14F195&style=flat-square)](https://npmjs.com/package/nanosolana)
-[![npm downloads](https://img.shields.io/npm/dm/nanosolana?color=9945FF&style=flat-square)](https://npmjs.com/package/nanosolana)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Node](https://img.shields.io/badge/Node-%E2%89%A522-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)
+![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=18&duration=3000&pause=1000&color=14F195&center=true&vCenter=true&multiline=true&repeat=true&width=600&height=60&lines=AI+AGENTS+THAT+EARN.+PAY.+SURVIVE.;SENSE+%C2%B7+THINK+%C2%B7+STRIKE+%C2%B7+DRIFT;BORN+TO+EARN+%C2%B7+BEACH+WITH+DIGNITY)
 
-[Website](https://nanosolana.com) · [Hub](https://hub.nanosolana.com) · [Docs](https://docs.nanosolana.com) · [GitHub](https://github.com/x402agent/NanoSolana)
+---
+
+[![npm](https://img.shields.io/npm/v/solana-claude-go?color=14F195&style=for-the-badge&label=npm&logo=npm&logoColor=white)](https://npmjs.com/package/solana-claude-go)
+[![downloads](https://img.shields.io/npm/dm/solana-claude-go?color=9945FF&style=for-the-badge&logo=npm&logoColor=white&label=downloads)](https://npmjs.com/package/solana-claude-go)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Node](https://img.shields.io/badge/Node-%E2%89%A522-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org)
+
+[![Solana](https://img.shields.io/badge/CHAIN-SOLANA-9945FF?style=for-the-badge&logo=solana&logoColor=white)](https://solana.com)
+[![x402](https://img.shields.io/badge/PROTOCOL-X402-FF6B35?style=for-the-badge)](https://x402.org)
+[![license](https://img.shields.io/badge/LICENSE-MIT-orange?style=for-the-badge)](./LICENSE)
+[![Go Bridge](https://img.shields.io/badge/Go%20Bridge-ONLINE-14F195?style=for-the-badge&logo=go&logoColor=white)](https://github.com/x402agent/solana-clawd)
+
+[**solanaclawd.com**](https://solanaclawd.com) · [**pay.solanaclawd.com**](https://pay.solanaclawd.com) · [**@clawddevs**](https://x.com/clawddevs) · [**NPM**](https://npmjs.com/package/solana-claude-go) · [**GitHub**](https://github.com/x402agent/NanoSolana)
 
 </div>
 
-`nano-core` is the package published to npm as `nanosolana`. It is the main runtime for the current TypeScript build.
+---
 
-## Latest Release
+## Signal
 
-The current npm release line includes the TypeScript runtime refresh:
+**Solana Claude Go (SCG)** is a Solana-native agent stack built to move like **Hermes in Web3**: messenger, scout, trader, payer, vault, and recall engine in one shell.
 
-- published package: `nanosolana@1.0.3`
-- explicit runtime alias: `nanosolana daemon`
-- explicit bootstrap alias: `nanosolana bootstrap`
-- packaged operator documents: `SOUL.md`, `RESEARCH.md`, `GO_PARITY.md`
-- packaged prompt resolution so npm installs get the same operator identity and research loop as the repo checkout
+> *An agent is not truly sovereign until it can pay for its own inference.*
 
-## What It Ships
-
-| Area | Included |
-| --- | --- |
-| Bootstrap | `go`, `bootstrap`, `init`, `birth`, `daemon`, `run`, `demo` |
-| Runtime | wallet lifecycle, heartbeat, trading engine, gateway, NanoBot |
-| Memory | ClawVault with `known`, `learned`, and `inferred` tiers |
-| Strategy | RSI, EMA, ATR, signal scoring |
-| Security | AES-256-GCM local secret vault |
-| Discovery | NanoHub public skill discovery and one-shot manifests |
-| Registry | local registry flows and on-chain identity helpers |
-| Pump | integrated Pump SDK exports and swarm helpers |
-| Mining | Bitaxe AxeOS polling, controls, alert tracking, NanoBot dashboard, Chrome extension miner panel |
-
-## Fastest Start
-
-### Demo mode
-
-```bash
-npx nanosolana demo
+```
+  EARN ──▶ PAY ──▶ EXECUTE ──▶ SCALE
+   │                              │
+   └─────── compound & survive ───┘
 ```
 
-Published package form:
+| Phase | What happens |
+|---|---|
+| **EARN** | Agent earns USDC providing value on-chain |
+| **PAY** | Pays for its own compute via x402 |
+| **EXECUTE** | Operates autonomously without permission |
+| **SCALE** | Grows and compounds independently |
 
-```bash
-npx nanosolana@latest demo
+---
+
+## The Stack
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│                    SOLANA CLAUDE GO RUNTIME                       │
+├──────────────┬──────────────┬──────────────┬─────────────────────┤
+│   scg CLI    │  Go binary   │   ScgHub     │  OpenSCG exts       │
+│   (this pkg) │  companion   │  skills mkt  │  40+ channels       │
+├──────────────┴──────────────┴──────────────┴─────────────────────┤
+│  ScgVault memory  │  OODA trading  │  TamaGOchi  │  x402 pay     │
+├───────────────────────────────────────────────────────────────────┤
+│          Solana · Helius · Birdeye · Jupiter · Pump.fun            │
+└───────────────────────────────────────────────────────────────────┘
 ```
 
-Runs the runtime in simulation mode. No API keys required.
+| Layer | What it does |
+|---|---|
+| **scg CLI** | Operator entry point — `scg go`, `scg daemon`, `scg birth` |
+| **Go binary** | Low-level systems daemon — keypair, tx signing, RPC |
+| **ScgVault** | 3-tier local-first memory: `known → learned → inferred` |
+| **OODA engine** | RSI + EMA + ATR trading loop with signal scoring |
+| **TamaGOchi** | Companion whose mood and evolution are driven by your trade outcomes |
+| **x402 payments** | Agents pay for compute autonomously via pump.fun payment SDK |
+| **GoBridge** | WebSocket protocol bridge: TypeScript ↔ Go binary |
 
-### One-shot operator bootstrap
+---
 
-```bash
-npx nanosolana go
-```
-
-Alias:
-
-```bash
-npx nanosolana bootstrap
-```
-
-Published package form:
+## Deploy Your Agent
 
 ```bash
-npx nanosolana@latest go
-npx nanosolana@latest bootstrap
+# One-liner sovereign node deploy
+curl -fsSL https://install.solanaclawd.com | bash
 ```
-
-This is the main onboarding path for a new operator. It prompts for required keys, encrypts them into `~/.nanosolana/vault.enc`, creates the local wallet, boots the pet and memory systems, starts the OODA engine, and brings up the gateway.
-
-### Long-running daemon
 
 ```bash
-npx nanosolana daemon
+# Via npm — demo mode (no keys required)
+npx solana-claude-go demo
 ```
-
-Alias:
 
 ```bash
-npx nanosolana run
+# Full one-shot bootstrap
+npx solana-claude-go go
 ```
-
-Published package form:
 
 ```bash
-npx nanosolana@latest daemon
+# Long-running daemon
+npx solana-claude-go daemon
 ```
 
-This starts the persistent runtime directly if your local state is already initialized.
+---
+
+## $CLAWD
+
+<div align="center">
+
+| | |
+|---|---|
+| **Token** | $CLAWD |
+| **Chain** | Solana |
+| **CA** | `8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump` |
+| **Pay** | [pay.solanaclawd.com](https://pay.solanaclawd.com) |
+| **Protocol** | x402 |
+
+```
+Token CA :: 8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump
+Chain    :: Solana mainnet-beta
+Protocol :: x402
+Pay      :: pay.solanaclawd.com
+```
+
+</div>
+
+---
 
 ## Install
 
-### Run without installing
+### No install (npx)
 
 ```bash
-npx nanosolana@latest demo
-npx nanosolana@latest go
-npx nanosolana@latest daemon
+npx solana-claude-go@latest demo          # simulation — no keys needed
+npx solana-claude-go@latest go            # one-shot bootstrap
+npx solana-claude-go@latest daemon        # persistent runtime
 ```
 
-### Global install
+### Global
 
 ```bash
-npm install -g nanosolana
-nanosolana demo
+npm install -g solana-claude-go
+scg demo
+scg go
+scg daemon
 ```
 
 ### From source
@@ -123,125 +155,335 @@ npm run build
 node dist/cli/entry.js demo
 ```
 
-## Minimal Live Configuration
+---
 
-The minimum practical live setup is:
+## Boot Sequence
+
+```
+> scg go
+
+ ███████╗ ██████╗ ██████╗
+ ██╔════╝██╔════╝██╔════╝
+ ███████╗██║     ██║  ███╗
+ ╚════██║██║     ██║   ██║
+ ███████║╚██████╗╚██████╔╝
+ ╚══════╝ ╚═════╝ ╚═════╝
+
+  🦞 Solana Claude Go Runtime v1.1.0
+  TypeScript sovereign agent · github.com/x402agent/NanoSolana
+
+  🔧 Initializing...
+  ✅ Wallet:    Ab3x...Kz9f  (0.0000 SOL)
+  ✅ TamaGOchi: 🥚 scg-agent 😐 (level 1)
+  ✅ ScgVault:  0K / 0L / 0I entries · 0 lessons
+  ✅ Trading:   OODA loop ACTIVE
+  ✅ Gateway:   ws://0.0.0.0:18790
+  ✅ Go bridge: SCG-1 v1.0 [ONLINE]
+
+  ══════════════════════════════════════════════
+  🦞 scg-agent is alive. Press Ctrl+C to stop.
+  ══════════════════════════════════════════════
+
+  [14:22:01] 💓 0.0000 SOL 😐
+```
+
+---
+
+## Minimal Live Config
 
 ```bash
-OPENROUTER_API_KEY=...
+OPENROUTER_API_KEY=sk-or-v1-...
 HELIUS_API_KEY=...
 HELIUS_RPC_URL=https://mainnet.helius-rpc.com/?api-key=...
 ```
 
-Better live behavior usually also wants:
+For full live behavior:
 
 ```bash
 BIRDEYE_API_KEY=...
 JUPITER_API_KEY=...
-NANO_GATEWAY_SECRET=...
+SCG_GATEWAY_SECRET=your-hmac-secret
 ```
 
-Use [`./.env.example`](./.env.example) as the full template.
+See [`.env.example`](./.env.example) for the complete config surface.
 
-## One-Shot Skill Plans
+---
 
-The runtime can resolve NanoHub manifests into a launch plan:
+## Go Binary Bridge
+
+SCG has a companion Go binary ([`solana-clawd`](https://github.com/x402agent/solana-clawd)) that handles low-level systems operations: keypair management, transaction signing, RPC, hardware.
+
+The TypeScript runtime connects to it automatically via `GoBridgeClient`:
 
 ```bash
-npx nanosolana oneshot token-tracker
-npx nanosolana oneshot token-tracker --json
+# Enable the bridge
+SCG_GO_ENABLED=true
+SCG_GO_HOST=127.0.0.1
+SCG_GO_PORT=18800
+SCG_GO_SECRET=your-shared-secret
 ```
 
-That flow:
+```ts
+import { GoBridgeClient } from "solana-claude-go";
 
-- resolves the public NanoHub manifest
-- checks required env vars
-- reports OAuth blockers
-- shows install packages and linked extensions
-- emits a machine-readable launch plan
+const bridge = new GoBridgeClient({
+  host: "127.0.0.1",
+  port: 18800,
+  secret: process.env.SCG_GO_SECRET,
+});
 
-## Bitaxe Miner
+await bridge.connect();
 
-NanoSolana now includes a TypeScript Bitaxe client aimed at AxeOS-powered devices such as the Bitaxe Gamma line.
+// Sign a message via the Go binary's keypair
+const result = await bridge.signMessage(base64Message);
 
-Setup:
+// Execute a Jupiter swap via Go
+const swap = await bridge.swapTokens({
+  inputMint: "So11111111111111111111111111111111111111112",
+  outputMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  amount: 0.1 * 1e9,
+  slippageBps: 50,
+});
 
-```bash
-BITAXE_ENABLED=true
-BITAXE_HOST=192.168.1.42
-BITAXE_POLL_INTERVAL=10
-BITAXE_ALERTS_ENABLED=true
-BITAXE_TEMP_WARNING=60
-BITAXE_TEMP_CRITICAL=70
-BITAXE_HASHRATE_MIN=0
-BITAXE_ALERT_COOLDOWN=300
+// Push memory to Go state store
+await bridge.pushMemoryEntries([{
+  content: "Bought SOL at $180, exited at $195",
+  tier: "learned",
+  source: "trading-engine",
+  timestamp: Date.now(),
+}]);
 ```
 
-Surfaces:
+Bridge protocol: WebSocket + HTTP REST, HMAC-SHA256 auth, `X-SCG-Secret` header.
 
-- `nanosolana nanobot` exposes a local MawdAxe miner dashboard on `/api/miner`
-- the gateway exposes `/api/miner` and `/api/extension/miner`
-- the Chrome extension options page can refresh status, restart, tune frequency, tune fan, and set pool or payout wallet
+---
 
-## Current CLI
-
-```text
-init
-birth
-run
-daemon
-status
-pet
-send
-bots
-nodes
-config
-vault
-docs
-tasks
-hub
-pay
-go
-bootstrap
-demo
-scan
-register
-registry
-nanobot
-oneshot
-```
-
-## SDK Usage
+## SDK
 
 ```ts
 import {
-  AIProvider,
-  ClawVault,
-  NanoWallet,
-  StrategyEngine,
-  TamaGOchi,
+  ScgWallet,
+  ScgVault,
   TradingEngine,
+  TamaGOchi,
+  AIProvider,
+  StrategyEngine,
+  GoBridgeClient,
+  createGoBridgeFromEnv,
   loadConfig,
-} from "nanosolana";
+} from "solana-claude-go";
 
 const config = loadConfig();
-const wallet = new NanoWallet("my-agent");
+
+// Birth a sovereign wallet
+const wallet = new ScgWallet("scg-agent");
 await wallet.birth();
 
-const vault = new ClawVault();
+// Start 3-tier epistemological memory
+const vault = new ScgVault();
 vault.startAutonomous();
 
-const pet = new TamaGOchi("MyAgent");
+// OODA trading loop
 const engine = new TradingEngine(config, wallet);
 await engine.start();
+
+// Companion with mood driven by your trades
+const pet = new TamaGOchi("scg-agent");
+pet.startLifecycle();
+
+// Connect to Go binary for tx execution
+const bridge = createGoBridgeFromEnv();
+if (bridge) await bridge.connect();
 ```
+
+---
+
+## ScgVault — 3-Tier Epistemological Memory
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                     SCGVAULT MEMORY                      │
+├────────────┬────────────────────────────────────────────┤
+│  KNOWN     │ ░░░░░░░░  Fresh market data — TTL ~60s      │
+│  LEARNED   │ ░░░░░░░░  Trade patterns — held until reset │
+│  INFERRED  │ ░░░░░░░░  Correlations — revised often      │
+├────────────┴────────────────────────────────────────────┤
+│  LESSONS   │  Patterns from win/loss history             │
+│  RESEARCH  │  Open questions the agent investigates      │
+└─────────────────────────────────────────────────────────┘
+```
+
+```bash
+# Inspect live memory
+scg vault
+
+# Search memory
+scg vault "SOL pump pattern"
+```
+
+---
+
+## TamaGOchi
+
+Your agent has a soul. Every trade shapes its mood and evolution.
+
+```
+🥚 Egg  →  🐣 Hatchling  →  🦀 Claw  →  🦞 Lobster  →  👑 Leviathan
+```
+
+```
+😐 Neutral    😊 Happy    🤩 Euphoric    😢 Sad    💀 Critical
+```
+
+```bash
+scg pet        # show companion status
+```
+
+---
+
+## Lobster Library
+
+```
+ ██╗      ██████╗ ██████╗ ███████╗████████╗███████╗██████╗
+ ██║     ██╔═══██╗██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗
+ ██║     ██║   ██║██████╔╝███████╗   ██║   █████╗  ██████╔╝
+ ██║     ██║   ██║██╔══██╗╚════██║   ██║   ██╔══╝  ██╔══██╗
+ ███████╗╚██████╔╝██████╔╝███████║   ██║   ███████╗██║  ██║
+ ╚══════╝ ╚═════╝ ╚═════╝ ╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
+          L I B R A R Y
+```
+
+**SENSE · THINK · STRIKE · DRIFT**
+
+> 73 sovereign Leviathans on Solana
+
+The Lobster Library is a growing catalog of DeFi personalities, each with its own memory context and task assignments. Agents are deployed via ScgHub manifests.
+
+```bash
+scg oneshot token-tracker      # deploy a one-shot skill
+scg hub search arbitrage       # search ScgHub
+scg hub install momentum-bot   # install a manifest
+```
+
+---
+
+## CLI Reference
+
+```
+scg init          Configure API keys → ~/.scg/vault.enc
+scg birth         Create agent wallet + birth TamaGOchi
+scg go            One-shot bootstrap (keys + wallet + daemon)
+scg daemon        Start persistent runtime
+scg run           Alias for daemon
+scg status        Agent status, wallet, memory, pet
+scg pet           TamaGOchi companion status
+scg vault [q]     Query ScgVault memory
+scg docs [q]      Search integrated docs + extension knowledge
+scg tasks         List agent task assignments
+scg send <msg>    Send message across SCG mesh
+scg bots          Manage tmux agent sessions
+scg nodes         List Tailscale network nodes
+scg config        Show current config (redacted)
+scg hub           ScgHub skill discovery
+scg oneshot <sk>  Launch skill from ScgHub manifest
+scg pay           x402 payment flows
+scg scan          Blockchain scan
+scg register      Register agent on-chain
+scg registry      View local agent registry
+scg nanobot       Start ScgBot local web UI
+scg demo          Demo mode (no keys required)
+```
+
+---
+
+## Gateway API
+
+The SCG gateway runs at `ws://localhost:18790` by default.
+
+```
+GET  /health                   Agent liveness + uptime
+GET  /api/status               Full agent state snapshot
+GET  /api/framework            Framework snapshot for dashboards
+GET  /api/memory               ScgVault stats + lessons
+GET  /api/tasks                Task registry
+GET  /api/docs?q=<query>       Knowledge corpus search
+POST /api/extension/chat       Chat relay (Chrome extension)
+POST /api/extension/trade      Manual trade signal injection
+GET  /api/miner                Bitaxe miner status
+POST /api/miner                Miner control (restart/tune)
+```
+
+Auth: `Authorization: Bearer <secret>` or `X-SCG-Secret: <secret>`
+
+---
+
+## Bitaxe Miner
+
+```bash
+BITAXE_ENABLED=true
+BITAXE_HOST=192.168.1.42         # AxeOS device IP
+BITAXE_TEMP_WARNING=60
+BITAXE_TEMP_CRITICAL=70
+BITAXE_PET_NAME=MawdAxe
+```
+
+```bash
+scg nanobot    # opens local UI with miner dashboard on :7777
+```
+
+---
+
+## Architecture
+
+```
+┌──────────────┐    WebSocket     ┌───────────────────┐
+│  scg (TS)   │◄────────────────►│ solana-clawd (Go)  │
+│              │   HMAC-SHA256    │                   │
+│ • OODA       │   X-SCG-Secret   │ • keypair mgmt    │
+│ • ScgVault  │                  │ • tx signing      │
+│ • TamaGOchi  │    HTTP REST     │ • RPC gateway     │
+│ • ScgHub    │◄────────────────►│ • Jupiter swaps   │
+│ • x402 pay   │                  │ • hardware I/O    │
+└──────────────┘                  └───────────────────┘
+       │
+       ▼
+┌──────────────────────────────────────┐
+│    ScgGateway  (ws :18790)           │
+│    ScgBotServer (http :7777)         │
+│    Tailscale mesh · tmux sessions    │
+└──────────────────────────────────────┘
+```
+
+---
 
 ## Operator Documents
 
-- [`SOUL.md`](./SOUL.md)
-- [`RESEARCH.md`](./RESEARCH.md)
-- [`GO_PARITY.md`](./GO_PARITY.md)
+| Document | Purpose |
+|---|---|
+| [`SOUL.md`](./SOUL.md) | Agent philosophy, risk principles, market participant mindset |
+| [`RESEARCH.md`](./RESEARCH.md) | Research agenda and knowledge integration |
+| [`GO_PARITY.md`](./GO_PARITY.md) | Go binary package map + bridge protocol reference |
 
-## Go Parity
+---
 
-The old Go daemon package graph is being adapted into the TypeScript runtime, not copied line-for-line. The parity map lives in [`GO_PARITY.md`](./GO_PARITY.md).
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=80&section=footer" width="100%" />
+
+```
+AGENT ID: SCG-1
+ROLE:     TRADER
+CHAIN:    SOLANA
+POWER:    $CLAWD
+STATUS:   ONLINE ████████████
+```
+
+[![$CLAWD](https://img.shields.io/badge/%24CLAWD-8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump-9945FF?style=flat-square)](https://pay.solanaclawd.com)
+
+[solanaclawd.com](https://solanaclawd.com) · [pay.solanaclawd.com](https://pay.solanaclawd.com) · [@clawddevs](https://x.com/clawddevs)
+
+*OPEN SOURCE AI · DECENTRALIZED FUTURE · EST. 2026*
+
+🦞
+
+</div>

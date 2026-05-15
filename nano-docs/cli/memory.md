@@ -1,28 +1,28 @@
 ---
-summary: "Current ClawVault CLI surface"
+summary: "Current ScgVault CLI surface"
 title: "memory"
 ---
 
-# Memory and ClawVault
+# Memory and ScgVault
 
-The current published CLI exposes ClawVault through `nanosolana vault [query]`.
-There is not yet a standalone `nanosolana memory ...` subtree.
+The current published CLI exposes ScgVault through `scg vault [query]`.
+There is not yet a standalone `scg memory ...` subtree.
 
 ## Current commands
 
 ```bash
-nanosolana vault
-nanosolana vault "RSI"
-nanosolana status
-nanosolana docs memory
-curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+scg vault
+scg vault "RSI"
+scg status
+scg docs memory
+curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/memory
 ```
 
 Typical CLI output shape:
 
 ```text
-ClawVault Memory Status
+ScgVault Memory Status
 ━━━━━━━━━━━━━━━━━━━━━━
   KNOWN:     0 (fresh API data, expires in ~60s)
   LEARNED:   0 (trade-derived patterns)
@@ -34,7 +34,7 @@ ClawVault Memory Status
   Research:  0 open gaps
 ```
 
-When you pass a query string to `nanosolana vault`, it searches recent memory and prints matching entries with tier labels.
+When you pass a query string to `scg vault`, it searches recent memory and prints matching entries with tier labels.
 
 ## Memory tiers
 
@@ -46,7 +46,7 @@ When you pass a query string to `nanosolana vault`, it searches recent memory an
 
 ## Persistence note
 
-The current `ClawVault` implementation is primarily an in-memory runtime structure.
+The current `ScgVault` implementation is primarily an in-memory runtime structure.
 Older docs sometimes described a fixed on-disk `clawvault/` directory layout; treat
 that as conceptual rather than the current source of truth.
 

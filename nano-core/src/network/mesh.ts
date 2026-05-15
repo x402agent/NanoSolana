@@ -1,15 +1,15 @@
 /**
- * Solana clawd — Nano Network (Tailscale + tmux mesh)
+ * Solana Claude Go — Nano Network (Tailscale + tmux mesh)
  *
  * Provides the `nano` one-shot command for communicating with
- * clawd agents everywhere using:
+ * SCG agents everywhere using:
  *   - Tailscale mesh networking for bot discovery
  *   - tmux session management for persistent bots
  *   - Gateway relay for cross-network messaging
  *
  * Architecture:
- *   Each clawd agent runs in a tmux session on a Tailscale node.
- *   The `clawd` command discovers and communicates with bots
+ *   Each SCG agent runs in a tmux session on a Tailscale node.
+ *   The `scg` command discovers and communicates with bots
  *   across the mesh.
  */
 
@@ -20,7 +20,7 @@ import { createHmac } from "node:crypto";
 
 // ── Types ────────────────────────────────────────────────────
 
-export interface ClawdNode {
+export interface ScgNode {
   hostname: string;
   ip: string;
   online: boolean;
@@ -40,8 +40,8 @@ export interface TmuxSession {
   pid: number;
 }
 
-export interface ClawdNetworkEvents {
-  nodeDiscovered: (node: ClawdNode) => void;
+export interface ScgNetworkEvents {
+  nodeDiscovered: (node: ScgNode) => void;
   nodeOffline: (hostname: string) => void;
   messageRelayed: (from: string, to: string) => void;
   error: (err: Error) => void;
@@ -65,12 +65,12 @@ export class TailscaleDiscovery {
   /**
    * Discover all Tailscale peers.
    */
-  static discoverNodes(): ClawdNode[] {
+  static discoverNodes(): ScgNode[] {
     try {
       const output = execSync("tailscale status --json", { encoding: "utf8" });
       const status = JSON.parse(output);
       const peers = status.Peer ?? {};
-      const nodes: ClawdNode[] = [];
+      const nodes: ScgNode[] = [];
 
       for (const [id, peer] of Object.entries(peers) as [string, any][]) {
         nodes.push({
@@ -162,14 +162,14 @@ export class TmuxManager {
   }
 
   /**
-   * List only clawd agent sessions.
+   * List only SCG agent sessions.
    */
   static listNanoSessions(): TmuxSession[] {
     return TmuxManager.listSessions().filter((s) => s.name.startsWith("nano-"));
   }
 
   /**
-   * Create a new clawd agent tmux session.
+   * Create a new SCG agent tmux session.
    */
   static createSession(name: string, command?: string): boolean {
     const sessionName = name.startsWith("nano-") ? name : `nano-${name}`;
@@ -238,7 +238,7 @@ export class TmuxManager {
 
 // ── Nano Network Client ────────────────────────────────────
 
-export class ClawdNetworkClient extends EventEmitter<ClawdNetworkEvents> {
+export class ScgNetworkClient extends EventEmitter<ScgNetworkEvents> {
   private connections: Map<string, WebSocket> = new Map();
 
   constructor(private gatewaySecret: string) {
@@ -246,9 +246,9 @@ export class ClawdNetworkClient extends EventEmitter<ClawdNetworkEvents> {
   }
 
   /**
-   * Connect to a clawd agent's gateway.
+   * Connect to a SCG agent's gateway.
    */
-  async connectToNode(node: ClawdNode, agentId: string): Promise<boolean> {
+  async connectToNode(node: ScgNode, agentId: string): Promise<boolean> {
     return new Promise((resolve) => {
       const url = `ws://${node.ip}:${node.gatewayPort ?? 18790}`;
 

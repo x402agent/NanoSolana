@@ -1,5 +1,5 @@
 ---
-summary: "NanoSolana extension system — repo reality and integration points"
+summary: "Solana Claude Go extension system — repo reality and integration points"
 title: "Extensions"
 ---
 
@@ -7,14 +7,14 @@ title: "Extensions"
 
 The repo currently contains **41** extension directories under `extensions/`.
 
-Not all of them are exposed through a first-class `nanosolana plugins ...` CLI yet.
+Not all of them are exposed through a first-class `scg plugins ...` CLI yet.
 Today, extensions are best understood as repo packages and runtime integration
 points rather than a finished package manager surface.
 
 ## What exists today
 
-- merged extension metadata from `nanosolana-plugin.json`, `openclaw.plugin.json`, and `package.json#nanosolana`
-- extension metadata indexed by `nanosolana docs`
+- merged extension metadata from `scg-plugin.json`, `openclaw.plugin.json`, and `package.json#scg`
+- extension metadata indexed by `scg docs`
 - tool registration hooks used by several extensions
 - channel packages for Telegram, Discord, Slack, Matrix, WhatsApp, Nostr, and more
 - gateway surfaces that now expose the normalized extension catalog for UI and automation clients
@@ -49,9 +49,9 @@ CLI does not have dedicated plugin-management commands.
 
 The repo uses more than one metadata format today:
 
-- `nanosolana-plugin.json`
+- `scg-plugin.json`
 - `openclaw.plugin.json`
-- `package.json` under the `nanosolana` key
+- `package.json` under the `scg` key
 
 `nano-core` now merges those sources into one catalog so the docs index, gateway,
 and other runtime surfaces all see the same extension inventory.
@@ -64,9 +64,9 @@ the unified knowledge view.
 
 Use:
 
-- `nanosolana docs`
+- `scg docs`
 - direct workspace/package commands inside an extension directory
 - the standalone UI and runtime integrations
 
-Do not rely on older docs that describe a finished `nanosolana plugins` command
+Do not rely on older docs that describe a finished `scg plugins` command
 tree. That manager surface is not part of the current shipped CLI.

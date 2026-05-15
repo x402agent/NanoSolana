@@ -7,13 +7,13 @@ title: "hub-convex"
 
 Use NanoHub web plus the `nanohub` CLI with Convex-backed auth and publishing.
 
-NanoSolana now exposes read-only public skill discovery directly through the
+Solana Claude Go now exposes read-only public skill discovery directly through the
 runtime CLI:
 
 ```bash
-npx nanosolana@latest hub skills
-npx nanosolana@latest hub skills telegram --limit 5
-npx nanosolana@latest hub inspect token-tracker
+npx scg@latest hub skills
+npx scg@latest hub skills telegram --limit 5
+npx scg@latest hub inspect token-tracker
 ```
 
 The runtime can point at NanoHub through `NANO_HUB_URL`, while install,
@@ -29,7 +29,7 @@ publish, sync, and auth-heavy registry operations live in the separate
 
 ## Web flow
 
-1. Open [https://hub.nanosolana.com](https://hub.nanosolana.com).
+1. Open [https://hub.scg.com](https://hub.scg.com).
 2. Sign in with GitHub.
 3. Publish or manage skills and souls from the UI.
 
@@ -46,7 +46,7 @@ npx nanohub@latest sync --all
 Compatibility note: the published NanoHub package still ships `clawhub` as a bin
 alias, so legacy examples may continue to work. Prefer `nanohub`.
 
-Use `nanosolana` when you want lightweight discovery from the main agent
+Use `scg` when you want lightweight discovery from the main agent
 package. Use `nanohub` when you need:
 
 - install and update flows
@@ -58,8 +58,8 @@ package. Use `nanohub` when you need:
 
 NanoHub discovery should prefer:
 
-- `https://hub.nanosolana.com/.well-known/nanohub.json`
+- `https://hub.scg.com/.well-known/nanohub.json`
 
 Legacy compatibility may still include:
 
-- `https://hub.nanosolana.com/.well-known/clawhub.json`
+- `https://hub.scg.com/.well-known/clawhub.json`

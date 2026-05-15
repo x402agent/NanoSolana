@@ -1,5 +1,5 @@
 /**
- * Solana clawd — Trading Engine
+ * Solana Claude Go — Trading Engine
  *
  * OODA-loop trading pipeline:
  *   Observe → Orient → Decide → Act
@@ -14,8 +14,8 @@
 
 import { Connection, Keypair, PublicKey, VersionedTransaction, TransactionMessage } from "@solana/web3.js";
 import { EventEmitter } from "eventemitter3";
-import type { ClawdConfig } from "../config/vault.js";
-import type { ClawdWallet } from "../wallet/manager.js";
+import type { ScgConfig } from "../config/vault.js";
+import type { ScgWallet } from "../wallet/manager.js";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -299,8 +299,8 @@ export class TradingEngine extends EventEmitter<TradingEngineEvents> {
   private loopTimer: ReturnType<typeof setInterval> | null = null;
 
   constructor(
-    private config: ClawdConfig,
-    private wallet: ClawdWallet,
+    private config: ScgConfig,
+    private wallet: ScgWallet,
   ) {
     super();
     this.birdeye = new BirdeyeClient(config.birdeye.apiKey, config.birdeye.wssUrl);
@@ -526,7 +526,7 @@ export class TradingEngine extends EventEmitter<TradingEngineEvents> {
       confidence,
       mint,
       symbol,
-      reasoning: String(input.reasoning || "Manual trade submitted from Solana clawd UI"),
+      reasoning: String(input.reasoning || "Manual trade submitted from Solana Claude Go UI"),
       timestamp: Date.now(),
       source: "ai",
     };

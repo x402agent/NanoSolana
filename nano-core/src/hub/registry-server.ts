@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 /**
- * ClawdHub — Registration API Server
+ * ScgHub — Registration API Server
  *
- * Express server that provides the ClawdHub agent registration API.
- * Agents register themselves via `npx clawd hub register`,
+ * Express server that provides the ScgHub agent registration API.
+ * Agents register themselves via `npx SCG hub register`,
  * which calls this server. Backend is Supabase PostgreSQL.
  *
  * Deploy to Railway with:
@@ -214,7 +214,7 @@ async function initDatabase(): Promise<string[]> {
 
 function getCreateTableSQL(): string {
   return `
--- ClawdHub Agent Registry Tables
+-- ScgHub Agent Registry Tables
 -- Run this in Supabase SQL Editor
 
 CREATE TABLE IF NOT EXISTS hub_agents (
@@ -625,7 +625,7 @@ if (isMainModule()) {
   server.listen(PORT, () => {
     console.log(`
   ╔══════════════════════════════════════════════════════════════╗
-  ║          ClawdHub — Agent Registration Server                ║
+  ║          ScgHub — Agent Registration Server                ║
   ║          🦞 Solanapolis Registry API                        ║
   ╚══════════════════════════════════════════════════════════════╝
 

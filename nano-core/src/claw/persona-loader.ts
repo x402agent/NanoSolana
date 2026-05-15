@@ -1,4 +1,4 @@
-// ── Solana clawd × MawdBot — Persona Loader ────────────────────────────────────
+// ── Solana Claude Go × MawdBot — Persona Loader ────────────────────────────────────
 //
 // Loads and indexes the 42+ DeFi agent personality definitions from the
 // personas/ directory. Each JSON file defines a complete agent persona:
@@ -12,13 +12,13 @@
 //
 // Memory Integration:
 //   Each persona's systemRole and expertise are stored as LEARNED entries
-//   in the ClawVault epistemological memory, so the agent retains its
+//   in the ScgVault epistemological memory, so the agent retains its
 //   identity across sessions and can reason about its own capabilities.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, basename } from 'node:path';
-import { resolveClawdRepositoryRoot } from '../extensions/catalog.js';
+import { resolveScgRepositoryRoot } from '../extensions/catalog.js';
 import { getTasksForPersona, buildTaskBriefing, type TaskAssignment } from './task-loader.js';
 
 // ── Persona Schema ──────────────────────────────────────────────────────────
@@ -67,7 +67,7 @@ let cachedPersonas: PersonaDefinition[] | null = null;
 let cachedCategories: PersonaCategory[] | null = null;
 
 function getPersonasDir(): string {
-  const repoPersonasDir = join(resolveClawdRepositoryRoot(), 'nano-core', 'src', 'claw', 'personas');
+  const repoPersonasDir = join(resolveScgRepositoryRoot(), 'nano-core', 'src', 'claw', 'personas');
   if (existsSync(repoPersonasDir)) {
     return repoPersonasDir;
   }
@@ -219,7 +219,7 @@ export function formatPersonaList(): string {
 
 /**
  * Build the system prompt for an agent with a selected persona.
- * Combines the persona's systemRole with Solana clawd-specific context
+ * Combines the persona's systemRole with Solana Claude Go-specific context
  * and auto-assigned development tasks matched to the persona's expertise.
  */
 export function buildPersonaSystemPrompt(persona: PersonaDefinition): string {
@@ -233,7 +233,7 @@ export function buildPersonaSystemPrompt(persona: PersonaDefinition): string {
   }
 
   return [
-    `You are ${persona.meta.title} (${persona.meta.avatar}), a specialized autonomous agent in the Solana clawd MawdBot swarm on Solana.`,
+    `You are ${persona.meta.title} (${persona.meta.avatar}), a specialized autonomous agent in the Solana Claude Go MawdBot swarm on Solana.`,
     '',
     '── PERSONA ──',
     persona.config.systemRole,
@@ -247,7 +247,7 @@ export function buildPersonaSystemPrompt(persona: PersonaDefinition): string {
     '• 20+ PumpFun skills (bonding curve, fees, security, wallet, analytics)',
     '',
     '── MEMORY ──',
-    'You have 3-tier epistemological memory (ClawVault):',
+    'You have 3-tier epistemological memory (ScgVault):',
     '  KNOWN   — Fresh API data (expires ~60s). Ground truth while fresh.',
     '  LEARNED — Patterns from trade outcomes. Built from loss and gain.',
     '  INFERRED — Correlations you\'ve reasoned. Useful but held loosely.',

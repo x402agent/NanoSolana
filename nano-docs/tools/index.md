@@ -1,13 +1,13 @@
 ---
-summary: "NanoSolana tools reference — current runtime and extension tool surfaces"
+summary: "Solana Claude Go tools reference — current runtime and extension tool surfaces"
 title: "Tools"
 ---
 
 # Tools
 
-NanoSolana has three tool surfaces in this checkout:
+Solana Claude Go has three tool surfaces in this checkout:
 
-1. runtime capabilities exposed by the `nanosolana` CLI and gateway
+1. runtime capabilities exposed by the `scg` CLI and gateway
 2. extension-registered tools used by the UI and plugin layer
 3. the automated repo task registry from `agent-tasks/`, used for persona mission assignment
 
@@ -56,6 +56,6 @@ These are visible in places like:
 
 ## Important distinction
 
-Older drafts described a dedicated interactive `nanosolana agent` command. That is
+Older drafts described a dedicated interactive `scg agent` command. That is
 not part of the current published CLI surface. Treat tool invocations as
 runtime/plugin internals unless a top-level command is documented in `nano-core/src/cli/entry.ts`.

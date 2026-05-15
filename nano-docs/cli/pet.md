@@ -3,18 +3,18 @@ summary: "Current TamaGOchi CLI surface"
 title: "pet"
 ---
 
-# `nanosolana pet`
+# `scg pet`
 
-The current CLI exposes a single `nanosolana pet` command that prints the current pet state.
+The current CLI exposes a single `scg pet` command that prints the current pet state.
 
 ```bash
-nanosolana pet
+scg pet
 ```
 
 Example output:
 
 ```text
-🐹 NanoSolana  😊
+🐹 Solana Claude Go  😊
 
 📊 Stage: juvenile · Level 1 · XP 0
 😊 Mood: happy
@@ -59,10 +59,10 @@ Current mood set in `nano-core/src/pet/tamagochi.ts`:
 
 ## Related commands
 
-- `nanosolana birth`
-- `nanosolana go`
-- `nanosolana status`
-- `nanosolana run`
+- `scg birth`
+- `scg go`
+- `scg status`
+- `scg run`
 
 ## Heartbeat tie-in
 

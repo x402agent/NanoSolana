@@ -10,7 +10,7 @@ Connect the new Swarm and Personas UI views to live data from the gateway WebSoc
   - Bot health cards update every 10s from gateway
   - Event stream scrolls in real-time via WebSocket subscription
   - Metrics strip (active bots, agents, events/min) refreshes live
-  - Agent table shows ClawVault memory stats (KNOWN/LEARNED/INFERRED counts)
+  - Agent table shows ScgVault memory stats (KNOWN/LEARNED/INFERRED counts)
 - [ ] Personas tab (`/personas`) loads persona data from gateway
   - Fetch full persona list from `/api/personas` endpoint
   - Category filter pills work correctly

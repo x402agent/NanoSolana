@@ -1,4 +1,4 @@
-// ── Solana clawd — Payment Types ────────────────────────────────────────────────
+// ── Solana Claude Go — Payment Types ────────────────────────────────────────────────
 //
 // Type definitions for the tokenized agent payment system.
 // Built on @pump-fun/agent-payments-sdk for on-chain invoice payments.

@@ -1,24 +1,24 @@
 ---
-summary: "New-user documentation hub for running, operating, and extending NanoSolana"
-title: "NanoSolana Docs — New User Hub"
+summary: "New-user documentation hub for running, operating, and extending Solana Claude Go"
+title: "Solana Claude Go Docs — New User Hub"
 ---
 
-# NanoSolana Docs (New User Hub)
+# Solana Claude Go Docs (New User Hub)
 
-Welcome. This is the **new-user hub** for getting productive with NanoSolana
+Welcome. This is the **new-user hub** for getting productive with Solana Claude Go
 quickly, without falling into outdated command paths.
 
-**Website:** [nanosolana.com](https://nanosolana.com) · **Hub:**
-[hub.nanosolana.com](https://hub.nanosolana.com) · **Docs:**
-[docs.nanosolana.com](https://docs.nanosolana.com) · **GitHub:**
-[github.com/x402agent/NanoSolana](https://github.com/x402agent/NanoSolana)
+**Website:** [scg.com](https://scg.com) · **Hub:**
+[hub.scg.com](https://hub.scg.com) · **Docs:**
+[docs.scg.com](https://docs.scg.com) · **GitHub:**
+[github.com/x402agent/Solana Claude Go](https://github.com/x402agent/Solana Claude Go)
 
 ## 5-minute quickstart (safe)
 
 Run the simulator first (no keys required):
 
 ```bash
-npx nanosolana demo
+npx scg demo
 ```
 
 This shows the OODA loop behavior, pet lifecycle output, and memory flow without
@@ -27,37 +27,37 @@ touching live wallets or APIs.
 ## 15-minute quickstart (live runtime)
 
 ```bash
-npx nanosolana init
-npx nanosolana birth --name MyAgent
-npx nanosolana run
+npx scg init
+npx scg birth --name MyAgent
+npx scg run
 ```
 
 In another terminal:
 
 ```bash
-npx nanosolana status
-npx nanosolana pet
-npx nanosolana vault
+npx scg status
+npx scg pet
+npx scg vault
 ```
 
 Want one command? Use:
 
 ```bash
-npx nanosolana go
+npx scg go
 ```
 
 Want the long-running daemon surface explicitly?
 
 ```bash
-npx nanosolana daemon
+npx scg daemon
 ```
 
 Want startup with the DVD-style intro animation?
 
 ```bash
-npx nanosolana go --dvd-intro
+npx scg go --dvd-intro
 # or
-NANO_DVD_INTRO=1 npx nanosolana go
+NANO_DVD_INTRO=1 npx scg go
 ```
 
 ## What is shipped right now
@@ -87,8 +87,8 @@ Start with [Features](/concepts/features),
 
 ### I want to publish and manage skills
 
-Use [Hub + Convex](/cli/hub-convex), `npx nanosolana hub skills`, and NanoHub at
-`hub.nanosolana.com`.
+Use [Hub + Convex](/cli/hub-convex), `npx scg hub skills`, and NanoHub at
+`hub.scg.com`.
 
 ### I want to build integrations
 
@@ -97,7 +97,7 @@ Read [Extensions](/extensions), [Tools](/tools), and
 
 ### I want agents to work from the repo backlog
 
-Use `npx nanosolana tasks`, then inspect [Tools](/tools) and
+Use `npx scg tasks`, then inspect [Tools](/tools) and
 [Architecture](/concepts/architecture). Personas already consume the same
 `agent-tasks/` registry for mission assignment.
 
@@ -108,7 +108,7 @@ Use `npx nanosolana tasks`, then inspect [Tools](/tools) and
 - [Features](/concepts/features)
 - [Architecture](/concepts/architecture)
 - [Agent Loop (OODA)](/concepts/agent-loop)
-- [Memory (ClawVault)](/concepts/memory)
+- [Memory (ScgVault)](/concepts/memory)
 - [Mesh Networking](/concepts/mesh-networking)
 - [Model Providers](/concepts/model-providers)
 - [System Prompt (SOUL.md)](/concepts/system-prompt)
@@ -137,11 +137,11 @@ Use `npx nanosolana tasks`, then inspect [Tools](/tools) and
 
 ## First-day operator checklist
 
-1. Run `npx nanosolana demo`.
-2. Configure secrets with `npx nanosolana init`.
+1. Run `npx scg demo`.
+2. Configure secrets with `npx scg init`.
 3. Set `NANO_GATEWAY_SECRET` before remote/mesh use.
-4. Run `npx nanosolana run` and verify `/health`.
-5. Confirm vault permissions (`~/.nanosolana` = `0700`, `vault.enc` = `0600`).
+4. Run `npx scg run` and verify `/health`.
+5. Confirm vault permissions (`~/.scg` = `0700`, `vault.enc` = `0600`).
 
 ## Pump ecosystem docs
 
@@ -153,6 +153,6 @@ protocol docs live in:
 
 ## Important compatibility note
 
-You may still see older examples for command trees like `nanosolana trade ...`,
-`nanosolana wallet ...`, or `nanosolana gateway ...`. Treat those as
+You may still see older examples for command trees like `scg trade ...`,
+`scg wallet ...`, or `scg gateway ...`. Treat those as
 roadmap/legacy docs unless they appear in the shipped CLI reference.

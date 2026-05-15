@@ -7,7 +7,7 @@
  *   npx tsx examples/basic-agent.ts
  */
 
-import { NanoWallet, TradingEngine, ClawVault, TamaGOchi, loadConfig } from "nanosolana";
+import { NanoWallet, TradingEngine, ScgVault, TamaGOchi, loadConfig } from "nanosolana";
 
 async function main() {
   console.log("🦞 Starting basic NanoSolana agent...\n");
@@ -22,9 +22,9 @@ async function main() {
   console.log(`💰 Balance: ${info.balance} SOL\n`);
 
   // 3. Start memory
-  const memory = new ClawVault();
+  const memory = new ScgVault();
   memory.startAutonomous();
-  console.log("🧠 ClawVault memory online");
+  console.log("🧠 ScgVault memory online");
 
   // 4. Hatch pet
   const pet = new TamaGOchi("BasicBot");

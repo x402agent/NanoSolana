@@ -1,5 +1,5 @@
 /**
- * Solana clawd Helius Client — Full Blockchain Data Reader
+ * Solana Claude Go Helius Client — Full Blockchain Data Reader
  *
  * Wraps every Helius API for instant blockchain intelligence at birth:
  *   - DAS API (getAsset, getAssetsByOwner, searchAssets)

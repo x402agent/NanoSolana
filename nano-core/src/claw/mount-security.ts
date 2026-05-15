@@ -1,10 +1,10 @@
 /**
- * Mount Security Module for Clawd
+ * Mount Security Module for SCG
  *
  * Validates additional mounts against an allowlist stored OUTSIDE the project root.
  * This prevents container agents from modifying security configuration.
  *
- * Allowlist location: ~/.config/clawd/mount-allowlist.json
+ * Allowlist location: ~/.config/SCG/mount-allowlist.json
  */
 import fs from 'fs';
 import path from 'path';

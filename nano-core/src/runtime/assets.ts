@@ -44,7 +44,7 @@ function findPackageRoot(startDir: string): string | null {
   }
 }
 
-export function resolveClawdRuntimeAsset(filename: string, options: RuntimeAssetOptions = {}): string | null {
+export function resolveScgRuntimeAsset(filename: string, options: RuntimeAssetOptions = {}): string | null {
   const env = options.env ?? process.env;
   const cwd = options.cwd ?? process.cwd();
   const packageRoot = findPackageRoot(options.startDir ?? RUNTIME_MODULE_DIR);
@@ -67,12 +67,12 @@ export function resolveClawdRuntimeAsset(filename: string, options: RuntimeAsset
   return null;
 }
 
-export function readClawdRuntimeAsset(
+export function readScgRuntimeAsset(
   filename: string,
   fallback: string,
   options: RuntimeAssetOptions = {},
 ): string {
-  const resolved = resolveClawdRuntimeAsset(filename, options);
+  const resolved = resolveScgRuntimeAsset(filename, options);
   if (!resolved) {
     return fallback;
   }

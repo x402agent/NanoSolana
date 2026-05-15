@@ -1,7 +1,7 @@
-// ── Solana clawd × PumpFun — Shared Types ──────────────────────────────────────
+// ── Solana Claude Go × PumpFun — Shared Types ──────────────────────────────────────
 //
 // Types for the Pump.Fun integration layer, bridging the pump-fun-sdk
-// into the Solana clawd agent runtime. Used by the swarm spawner,
+// into the Solana Claude Go agent runtime. Used by the swarm spawner,
 // Telegram gateway, and all bot integrations.
 // ─────────────────────────────────────────────────────────────────────────────
 

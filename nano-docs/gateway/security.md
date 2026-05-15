@@ -1,5 +1,5 @@
 ---
-summary: "NanoSolana gateway security for the current runtime"
+summary: "Solana Claude Go gateway security for the current runtime"
 title: "Gateway Security"
 ---
 
@@ -14,7 +14,7 @@ title: "Gateway Security"
 
 ### HTTP
 
-- `X-NanoSolana-Secret`
+- `X-Solana Claude Go-Secret`
 - `Authorization: Bearer ...`
 - enforced on `/api/*` endpoints when a shared secret is configured
 
@@ -29,21 +29,21 @@ title: "Gateway Security"
 
 ## At-rest protection
 
-- vault path: `~/.nanosolana/vault.enc`
+- vault path: `~/.scg/vault.enc`
 - cipher: `AES-256-GCM`
 - current key derivation in code: SHA-256 over password and salt
 
 ## Operational checks
 
-There is no shipped `nanosolana security audit` command yet.
+There is no shipped `scg security audit` command yet.
 
 Use:
 
 ```bash
-npx nanosolana config
-npx nanosolana status
+npx scg config
+npx scg status
 curl http://127.0.0.1:18790/health
-curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/status
 ```
 
@@ -64,5 +64,5 @@ The runtime includes on-chain payment verification via `@pump-fun/agent-payments
 
 ## Compatibility note
 
-If you see `18789`, `nanosolana gateway run`, or `nanosolana security audit` in
+If you see `18789`, `scg gateway run`, or `scg security audit` in
 older notes, treat them as stale docs rather than the current runtime surface.

@@ -1,5 +1,5 @@
 ---
-summary: "NanoSolana gateway protocol — current HTTP and WebSocket shape"
+summary: "Solana Claude Go gateway protocol — current HTTP and WebSocket shape"
 title: "Gateway Protocol"
 ---
 
@@ -35,7 +35,7 @@ Example:
 
 ```bash
 curl http://127.0.0.1:18790/health
-curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
   http://127.0.0.1:18790/api/status
 ```
 
@@ -44,10 +44,10 @@ The `/api/*` routes require auth only when `NANO_GATEWAY_SECRET` is configured.
 Task registry examples:
 
 ```bash
-curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
   "http://127.0.0.1:18790/api/tasks?q=pump"
 
-curl -H "X-NanoSolana-Secret: $NANO_GATEWAY_SECRET" \
+curl -H "X-Solana Claude Go-Secret: $NANO_GATEWAY_SECRET" \
   "http://127.0.0.1:18790/api/tasks?persona=whale-watcher"
 ```
 

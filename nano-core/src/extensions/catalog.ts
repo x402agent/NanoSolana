@@ -2,22 +2,22 @@ import { existsSync, readdirSync, readFileSync, statSync, type Dirent } from "no
 import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-export type ClawdExtensionKind = "channel" | "provider" | "tool" | "support" | "hybrid";
-export type ClawdExtensionMetadataSource = "nanosolana-plugin" | "openclaw-plugin" | "package-json";
+export type ScgExtensionKind = "channel" | "provider" | "tool" | "support" | "hybrid";
+export type ScgExtensionMetadataSource = "nanosolana-plugin" | "openclaw-plugin" | "package-json";
 
-export interface ClawdExtensionInstallMetadata {
+export interface ScgExtensionInstallMetadata {
   npmSpec?: string;
   localPath?: string;
   defaultChoice?: string;
 }
 
-export interface ClawdExtensionCatalogEntry {
+export interface ScgExtensionCatalogEntry {
   id: string;
   name: string;
   description: string;
   directory: string;
   packageName?: string;
-  kind: ClawdExtensionKind;
+  kind: ScgExtensionKind;
   channels: string[];
   aliases: string[];
   providers: string[];
@@ -25,20 +25,20 @@ export interface ClawdExtensionCatalogEntry {
   entrypoints: string[];
   fileCount: number;
   hasPersistence: boolean;
-  metadataSources: ClawdExtensionMetadataSource[];
+  metadataSources: ScgExtensionMetadataSource[];
   metadataPaths: string[];
-  install?: ClawdExtensionInstallMetadata;
+  install?: ScgExtensionInstallMetadata;
 }
 
-export interface ClawdExtensionCatalogSnapshot {
+export interface ScgExtensionCatalogSnapshot {
   directories: number;
   files: number;
   manifests: number;
   packageMetadata: number;
-  entries: ClawdExtensionCatalogEntry[];
+  entries: ScgExtensionCatalogEntry[];
 }
 
-export function resolveClawdRepositoryRoot(): string {
+export function resolveScgRepositoryRoot(): string {
   const envRoot = process.env.NANO_REPO_ROOT?.trim();
   const sourceDirectory = dirname(fileURLToPath(import.meta.url));
   const nanoCoreRoot = resolve(sourceDirectory, "../..");
@@ -59,9 +59,9 @@ export function resolveClawdRepositoryRoot(): string {
   return resolve(nanoCoreRoot, "..");
 }
 
-export function scanClawdExtensions(
-  repoRoot: string = resolveClawdRepositoryRoot(),
-): ClawdExtensionCatalogSnapshot {
+export function scanScgExtensions(
+  repoRoot: string = resolveScgRepositoryRoot(),
+): ScgExtensionCatalogSnapshot {
   const extensionRoot = join(repoRoot, "extensions");
   if (!existsSync(extensionRoot)) {
     return {
@@ -81,7 +81,7 @@ export function scanClawdExtensions(
   let totalFiles = 0;
   let manifestCount = 0;
   let packageMetadataCount = 0;
-  const entries: ClawdExtensionCatalogEntry[] = [];
+  const entries: ScgExtensionCatalogEntry[] = [];
 
   for (const directoryPath of extensionDirectories) {
     const fileCount = walkFiles(directoryPath).length;
@@ -303,9 +303,9 @@ function uniqueStrings(values: Array<string | undefined>): string[] {
 }
 
 function uniqueMetadataSources(
-  values: Array<ClawdExtensionMetadataSource | undefined>,
-): ClawdExtensionMetadataSource[] {
-  return [...new Set(values.filter((value): value is ClawdExtensionMetadataSource => Boolean(value)))];
+  values: Array<ScgExtensionMetadataSource | undefined>,
+): ScgExtensionMetadataSource[] {
+  return [...new Set(values.filter((value): value is ScgExtensionMetadataSource => Boolean(value)))];
 }
 
 function determineExtensionKind(
@@ -313,13 +313,13 @@ function determineExtensionKind(
   channels: string[],
   providers: string[],
   skills: string[],
-  metadataSources: ClawdExtensionMetadataSource[],
-): ClawdExtensionKind {
+  metadataSources: ScgExtensionMetadataSource[],
+): ScgExtensionKind {
   const categories = [
     channels.length > 0 ? "channel" : undefined,
     providers.length > 0 ? "provider" : undefined,
     skills.length > 0 ? "tool" : undefined,
-  ].filter((value): value is Exclude<ClawdExtensionKind, "support" | "hybrid"> => Boolean(value));
+  ].filter((value): value is Exclude<ScgExtensionKind, "support" | "hybrid"> => Boolean(value));
 
   if (categories.length > 1) return "hybrid";
   if (categories.length === 1) return categories[0]!;
@@ -334,7 +334,7 @@ function hasPersistenceMetadata(
   return asRecord(nanosolanaManifest?.["persistence"]) !== null || asRecord(openClawManifest?.["persistence"]) !== null;
 }
 
-function hasInstallMetadata(install: ClawdExtensionInstallMetadata): boolean {
+function hasInstallMetadata(install: ScgExtensionInstallMetadata): boolean {
   return Boolean(install.npmSpec || install.localPath || install.defaultChoice);
 }
 
@@ -354,7 +354,7 @@ function toRepoRelative(repoRoot: string, fullPath: string): string {
 }
 
 export function getExtensionCatalogSummary(
-  snapshot: ClawdExtensionCatalogSnapshot = scanClawdExtensions(),
+  snapshot: ScgExtensionCatalogSnapshot = scanScgExtensions(),
 ): {
   directories: number;
   files: number;

@@ -1,11 +1,11 @@
 ---
-summary: "NanoSolana features overview and capabilities"
+summary: "Solana Claude Go features overview and capabilities"
 title: "Features"
 ---
 
 # Features
 
-NanoSolana is a monorepo for autonomous Solana agents, registry tooling, and Pump integrations.
+Solana Claude Go is a monorepo for autonomous Solana agents, registry tooling, and Pump integrations.
 
 ## Core capabilities
 
@@ -14,15 +14,15 @@ NanoSolana is a monorepo for autonomous Solana agents, registry tooling, and Pum
 - **Orient**: AI-powered market analysis using OpenRouter (healer-alpha model).
 - **Decide**: Structured trade decisions with confidence scoring.
 - **Act**: Jupiter Ultra Swap execution with slippage protection.
-- **Learn**: ClawVault memory records every outcome for future improvement.
+- **Learn**: ScgVault memory records every outcome for future improvement.
 
 ### 🧩 Runtime + bridge split
 - `nano-core/` is the shipped runtime and npm package.
-- `pump/` is a NanoSolana-facing Pump bridge layer for swarm operations.
+- `pump/` is a Solana Claude Go-facing Pump bridge layer for swarm operations.
 - `pump-fun-sdk-main/` is vendored upstream ecosystem code used by the bridge.
 - `nanohub/` is a separate skill registry app and CLI.
 
-### 🧠 Epistemological memory (ClawVault)
+### 🧠 Epistemological memory (ScgVault)
 - **KNOWN**: Fresh API data (<60s TTL) — what the agent just saw.
 - **LEARNED**: Patterns from trade outcomes (7-day TTL) — what worked.
 - **INFERRED**: Tentative correlations (3-day TTL) — hypotheses to test.
@@ -53,7 +53,7 @@ NanoSolana is a monorepo for autonomous Solana agents, registry tooling, and Pum
 - **Google Chat**: Team notifications.
 - This checkout contains 41 extension directories.
 - 41 of those directories are now discoverable through the merged extension catalog.
-- 38 ship `openclaw.plugin.json`, and 14 also ship `nanosolana-plugin.json`.
+- 38 ship `openclaw.plugin.json`, and 14 also ship `scg-plugin.json`.
 - `extensions/pumpfun/` is a dedicated PumpFun event bridge scaffold.
 
 ### 🔐 Security-first
@@ -82,7 +82,7 @@ NanoSolana is a monorepo for autonomous Solana agents, registry tooling, and Pum
 - Supports USDC (6 decimals) and Wrapped SOL (9 decimals) as payment currencies.
 - Invoice ID PDAs prevent duplicate payments on-chain.
 - Payment-gated swarm spawning: require payment before spawning new agents.
-- CLI: `nanosolana pay invoice`, `nanosolana pay verify`, `nanosolana pay status`.
+- CLI: `scg pay invoice`, `scg pay verify`, `scg pay status`.
 - Telegram: `/invoice` and `/invoices` commands for creating and tracking invoices.
 - Program ID: `AgenTMiC2hvxGebTsgmsD4HHBa8WEcqGFf87iwRRxLo7`.
 

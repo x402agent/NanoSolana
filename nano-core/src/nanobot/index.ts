@@ -1,1 +1,1 @@
-export { ClawdBotServer } from "./server.js";
+export { ScgBotServer } from "./server.js";

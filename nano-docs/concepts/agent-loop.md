@@ -3,17 +3,17 @@ summary: "OODA agent loop lifecycle, trading integration, and stream events"
 title: "Agent Loop (OODA)"
 ---
 
-# Agent loop (NanoSolana OODA)
+# Agent loop (Solana Claude Go OODA)
 
-The NanoSolana agent runtime runs a continuous **OODA loop** (Observe → Orient → Decide → Act)
+The Solana Claude Go agent runtime runs a continuous **OODA loop** (Observe → Orient → Decide → Act)
 for autonomous trading. Each loop cycle processes market data, reasons through the
 AI provider, and optionally executes trades.
 
 ## Entry points
 
-- CLI: `nanosolana run` (foreground OODA loop)
-- CLI: `nanosolana go` (one-shot bootstrap plus OODA loop)
-- CLI: `nanosolana demo` (synthetic loop)
+- CLI: `scg run` (foreground OODA loop)
+- CLI: `scg go` (one-shot bootstrap plus OODA loop)
+- CLI: `scg demo` (synthetic loop)
 - Gateway: runtime status, memory, docs, and extension/trade surfaces around the running loop
 
 ## How it works (high-level)
@@ -31,7 +31,7 @@ graph TD
     B -.-> H[OpenRouter AI]
     C -.-> H
     D -.-> I[Jupiter Swap]
-    E -.-> J[ClawVault Memory]
+    E -.-> J[ScgVault Memory]
 ```
 
 ### 1. Observe
@@ -39,14 +39,14 @@ graph TD
 - Fetch real-time market data from **Helius** (Solana RPC + WebSocket).
 - Pull token analytics from **Birdeye** (price, volume, OHLCV).
 - Read wallet balance and recent transactions.
-- Read ClawVault KNOWN tier for fresh data (<60s).
+- Read ScgVault KNOWN tier for fresh data (<60s).
 
 ### 2. Orient (AI-powered)
 
 - Inject observations into the AI provider (OpenRouter/healer-alpha by default).
 - System prompt is loaded from **SOUL.md** (agent identity).
 - AI analyzes market conditions using RSI, EMA, ATR indicators.
-- ClawVault LEARNED tier provides historical pattern context.
+- ScgVault LEARNED tier provides historical pattern context.
 - Returns structured market analysis.
 
 ### 3. Decide (AI-powered)
@@ -74,7 +74,7 @@ graph TD
 
 ### 5. Learn
 
-- Trade outcomes stored in ClawVault LEARNED tier.
+- Trade outcomes stored in ScgVault LEARNED tier.
 - Strategy engine auto-optimizes parameters based on results.
 - Contradictions detected and resolved in INFERRED tier.
 - Lessons broadcast to mesh network peers.
@@ -87,7 +87,7 @@ graph TD
 
 ## Memory integration
 
-Three-tier ClawVault memory feeds into every OODA cycle:
+Three-tier ScgVault memory feeds into every OODA cycle:
 
 | Tier | TTL | Purpose |
 |------|-----|---------|
@@ -100,7 +100,7 @@ Three-tier ClawVault memory feeds into every OODA cycle:
 System prompt is built from:
 
 1. **SOUL.md** — TamaGObot identity and trading philosophy.
-2. **ClawVault context** — relevant memories from all three tiers.
+2. **ScgVault context** — relevant memories from all three tiers.
 3. **Market data** — current prices, indicators, wallet state.
 4. **Pet status** — TamaGOchi mood affects risk tolerance.
 5. **Conversation context** — for channel-triggered turns.

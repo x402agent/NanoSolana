@@ -1,5 +1,5 @@
 /**
- * Solana clawd — Telegram Persistence Layer
+ * Solana Claude Go — Telegram Persistence Layer
  *
  * SQLite-backed conversation memory so the Telegram bot remembers:
  *   - Every chat's full message history
@@ -7,7 +7,7 @@
  *   - Trading commands and their outcomes
  *   - Conversation summaries for fast retrieval
  *
- * Data stored at: ~/.clawd/telegram.db
+ * Data stored at: ~/.scg/telegram.db
  */
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -57,7 +57,7 @@ export class TelegramConversationStore {
   private summaryThreshold = 50;
 
   constructor(dbPath?: string) {
-    const base = dbPath ?? join(homedir(), ".clawd", "telegram");
+    const base = dbPath ?? join(homedir(), ".scg", "telegram");
     this.dbPath = base;
     this.ensureDir();
     this.loadFromDisk();
