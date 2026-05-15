@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=130&section=header&text=SOLANA%20CLAUDE%20GO&fontSize=46&fontColor=14F195&animation=fadeIn&fontAlignY=40&desc=%F0%9F%A6%9E%20SOVEREIGN%20AI%20LOBSTERS%20ON%20SOLANA&descSize=18&descAlignY=62&descColor=9945FF" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=130&section=header&text=SOLANA%20CLAWD%20GO&fontSize=46&fontColor=14F195&animation=fadeIn&fontAlignY=40&desc=%F0%9F%A6%9E%20SOVEREIGN%20AI%20LOBSTERS%20ON%20SOLANA&descSize=18&descAlignY=62&descColor=9945FF" width="100%" />
 
 ```
  ███████╗ ██████╗ ██████╗
@@ -11,14 +11,18 @@
  ╚══════╝ ╚═════╝ ╚═════╝
 ```
 
-![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=20&duration=3000&pause=1000&color=14F195&center=true&vCenter=true&repeat=true&width=640&height=45&lines=AI+AGENTS+THAT+EARN.+PAY.+SURVIVE.;SENSE+·+THINK+·+STRIKE+·+DRIFT;BORN+TO+EARN+·+BEACH+WITH+DIGNITY)
+![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=20&duration=3000&pause=1000&color=14F195&center=true&vCenter=true&repeat=true&width=640&height=45&lines=AI+AGENTS+THAT+EARN.+PAY.+SURVIVE.;SENSE+%C2%B7+THINK+%C2%B7+STRIKE+%C2%B7+DRIFT;BORN+TO+EARN+%C2%B7+BEACH+WITH+DIGNITY)
 
-[![npm](https://img.shields.io/npm/v/solana-claude-go?color=14F195&style=for-the-badge&label=solana-claude-go&logo=npm)](https://npmjs.com/package/solana-claude-go)
+[![npm](https://img.shields.io/npm/v/solana-clawd-go?color=14F195&style=for-the-badge&label=solana-clawd-go&logo=npm)](https://www.npmjs.com/~openclawdsol)
 [![license](https://img.shields.io/badge/license-MIT-orange?style=for-the-badge)](./LICENSE)
 [![Solana](https://img.shields.io/badge/SOLANA-9945FF?style=for-the-badge&logo=solana&logoColor=white)](https://solana.com)
 [![x402](https://img.shields.io/badge/x402-FF6B35?style=for-the-badge)](https://x402.org)
 
-[solanaclawd.com](https://solanaclawd.com) · [pay.solanaclawd.com](https://pay.solanaclawd.com) · [@clawddevs](https://x.com/clawddevs)
+[**solanaclawd.com**](https://solanaclawd.com) · [**pay.solanaclawd.com**](https://pay.solanaclawd.com) · [**@clawddevs**](https://x.com/clawddevs) · [**npm**](https://www.npmjs.com/~openclawdsol) · [**GitHub**](https://github.com/x402agent/solana-clawd)
+
+```
+$CLAWD  ·  8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump  ·  Solana  ·  x402
+```
 
 </div>
 
@@ -26,7 +30,7 @@
 
 ## What This Is
 
-**Solana Claude Go (SCG)** is a Solana-native agent stack built to move like Hermes in Web3: messenger, scout, trader, payer, vault, and recall engine in one shell.
+**Solana Clawd Go (SCG)** is a Solana-native agent stack built to move like Hermes in Web3: messenger, scout, trader, payer, vault, and recall engine in one shell.
 
 This monorepo contains the TypeScript runtime that is the **complementary counterpart** to the [`solana-clawd`](https://github.com/x402agent/solana-clawd) Go binary. Together they form a full sovereign agent node:
 
@@ -44,6 +48,9 @@ Token CA :: 8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump
 Chain    :: Solana
 Protocol :: x402
 Pay      :: pay.solanaclawd.com
+Web      :: solanaclawd.com
+npm      :: npmjs.com/~openclawdsol
+GitHub   :: github.com/x402agent/solana-clawd
 ```
 
 ---
@@ -55,13 +62,13 @@ Pay      :: pay.solanaclawd.com
 curl -fsSL https://install.solanaclawd.com | bash
 
 # Or via npx (demo mode — no keys needed)
-npx solana-claude-go demo
+npx solana-clawd-go demo
 
 # Full one-shot bootstrap
-npx solana-claude-go go
+npx solana-clawd-go go
 
 # Persistent daemon
-npx solana-claude-go daemon
+npx solana-clawd-go daemon
 ```
 
 ---
@@ -70,7 +77,7 @@ npx solana-claude-go daemon
 
 ```
 NanoSolana/
-├── nano-core/          # npm package: solana-claude-go  ·  binary: scg
+├── nano-core/          # npm package: solana-clawd-go  ·  binary: scg
 │   ├── src/
 │   │   ├── cli/        # scg CLI entry + animations
 │   │   ├── config/     # ScgConfig + AES-256-GCM vault (~/.scg/vault.enc)
@@ -88,7 +95,7 @@ NanoSolana/
 │   │   ├── bitaxe/     # Bitaxe AxeOS miner client
 │   │   ├── claw/       # SCG orchestrator + personas + pump swarm
 │   │   └── ai/         # AIProvider — OpenRouter / Claude
-│   └── package.json    # name: "solana-claude-go", bin: "scg"
+│   └── package.json    # name: "solana-clawd-go", bin: "scg"
 │
 ├── extensions/         # 40+ communication channel plugins
 ├── skills/             # 70+ ScgHub SKILL.md manifests
@@ -127,7 +134,7 @@ import {
   ScgPaymentAgent,     // x402 payment flows
   AIProvider,          // OpenRouter / Claude
   loadConfig,          // ScgConfig loader
-} from "solana-claude-go";
+} from "solana-clawd-go";
 ```
 
 ---
@@ -149,10 +156,15 @@ import {
 **$CLAWD · x402 · SOLANA**
 
 ```
+CA :: 8cHzQHUS2s2h8TzCmfqPKYiM4dSt4roa3n7MyRLApump
+
 SENSE · THINK · STRIKE · DRIFT
 ```
 
-[solanaclawd.com](https://solanaclawd.com) · [@clawddevs](https://x.com/clawddevs)
+[![npm](https://img.shields.io/badge/npm-openclawdsol-CB3837?style=flat-square&logo=npm)](https://www.npmjs.com/~openclawdsol)
+[![GitHub](https://img.shields.io/badge/GitHub-x402agent%2Fsolana--clawd-181717?style=flat-square&logo=github)](https://github.com/x402agent/solana-clawd)
+
+[solanaclawd.com](https://solanaclawd.com) · [pay.solanaclawd.com](https://pay.solanaclawd.com) · [@clawddevs](https://x.com/clawddevs)
 
 *OPEN SOURCE AI · DECENTRALIZED FUTURE · EST. 2026*
 

@@ -1,5 +1,5 @@
 {
-  "name": "solana-claude-go",
+  "name": "solana-clawd-go",
   "version": "1.1.0",
   "description": "Sovereign AI agents that earn, pay, and survive on Solana. TypeScript runtime + scg CLI — OODA trading, 3-tier memory, x402 payments, TamaGOchi companion, Go binary bridge.",
   "keywords": [
@@ -39,7 +39,7 @@
     "solana-cli",
     "scg",
     "go-binary",
-    "solana-claude-go",
+    "solana-clawd-go",
     "x402"
   ],
   "license": "MIT",
@@ -72,7 +72,7 @@
   "type": "module",
   "bin": {
     "scg": "dist/cli/entry.js",
-    "solana-claude-go": "dist/cli/entry.js"
+    "solana-clawd-go": "dist/cli/entry.js"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -1,5 +1,5 @@
 /**
- * Solana Claude Go — Main Entry
+ * Solana Clawd Go — Main Entry
  *
  * TypeScript runtime for Solana agents, daemons, and operator tooling.
  *
@@ -337,7 +337,7 @@ export type {
   PersonaCategory,
 } from "./claw/persona-loader.js";
 
-// ── Go Binary Bridge — solana-claude-go communication layer ────────────────────
+// ── Go Binary Bridge — solana-clawd-go communication layer ────────────────────
 export { GoBridgeClient, createGoBridgeFromEnv } from "./go-bridge/client.js";
 export type {
   GoBridgeMessageType,
