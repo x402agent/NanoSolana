@@ -1193,9 +1193,9 @@ program
         console.log(chalk.gray(`    Pet mood: ${MOOD_EMOJI[pet.getState().mood]} ${pet.getState().mood}`));
         console.log();
         console.log(chalk.white("  Ready to go live?"));
-        console.log(chalk.cyan("    npx scg go"));
+        console.log(chalk.cyan("    npx solana-clawd-go go"));
         console.log();
-        console.log(chalk.gray("  Full docs: https://docs.nanoclawd.com"));
+        console.log(chalk.gray("  Full docs: https://solanaclawd.com/docs"));
         console.log(chalk.gray("  GitHub: https://github.com/x402agent/Solana Clawd Go"));
         console.log();
         process.exit(0);
@@ -1214,7 +1214,7 @@ program
       clearInterval(loop);
       vault.stopAutonomous();
       console.log(chalk.yellow("\n\n  ⏹  Demo stopped."));
-      console.log(chalk.cyan("  Try the real thing: npx scg go\n"));
+      console.log(chalk.cyan("  Try the real thing: npx solana-clawd-go go\n"));
       process.exit(0);
     });
 
@@ -1272,7 +1272,7 @@ program
         try {
           const wallet = new ScgWallet("Solana Clawd Go");
           // Try loading existing wallet pubkey from file
-          const pubPath = join(homedir(), ".nanoclawd", "wallet.pub");
+          const pubPath = join(homedir(), ".scg", "wallet.pub");
           if (existsSync(pubPath)) return readFileSync(pubPath, "utf-8").trim();
           return "";
         } catch { return ""; }
@@ -1359,7 +1359,7 @@ program
     const reg = registry.loadRegistration();
 
     if (!reg) {
-      console.log(chalk.hex("#FFAA00")("\n  ⚠️  No registration found. Run: nanoclawd register\n"));
+      console.log(chalk.hex("#FFAA00")("\n  ⚠️  No registration found. Run: scg register\n"));
       return;
     }
 
@@ -1514,7 +1514,7 @@ program
   .command("oneshot")
   .description("Resolve a NanoHub skill manifest into a one-shot Solana Clawd Go launch plan")
   .argument("<slug>", "NanoHub skill slug")
-  .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? "https://hub.nanoclawd.com")
+  .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? getScgHubSiteUrl())
   .option("--write <path>", "Write the generated plan to a JSON file")
   .option("--json", "Emit machine-readable JSON")
   .action(async (slug, opts) => {
@@ -1605,7 +1605,7 @@ hubCmd
   .option("-l, --limit <n>", "Max results", "10")
   .option("-s, --sort <sort>", "Sort: newest|downloads|rating|installs|installsAllTime|trending", "newest")
   .option("--highlighted", "Only show highlighted skills")
-  .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? "https://hub.nanoclawd.com")
+  .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? getScgHubSiteUrl())
   .option("--json", "Emit machine-readable JSON")
   .action(async (query, opts) => {
     try {
@@ -1703,7 +1703,7 @@ hubCmd
   .command("inspect")
   .description("Inspect a NanoHub skill and optionally fetch its SKILL.md")
   .argument("<slug>", "Skill slug")
-  .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? "https://hub.nanoclawd.com")
+  .option("--site <url>", "NanoHub site URL", process.env.NANO_HUB_URL ?? getScgHubSiteUrl())
   .option("--file <path>", "Fetch a specific file from the latest skill version", "SKILL.md")
   .option("--no-file", "Skip fetching the skill file preview")
   .option("--json", "Emit machine-readable JSON")
@@ -1859,7 +1859,7 @@ hubCmd
       }
 
       // Save registration token locally
-      const hubTokenPath = join(homedir(), ".nanoclawd", "hub-token.json");
+      const hubTokenPath = join(homedir(), ".scg", "hub-token.json");
       const hubData = {
         slug: (data.agent as Record<string, unknown>)?.slug ?? opts.slug ?? agentName.toLowerCase().replace(/\s+/g, "-"),
         registrationToken: data.registrationToken,
@@ -1875,7 +1875,7 @@ hubCmd
       console.log(chalk.white("  Message:  ") + chalk.gray(String(data.message ?? "")));
       console.log();
       console.log(chalk.gray("  Your agent is now discoverable in the NanoHub registry."));
-      console.log(chalk.gray("  Run ") + chalk.cyan("nanoclawd hub list") + chalk.gray(" to see all registered agents.\n"));
+      console.log(chalk.gray("  Run ") + chalk.cyan("scg hub list") + chalk.gray(" to see all registered agents.\n"));
     } catch (err) {
       printError(err instanceof Error ? err.message : String(err));
       process.exit(1);
@@ -1950,9 +1950,9 @@ hubCmd
   .option("--api <url>", "NanoHub API server URL", "https://nanohub-api.up.railway.app")
   .action(async (opts) => {
     try {
-      const hubTokenPath = join(homedir(), ".nanoclawd", "hub-token.json");
+      const hubTokenPath = join(homedir(), ".scg", "hub-token.json");
       if (!existsSync(hubTokenPath)) {
-        printError("Not registered. Run 'nanoclawd hub register' first.");
+        printError("Not registered. Run 'scg hub register' first.");
         process.exit(1);
       }
 
@@ -2000,7 +2000,7 @@ hubCmd
       }
 
       // Check local registration
-      const hubTokenPath = join(homedir(), ".nanoclawd", "hub-token.json");
+      const hubTokenPath = join(homedir(), ".scg", "hub-token.json");
       if (existsSync(hubTokenPath)) {
         const hubData = JSON.parse(readFileSync(hubTokenPath, "utf-8")) as {
           slug: string; registeredAt: string; apiUrl: string;
@@ -2010,9 +2010,9 @@ hubCmd
         console.log(chalk.white("  Registered:   ") + chalk.gray(hubData.registeredAt));
         console.log(chalk.white("  API:          ") + chalk.cyan(hubData.apiUrl));
       } else {
-        console.log(chalk.yellow("\n  ⚠️  Not registered. Run 'nanoclawd hub register' to register."));
+        console.log(chalk.yellow("\n  ⚠️  Not registered. Run 'scg hub register' to register."));
       }
-      console.log(chalk.gray("\n  Public skills: nanoclawd hub skills"));
+      console.log(chalk.gray("\n  Public skills: scg hub skills"));
       console.log();
     } catch (err) {
       printError(err instanceof Error ? err.message : String(err));
@@ -2025,7 +2025,7 @@ hubCmd
   .option("--api <url>", "NanoHub API server URL", "https://nanohub-api.up.railway.app")
   .action(async (opts) => {
     try {
-      const hubTokenPath = join(homedir(), ".nanoclawd", "hub-token.json");
+      const hubTokenPath = join(homedir(), ".scg", "hub-token.json");
       if (!existsSync(hubTokenPath)) {
         printError("Not registered.");
         process.exit(1);

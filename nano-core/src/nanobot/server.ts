@@ -102,7 +102,7 @@ export class ScgBotServer {
 
   private handleStatus(res: ServerResponse): void {
     const home = homedir();
-    const nanoHome = join(home, ".nanoclawd");
+    const scgHome = join(home, ".scg");
 
     const status: StatusResponse = {
       agent: "Solana Clawd Go",
@@ -110,9 +110,9 @@ export class ScgBotServer {
       platform: `${platform()}/${arch()}`,
       time: new Date().toISOString(),
       uptime: "running",
-      daemon: existsSync(join(nanoHome, "workspace", "HEARTBEAT.md")) ? "alive" : "stopped",
-      wallet: existsSync(join(nanoHome, "wallet.pub")) ? "configured" : "not configured",
-      registry: existsSync(join(nanoHome, "registry", "registration.json"))
+      daemon: existsSync(join(scgHome, "workspace", "HEARTBEAT.md")) ? "alive" : "stopped",
+      wallet: existsSync(join(scgHome, "wallet.pub")) ? "configured" : "not configured",
+      registry: existsSync(join(scgHome, "registry", "registration.json"))
         ? "registered"
         : "not registered",
       miner: this.bitaxe ? "configured" : "not configured",
@@ -292,31 +292,31 @@ function nanobotReply(msg: string): string {
     return "Hey there! 🦞 I'm ScgBot, your Solana trading companion. What can I help you with?";
   }
   if (/trade|swap/.test(msg)) {
-    return "Ready to trade! 📈 Use `nanoclawd go` for one-shot launch or `nanoclawd daemon` for an explicit long-running runtime. I use Jupiter DEX for swaps with real-time Helius data.";
+    return "Ready to trade! 📈 Use `scg go` for one-shot launch or `scg daemon` for an explicit long-running runtime. I use Jupiter DEX for swaps with real-time Helius data.";
   }
   if (/wallet|balance/.test(msg)) {
-    return "💰 Your agent wallet was generated at birth. Run `nanoclawd status` to check balance. Private key is encrypted in AES-256-GCM vault.";
+    return "💰 Your agent wallet was generated at birth. Run `scg status` to check balance. Private key is encrypted in AES-256-GCM vault.";
   }
   if (/health|status/.test(msg)) {
-    return "🟢 Run `nanoclawd status` to check everything — wallet, pet, OODA loop, gateway, and registry.";
+    return "🟢 Run `scg status` to check everything — wallet, pet, OODA loop, gateway, and registry.";
   }
   if (/miner|bitaxe|hashrate|mining/.test(msg)) {
     return "⛏ Bitaxe mining support is available when BITAXE_ENABLED=true and BITAXE_HOST points at your AxeOS device. Use the miner panel in ScgBot or the Chrome extension miner controls to monitor hashrate, temperature, pool settings, and restart/frequency actions.";
   }
   if (/pet|tamagochi|mood/.test(msg)) {
-    return "🦞 I'm your TamaGOchi! My mood and evolution are driven by trading performance. Good trades = happy ScgBot. Check with `nanoclawd pet`.";
+    return "🦞 I'm your TamaGOchi! My mood and evolution are driven by trading performance. Good trades = happy ScgBot. Check with `scg pet`.";
   }
   if (/register|nft|identity/.test(msg)) {
-    return "🆔 Your Birth Certificate NFT was minted on devnet at birth. Run `nanoclawd status` to see your on-chain identity.";
+    return "🆔 Your Birth Certificate NFT was minted on devnet at birth. Run `scg status` to see your on-chain identity.";
   }
   if (/help|what can/.test(msg)) {
-    return "I can help with:\n• 📊 Wallet balance & health\n• 📈 Trading with OODA loop\n• 🦞 TamaGOchi pet status\n• 🆔 On-chain identity\n• 📀 DVD screensaver (`nanoclawd dvd`)\n\nJust ask!";
+    return "I can help with:\n• 📊 Wallet balance & health\n• 📈 Trading with OODA loop\n• 🦞 TamaGOchi pet status\n• 🆔 On-chain identity\n• 📀 DVD screensaver (`scg dvd`)\n\nJust ask!";
   }
   if (/ooda|loop/.test(msg)) {
-    return "🔄 The OODA loop: Observe (Helius+Birdeye) → Orient (AI reasoning) → Decide (RSI+EMA+ATR) → Act (Jupiter swaps). Run with `nanoclawd go` or keep it online with `nanoclawd daemon`.";
+    return "🔄 The OODA loop: Observe (Helius+Birdeye) → Orient (AI reasoning) → Decide (RSI+EMA+ATR) → Act (Jupiter swaps). Run with `scg go` or keep it online with `scg daemon`.";
   }
   if (/install|setup/.test(msg)) {
-    return "🚀 Fastest install:\n```\nnpx nanoclawd go\n```\nLong-running daemon:\n```\nnpx nanoclawd daemon\n```\nOr shell install:\n```\ncurl -fsSL https://nanoclawd.com/install.sh | bash\nnanoclawd go\n```";
+    return "🚀 Fastest install:\n```\nnpx solana-clawd-go go\n```\nLong-running daemon:\n```\nnpx solana-clawd-go daemon\n```\nOr shell install:\n```\ncurl -fsSL https://install.solanaclawd.com | bash\nscg go\n```";
   }
   return "🦞 I'm focused on Solana trading and on-chain ops. Try asking about trading, wallet, health, or my TamaGOchi status!";
 }
