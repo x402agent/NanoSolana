@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NanoClawd — Autonomous Financial Agents on Solana</title>
+<title>Solana Clawd Go — Autonomous Financial Agents on Solana</title>
 <meta name="description" content="TypeScript runtime & CLI for self-evolving trading agents on Solana. OODA loop engine, encrypted ClawVault memory, TamaGOchi lifecycle, Jupiter execution, Helius ingestion.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -297,7 +297,7 @@ footer{
 <nav>
   <a href="#" class="nav-logo">
     <span class="claw">🦞</span>
-    <span>NanoClawd</span>
+    <span>Solana Clawd Go</span>
   </a>
   <div class="nav-links">
     <a href="#features">Features</a>
@@ -318,7 +318,7 @@ footer{
     v1.0.2 — Live on npm
   </div>
   <h1>
-    <span class="orange">Nano</span><span class="purple">Solana</span><br>
+    <span class="orange">Solana</span> <span class="purple">Clawd</span> <span class="green">Go</span><br>
     <span style="font-size:.5em;color:var(--text-dim);font-weight:400;letter-spacing:-.01em">Autonomous Financial Agents on Solana</span>
   </h1>
   <p class="hero-sub">
@@ -327,7 +327,7 @@ footer{
     Helius ingestion — all in one package.
   </p>
   <div class="hero-actions">
-    <a href="#install" class="btn-primary">npx nanoclawd demo</a>
+    <a href="#install" class="btn-primary">npx solana-clawd-go demo</a>
     <a href="#sdk" class="btn-secondary">Read the Docs</a>
   </div>
 
@@ -337,13 +337,13 @@ footer{
         <span class="terminal-dot r"></span>
         <span class="terminal-dot y"></span>
         <span class="terminal-dot g"></span>
-        <span class="terminal-title">~/.nanoclawd — bash</span>
+        <span class="terminal-title">~/.scg — bash</span>
       </div>
       <div class="terminal-body">
-<span class="prompt">$</span> <span class="cmd">npx nanoclawd demo</span>
+<span class="prompt">$</span> <span class="cmd">npx solana-clawd-go demo</span>
 <span class="comment"># No API keys needed — full simulation mode</span>
 
-<span class="output">🦞 NanoClawd v1.0.2</span>
+<span class="output">🦞 Solana Clawd Go v1.0.2</span>
 <span class="info">   ├─ ClawVault ........... 3-tier memory online</span>
 <span class="info">   ├─ TamaGOchi .......... Egg → hatching</span>
 <span class="info">   ├─ OODA Engine ........ observe → orient → decide → act</span>
@@ -365,7 +365,7 @@ footer{
   <div class="container">
     <span class="section-label">// What Ships</span>
     <h2 class="section-title">Everything in one binary.</h2>
-    <p class="section-desc">No microservice sprawl. One <code style="color:var(--green);font-family:var(--font-mono);background:var(--bg3);padding:.1rem .4rem;border-radius:3px">npm i nanoclawd</code> and you have a full autonomous trading agent stack.</p>
+    <p class="section-desc">No microservice sprawl. One <code style="color:var(--green);font-family:var(--font-mono);background:var(--bg3);padding:.1rem .4rem;border-radius:3px">npm i solana-clawd-go</code> and you have a full autonomous trading agent stack.</p>
     <div class="features-grid">
       <div class="feature-card">
         <span class="feature-icon">🔄</span>
@@ -385,7 +385,7 @@ footer{
       <div class="feature-card">
         <span class="feature-icon">🔐</span>
         <h3>Encrypted Vault</h3>
-        <p>AES-256-GCM local vault under <code style="font-family:var(--font-mono);font-size:.8rem;color:var(--green)">~/.nanoclawd/vault.enc</code>. HMAC-SHA256 gateway auth with timing-safe signature verification.</p>
+        <p>AES-256-GCM local vault under <code style="font-family:var(--font-mono);font-size:.8rem;color:var(--green)">~/.scg/vault.enc</code>. HMAC-SHA256 gateway auth with timing-safe signature verification.</p>
       </div>
       <div class="feature-card">
         <span class="feature-icon">🌐</span>
@@ -447,45 +447,45 @@ footer{
   <div class="container">
     <span class="section-label">// Commands</span>
     <h2 class="section-title">CLI Reference</h2>
-    <p class="section-desc">Every command available via <code style="color:var(--green);font-family:var(--font-mono)">nanoclawd &lt;command&gt;</code> or <code style="color:var(--green);font-family:var(--font-mono)">npx nanoclawd &lt;command&gt;</code>.</p>
+    <p class="section-desc">Every command available via <code style="color:var(--green);font-family:var(--font-mono)">scg &lt;command&gt;</code> or <code style="color:var(--green);font-family:var(--font-mono)">npx solana-clawd-go &lt;command&gt;</code>.</p>
 
     <div class="cli-group">
       <h3>⚡ Core Runtime</h3>
       <table class="cli-table">
-        <tr><td>nanoclawd init</td><td>Prompt for credentials and save them to the encrypted vault</td></tr>
-        <tr><td>nanoclawd birth</td><td>Create or load the agent wallet and initialize the local TamaGOchi</td></tr>
-        <tr><td>nanoclawd run</td><td>Start wallet heartbeat, ClawVault, trading engine, and gateway</td></tr>
-        <tr><td>nanoclawd go</td><td>Full one-shot flow: configure → birth → run → scan → register</td></tr>
-        <tr><td>nanoclawd demo</td><td>Simulation mode with synthetic prices — no API keys needed</td></tr>
-        <tr><td>nanoclawd status</td><td>Show wallet, pet, memory, gateway, Tailscale, and tmux summary</td></tr>
-        <tr><td>nanoclawd pet</td><td>Print the current TamaGOchi status display</td></tr>
+        <tr><td>scg init</td><td>Prompt for credentials and save them to the encrypted vault</td></tr>
+        <tr><td>scg birth</td><td>Create or load the agent wallet and initialize the local TamaGOchi</td></tr>
+        <tr><td>scg run</td><td>Start wallet heartbeat, ClawVault, trading engine, and gateway</td></tr>
+        <tr><td>scg go</td><td>Full one-shot flow: configure → birth → run → scan → register</td></tr>
+        <tr><td>scg demo</td><td>Simulation mode with synthetic prices — no API keys needed</td></tr>
+        <tr><td>scg status</td><td>Show wallet, pet, memory, gateway, Tailscale, and tmux summary</td></tr>
+        <tr><td>scg pet</td><td>Print the current TamaGOchi status display</td></tr>
       </table>
     </div>
 
     <div class="cli-group">
       <h3>🔍 Ops & Inspection</h3>
       <table class="cli-table">
-        <tr><td>nanoclawd scan [address]</td><td>Scan the default wallet or a supplied address via Helius</td></tr>
-        <tr><td>nanoclawd register</td><td>Mint the devnet on-chain identity NFT</td></tr>
-        <tr><td>nanoclawd registry</td><td>Show local registration status and explorer links</td></tr>
-        <tr><td>nanoclawd config</td><td>Print the redacted runtime configuration</td></tr>
-        <tr><td>nanoclawd vault [query]</td><td>Search the ClawVault tiers (known / learned / inferred)</td></tr>
-        <tr><td>nanoclawd docs [query]</td><td>Search integrated docs and extension metadata</td></tr>
-        <tr><td>nanoclawd nanobot --port 7777</td><td>Start the local NanoBot companion UI</td></tr>
+        <tr><td>scg scan [address]</td><td>Scan the default wallet or a supplied address via Helius</td></tr>
+        <tr><td>scg register</td><td>Mint the devnet on-chain identity NFT</td></tr>
+        <tr><td>scg registry</td><td>Show local registration status and explorer links</td></tr>
+        <tr><td>scg config</td><td>Print the redacted runtime configuration</td></tr>
+        <tr><td>scg vault [query]</td><td>Search the ClawVault tiers (known / learned / inferred)</td></tr>
+        <tr><td>scg docs [query]</td><td>Search integrated docs and extension metadata</td></tr>
+        <tr><td>scg nanobot --port 7777</td><td>Start the local NanoBot companion UI</td></tr>
       </table>
     </div>
 
     <div class="cli-group">
       <h3>🌐 Mesh & Multi-Bot</h3>
       <table class="cli-table">
-        <tr><td>nanoclawd nodes</td><td>List discovered Tailscale peers</td></tr>
-        <tr><td>nanoclawd send "message"</td><td>Send a one-shot message to local or mesh-connected agents</td></tr>
-        <tr><td>nanoclawd bots list</td><td>List tmux-backed bot sessions</td></tr>
-        <tr><td>nanoclawd bots spawn &lt;name&gt;</td><td>Spawn a bot in a new tmux session</td></tr>
-        <tr><td>nanoclawd bots attach &lt;name&gt;</td><td>Attach to a running tmux session</td></tr>
-        <tr><td>nanoclawd bots kill &lt;name&gt;</td><td>Terminate a tmux session</td></tr>
-        <tr><td>nanoclawd dvd</td><td>Terminal DVD-style screensaver</td></tr>
-        <tr><td>nanoclawd lobster</td><td>Animated or static lobster banner 🦞</td></tr>
+        <tr><td>scg nodes</td><td>List discovered Tailscale peers</td></tr>
+        <tr><td>scg send "message"</td><td>Send a one-shot message to local or mesh-connected agents</td></tr>
+        <tr><td>scg bots list</td><td>List tmux-backed bot sessions</td></tr>
+        <tr><td>scg bots spawn &lt;name&gt;</td><td>Spawn a bot in a new tmux session</td></tr>
+        <tr><td>scg bots attach &lt;name&gt;</td><td>Attach to a running tmux session</td></tr>
+        <tr><td>scg bots kill &lt;name&gt;</td><td>Terminate a tmux session</td></tr>
+        <tr><td>scg dvd</td><td>Terminal DVD-style screensaver</td></tr>
+        <tr><td>scg lobster</td><td>Animated or static lobster banner 🦞</td></tr>
       </table>
     </div>
   </div>
@@ -498,25 +498,25 @@ footer{
   <div class="container">
     <span class="section-label">// Programmatic</span>
     <h2 class="section-title">SDK Usage</h2>
-    <p class="section-desc">Import any module directly. Build custom agents, strategies, or integrations on top of the NanoClawd stack.</p>
+    <p class="section-desc">Import any module directly. Build custom agents, strategies, or integrations on top of the Solana Clawd Go stack.</p>
 
     <div class="code-block">
 <span class="kw">import</span> {
-  <span class="vr">ClawVault</span>,
-  <span class="vr">NanoWallet</span>,
+  <span class="vr">ScgVault</span>,
+  <span class="vr">ScgWallet</span>,
   <span class="vr">TamaGOchi</span>,
   <span class="vr">TradingEngine</span>,
   <span class="fn">loadConfig</span>,
-} <span class="kw">from</span> <span class="str">"nanoclawd"</span>;
+} <span class="kw">from</span> <span class="str">"solana-clawd-go"</span>;
 
 <span class="kw">const</span> <span class="vr">config</span> <span class="op">=</span> <span class="fn">loadConfig</span>();
 
 <span class="cm">// Create and initialize the wallet</span>
-<span class="kw">const</span> <span class="vr">wallet</span> <span class="op">=</span> <span class="kw">new</span> <span class="fn">NanoWallet</span>(<span class="str">"my-agent"</span>);
+<span class="kw">const</span> <span class="vr">wallet</span> <span class="op">=</span> <span class="kw">new</span> <span class="fn">ScgWallet</span>(<span class="str">"my-agent"</span>);
 <span class="kw">await</span> <span class="vr">wallet</span>.<span class="fn">birth</span>();
 
 <span class="cm">// Start the autonomous memory engine</span>
-<span class="kw">const</span> <span class="vr">vault</span> <span class="op">=</span> <span class="kw">new</span> <span class="fn">ClawVault</span>();
+<span class="kw">const</span> <span class="vr">vault</span> <span class="op">=</span> <span class="kw">new</span> <span class="fn">ScgVault</span>();
 <span class="vr">vault</span>.<span class="fn">startAutonomous</span>();
 
 <span class="cm">// Birth the TamaGOchi companion</span>
@@ -552,7 +552,7 @@ footer{
   <div class="container">
     <span class="section-label">// Environment</span>
     <h2 class="section-title">Configuration</h2>
-    <p class="section-desc">Secrets can come from the encrypted vault, environment variables, or both. <code style="color:var(--green);font-family:var(--font-mono)">nanoclawd init</code> writes defaults to <code style="color:var(--green);font-family:var(--font-mono)">.env</code> and secrets to the vault.</p>
+    <p class="section-desc">Secrets can come from the encrypted vault, environment variables, or both. <code style="color:var(--green);font-family:var(--font-mono)">scg init</code> writes defaults to <code style="color:var(--green);font-family:var(--font-mono)">.env</code> and secrets to the vault.</p>
 
     <div class="config-grid">
       <div class="config-item">
@@ -634,19 +634,19 @@ footer{
     <div class="install-methods">
       <div class="install-card">
         <h4><span class="num">1</span> Run Without Installing</h4>
-        <div class="install-cmd" onclick="copyCmd(this)">npx nanoclawd demo</div>
-        <div class="install-cmd" onclick="copyCmd(this)">npx nanoclawd go</div>
+        <div class="install-cmd" onclick="copyCmd(this)">npx solana-clawd-go demo</div>
+        <div class="install-cmd" onclick="copyCmd(this)">npx solana-clawd-go go</div>
       </div>
       <div class="install-card">
         <h4><span class="num">2</span> Global npm Install</h4>
-        <div class="install-cmd" onclick="copyCmd(this)">npm install -g nanoclawd</div>
-        <div class="install-cmd" onclick="copyCmd(this)">nanoclawd demo</div>
+        <div class="install-cmd" onclick="copyCmd(this)">npm install -g solana-clawd-go</div>
+        <div class="install-cmd" onclick="copyCmd(this)">scg demo</div>
       </div>
       <div class="install-card">
         <h4><span class="num">3</span> Shell Installer</h4>
-        <div class="install-cmd" onclick="copyCmd(this)">curl -fsSL https://nanoclawd.com/install.sh | bash</div>
-        <div class="install-cmd" onclick="copyCmd(this)">export PATH="$HOME/.nanoclawd/bin:$PATH"</div>
-        <div class="install-cmd" onclick="copyCmd(this)">nanoclawd go</div>
+        <div class="install-cmd" onclick="copyCmd(this)">curl -fsSL https://install.solanaclawd.com | bash</div>
+        <div class="install-cmd" onclick="copyCmd(this)">export PATH="$HOME/.scg/bin:$PATH"</div>
+        <div class="install-cmd" onclick="copyCmd(this)">scg go</div>
       </div>
       <div class="install-card">
         <h4><span class="num">4</span> From Source</h4>
@@ -671,7 +671,7 @@ footer{
       <div class="security-item">
         <span class="sec-icon">🔒</span>
         <h4>AES-256-GCM Vault</h4>
-        <p>All secrets stored in ~/.nanoclawd/vault.enc with authenticated encryption. Local-machine oriented password by default.</p>
+        <p>All secrets stored in ~/.scg/vault.enc with authenticated encryption. Local-machine oriented password by default.</p>
       </div>
       <div class="security-item">
         <span class="sec-icon">✍️</span>
@@ -710,18 +710,18 @@ footer{
   <div class="ascii-lobster">
     ⠀⠀⠀⠀⠀⠀⣀⣤⡤⠤⠤⠤⣤⣀⠀⠀⠀⠀⠀⠀
     ⠀⠀⠀⣀⡴⠞⠉⠀⠀⠀⠀⠀⠀⠈⠙⠳⢦⡀⠀⠀
-    ⠀⢀⡾⠋⠀⠀🦞 NanoClawd ⠀⠀⠈⢷⡀
+    ⠀⢀⡾⠋⠀⠀🦞 Solana Clawd Go ⠀⠀⠈⢷⡀
     ⠀⣾⠁⠀ autonomous agents ⠀⠀⠀⠘⣧
     ⠀⢻⡄⠀⠀on Solana⠀⠀⠀⠀⠀⠀⠀⢠⡟
     ⠀⠀⠙⢦⣀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡴⠋⠀⠀
     ⠀⠀⠀⠀⠈⠙⠒⠤⠤⠤⠒⠋⠉⠀⠀⠀⠀⠀
   </div>
-  <div class="footer-logo">🦞 NanoClawd</div>
+  <div class="footer-logo">🦞 Solana Clawd Go</div>
   <div class="footer-links">
-    <a href="https://nanoclawd.com">Website</a>
+    <a href="https://solanaclawd.com">Website</a>
     <a href="https://github.com/x402agent/NanoClawd">GitHub</a>
-    <a href="https://www.npmjs.com/package/nanoclawd">npm</a>
-    <a href="https://nanoclawd.com/docs">Docs</a>
+    <a href="https://www.npmjs.com/package/solana-clawd-go">npm</a>
+    <a href="https://solanaclawd.com/docs">Docs</a>
     <a href="#">Discord</a>
   </div>
   <p class="footer-copy">MIT License · Built by 8BIT Labs · @mawdbot</p>

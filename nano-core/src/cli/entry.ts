@@ -1084,7 +1084,7 @@ program
     }
   });
 
-// ── nanoclawd demo (simulation mode) ───────────────────────
+// ── scg demo (simulation mode) ───────────────────────
 
 program
   .command("demo")
@@ -1221,7 +1221,7 @@ program
     await new Promise(() => {});
   });
 
-// ── nanoclawd dvd (screensaver) ────────────────────────────
+// ── scg dvd (screensaver) ────────────────────────────
 
 program
   .command("dvd")
@@ -1239,7 +1239,7 @@ program
     });
   });
 
-// ── nanoclawd lobster (show mascot) ────────────────────────
+// ── scg lobster (show mascot) ────────────────────────
 
 program
   .command("lobster")
@@ -1253,7 +1253,7 @@ program
     }
   });
 
-// ── nanoclawd scan (blockchain data reader) ────────────────────
+// ── scg scan (blockchain data reader) ────────────────────
 
 program
   .command("scan")
@@ -1298,7 +1298,7 @@ program
     }
   });
 
-// ── nanoclawd register (on-chain NFT identity) ─────────────────
+// ── scg register (on-chain NFT identity) ─────────────────
 
 program
   .command("register")
@@ -1349,7 +1349,7 @@ program
     }
   });
 
-// ── nanoclawd registry (show registration status) ──────────────
+// ── scg registry (show registration status) ──────────────
 
 program
   .command("registry")
@@ -1377,7 +1377,7 @@ program
     console.log(chalk.gray(`  Explorer: https://explorer.solana.com/address/${reg.result.mintAddress}?cluster=devnet\n`));
   });
 
-// ── nanoclawd nanobot (interactive UI) ──────────────────────────
+// ── scg nanobot (interactive UI) ──────────────────────────
 
 program
   .command("nanobot")
@@ -1394,7 +1394,7 @@ program
     await new Promise(() => {});
   });
 
-// ── nanoclawd pay (tokenized agent payments) ─────────────────
+// ── scg pay (tokenized agent payments) ─────────────────
 
 const payCmd = program
   .command("pay")
@@ -1508,7 +1508,7 @@ payCmd
     printInfo("\nSet AGENT_TOKEN_MINT_ADDRESS in .env to enable payments.\n");
   });
 
-// ── nanoclawd oneshot ───────────────────────────────────────────
+// ── scg oneshot ───────────────────────────────────────────
 
 program
   .command("oneshot")
@@ -1592,7 +1592,7 @@ program
     }
   });
 
-// ── nanoclawd hub ────────────────────────────────────────────────
+// ── scg hub ────────────────────────────────────────────────
 
 const hubCmd = program
   .command("hub")
